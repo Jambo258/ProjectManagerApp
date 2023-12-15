@@ -12,7 +12,7 @@ pagesRouter.get("/:id(\\d+)", async (req, res) => {
   try {
     if (!req.params.id) throw "params missing";
 
-    const foundPage = await getpageById(req.params.id);
+    const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) res.status(404).json({ error: "Page not found" });
 
     res.status(200).send(foundPage);
@@ -21,16 +21,14 @@ pagesRouter.get("/:id(\\d+)", async (req, res) => {
   }
 });
 
-pagesRouter.post("/:id(\\d+)", async (req, res) => {
-  const { data } = req.body;
+pagesRouter.post("/", async (req, res) => {
+  const { name, project_id  } = req.body;
 
   try {
-    if (!data || !req.params.id) throw "params missing";
+    if (!name || !project_id) return res.status(400).send();
 
-    const foundPage = await getpageById(req.params.id);
-    if (foundPage) res.status(400).json({ error: "page already exists." });
 
-    const newPage = await createPage(req.params.id, data);
+    const newPage = await createPage(name, project_id);
     res.status(200).send(newPage);
   } catch (error) {
     console.log(error);
@@ -41,10 +39,10 @@ pagesRouter.delete("/:id(\\d+)", async (req, res) => {
   try {
     if (!req.params.id) throw "params missing";
 
-    const foundPage = await getpageById(req.params.id);
+    const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) res.status(404).json({ error: "page doesn't exist." });
 
-    const page = await deletePage(req.params.id);
+    const page = await deletePage(parseInt(req.params.id));
     res.status(200).json({ id: page.id });
   } catch (error) {
     console.log(error);
@@ -52,14 +50,14 @@ pagesRouter.delete("/:id(\\d+)", async (req, res) => {
 });
 
 pagesRouter.put("/:id(\\d+)", async (req, res) => {
-  const { data } = req.body;
+  const { name, project_id  } = req.body;
   try {
-    if (!data || !req.params.id) throw "params missing";
+    if (!name || !project_id || !req.params.id) throw "params missing";
 
-    const foundPage = await getpageById(req.params.id);
+    const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) res.status(404).json({ error: "page doesn't exist." });
 
-    const updatedPage = await updatePage(req.params.id, data);
+    const updatedPage = await updatePage(parseInt(req.params.id), name, project_id);
     res.status(200).send(`${updatedPage.name} updated.`);
   } catch (error) {
     console.log(error);
