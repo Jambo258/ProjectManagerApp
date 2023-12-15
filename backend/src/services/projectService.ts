@@ -2,17 +2,16 @@ import { PrismaClient, Role } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function createNewProject(name: string) {
+export async function createNewProject(name: string, id: number) {
   const newProject = await prisma.projects.create({
     data: {
       name,
     },
   });
-  // edit user id later
-  const userId = 1;
+
   await prisma.projectUsers.create({
     data: {
-      userid: userId,
+      userid: id,
       projectid: newProject.id,
       role: Role.manager,
     },
@@ -57,7 +56,7 @@ export async function getProjectAllDetailsById(id: number) {
   return project;
 }
 
-export async function updateProject(id: number, name: string ) {
+export async function updateProject(id: number, name: string) {
   const updatedProject = await prisma.projects.update({
     where: { id },
     data: {
@@ -103,7 +102,7 @@ export async function changeUserRoleOnProject(
 
     data: {
       role: role,
-      updated_at: new Date()
+      updated_at: new Date(),
     },
   });
 
