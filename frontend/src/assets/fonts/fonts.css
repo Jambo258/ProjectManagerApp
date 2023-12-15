@@ -1,0 +1,63 @@
+/* Kumbh Sans Regular */
+@font-face {
+    font-family: "kumbhSans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./Kumbh_Sans/KumbhSans-Regular.ttf");
+}
+
+/* Kumbh Sans Medium */
+@font-face {
+    font-family: "kumbhSans";
+    font-style: normal;
+    font-weight: 500;
+    src: url("./Kumbh_Sans/KumbhSans-Medium.ttf");
+}
+
+/* Kumbh Sans SemiBold */
+@font-face {
+    font-family: "kumbhSans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("./Kumbh_Sans/KumbhSans-SemiBold.ttf");
+}
+
+/* Kumbh Sans Bold */
+@font-face {
+    font-family: "kumbhSans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./Kumbh_Sans/KumbhSans-Bold.ttf");
+}
+
+/* Noto Serif Regular */
+@font-face {
+    font-family: "notoSerif";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./Noto_Serif/NotoSerif-Regular.ttf");
+}
+
+/* Noto Serif Italic */
+@font-face {
+    font-family: "notoSerif";
+    font-style: italic;
+    font-weight: 400;
+    src: url("./Noto_Serif/NotoSerif-Italic.ttf");
+}
+
+/* Noto Serif Bold */
+@font-face {
+    font-family: "notoSerif";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./Noto_Serif/NotoSerif-Bold.ttf");
+}
+
+/* Noto Serif Bold Italic */
+@font-face {
+    font-family: "notoSerif";
+    font-style: italic;
+    font-weight: 700;
+    src: url("./Noto_Serif/NotoSerif-BoldItalic.ttf");
+}
