@@ -2,7 +2,7 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        colors: {    
+        colors: {
             // Layout
             // Project
             'grayscale': {
@@ -17,27 +17,27 @@ export default {
                 100: 'rgba(72, 79, 96, 1)', // Menu item border
                 200: 'rgba(52, 57, 68, 1)', // Menu item bg
                 300: 'rgba(42, 45, 52, 1)' // Menu bg
-            }, 
-            
+            },
+
             // Buttons
             // 200 on hover
             'primary': {
-                100: 'rgba(208, 224, 220, 1)', 
+                100: 'rgba(208, 224, 220, 1)',
                 200: 'rgba(186, 219, 211, 1)'
             },
-                
+
             'success': {
-                100: 'rgba(117, 223, 67, 1)', 
+                100: 'rgba(117, 223, 67, 1)',
                 200: 'rgba(92, 199, 42, 1)'
             },
 
             'caution': {
-                100: 'rgba(249, 142, 51, 1)', 
+                100: 'rgba(249, 142, 51, 1)',
                 200: 'rgba(227, 119, 27, 1)'
             },
 
             // Fonts
-            'light-font': 'rgba(233, 244, 242, 1)', 
+            'light-font': 'rgba(233, 244, 242, 1)',
             'dark-font': 'rgba(42, 45, 52, 1)',
 
             // Labels
@@ -67,7 +67,12 @@ export default {
                 300: 'rgba(234, 179, 37, 1)'
             }
         },
-        extend: {},
+        extend: {
+            fontFamily: {
+                'notoSerif': ['"Noto Serif"', 'serif'],
+                'kumbhSans': ['"Kumbh Sans"', 'sans-serif']
+            }
+        },
     },
     plugins: [],
 };
