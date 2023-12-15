@@ -6,32 +6,42 @@ generator client {
 }
 
 model Users {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  password String
-  updated_at DateTime @default(now())
-  created_at DateTime @default(now())
-  projects ProjectUsers[]
+  id         Int            @id @default(autoincrement())
+  email      String         @unique
+  password   String
+  updated_at DateTime       @default(now())
+  created_at DateTime       @default(now())
+  projects   ProjectUsers[]
 }
 
 model Projects {
-  id    Int     @default(autoincrement()) @id
-  name String
-  updated_at DateTime @default(now())
-  created_at DateTime @default(now())
-  users ProjectUsers[]
+  id         Int            @id @default(autoincrement())
+  name       String
+  updated_at DateTime       @default(now())
+  created_at DateTime       @default(now())
+  users      ProjectUsers[]
+  Pages      Pages[]
 }
 
 model ProjectUsers {
-  user     Users     @relation(fields: [userid], references: [id], onDelete: Cascade)
-  userid Int
-  project   Projects @relation(fields: [projectid], references: [id], onDelete: Cascade)
-  projectid     Int
+  user       Users    @relation(fields: [userid], references: [id], onDelete: Cascade)
+  userid     Int
+  project    Projects @relation(fields: [projectid], references: [id], onDelete: Cascade)
+  projectid  Int
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
-  role Role
+  role       Role
 
   @@id([projectid, userid])
+}
+
+model Pages {
+  id         Int      @id @default(autoincrement())
+  name       String
+  project    Projects @relation(fields: [projectid], references: [id], onDelete: Cascade)
+  projectid  Int
+  updated_at DateTime @default(now())
+  created_at DateTime @default(now())
 }
 
 enum Role {
