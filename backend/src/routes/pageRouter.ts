@@ -22,12 +22,12 @@ pagesRouter.get("/:id(\\d+)", async (req, res) => {
 });
 
 pagesRouter.post("/", async (req, res) => {
-  const { name, project_id  } = req.body;
+  const { name, projectid  } = req.body;
 
   try {
-    if (!name || !project_id) return res.status(400).json({error: "missing parameters."});
+    if (!name || !projectid) return res.status(400).json({error: "missing parameters."});
 
-    const newPage = await createPage(name, project_id);
+    const newPage = await createPage(name, projectid);
     res.status(200).send(newPage);
   } catch (error) {
     console.log(error);
@@ -49,14 +49,14 @@ pagesRouter.delete("/:id(\\d+)", async (req, res) => {
 });
 
 pagesRouter.put("/:id(\\d+)", async (req, res) => {
-  const { name, project_id  } = req.body;
+  const { name, projectid  } = req.body;
   try {
-    if (!name || !project_id || !req.params.id) return res.status(400).json({error: "missing parameters."});
+    if (!name || !projectid || !req.params.id) return res.status(400).json({error: "missing parameters."});
 
     const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) res.status(404).json({ error: "page doesn't exist." });
 
-    const updatedPage = await updatePage(parseInt(req.params.id), name, project_id);
+    const updatedPage = await updatePage(parseInt(req.params.id), name, projectid);
     res.status(200).send(`${updatedPage.name} updated.`);
   } catch (error) {
     console.log(error);

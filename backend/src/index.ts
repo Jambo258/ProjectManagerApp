@@ -5,6 +5,7 @@ import usersRouter from "./routes/userRouter.js";
 import projectsRouter from "./routes/projectRouter.js";
 import requestLog from "./middlewares/requestLog.js";
 import unknownEndpoint from "./middlewares/unknownEndpoint.js";
+import pagesRouter from "./routes/pageRouter.js";
 
 const PORT = process.env.BACKEND_PORT;
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;
@@ -28,6 +29,7 @@ server.use(requestLog);
 
 server.use("/user", usersRouter);
 server.use("/projects", projectsRouter);
+server.use("/pages", pagesRouter);
 
 server.use(unknownEndpoint);
 server.listen(PORT, () => console.log("Listening to port", PORT));
