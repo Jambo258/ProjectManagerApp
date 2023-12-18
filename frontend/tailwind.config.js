@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme"
+
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
@@ -69,9 +71,9 @@ export default {
         },
         extend: {
             fontFamily: {
-                'notoSerif': ['"Noto Serif"', 'serif'],
-                'kumbhSans': ['"Kumbh Sans"', 'sans-serif']
-            }
+                'serif': ['"Noto Serif"', ...defaultTheme.fontFamily.serif],
+                'sans': ['"Kumbh Sans"', ...defaultTheme.fontFamily.sans]
+            },
         },
     },
     plugins: [],
