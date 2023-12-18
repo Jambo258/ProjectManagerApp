@@ -1,8 +1,7 @@
 /* Kumbh Sans Regular (400) */
 @font-face {
     font-family: "Kumbh Sans";
-    src: url("./KumbhSans/KumbhSans-Regular.woff2") format("woff2"),
-        url("./KumbhSans/KumbhSans-Regular.woff") format("woff");
+    src: url("./KumbhSans/KumbhSans-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -11,8 +10,7 @@
 /* Kumbh Sans Medium (500) */
 @font-face {
     font-family: "Kumbh Sans";
-    src: url("./KumbhSans/KumbhSans-Medium.woff2") format("woff2"),
-        url("./KumbhSans/KumbhSans-Medium.woff") format("woff");
+    src: url("./KumbhSans/KumbhSans-Medium.woff2") format("woff2");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -21,8 +19,7 @@
 /* Kumbh Sans SemiBold (600) */
 @font-face {
     font-family: "Kumbh Sans";
-    src: url("./KumbhSans/KumbhSans-SemiBold.woff2") format("woff2"),
-        url("./KumbhSans/KumbhSans-SemiBold.woff") format("woff");
+    src: url("./KumbhSans/KumbhSans-SemiBold.woff2") format("woff2");
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -31,8 +28,7 @@
 /* Kumbh Sans Bold (700) */
 @font-face {
     font-family: "Kumbh Sans";
-    src: url("./KumbhSans/KumbhSans-Bold.woff2") format("woff2"),
-        url("./KumbhSans/KumbhSans-Bold.woff") format("woff");
+    src: url("./KumbhSans/KumbhSans-Bold.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -41,8 +37,7 @@
 /* Noto Serif Regular (400) */
 @font-face {
     font-family: "Noto Serif";
-    src: url("./NotoSerif/NotoSerif-Regular.woff2") format("woff2"),
-        url("./NotoSerif/NotoSerif-Regular.woff") format("woff");
+    src: url("./NotoSerif/NotoSerif-Regular.woff2") format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -51,8 +46,7 @@
 /*  Noto Serif Regular (400) Italic*/
 @font-face {
     font-family: "Noto Serif";
-    src: url("./NotoSerif/NotoSerif-Italic.woff2") format("woff2"),
-        url("./NotoSerif/NotoSerif-Italic.woff") format("woff");
+    src: url("./NotoSerif/NotoSerif-Italic.woff2") format("woff2");
     font-weight: 400;
     font-style: italic;
     font-display: swap;
@@ -61,8 +55,7 @@
 /*  Noto Serif Bold (700) */
 @font-face {
     font-family: "Noto Serif";
-    src: url("./NotoSerif/NotoSerif-Bold.woff2") format("woff2"),
-        url("./NotoSerif/NotoSerif-Bold.woff") format("woff");
+    src: url("./NotoSerif/NotoSerif-Bold.woff2") format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -71,8 +64,7 @@
 /*  Noto Serif Bold (700) Italic */
 @font-face {
     font-family: "Noto Serif";
-    src: url("./NotoSerif/NotoSerif-BoldItalic.woff2") format("woff2"),
-        url("./NotoSerif/NotoSerif-BoldItalic.woff") format("woff");
+    src: url("./NotoSerif/NotoSerif-BoldItalic.woff2") format("woff2");
     font-weight: 700;
     font-style: italic;
     font-display: swap;
