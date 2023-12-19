@@ -8,58 +8,59 @@ import {
 
 const pagesRouter = Router();
 
-pagesRouter.get("/:id(\\d+)", async (req, res) => {
+pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {
     if (!req.params.id) return res.status(400).json({error: "missing parameters."});
 
     const foundPage = await getpageById(parseInt(req.params.id));
-    if (!foundPage) res.status(404).json({ error: "Page not found" });
+    if (!foundPage) return res.status(404).json({ error: "Page not found" });
 
-    res.status(200).send(foundPage);
+    return res.status(200).json(foundPage);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
-pagesRouter.post("/", async (req, res) => {
-  const { name, projectid  }: {name: string, projectid: number} = req.body;
-
+pagesRouter.post("/", async (req, res, next) => {
   try {
-    if (!name || !projectid) return res.status(400).json({error: "missing parameters."});
+    const { name, projectid  } = req.body;
+    if (!name || !projectid || typeof name !== "string" ||typeof projectid !== "number" )
+      return res.status(400).json({error: "missing parameters."});
 
     const newPage = await createPage(name, projectid);
-    res.status(200).send(newPage);
+    return res.status(200).json(newPage);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
-pagesRouter.delete("/:id(\\d+)", async (req, res) => {
+pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
   try {
     if (!req.params.id) return res.status(400).json({error: "missing parameters."});
 
     const foundPage = await getpageById(parseInt(req.params.id));
-    if (!foundPage) res.status(404).json({ error: "page doesn't exist." });
+    if (!foundPage) return res.status(404).json({ error: "page doesn't exist." });
 
     const page = await deletePage(parseInt(req.params.id));
-    res.status(200).json({ id: page.id });
+    return res.status(200).json({ id: page.id });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
-pagesRouter.put("/:id(\\d+)", async (req, res) => {
-  const { name, projectid  }: {name: string, projectid: number}  = req.body;
+pagesRouter.put("/:id(\\d+)", async (req, res, next) => {
   try {
-    if (!name || !projectid || !req.params.id) return res.status(400).json({error: "missing parameters."});
+    const { name, projectid  }  = req.body;
+    if (!name || !projectid || !req.params.id || typeof name !== "string" ||typeof projectid !== "number" )
+      return res.status(400).json({error: "missing parameters."});
 
     const foundPage = await getpageById(parseInt(req.params.id));
-    if (!foundPage) res.status(404).json({ error: "page doesn't exist." });
+    if (!foundPage) return res.status(404).json({ error: "page doesn't exist." });
 
     const updatedPage = await updatePage(parseInt(req.params.id), name, projectid);
-    res.status(200).send(`${updatedPage.name} updated.`);
+    return res.status(200).json(updatedPage);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
