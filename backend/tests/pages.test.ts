@@ -71,7 +71,7 @@ describe("server", () => {
   //get page
   it("get page by id", async () => {
     const res = await request
-      .get("/pages/37")
+      .get("/pages/" + pageid)
       .expect(200)
       .expect("content-type", /json/);
     expect(res.body.id).toBeDefined();
