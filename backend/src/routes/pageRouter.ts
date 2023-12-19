@@ -22,7 +22,7 @@ pagesRouter.get("/:id(\\d+)", async (req, res) => {
 });
 
 pagesRouter.post("/", async (req, res) => {
-  const { name, projectid  } = req.body;
+  const { name, projectid  }: {name: string, projectid: number} = req.body;
 
   try {
     if (!name || !projectid) return res.status(400).json({error: "missing parameters."});
@@ -49,7 +49,7 @@ pagesRouter.delete("/:id(\\d+)", async (req, res) => {
 });
 
 pagesRouter.put("/:id(\\d+)", async (req, res) => {
-  const { name, projectid  } = req.body;
+  const { name, projectid  }: {name: string, projectid: number}  = req.body;
   try {
     if (!name || !projectid || !req.params.id) return res.status(400).json({error: "missing parameters."});
 
