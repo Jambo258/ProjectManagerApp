@@ -79,7 +79,7 @@ describe("server", () => {
 
   it("get page by wrong id", async () => {
     const res = await request
-      .get("/pages/10")
+      .get("/pages/100000000")
       .expect(404)
       .expect("content-type", /json/);
     expect(res.body.error).toBeDefined();
