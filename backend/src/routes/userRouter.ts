@@ -1,4 +1,6 @@
-import { Router } from "express";
+import { Router, type Request } from "express";
+import argon2 from "argon2";
+import * as yup from "yup";
 
 import {
   createUser,
@@ -9,41 +11,66 @@ import {
   deleteUser
 } from "../services/userService.js";
 import authenticate from "../middlewares/authenticate.js";
+import validate from "../middlewares/validate.js";
 
 const usersRouter = Router();
 
-usersRouter.post("/register", async (req, res, next) => {
-  // Username missing and password hashing
-  const { email, password } = req.body;
+interface RequestBody<T> extends Request {
+  body: T;
+}
 
-  if( !email || !password || typeof email === "string" || typeof password === "string") {
-    return res.status(400).json({error: "Missing email or password"});
-  }
+const registerUserSchema = yup.object({
+  email: yup.string().required().email(),
+  name: yup.string().required().trim().min(2).max(50),
+  password: yup.string().required().min(6),
+});
+type registerUserSchemaType = yup.InferType<typeof registerUserSchema>;
 
-  const foundUser = await getUserByEmail(email);
-  if (foundUser) {
-    return res.status(409).send({ error: "Email already exists" });
+usersRouter.post("/register", validate(registerUserSchema), async (req: RequestBody<registerUserSchemaType>, res, next) => {
+  try {
+    const { email, name, password } = req.body;
+    console.log(name);
+
+    const findUser = await getUserByEmail(email);
+    if (findUser) {
+      return res.status(409).json({ error: "Email already exists" });
+    }
+
+    const hash = await argon2.hash(password);
+    console.log(hash);
+    const newUser = await createUser(email, name, hash);
+
+    req.session.regenerate((err) => {
+      if (err) next(err);
+      req.session.userId = newUser.id;
+      res.status(200).json(newUser);
+    });
+  } catch (err) {
+    next(err);
   }
-  const newUser = await createUser(email, password);
-  req.session.regenerate((err) => {
-    if (err) next();
-    req.session.userId = newUser.id;
-    res.status(200).json({ newUser });
-  });
 });
 
 usersRouter.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const foundUser = await getUserByEmail(email);
-  if (!foundUser || foundUser.password !== password) {
-    return res.status(401).send({ error: "Email and password does not match" });
+    if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+      return res.status(400).json({ error: "Missing email or password" });
+    }
+
+    const findUser = await getUserByEmail(email);
+    if (findUser && await argon2.verify(findUser.password, password)) {
+      req.session.regenerate((err) => {
+        if (err) next(err);
+        req.session.userId = findUser.id;
+        res.status(200).json(findUser);
+      });
+    } else {
+      return res.status(401).json({ error: "Email and password does not match" });
+    }
+  } catch (err) {
+    next(err);
   }
-  req.session.regenerate((err) => {
-    if (err) next();
-    req.session.userId = foundUser.id;
-    res.status(200).json({ foundUser });
-  });
 });
 
 usersRouter.get("/logout", (req, res, next) => {
@@ -53,58 +80,66 @@ usersRouter.get("/logout", (req, res, next) => {
   });
 });
 
-usersRouter.get("/getallusers", authenticate, async (req, res) => {
+// Remove this route
+usersRouter.get("/getallusers", authenticate, async (_, res) => {
   const users = await getAllUsers();
-  res.send(users);
+  res.json(users);
 });
 
-usersRouter.get("/:id(\\d+)", authenticate, async (req, res) => {
-  const id = parseInt(req.params.id);
-
-  const user = await getUserById(id);
-  if (!user) {
-    return res.status(404).send({ error: "Couldnt find user" });
-  }
-  res.send(user);
+const updateUserSchema = yup.object({
+  email: yup.string().optional().email(),
+  name: yup.string().optional().trim().min(2).max(50),
+  password: yup.string().optional().min(6),
 });
+type updateUserSchemaType = yup.InferType<typeof updateUserSchema>;
 
-usersRouter.put("/:id(\\d+)", authenticate, async (req, res) => {
-  const id = parseInt(req.params.id);
-  const { email, password } = req.body;
+usersRouter.put("/update", authenticate, validate(updateUserSchema), async (req: RequestBody<updateUserSchemaType>, res, next) => {
+  try {
+    const id = req.session.userId!;
+    const { email, name, password } = req.body;
 
-  if (!email && !password) {
-    return res
-      .status(400)
-      .send({ error: "Empty req body" });
-  }
-
-  const user = await getUserById(id);
-  if (!user) {
-    return res.status(404).send({ error: "Couldnt find user" });
-  }
-
-  if (email) {
-    const findUserEmail = await getUserByEmail(email);
-    if (findUserEmail) {
-      return res.status(404).send({ error: "Email exists" });
+    if (!email && !password && !name) {
+      return res.status(400).json({ error: "Empty req body" });
     }
-    user.email = email;
+
+    const user = await getUserById(id);
+    if (!user) {
+      console.log(id, user);
+      return res.status(404).json({ error: "Couldnt find user" });
+    }
+
+    if (email) {
+      const findEmail = await getUserByEmail(email);
+      if (findEmail) {
+        return res.status(404).json({ error: "Email exists" });
+      }
+      user.email = email;
+    }
+    if (password) {
+      user.password = await argon2.hash(password);
+    }
+    if (name) {
+      user.name = name;
+    }
+    const updatedUser = await updateUser(id, user);
+    res.json(updatedUser);
+  } catch (err) {
+    next(err);
   }
-  if (password) {
-    user.password = password;
-  }
-  const updatedUser = await updateUser(id, user);
-  res.send(updatedUser);
 });
 
-usersRouter.delete("/", authenticate, async (req, res) => {
-  const id = req.session.userId!;
-  const user = await getUserById(id);
-  if (!user) {
-    return res.status(404).send({ error: "Couldnt find user" });
+usersRouter.delete("/delete", authenticate, async (req, res, next) => {
+  try {
+    const id = req.session.userId!;
+    const user = await getUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const deletedUser = await deleteUser(id);
+    res.status(200).json(deletedUser);
+  } catch (err) {
+    next(err);
   }
-  const deletedUser = await deleteUser(id);
-  res.status(200).send({ message: `deleted user ${deletedUser}` });
 });
 
 export default usersRouter;

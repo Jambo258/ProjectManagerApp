@@ -6,6 +6,7 @@ import projectsRouter from "./routes/projectRouter.js";
 import requestLog from "./middlewares/requestLog.js";
 import unknownEndpoint from "./middlewares/unknownEndpoint.js";
 import pagesRouter from "./routes/pageRouter.js";
+import authenticate from "./middlewares/authenticate.js";
 
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;
 
@@ -27,8 +28,8 @@ server.use(express.urlencoded({ extended: false }));
 server.use(requestLog);
 
 server.use("/user", usersRouter);
-server.use("/projects", projectsRouter);
-server.use("/pages", pagesRouter);
+server.use("/projects", authenticate, projectsRouter);
+server.use("/pages", authenticate, pagesRouter);
 
 server.use(unknownEndpoint);
 

@@ -8,6 +8,7 @@ generator client {
 model Users {
   id         Int            @id @default(autoincrement())
   email      String         @unique
+  name       String
   password   String
   updated_at DateTime       @default(now())
   created_at DateTime       @default(now())

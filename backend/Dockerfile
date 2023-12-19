@@ -6,7 +6,7 @@ RUN apk add --no-cache nodejs npm
 COPY package*.json ./
 COPY ./src ./src
 COPY ./prisma ./prisma
-COPY ./tsconfig.json ./tsconfig.json
+COPY ./tsconfig*.json ./
 COPY ./types ./types
 
 RUN npm ci
