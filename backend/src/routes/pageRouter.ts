@@ -5,6 +5,8 @@ import {
   updatePage,
   deletePage,
 } from "../services/pageService.js";
+import { checkForUserExistingOnProject } from "../services/projectService.js";
+import { Role } from "@prisma/client";
 
 const pagesRouter = Router();
 
@@ -24,8 +26,16 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
 pagesRouter.post("/", async (req, res, next) => {
   try {
     const { name, projectid  } = req.body;
+    const userid = req.session.userId!;
     if (!name || !projectid || typeof name !== "string" ||typeof projectid !== "number" )
+    {
       return res.status(400).json({error: "missing parameters."});
+    }
+
+    const findUser = await checkForUserExistingOnProject(userid, projectid);
+
+    if(!findUser) res.status(404).json({error: "user not found on project"});
+    if(findUser?.role !== Role.editor || Role.manager) res.status(401).json({error: "missing correct role"});
 
     const newPage = await createPage(name, projectid);
     return res.status(200).json(newPage);
