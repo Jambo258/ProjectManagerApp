@@ -12,6 +12,10 @@ let testUserID = 0;
 
 
 beforeAll(async () => {
+  await request
+    .post("/users/register")
+    .send({ email: "authTesting@mail.com", name: "test", password: "salainen" });
+
   const resTest = await request
     .post("/users/register")
     .send({ email: "testing@mail.com", name: "pekka", password: "salainen" });
@@ -143,4 +147,41 @@ describe("server", () => {
     expect(res.body.id);
   });
 
+  //auth
+  it("login with test account", async () => {
+    await request
+      .post("/users/login")
+      .send({ email: "authTesting@mail.com", name: "test", password: "salainen" });
+  });
+
+  it("try to get page without role", async () => {
+    const res = await request
+      .get("/pages/" + pageid)
+      .send({projectid: projectid })
+      .expect(401)
+      .expect("content-type", /json/);
+    expect(res.body.error).toEqual("missing role");
+  });
+
+  it("try to create new page without role", async () => {
+    const res = await request
+      .post("/pages/")
+      .send({ name: "testpage", projectid: projectid })
+      .expect(401)
+      .expect("content-type", /json/);
+    expect(res.body.error).toEqual("missing role");
+  });
+
+  it("try to update page without role", async () => {
+    const res = await request
+      .put("/pages/" + pageid)
+      .send({name: "pagetestupdate", projectid: projectid})
+      .expect(401);
+    expect(res.body.error).toEqual("missing role");
+  });
+
+  it("delete test account", async () => {
+    await request
+      .delete("/users/delete");
+  });
 });
