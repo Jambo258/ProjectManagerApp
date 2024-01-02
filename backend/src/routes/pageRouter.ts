@@ -14,7 +14,7 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {
     const { projectid  } = req.body;
     const userid = req.session.userId!;
-    if ( !projectid || typeof projectid !== "number" )
+    if ( !projectid || typeof projectid !== "number" || !req.params.id)
     {
       return res.status(400).json({error: "missing parameters."});
     }
@@ -22,9 +22,8 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
     const findUser = await checkForUserExistingOnProject(userid, projectid);
 
     if(!findUser) res.status(404).json({error: "user not found on project"});
-    if(findUser?.role !== Role.editor || Role.manager || Role.viewer ) res.status(401).json({error: "missing correct role"});
+    if(!findUser?.role) res.status(401).json({error: "missing role"});
 
-    if (!req.params.id) return res.status(400).json({error: "missing parameters."});
 
     const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) return res.status(404).json({ error: "Page not found" });
@@ -37,7 +36,7 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
 
 pagesRouter.post("/", async (req, res, next) => {
   try {
-    const { name, projectid  } = req.body;
+    const { name, projectid, content  }: {name: string, projectid: number, content: string} = req.body;
     const userid = req.session.userId!;
 
     if (!name || !projectid || typeof name !== "string" || typeof projectid !== "number" )
@@ -48,9 +47,9 @@ pagesRouter.post("/", async (req, res, next) => {
     const findUser = await checkForUserExistingOnProject(userid, projectid);
 
     if(!findUser) res.status(404).json({error: "user not found on project"});
-    if(findUser?.role !== Role.editor || Role.manager) res.status(401).json({error: "missing correct role"});
+    if(findUser?.role !== Role.manager) res.status(401).json({error: "missing correct role"});
 
-    const newPage = await createPage(name, projectid);
+    const newPage = await createPage(name, projectid, content);
     return res.status(200).json(newPage);
   } catch (error) {
     next(error);
@@ -60,10 +59,10 @@ pagesRouter.post("/", async (req, res, next) => {
 pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
   try {
 
-    const { projectid  } = req.body;
+    const { projectid } = req.body;
     const userid = req.session.userId!;
 
-    if ( !projectid || typeof projectid !== "number" )
+    if ( !projectid || typeof projectid !== "number" || !req.params.id)
     {
       return res.status(400).json({error: "missing parameters."});
     }
@@ -73,9 +72,8 @@ pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
     if(!findUser) res.status(404).json({error: "user not found on project"});
     if(findUser?.role !== Role.manager) res.status(401).json({error: "missing correct role"});
 
-    if (!req.params.id) return res.status(400).json({error: "missing parameters."});
-
     const foundPage = await getpageById(parseInt(req.params.id));
+    console.log(req.params.id);
     if (!foundPage) return res.status(404).json({ error: "page doesn't exist." });
 
     const page = await deletePage(parseInt(req.params.id));
@@ -87,21 +85,21 @@ pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
 
 pagesRouter.put("/:id(\\d+)", async (req, res, next) => {
   try {
-    const { name, projectid  }  = req.body;
+    const { name, projectid, content  }: {name: string, projectid: number, content: string}  = req.body;
     const userid = req.session.userId!;
 
-    if (!name || !projectid || !req.params.id || typeof name !== "string" ||typeof projectid !== "number" )
+    if (!name || !projectid || typeof name !== "string" ||typeof projectid !== "number" )
       return res.status(400).json({error: "missing parameters."});
 
     const findUser = await checkForUserExistingOnProject(userid, projectid);
 
     if(!findUser) res.status(404).json({error: "user not found on project"});
-    if(findUser?.role !== Role.editor || Role.manager) res.status(401).json({error: "missing correct role"});
+    if(findUser?.role !== Role.manager) res.status(401).json({error: "missing correct role"});
 
     const foundPage = await getpageById(parseInt(req.params.id));
     if (!foundPage) return res.status(404).json({ error: "page doesn't exist." });
 
-    const updatedPage = await updatePage(parseInt(req.params.id), name, projectid);
+    const updatedPage = await updatePage(parseInt(req.params.id), name, projectid, content);
     return res.status(200).json(updatedPage);
   } catch (error) {
     next(error);
