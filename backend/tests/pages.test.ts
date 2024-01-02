@@ -59,7 +59,7 @@ describe("server", () => {
       .send({projectid: projectid })
       .expect(400)
       .expect("content-type", /json/);
-    expect(res.body.error).toEqual("missing parameters.");
+    expect(res.body.error).toEqual("missing parameters");
   });
 
   it("try to create page with missing projectid", async () => {
@@ -68,7 +68,7 @@ describe("server", () => {
       .send({name: "pagetest" })
       .expect(400)
       .expect("content-type", /json/);
-    expect(res.body.error).toEqual("missing parameters.");
+    expect(res.body.error).toEqual("missing parameters");
   });
 
 
@@ -122,7 +122,7 @@ describe("server", () => {
       .put("/pages/" + pageid)
       .send({})
       .expect(400);
-    expect(res.body.error).toEqual("missing parameters.");
+    expect(res.body.error).toEqual("missing parameters");
   });
 
 
