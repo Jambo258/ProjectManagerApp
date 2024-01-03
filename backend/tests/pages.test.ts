@@ -185,6 +185,51 @@ describe("server", () => {
     expect(res.body.id);
   });
 
+  it("set role to viewer", async () => {
+    await request
+      .post(`/projects/${projectid}/users/${testUserID}`)
+      .send({ role: "viewer" });
+  });
+
+  it("try to create new page as viewer", async () => {
+    const res = await request
+      .post("/pages/")
+      .send({ name: "testpage", projectid: projectid })
+      .expect(401)
+      .expect("content-type", /json/);
+    expect(res.body.error).toEqual("missing role");
+  });
+
+  it("try to update page as viewer", async () => {
+    const res = await request
+      .put("/pages/" + pageid)
+      .send({ name: "pagetestupdate", projectid: projectid })
+      .expect(401);
+    expect(res.body.error).toEqual("missing role");
+  });
+
+  it("try to delete page as viewer", async () => {
+    const res = await request
+      .delete("/pages/" + pageid)
+      .send({ projectid: projectid })
+      .expect(401);
+    expect(res.body.id);
+  });
+
+  it("set role to editor", async () => {
+    await request
+      .post(`/projects/${projectid}/users/${testUserID}`)
+      .send({ role: "editor" });
+  });
+
+  it("try to delete page as editor", async () => {
+    const res = await request
+      .delete("/pages/" + pageid)
+      .send({ projectid: projectid })
+      .expect(401);
+    expect(res.body.id);
+  });
+
   it("delete test account", async () => {
     await request.delete("/users/delete");
   });
