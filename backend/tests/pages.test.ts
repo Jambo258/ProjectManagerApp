@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import {agent} from "supertest";
+import { agent } from "supertest";
 import { it, describe, beforeAll, afterAll, expect } from "vitest";
 import server from "../src/server.js";
-
 
 const request = agent(server);
 
@@ -10,11 +9,14 @@ let projectid = 0;
 let pageid = 0;
 let testUserID = 0;
 
-
 beforeAll(async () => {
   await request
     .post("/users/register")
-    .send({ email: "authTesting@mail.com", name: "test", password: "salainen" });
+    .send({
+      email: "authTesting@mail.com",
+      name: "test",
+      password: "salainen",
+    });
 
   const resTest = await request
     .post("/users/register")
@@ -22,7 +24,9 @@ beforeAll(async () => {
 
   testUserID = resTest.body.id;
 
-  const testProject = await request.post("/projects/").send({ name: "testproject2" });
+  const testProject = await request
+    .post("/projects/")
+    .send({ name: "testproject2" });
 
   projectid = testProject.body.id;
 
@@ -31,21 +35,16 @@ beforeAll(async () => {
     .send({ role: "manager" });
 });
 
-
 afterAll(async () => {
   await request
     .post("/users/login")
     .send({ email: "testing@mail.com", password: "salainen" });
-  await request
-    .delete("/users/delete/" + projectid);
-  await request
-    .delete("/pages/delete/" + pageid);
-  await request
-    .delete("/users/delete");
+  await request.delete("/users/delete/" + projectid);
+  await request.delete("/pages/delete/" + pageid);
+  await request.delete("/users/delete");
 });
 
 describe("server", () => {
-
   //create page
   it("create new page", async () => {
     const res = await request
@@ -60,7 +59,7 @@ describe("server", () => {
   it("try to create page with missing name", async () => {
     const res = await request
       .post("/pages/")
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(400)
       .expect("content-type", /json/);
     expect(res.body.error).toEqual("missing parameters");
@@ -69,18 +68,17 @@ describe("server", () => {
   it("try to create page with missing projectid", async () => {
     const res = await request
       .post("/pages/")
-      .send({name: "pagetest" })
+      .send({ name: "pagetest" })
       .expect(400)
       .expect("content-type", /json/);
     expect(res.body.error).toEqual("missing parameters");
   });
 
-
   //get page
   it("get page by id", async () => {
     const res = await request
       .get("/pages/" + pageid)
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(200)
       .expect("content-type", /json/);
     expect(res);
@@ -89,7 +87,7 @@ describe("server", () => {
   it("get page by wrong id", async () => {
     const res = await request
       .get("/pages/100000000")
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(404)
       .expect("content-type", /json/);
     expect(res.body.error).toEqual("Page not found");
@@ -98,7 +96,7 @@ describe("server", () => {
   it("try to get page with no id", async () => {
     const res = await request
       .get("/pages/")
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(404)
       .expect("content-type", /json/);
     expect(res.body.error).toEqual("Not Found");
@@ -108,7 +106,7 @@ describe("server", () => {
   it("update page", async () => {
     const res = await request
       .put("/pages/" + pageid)
-      .send({name: "pagetestupdate", projectid: projectid})
+      .send({ name: "pagetestupdate", projectid: projectid })
       .expect(200);
     expect(res.body.id);
   });
@@ -116,7 +114,7 @@ describe("server", () => {
   it("update page with no id", async () => {
     const res = await request
       .put("/pages/")
-      .send({name: "pagetestupdate", projectid: projectid})
+      .send({ name: "pagetestupdate", projectid: projectid })
       .expect(404);
     expect(res.body.error).toEqual("Not Found");
   });
@@ -129,12 +127,11 @@ describe("server", () => {
     expect(res.body.error).toEqual("missing parameters");
   });
 
-
   //delete page
   it("delete page", async () => {
     const res = await request
       .delete("/pages/" + pageid)
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(200);
     expect(res.body.id);
   });
@@ -142,7 +139,7 @@ describe("server", () => {
   it("try to delete page with no id", async () => {
     const res = await request
       .delete("/pages/")
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(404);
     expect(res.body.id);
   });
@@ -151,13 +148,17 @@ describe("server", () => {
   it("login with test account", async () => {
     await request
       .post("/users/login")
-      .send({ email: "authTesting@mail.com", name: "test", password: "salainen" });
+      .send({
+        email: "authTesting@mail.com",
+        name: "test",
+        password: "salainen",
+      });
   });
 
   it("try to get page without role", async () => {
     const res = await request
       .get("/pages/" + pageid)
-      .send({projectid: projectid })
+      .send({ projectid: projectid })
       .expect(401)
       .expect("content-type", /json/);
     expect(res.body.error).toEqual("missing role");
@@ -175,13 +176,12 @@ describe("server", () => {
   it("try to update page without role", async () => {
     const res = await request
       .put("/pages/" + pageid)
-      .send({name: "pagetestupdate", projectid: projectid})
+      .send({ name: "pagetestupdate", projectid: projectid })
       .expect(401);
     expect(res.body.error).toEqual("missing role");
   });
 
   it("delete test account", async () => {
-    await request
-      .delete("/users/delete");
+    await request.delete("/users/delete");
   });
 });
