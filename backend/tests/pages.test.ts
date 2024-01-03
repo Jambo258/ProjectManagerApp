@@ -10,13 +10,11 @@ let pageid = 0;
 let testUserID = 0;
 
 beforeAll(async () => {
-  await request
-    .post("/users/register")
-    .send({
-      email: "authTesting@mail.com",
-      name: "test",
-      password: "salainen",
-    });
+  await request.post("/users/register").send({
+    email: "authTesting@mail.com",
+    name: "test",
+    password: "salainen",
+  });
 
   const resTest = await request
     .post("/users/register")
@@ -146,13 +144,11 @@ describe("server", () => {
 
   //auth
   it("login with test account", async () => {
-    await request
-      .post("/users/login")
-      .send({
-        email: "authTesting@mail.com",
-        name: "test",
-        password: "salainen",
-      });
+    await request.post("/users/login").send({
+      email: "authTesting@mail.com",
+      name: "test",
+      password: "salainen",
+    });
   });
 
   it("try to get page without role", async () => {
@@ -181,7 +177,49 @@ describe("server", () => {
     expect(res.body.error).toEqual("missing role");
   });
 
+  it("try to delete page without role", async () => {
+    const res = await request
+      .delete("/pages/" + pageid)
+      .send({ projectid: projectid })
+      .expect(401);
+    expect(res.body.id);
+  });
+
   it("delete test account", async () => {
     await request.delete("/users/delete");
+  });
+
+  it("try to get page without logging in", async () => {
+    const res = await request
+      .get("/pages/" + pageid)
+      .send({ projectid: projectid })
+      .expect(401)
+      .expect("content-type", /json/);
+    expect(res.body.error);
+  });
+
+  it("try to create new page without logging in", async () => {
+    const res = await request
+      .post("/pages/")
+      .send({ name: "testpage", projectid: projectid })
+      .expect(401)
+      .expect("content-type", /json/);
+    expect(res.body.error);
+  });
+
+  it("try to update page without logging in", async () => {
+    const res = await request
+      .put("/pages/" + pageid)
+      .send({ name: "pagetestupdate", projectid: projectid })
+      .expect(401);
+    expect(res.body.error);
+  });
+
+  it("try to delete page without logging in", async () => {
+    const res = await request
+      .delete("/pages/" + pageid)
+      .send({ projectid: projectid })
+      .expect(401);
+    expect(res.body.id);
   });
 });
