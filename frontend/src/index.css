@@ -78,6 +78,12 @@
 
   .body-text-sm {
     font-family: "Noto Serif", serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  .body-text-xs {
+    font-family: "Noto Serif", serif;
     font-size: 0.75rem;
     font-weight: 400;
   }

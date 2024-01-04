@@ -8,6 +8,7 @@ export default {
             // Layout
             // Project
             'grayscale': {
+                0: 'rgba(255, 255, 255, 0)', // Transparent bg
                 100: 'rgba(255, 255, 255, 1)', // White bgs
                 200: 'rgba(245, 245, 245, 1)', // Page bg
                 300: 'rgba(205, 205, 205, 1)', // White div border
