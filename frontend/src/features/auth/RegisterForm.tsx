@@ -37,7 +37,7 @@ export const RegisterForm = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           placeholder="john.doe@mail.com"
           required
-          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-primary-200" />
+          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
 
         <label
           htmlFor="nameInput"
@@ -49,7 +49,7 @@ export const RegisterForm = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           placeholder="John Doe"
           required
-          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-primary-200"/>
+          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
 
         <label
           htmlFor="passwordInput"
@@ -60,17 +60,17 @@ export const RegisterForm = () => {
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           required
-          className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-primary-200"/>
+          className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
         <button
           onClick={() => setIsVisible(!isVisible)}
-          className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-primary-200 ">
+          className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
           {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
         </button>
 
-        <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-primary-200">Register</button>
+        <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
       </form>
       <p className="body-text-sm text-dark-font mt-3 mb-1 text-center">Already have an account?</p>
-      <Link to="/login" className="focus:outline-primary-200"><p className="body-text-md text-dark-font underline text-center">Login</p></Link>
+      <Link to="/login" className="focus:outline-dark-blue-50"><p className="body-text-md text-dark-font underline text-center">Login</p></Link>
     </section>
   );
 };

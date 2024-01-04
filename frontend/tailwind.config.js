@@ -17,6 +17,7 @@ export default {
 
             // Menu
             'dark-blue': {
+                50: 'rgba(142, 149, 164, 1)', // Focus outline
                 100: 'rgba(72, 79, 96, 1)', // Menu item border
                 200: 'rgba(52, 57, 68, 1)', // Menu item bg
                 300: 'rgba(42, 45, 52, 1)' // Menu bg
