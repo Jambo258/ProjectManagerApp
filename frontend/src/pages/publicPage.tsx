@@ -1,5 +1,11 @@
-export const publicPage = () => {
+import { Outlet } from "react-router-dom";
+import { NavBar } from "./components/NavBar";
+
+export const PublicPage = () => {
   return (
-    <div>publicPage</div>
+    <div className="w-screen min-h-screen bg-grayscale-200">
+      <NavBar />
+      <Outlet/>
+    </div>
   );
 };
