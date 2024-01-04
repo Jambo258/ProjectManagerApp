@@ -6,7 +6,7 @@ const createNewProject = async (name: string) => {
   const data = { name };
   const request = axios.post(baseURL + "projects/", data);
   const result = await request;
-  return result;
+  return result.data;
 };
 
 const newPage = async (name: string, projectid: number, content: object) => {

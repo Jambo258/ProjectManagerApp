@@ -31,11 +31,11 @@ const CreateProjectModal = () => {
     setIsOpen(false);
   };
 
-  const newProject = async () => {
+  const newProject = () => {
     const content = [{}];
-    await projectServices
-      .createNewProject(inputName)
-      .then(() => projectServices.newPage("new page", 666, content));
+    const createdProject = projectServices.createNewProject(inputName);
+    const createdPage = projectServices.newPage("new page", 6666, content);
+    console.log(createdProject, createdPage);
     closeModal();
   };
 
