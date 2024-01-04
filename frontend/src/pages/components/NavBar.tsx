@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 export const NavBar = () => {
   return (
-    <div className="w-screen h-fit bg-dark-blue-200 grid grid-flow-col items-center px-6 py-4 drop-shadow-md">
+    <div className="w-screen h-fit bg-dark-blue-300 grid grid-flow-col items-center px-6 py-4 drop-shadow-md">
 
       <div className="heading-lg text-light-font leading-tight outline-none focus:outline focus:outline-primary-200">
         <NavLink to="/">
