@@ -23,12 +23,11 @@ export async function createPage(
 export async function updatePage(
   id: number,
   name: string,
-  projectid: number,
   content: object
 ) {
   const page = await prisma.pages.update({
     where: { id: id },
-    data: { name: name, projectid: projectid, content: content },
+    data: { name: name, content: content },
   });
   return page;
 }
