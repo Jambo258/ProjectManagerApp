@@ -23,10 +23,6 @@ const CreateProjectModal = () => {
     setIsOpen(true);
   };
 
-  // const afterOpenModal = () => {
-  //   console.log("test");
-  // };
-
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -40,26 +36,34 @@ const CreateProjectModal = () => {
   };
 
   return (
-    <div>
-      <button onClick={openModal}>Open Modal</button>
-      <Modal
-        isOpen={modalIsOpen}
-        //onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Create new project modal"
-      >
-        <input
-          type="text"
-          defaultValue={"Project name"}
-          required={true}
-          onChange={(e) => setInputName(e.target.value)}
-        />
+    <>
+      <button className="" onClick={openModal}>
+        Open Modal
+      </button>
 
-        <button onClick={() => newProject}>Create new project</button>
-        <button onClick={closeModal}>close</button>
-      </Modal>
-    </div>
+      <div className="">
+        <Modal
+          className={""}
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+        >
+          <div>
+            <input
+              type="text"
+              defaultValue={"Project name"}
+              required={true}
+              onChange={(e) => setInputName(e.target.value)}
+            />
+          </div>
+
+          <button className="" onClick={() => newProject}>
+            Add project
+          </button>
+          <button onClick={closeModal}>Cancel</button>
+        </Modal>
+      </div>
+    </>
   );
 };
 
