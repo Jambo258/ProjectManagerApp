@@ -1,22 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import type { RootState } from "../../app/store";
+import type { User } from "../api/apiSlice";
+import { api } from "../api/apiSlice";
+
+import type { RootState } from "../../app/store";
 
 interface AuthState {
   status: "idle" | "loading" | "succeeded" | "failed";
-  userInfo: object, // This needs to be changed at a later date
-  error: null | string;
+  user: User | null,
+  error: string | null;
 }
 
 const initialState: AuthState = {
   status: "idle",
-  userInfo: {},
+  user: null,
   error: null,
 };
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {}
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      api.endpoints.registerUser.matchFulfilled,
+      (state, { payload }) => {
+        state.user = payload;
+      }
+    );
+    builder.addMatcher(
+      api.endpoints.loginUser.matchFulfilled,
+      (state, { payload }) => {
+        state.user = payload;
+      }
+    );
+  },
+
 });
 
 export default authSlice.reducer;
+
+export const selectCurrentUser = (state: RootState) => state.auth.user;
