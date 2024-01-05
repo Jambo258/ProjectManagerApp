@@ -1,38 +1,35 @@
 import React, {useState} from "react";
-import { Link, Form, ActionFunctionArgs } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { registerUserSchema } from "./authValidation";
 import { Eye, EyeOff } from "react-feather";
 import { useRegisterUserMutation } from "../api/apiSlice";
 
-const registerAction = async ({ request }: ActionFunctionArgs) => {
-  const data = await request.formData();
+// const registerAction = async ({ request }: ActionFunctionArgs) => {
+//   const data = await request.formData();
 
-  const submission = {
-    email: data.get("email"),
-    name: data.get("name"),
-    password: data.get("password")
-  };
-  console.log(submission);
+//   const submission = {
+//     email: data.get("email"),
+//     name: data.get("name"),
+//     password: data.get("password")
+//   };
+//   console.log(submission);
 
-  // const isValid = await registerUserSchema.isValid(submission);
-  // const emailIsValid = await registerUserSchema.isValid(submission.email);
-  // const nameIsValid = await registerUserSchema.isValid(submission.name);
-  const isValid = await registerUserSchema.validate(submission);
+//   // const isValid = await registerUserSchema.isValid(submission);
+//   // const emailIsValid = await registerUserSchema.isValid(submission.email);
+//   // const nameIsValid = await registerUserSchema.isValid(submission.name);
+//   const isValid = await registerUserSchema.validate(submission);
 
+//   console.log(isValid);
 
-
-
-  console.log(isValid);
-
-  return null;
-};
+//   return null;
+// };
 
 export const RegisterForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [registerUser, { isLoading, error }] = useRegisterUserMutation();
 
   const canSave = [email, name, password].every(Boolean) && !isLoading;
 
@@ -64,9 +61,8 @@ export const RegisterForm = () => {
       <h2 className="font-sans heading-xl text-dark-font uppercase leading-none w-fit mx-auto mb-6">
         Create <br /> your account
       </h2>
-      <Form
-        method="post"
-        action="/register">
+      <form
+        onSubmit={handleSubmit}>
 
         <label
           className="body-text-sm text-dark-font block mb-1">
@@ -114,7 +110,7 @@ export const RegisterForm = () => {
         </label>
 
         <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
-      </Form>
+      </form>
 
       <p className="body-text-sm text-dark-font mt-3 mb-1 text-center">Already have an account?</p>
       <Link to="/login" className="focus:outline-dark-blue-50">
@@ -125,4 +121,4 @@ export const RegisterForm = () => {
   );
 };
 
-RegisterForm.action = registerAction;
+// RegisterForm.action = registerAction;
