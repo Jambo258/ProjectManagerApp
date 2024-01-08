@@ -9,10 +9,14 @@ export const NavBar = () => {
           Management App
         </NavLink>
       </div>
-
       <div className="text-right pr-6">
+        <NavLink to="register">
+          <button className="btn-text-xs px-4 py-1.5 mr-2 outline-none focus:outline focus:outline-primary-200">
+            Register
+          </button>
+        </NavLink>
         <NavLink to="login">
-          <button className="btn-text-xs px-4 py-1.5  outline-none focus:outline focus:outline-primary-200">
+          <button className="btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-primary-200">
             Login
           </button>
         </NavLink>
