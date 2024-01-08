@@ -1,68 +1,55 @@
-import Modal from "react-modal";
 import { useState } from "react";
-import projectServices from "./projectServices";
-
-Modal.setAppElement("#root");
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
 
 const CreateProjectModal = () => {
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [inputName, setInputName] = useState("default");
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputName, setInputName] = useState("Give a project name!");
 
   const newProject = () => {
-    const content = [{}];
-    const createdProject = projectServices.createNewProject(inputName);
-    const createdPage = projectServices.newPage("new page", 6666, content);
-    console.log(createdProject, createdPage);
-    closeModal();
+    //add functionality to create a new project here
+    setModalIsOpen(false);
   };
 
   return (
     <>
-      <button className="" onClick={openModal}>
-        Open Modal
+      <button
+        className="btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-primary-200"
+        type="button"
+        onClick={() => setModalIsOpen(!modalIsOpen)}
+      >
+        show modal
       </button>
+      {modalIsOpen ? (
+        <div className="flex justify-center inset-0 z-50 items-center ">
+          <div className="relative w-[500px] h-[300px] my-6 mx-auto">
+            <div className="border-0 rounded-lg shadow-lg relative w-full h-full bg-white outline-none focus:outline-none">
+              <div className="flex flex-col px-4 ">
+                <h1 className="heading-xl py-6"> Create new project</h1>
+                <label className="heading-sm ">Project name </label>
+                <input
+                  type="text"
+                  value={inputName}
+                  onChange={(e) => setInputName(e.target.value)}
+                />
 
-      <div className="">
-        <Modal
-          className={""}
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-        >
-          <div>
-            <input
-              type="text"
-              defaultValue={"Project name"}
-              required={true}
-              onChange={(e) => setInputName(e.target.value)}
-            />
+                <div className="my-4 flex justify-between">
+                  <button
+                    className="btn-text-md bg-success-100 w-48"
+                    onClick={() => newProject()}
+                  >
+                    Add Project
+                  </button>
+                  <button
+                    className="btn-text-md w-18 bg-grayscale-300 w-48 "
+                    onClick={() => setModalIsOpen(false)}
+                  >
+                    cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <button className="" onClick={() => newProject}>
-            Add project
-          </button>
-          <button onClick={closeModal}>Cancel</button>
-        </Modal>
-      </div>
+        </div>
+      ) : null}
     </>
   );
 };
