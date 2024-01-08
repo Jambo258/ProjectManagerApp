@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 // Interfaces and example projects for mockup purposes
+// Remove when not needed anymore
 interface Page {
   id: number,
   name: string
