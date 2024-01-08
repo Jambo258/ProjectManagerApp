@@ -23,9 +23,9 @@ export const ProfileView = () => {
   return (
     <>
       <div className="grid grid-flow-row max-w-2xl m-auto gap-x-3 body-text-md">
-        <div className="text-5xl col-span-4 mt-4">Account settings</div>
+        <div className="heading-xl col-span-4 mt-4">Account settings</div>
         <div className="col-span-3 my-4">
-          <p className="font-semibold">Name</p>
+          <p className="font-semibold heading-xs">Name</p>
           <p className="">Beerit Käppänä</p>
         </div>
         <button
@@ -65,7 +65,7 @@ export const ProfileView = () => {
         )}
 
         <div className="col-span-3 my-4">
-          <p className="font-semibold">Email</p>
+          <p className="font-semibold heading-xs">Email</p>
           <p className="">beerit.kappana@mail.com</p>
         </div>
         <button
@@ -104,7 +104,7 @@ export const ProfileView = () => {
           </div>
         )}
         <div className="col-span-3 my-4">
-          <p className="font-semibold">Password</p>
+          <p className="font-semibold heading-xs">Password</p>
           <p className="">Set a permanent password to login to your account</p>
         </div>
         <button
@@ -143,7 +143,7 @@ export const ProfileView = () => {
           </div>
         )}
         <div className="col-span-3 my-4">
-          <p className="font-semibold">Delete Account</p>
+          <p className="font-semibold heading-xs">Delete Account</p>
           <p className="">
             Permanently delete the account and remove access to all projects
           </p>
