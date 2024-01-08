@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 WORKDIR /app
 
 RUN apk add --no-cache nodejs npm

@@ -1,19 +1,34 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
+import { useRegisterUserMutation } from "../api/apiSlice";
 
 export const RegisterForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const canSave = [email, name, password].every(Boolean) && !isLoading;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Name:", name);
     console.log("Password:", password);
 
+    if (canSave) {
+      try {
+        const user = await registerUser({ email, name, password }).unwrap();
+        console.log("user:", user);
+        setEmail("");
+        setName("");
+        setPassword("");
+      } catch (err) {
+        console.error("Failed to save the user: ", err);
+      }
+    }
     // To do
     // input validation
     // error handling / message
@@ -49,7 +64,7 @@ export const RegisterForm = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           placeholder="John Doe"
           required
-          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
 
         <label
           htmlFor="passwordInput"
@@ -60,11 +75,11 @@ export const RegisterForm = () => {
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           required
-          className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+          className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50" />
         <button
           onClick={() => setIsVisible(!isVisible)}
           className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
-          {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
+          {isVisible ? <Eye size={18} /> : <EyeOff size={18} />}
         </button>
 
         <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
