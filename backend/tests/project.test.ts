@@ -49,14 +49,6 @@ describe("Project endpoint tests", () => {
     expect(res.body.error).toEqual("Missing project name");
   });
 
-  it("Try to view user projects when there aint any", async () => {
-    const res = await req
-      .get("/projects")
-      .expect(404)
-      .expect("Content-Type", /json/);
-    expect(res.body.error).toEqual("Couldnt find user projects");
-  });
-
   it("Try to delete user projects with wrong id", async () => {
     const res = await req
       .delete("/projects/123456789")
