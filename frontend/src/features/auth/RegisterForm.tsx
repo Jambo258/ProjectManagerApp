@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
-import { registerUserSchema } from "./authValidation";
+// import { registerUserSchema } from "./authValidation";
 import { Eye, EyeOff } from "react-feather";
 import { useRegisterUserMutation } from "../api/apiSlice";
 
@@ -25,11 +25,19 @@ import { useRegisterUserMutation } from "../api/apiSlice";
 // };
 
 export const RegisterForm = () => {
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [registerUser, { isLoading, error }] = useRegisterUserMutation();
+
+  const [emailError, setEmailError] = useState<null | string>("null");
+  const [nameError, setNameError] = useState<null | string>(null);
+  const [passwordError, setPasswordError] = useState<null | string>(null);
+
+
+  // Validate inputs
+
 
   const canSave = [email, name, password].every(Boolean) && !isLoading;
 
@@ -65,7 +73,7 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit}>
 
         <label
-          className="body-text-sm text-dark-font block mb-1">
+          className="body-text-sm text-dark-font block mb-3">
             Email:
           <input
             name="email"
@@ -74,11 +82,12 @@ export const RegisterForm = () => {
             value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             required
-            className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
+            className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
+          {emailError ? <p className="text-center body-text-xs text-caution-200">{emailError}</p> : <></>}
         </label>
 
         <label
-          className="body-text-sm text-dark-font block mb-1">
+          className="body-text-sm text-dark-font block mb-3">
             Full name:
           <input
             name="name"
@@ -87,26 +96,28 @@ export const RegisterForm = () => {
             value={name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             required
-            className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+            className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+          {nameError ? <p className="text-center body-text-xs text-caution-200">{nameError}</p> : <></>}
         </label>
 
         <label
-          className="body-text-sm text-dark-font block mb-1">
+          className="body-text-sm text-dark-font mb-8 block">
             Password:
-          <section className="mx-auto relative">
+          <section className="mx-auto mt-1 relative">
             <input
               name="password"
               type={isVisible ? "text" : "password"}
               value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               required
-              className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+              className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
             <button
               onClick={() => setIsVisible(!isVisible)}
               className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
               {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
             </button>
           </section>
+          {passwordError ? <p className="text-center body-text-xs text-caution-200">{passwordError}</p> : <></>}
         </label>
 
         <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
