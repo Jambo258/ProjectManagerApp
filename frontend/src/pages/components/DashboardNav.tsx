@@ -125,7 +125,7 @@ const ProjectNavItem = ({project}: ProjectNavItemProps) => {
       <div
         className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 heading-sm px-6 py-3  overflow-auto">
         
-        <Link to={project.id.toString()}>
+        <Link to={"/"}>
           <button onClick={() => console.log("Open " + project.name)} 
             className="float-left w-5/6 leading-8 m-0 p-0 text-left bg-grayscale-0 hover:bg-grayscale-0 text-light-font">
             {project.name}
@@ -142,7 +142,7 @@ const ProjectNavItem = ({project}: ProjectNavItemProps) => {
             
       {showPages && (
         project.pages.map(page => (
-          <Link key={page.id} to={project.id.toString() + "/" + page.id.toString()}>
+          <Link key={page.id} to={"/"}>
             <button 
               onClick={() => console.log("Open " + page.name)}
               className="border-b border-solid border-dark-blue-100 body-text-md heading-sm px-6 py-3 
