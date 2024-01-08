@@ -22,7 +22,7 @@ server.use(
   })
 );
 
-server.use(cors());
+server.use(cors({ credentials: true, origin: true }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(requestLog);
