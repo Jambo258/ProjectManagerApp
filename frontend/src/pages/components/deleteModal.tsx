@@ -24,7 +24,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
       >
         <div className="flex justify-end">
           <button
-            className="w-12 bg-grayscale-0 px-2 py-2"
+            className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
             onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
           >
             x

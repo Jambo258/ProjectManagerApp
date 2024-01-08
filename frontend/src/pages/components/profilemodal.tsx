@@ -15,20 +15,26 @@ export const ProfileModal = () => {
       </button>
       {showModal ? (
         <>
-          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                <div className="flex justify-end">
-                  <button
-                    className="w-12 bg-grayscale-0 px-2 py-2"
-                    onClick={() => setShowModal(false)}
-                  >
-                    x
-                  </button>
-                </div>
-                <div className="relative p-6 flex-auto">
-                  <ProfileView></ProfileView>
-                </div>
+          <div
+            className={`flex justify-center items-center fixed inset-0 transition-colors ${
+              showModal ? "visible bg-dark-blue-100/20" : "invisible"
+            }`}
+          >
+            <div
+              className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
+                showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
+              }`}
+            >
+              <div className="flex justify-end">
+                <button
+                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
+                  onClick={() => setShowModal(false)}
+                >
+                  x
+                </button>
+              </div>
+              <div className="relative p-6 flex-auto">
+                <ProfileView></ProfileView>
               </div>
             </div>
           </div>
@@ -37,4 +43,5 @@ export const ProfileModal = () => {
     </>
   );
 };
+
 
