@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useGetProjectQuery, useAddNewPageMutation } from "../api/apiSlice";
 
 const AddPage = (projectid: number) => {
   const [getProject] = useGetProjectQuery();
   const [addNewPage] = useAddNewPageMutation();
+
+  const [pageName, setPageName] = useState("name");
 
   // check if project id exists in database
 
@@ -16,7 +19,7 @@ const AddPage = (projectid: number) => {
 
   // apislice addNewPage query tarttee päivittää sisältämään project id
   const createNewpage = async () => {
-    const page = await addNewPage({ name, projectid }).unwrap();
+    const page = await addNewPage({ projectid, pageName }).unwrap();
   };
 
   // create a page with project id
