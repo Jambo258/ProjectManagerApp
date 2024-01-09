@@ -23,6 +23,12 @@ const CreateProjectModal = () => {
           <div className="relative w-[500px] h-[300px] my-6 mx-auto">
             <div className="border-0 rounded-lg shadow-lg relative w-full h-full bg-white outline-none focus:outline-none">
               <div className="flex flex-col px-4 ">
+                <button
+                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
+                  onClick={() => setModalIsOpen(false)}
+                >
+                  x
+                </button>
                 <h1 className="heading-xl py-6"> Create new project</h1>
                 <label className="heading-sm ">Project name </label>
                 <input
