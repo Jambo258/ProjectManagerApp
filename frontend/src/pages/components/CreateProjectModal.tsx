@@ -16,20 +16,33 @@ const CreateProjectModal = () => {
         type="button"
         onClick={() => setModalIsOpen(!modalIsOpen)}
       >
-        show modal
+        Create new project
       </button>
       {modalIsOpen ? (
-        <div className="flex justify-center inset-0 z-50 items-center ">
+        <div
+          onClick={() => setModalIsOpen(!modalIsOpen)}
+          className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
+            modalIsOpen ? "visible bg-dark-blue-100/20" : "invisible"
+          }`}
+        >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto">
-            <div className="border-0 rounded-lg shadow-lg relative w-full h-full bg-white outline-none focus:outline-none">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
+                modalIsOpen ? "scale-100 opacity-100" : "scale-110 opacity-0"
+              }`}
+            >
               <div className="flex flex-col px-4 ">
-                <button
-                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
-                  onClick={() => setModalIsOpen(false)}
-                >
-                  x
-                </button>
-                <h1 className="heading-xl py-6"> Create new project</h1>
+                <div className="flex justify-end">
+                  <button
+                    className="flex justify-end w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
+                    onClick={() => setModalIsOpen(false)}
+                  >
+                    x
+                  </button>
+                </div>
+
+                <h1 className="heading-xl pb-4"> Create new project</h1>
                 <label className="heading-sm ">Project name </label>
                 <input
                   type="text"
