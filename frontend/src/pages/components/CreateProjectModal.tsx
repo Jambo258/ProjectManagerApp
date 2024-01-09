@@ -8,7 +8,8 @@ const CreateProjectModal = () => {
 
   const newProject = async () => {
     try {
-      const project = await addNewProject(inputName);
+      const project = await addNewProject(inputName).unwrap();
+
       if (project) closeModal();
     } catch (err) {
       console.error("failed to create project", err);
