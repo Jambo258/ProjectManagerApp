@@ -1,22 +1,89 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import {useState} from "react";
+
+// Redux Toolkit
+import { useLoginUserMutation } from "../api/apiSlice";
+
+// React Router
+import { Link, useNavigate } from "react-router-dom";
+
+// Hook Form and Yup
+import { FieldErrors, useForm } from "react-hook-form";
+import { loginUserSchema } from "./authValidation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { DevTool } from "@hookform/devtools";
+
+// Components
 import { Eye, EyeOff } from "react-feather";
 
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
 export const LoginForm = () => {
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const {
+    control,
+    formState: {dirtyFields, isSubmitting, isSubmitSuccessful, errors},
+    handleSubmit,
+    register,
+    reset
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(loginUserSchema),
+  });
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState<null | string>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const canSubmit = dirtyFields && !isLoading;
 
-    // To do
-    // input validation
-    // error handling / message
-    // if login is successfull redirect user to the "user's homepage"
+  const onHandleSubmit = async (formData: LoginFormValues) => {
+    if (canSubmit) {
+      try {
+        const user = await loginUser({ ...formData }).unwrap();
+        console.log("Login form submitted");
+        console.log("User:", user);
+      } catch (err) {
+        onError;
+        console.error("Failed to save the user", err);
+        // TO DO: Refactor this
+        if ((
+          err &&
+          typeof err === "object" &&
+          "data" in err &&
+          err.data &&
+          typeof err.data === "object"
+        )) {
+          const errorMessage = Object.values(err.data);
+          setFormError(errorMessage.toString());
+        }
+      } finally {
+        if (isSubmitSuccessful) {
+          reset();
+          setFormError(null);
+          // TO DO: Fix path to user home page
+          navigate("/");
+        }
+      }
+    }
   };
+
+  const onError = (errors: FieldErrors<LoginFormValues>) => {
+    console.log("Form field errors:", errors);
+  };
+
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset();
+  //     setFormError(null);
+  //     // TO DO: Fix path to user home page
+  //     navigate("/");
+  //   }
+  // }, [isSubmitSuccessful, reset]);
 
   return (
     <section className="w-fit mt-14 mx-auto">
@@ -25,40 +92,43 @@ export const LoginForm = () => {
         Login to <br /> your account
       </h2>
       <form
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
 
         <label
-          htmlFor="emailInput"
-          className="body-text-sm text-dark-font block mb-1">Email:</label>
-        <input
-          id="emailInput"
-          type="text"
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-          placeholder="john.doe@mail.com"
-          required
-          className="body-text-md py-1.5 px-4 mb-3 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
-
-        <label
-          htmlFor="passwordInput"
-          className="body-text-sm text-dark-font block mb-1">Password:</label>
-        <section className="mx-auto relative">
+          className="body-text-sm text-dark-font block mb-3">
+            Email:
           <input
-            id="passwordInput"
-            type={isVisible ? "text" : "password"}
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            required
-            className="body-text-md py-1.5 px-4 mb-8 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
-          <button
-            onClick={() => setIsVisible(!isVisible)}
-            className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
-            {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
-          </button>
-        </section>
+            type="text"
+            {...register("email")}
+            placeholder="e.g. john.doe@mail.com"
+            className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
+          <p className="text-center body-text-xs text-caution-200 mt-1">{errors.email?.message}</p>
+        </label>
 
-        <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Login</button>
+        <label
+          className="body-text-sm text-dark-font block mb-8">
+            Password:
+          <section className="mx-auto mt-1 relative">
+            <input
+              type={isVisible ? "text" : "password"}
+              {...register("password")}
+              className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
+            <button
+              type="button"
+              onClick={() => setIsVisible(!isVisible)}
+              className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
+              {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
+            </button>
+          </section>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{errors.password?.message}</p>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{formError}</p>
+        </label>
+
+        <button type="submit" disabled={isSubmitting} className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Login</button>
       </form>
+
+      {/* For development only */}
+      <DevTool control={control}/>
 
       <Link to="/register" className="focus:outline-dark-blue-50">
         <p className="body-text-md text-dark-font underline text-center mt-3">Create account</p>
