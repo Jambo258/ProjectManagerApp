@@ -33,6 +33,27 @@ const authSlice = createSlice({
         state.user = payload;
       }
     );
+    builder.addMatcher(
+      api.endpoints.updateUser.matchFulfilled,
+      (state, { payload }) => {
+        if (state.user) {
+          state.user.name = payload.name;
+          state.user.email = payload.email;
+        }
+      }
+    );
+    builder.addMatcher(
+      api.endpoints.logout.matchFulfilled,
+      (state) => {
+        state.user = null;
+      }
+    );
+    builder.addMatcher(
+      api.endpoints.deleteUser.matchFulfilled,
+      (state) => {
+        state.user = null;
+      }
+    );
   },
 
 });

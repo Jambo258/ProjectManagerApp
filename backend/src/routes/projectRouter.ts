@@ -36,9 +36,6 @@ projectsRouter.get("/", async (req, res, next) => {
     const userId = req.session.userId!;
 
     const usersProjects = await getAllProjectsByUserId(userId);
-    if (usersProjects.length === 0) {
-      return res.status(404).json({ error: "Couldnt find user projects" });
-    }
 
     res.json(usersProjects);
   } catch (error) {
