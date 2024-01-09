@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "react-feather";
+import { Plus, X } from "react-feather";
 
 const CreateProjectModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -38,10 +38,10 @@ const CreateProjectModal = () => {
               <div className="flex flex-col px-4 ">
                 <div className="flex justify-end">
                   <button
-                    className="flex justify-end w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
+                    className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
                     onClick={() => closeModal()}
-                  >
-                    x
+                  >                  
+                    <X size={20} />
                   </button>
                 </div>
 

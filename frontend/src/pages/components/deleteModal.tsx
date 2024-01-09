@@ -1,4 +1,5 @@
 import * as React from "react";
+import { X } from "react-feather";
 interface propTypes {
   confirmDeleteEdit: boolean;
   setConfirmDeleteEdit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,14 +24,12 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-end">
-          <button
-            className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
-            onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
-          >
-            x
-          </button>
-        </div>
+        <button
+          className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
+          onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
+        >                  
+          <X size={20} />
+        </button>
 
         <div className="px-8">
           <p>{deleteModalText}</p>

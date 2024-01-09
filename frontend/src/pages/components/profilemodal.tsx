@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ProfileView } from "../views/profileView";
+import { X } from "react-feather";
 
 export const ProfileModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,10 +30,10 @@ export const ProfileModal = () => {
             >
               <div className="flex justify-end">
                 <button
-                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0 "
+                  className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
                   onClick={() => closeModal()}
-                >
-                  x
+                >                  
+                  <X size={20} />
                 </button>
               </div>
               <div className="relative px-6 pb-2 flex-auto">
