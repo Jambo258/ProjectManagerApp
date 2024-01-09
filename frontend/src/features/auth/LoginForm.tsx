@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 // Redux Toolkit
 import { useLoginUserMutation } from "../api/apiSlice";
@@ -24,7 +24,7 @@ export const LoginForm = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const {
     control,
-    formState: {dirtyFields, isSubmitting, isSubmitSuccessful, errors},
+    formState: {isDirty, isSubmitting, isSubmitSuccessful, errors},
     handleSubmit,
     register,
     reset
@@ -39,7 +39,7 @@ export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<null | string>(null);
 
-  const canSubmit = dirtyFields && !isLoading;
+  const canSubmit = isDirty && !isLoading;
 
   const onHandleSubmit = async (formData: LoginFormValues) => {
     if (canSubmit) {
@@ -47,26 +47,25 @@ export const LoginForm = () => {
         const user = await loginUser({ ...formData }).unwrap();
         console.log("Login form submitted");
         console.log("User:", user);
-      } catch (err) {
-        onError;
-        console.error("Failed to save the user", err);
-        // TO DO: Refactor this
-        if ((
-          err &&
-          typeof err === "object" &&
-          "data" in err &&
-          err.data &&
-          typeof err.data === "object"
-        )) {
-          const errorMessage = Object.values(err.data);
-          setFormError(errorMessage.toString());
-        }
-      } finally {
         if (isSubmitSuccessful) {
           reset();
           setFormError(null);
           // TO DO: Fix path to user home page
           navigate("/");
+        }
+      } catch (err) {
+        onError;
+        console.error("Failed to save the user", err);
+        // TO DO: Refactor this
+        if (
+          err &&
+          typeof err === "object" &&
+          "data" in err &&
+          err.data &&
+          typeof err.data === "object"
+        ) {
+          const errorMessage = Object.values(err.data);
+          setFormError(errorMessage.toString());
         }
       }
     }
@@ -75,15 +74,6 @@ export const LoginForm = () => {
   const onError = (errors: FieldErrors<LoginFormValues>) => {
     console.log("Form field errors:", errors);
   };
-
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset();
-  //     setFormError(null);
-  //     // TO DO: Fix path to user home page
-  //     navigate("/");
-  //   }
-  // }, [isSubmitSuccessful, reset]);
 
   return (
     <section className="w-fit mt-14 mx-auto">
