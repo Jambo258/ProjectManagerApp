@@ -29,14 +29,14 @@ const CreateProjectModal = () => {
 
   return (
     <>
-      <button className="rounded-full p-1.5 heading-md" onClick={() => setModalIsOpen(true)}>
+      <button className="rounded-full p-1.5 heading-md" onClick={() => openModal()}>
         <Plus size={16} />
       </button>
       {showModal ? (
         <div
           onClick={() => closeModal()}
           className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
-            showModal ? "visible bg-dark-blue-100/20" : "invisible"
+            showModal ? "visible bg-dark-blue-100/40" : "invisible"
           }`}
         >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
