@@ -24,12 +24,12 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-right">
+        <div className="flex justify-end">
           <button
-            className="bg-grayscale-0 p-2 hover:bg-grayscale-0"
+            className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0 text-right"
             onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
           >
-            <X size={20} />
+            x
           </button>
         </div>
 
