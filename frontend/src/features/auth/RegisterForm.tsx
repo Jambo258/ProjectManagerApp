@@ -27,7 +27,7 @@ export const RegisterForm = () => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const {
     control,
-    formState: {dirtyFields, isSubmitting, isSubmitSuccessful, errors},
+    formState: {isDirty, isSubmitting, isSubmitSuccessful, errors},
     handleSubmit,
     register,
     reset
@@ -45,7 +45,7 @@ export const RegisterForm = () => {
   const [showPasswordConf, setShowPasswordConf] = useState(false);
   const [formError, setFormError] = useState<null | string>(null);
 
-  const canSave = dirtyFields && !isLoading;
+  const canSave = isDirty && !isLoading;
 
   const onHandleSubmit = async (formData: RegisterFormValues) => {
     if (canSave) {
@@ -57,6 +57,12 @@ export const RegisterForm = () => {
         }).unwrap();
         console.log("Register form submitted");
         console.log("User:", user);
+        if (isSubmitSuccessful) {
+          reset();
+          setFormError(null);
+          // TO DO: Fix path to user home page
+          navigate("/");
+        }
       } catch (err) {
         onError;
         console.error("Failed to save the user", err);
@@ -71,14 +77,6 @@ export const RegisterForm = () => {
           const errorMessage = Object.values(err.data);
           setFormError(errorMessage.toString());
         }
-      } finally {
-        if (isSubmitSuccessful) {
-          reset();
-          setFormError(null);
-          // Log user in and redirect to the users front page
-          // TO DO: Fix path to user home page
-          navigate("/");
-        }
       }
     }
   };
@@ -86,12 +84,6 @@ export const RegisterForm = () => {
   const onError = (errors: FieldErrors<RegisterFormValues>) => {
     console.log("Form field errors:", errors);
   };
-
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset();
-  //   }
-  // }, [isSubmitSuccessful, reset]);
 
   return (
     <section className="w-fit mt-14 mx-auto">
@@ -139,7 +131,6 @@ export const RegisterForm = () => {
             </button>
           </section>
           <p className="text-center body-text-xs text-caution-200 mt-1">{errors.password?.message}</p>
-          <p className="text-center body-text-xs text-caution-200 mt-1">{formError}</p>
         </label>
 
         <label
