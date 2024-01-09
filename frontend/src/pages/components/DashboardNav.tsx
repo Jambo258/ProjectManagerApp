@@ -59,7 +59,7 @@ export const DashboardNav = () => {
 
         {collapseNav
           ?
-          <>
+          <section>
             <h4 className="px-6 mb-6 heading-md">
               Project <br /> Management App
             </h4>
@@ -80,7 +80,7 @@ export const DashboardNav = () => {
                 <ProjectNavItem project={project} />
               </div>
             )}
-          </>
+          </section>
 
           : null}
       </div>

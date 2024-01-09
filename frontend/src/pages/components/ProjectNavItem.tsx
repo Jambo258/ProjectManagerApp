@@ -22,7 +22,7 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
   const [showPages, setShowPages] = useState<boolean>(false);
 
   return (
-    <>
+    <section>
       <div
         className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 heading-sm px-6 py-3 overflow-auto flex justify-between">
 
@@ -52,7 +52,7 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
         ))
       )
         : null}
-    </>
+    </section>
 
   );
 };
