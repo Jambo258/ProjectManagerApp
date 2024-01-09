@@ -24,7 +24,7 @@ export const LoginForm = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const {
     control,
-    formState: {isDirty, isSubmitting, isSubmitSuccessful, errors},
+    formState: {isDirty, isSubmitting, errors},
     handleSubmit,
     register,
     reset
@@ -47,12 +47,10 @@ export const LoginForm = () => {
         const user = await loginUser({ ...formData }).unwrap();
         console.log("Login form submitted");
         console.log("User:", user);
-        if (isSubmitSuccessful) {
-          reset();
-          setFormError(null);
-          // TO DO: Fix path to user home page
-          navigate("/");
-        }
+        reset();
+        setFormError(null);
+        // TO DO: Fix path to user home page
+        navigate("/");
       } catch (err) {
         onError;
         console.error("Failed to save the user", err);
@@ -88,9 +86,10 @@ export const LoginForm = () => {
           className="body-text-sm text-dark-font block mb-3">
             Email:
           <input
-            type="text"
+            type="email"
             {...register("email")}
             placeholder="e.g. john.doe@mail.com"
+            autoComplete="username"
             className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
           <p className="text-center body-text-xs text-caution-200 mt-1">{errors.email?.message}</p>
         </label>
@@ -102,6 +101,7 @@ export const LoginForm = () => {
             <input
               type={showPassword ? "text" : "password"}
               {...register("password")}
+              autoComplete="current-password"
               className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
             <button
               type="button"
