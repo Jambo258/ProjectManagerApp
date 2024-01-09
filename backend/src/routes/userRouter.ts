@@ -73,6 +73,7 @@ usersRouter.post("/login", async (req, res, next) => {
 
 usersRouter.get("/logout", (req, res, next) => {
   req.session.destroy((err) => {
+    res.clearCookie("connect.sid", { path: "/" });
     if (err) next(err);
     return res.status(204).end();
   });
@@ -135,8 +136,12 @@ usersRouter.delete("/delete", authenticate, async (req, res, next) => {
       return res.status(404).json({ error: "User not found" });
     }
     const deletedUser = await deleteUser(id);
-    return res.status(200).json(deletedUser);
-  } catch (err) {
+    req.session.destroy((err) => {
+      res.clearCookie("connect.sid", { path: "/" });
+      if (err) next(err);
+      return res.status(200).json(deletedUser);
+    });
+  }  catch (err) {
     next(err);
   }
 });

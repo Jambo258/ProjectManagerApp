@@ -83,6 +83,7 @@ export const api = createApi({
         method: "POST",
         body: newUser,
       }),
+      invalidatesTags: ["Projects", "Pages"],
     }),
     loginUser: builder.mutation<User, LoginRequest>({
       query: user => ({
@@ -90,6 +91,7 @@ export const api = createApi({
         method: "POST",
         body: user,
       }),
+      invalidatesTags: ["Projects", "Pages"],
     }),
     updateUser: builder.mutation<User, UpdateUserRequest>({
       query: user => ({
@@ -102,13 +104,15 @@ export const api = createApi({
       query: () => ({
         url: "/users/logout",
         method: "GET",
-      })
+      }),
+      invalidatesTags: ["Projects", "Pages"],
     }),
     deleteUser: builder.mutation<User, void>({
       query: () => ({
         url: "/users/delete",
         method: "DELETE",
-      })
+      }),
+      invalidatesTags: ["Projects", "Pages"],
     }),
     getProjects: builder.query<Project[], void>({
       query: () => "/projects",
