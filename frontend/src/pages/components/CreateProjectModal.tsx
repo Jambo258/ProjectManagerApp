@@ -4,15 +4,14 @@ import { useAddNewProjectMutation } from "../../features/api/apiSlice";
 const CreateProjectModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [inputName, setInputName] = useState("");
-  const [addNewProject, { isSuccess }] = useAddNewProjectMutation();
+  const [addNewProject] = useAddNewProjectMutation();
 
   const newProject = async () => {
     try {
       const project = await addNewProject(inputName);
-      console.log(project);
-      if (isSuccess) closeModal();
-    } catch (error) {
-      console.log(error);
+      if (project) closeModal();
+    } catch (err) {
+      console.error("failed to create project", err);
     }
   };
 
