@@ -2,11 +2,16 @@ import { useState } from "react";
 
 const CreateProjectModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [inputName, setInputName] = useState("Give a project name!");
+  const [inputName, setInputName] = useState("");
 
   const newProject = () => {
     //add functionality to create a new project here
     setModalIsOpen(false);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setInputName("");
   };
 
   return (
@@ -14,13 +19,13 @@ const CreateProjectModal = () => {
       <button
         className="btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-primary-200"
         type="button"
-        onClick={() => setModalIsOpen(!modalIsOpen)}
+        onClick={() => setModalIsOpen(true)}
       >
         Create new project
       </button>
       {modalIsOpen ? (
         <div
-          onClick={() => setModalIsOpen(!modalIsOpen)}
+          onClick={() => closeModal()}
           className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
             modalIsOpen ? "visible bg-dark-blue-100/20" : "invisible"
           }`}
@@ -36,7 +41,7 @@ const CreateProjectModal = () => {
                 <div className="flex justify-end">
                   <button
                     className="flex justify-end w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
-                    onClick={() => setModalIsOpen(false)}
+                    onClick={() => closeModal()}
                   >
                     x
                   </button>
@@ -46,20 +51,21 @@ const CreateProjectModal = () => {
                 <label className="heading-sm ">Project name </label>
                 <input
                   type="text"
+                  placeholder="Give a project name!"
                   value={inputName}
                   onChange={(e) => setInputName(e.target.value)}
                 />
 
                 <div className="my-4 flex justify-between">
                   <button
-                    className="btn-text-md bg-success-100 w-48"
+                    className="btn-text-md bg-success-100 w-48 hover:bg-success-200"
                     onClick={() => newProject()}
                   >
                     Add Project
                   </button>
                   <button
-                    className="btn-text-md w-18 bg-grayscale-300 w-48 "
-                    onClick={() => setModalIsOpen(false)}
+                    className="btn-text-md  w-48 "
+                    onClick={() => closeModal()}
                   >
                     cancel
                   </button>
