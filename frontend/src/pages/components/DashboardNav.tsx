@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "react-feather";
 
 // Interfaces and example projects for mockup purposes
 // Remove when not needed anymore
@@ -62,13 +63,12 @@ export const DashboardNav = () => {
   const [collapse, setCollapse] = useState<boolean>(true);
  
   return (
-    <div className={`bg-dark-blue-300 min-h-screen text-light-font ${collapse ? "w-72" : "w-12"}`}>
-
+    <nav className={`bg-dark-blue-300 min-h-screen text-light-font ${collapse ? "w-72" : "w-12"}`}>
       <div className="min-h-[calc(100vh-4rem)]">
         <div className="mb-8 grid grid-flow-col justify-end">
           <button className="w-fit text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 p-4 heading-md" 
             onClick={() => setCollapse(!collapse)}>
-            {collapse ? "<" : ">"}
+            {collapse ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
         </div>
 
@@ -113,7 +113,7 @@ export const DashboardNav = () => {
         </div>
       )}
 
-    </div>
+    </nav>
   );
 };
 
@@ -123,19 +123,18 @@ const ProjectNavItem = ({project}: ProjectNavItemProps) => {
   return (
     <>
       <div
-        className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 heading-sm px-6 py-3  overflow-auto">
+        className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 heading-sm px-6 py-3 overflow-auto flex justify-between">
         
         <Link to={"/"}>
           <button onClick={() => console.log("Open " + project.name)} 
-            className="float-left w-5/6 leading-8 m-0 p-0 text-left bg-grayscale-0 hover:bg-grayscale-0 text-light-font">
+            className="leading-8 m-0 p-0 text-left bg-grayscale-0 hover:bg-grayscale-0 text-light-font">
             {project.name}
           </button>
         </Link>
 
-        <button className="font-light heading-xs m-0 p-0 bg-grayscale-0 hover:bg-grayscale-0 text-light-font hover:text-primary-200 
-        w-1/6 float-left leading-8"
-        onClick={() => setShowPages(!showPages)}>
-          <p className={showPages ? "rotate-180" : "rotate-0"}>V</p>
+        <button className="font-light heading-xs m-0 p-0 bg-grayscale-0 hover:bg-grayscale-0 text-light-font hover:text-primary-200"
+          onClick={() => setShowPages(!showPages)}>
+          {showPages ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
         </button>
 
       </div>
