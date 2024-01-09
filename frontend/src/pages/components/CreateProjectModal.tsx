@@ -50,7 +50,7 @@ const CreateProjectModal = () => {
                 <button
                   className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
                   onClick={() => closeModal()}
-                >                  
+                >
                   <X size={20} />
                 </button>
               </div>

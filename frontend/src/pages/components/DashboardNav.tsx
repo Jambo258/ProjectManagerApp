@@ -48,12 +48,12 @@ const exampleProjects = [
 
 export const DashboardNav = () => {
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
- 
+
   return (
     <nav className={`bg-dark-blue-300 min-h-screen text-light-font ${collapseNav ? "w-72" : "w-12"}`}>
       <div className="min-h-[calc(100vh-4rem)] h-[calc(100%-4rem)]">
         <div className="grid grid-flow-col justify-end">
-          <button className="w-fit text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 p-4 heading-md" 
+          <button className="w-fit text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 p-4 heading-md"
             onClick={() => setcollapseNav(!collapseNav)}>
             {collapseNav ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
@@ -84,12 +84,12 @@ export const DashboardNav = () => {
           : null}
       </div>
 
-      {collapseNav 
+      {collapseNav
         ? <section className="px-4 py-2 grid grid-flow-col items-center bg-dark-blue-100 w-full h-16">
           <ProfileModal />
-         
+
           <div>
-            <button className="bg-grayscale-0 heading-xs text-light-font hover:text-primary-200 w-fit p-2 float-right 
+            <button className="bg-grayscale-0 heading-xs text-light-font hover:text-primary-200 w-fit p-2 float-right
               hover:bg-grayscale-0 " onClick={() => console.log("Log out")}>
               <p>Log out</p>
             </button>

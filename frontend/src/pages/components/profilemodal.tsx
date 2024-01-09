@@ -11,7 +11,7 @@ export const ProfileModal = () => {
 
   return (
     <>
-      <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8" 
+      <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
         onClick={() => setShowModal(!showModal)}>
             A
       </button>
@@ -32,7 +32,7 @@ export const ProfileModal = () => {
                 <button
                   className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
                   onClick={() => closeModal()}
-                >                  
+                >
                   <X size={20} />
                 </button>
               </div>

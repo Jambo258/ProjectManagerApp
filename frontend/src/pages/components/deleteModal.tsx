@@ -28,7 +28,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
           <button
             className="bg-grayscale-0 p-2 hover:bg-grayscale-0"
             onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
-          >                  
+          >
             <X size={20} />
           </button>
         </div>
