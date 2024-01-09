@@ -1,31 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MoreVertical, Plus } from "react-feather";
 
 const project = {
-  id: 1,
+  id: 2,
   name: "Group Project",
   pages: [
     {
-      id: 11,
-      name: "To Do"
+      id: 21,
+      name: "Task Board"
     },
     {
-      id: 12,
-      name: "Notes"
+      id: 22,
+      name: "To do"
+    }
+    ,
+    {
+      id: 23,
+      name: "Notepad"
     }
   ]
 };
 
 export const ProjectHeader = () => {
   return (
-    <div className="border-b-2 border-solid border-grayscale-300 p-6 relative overflow-x-hidden">
+    <div className="border-b border-solid border-grayscale-300 p-6 relative overflow-x-hidden bg-grayscale-100">
       <p className="heading-xl mb-2">{project.name}</p>
 
       <div className="flex flex-wrap gap-x-2 gap-y-2 body-text-md">
         {project.pages.length > 0 && project.pages.map(page => (
-          <Link to="/" key={page.id} className={`mx-1 + ${({ isActive }) => isActive ? "underline" : ""}`}>
+          <NavLink to="/" key={page.id} 
+            className={({ isActive }) => (isActive ? "underline mr-4" : "mr-4")}>
             {page.name}
-          </Link>
+          </NavLink>
         ))}
         <button className="rounded-full p-1.5 heading-md" onClick={() => console.log("Add new page")}>
           <Plus size={16} />

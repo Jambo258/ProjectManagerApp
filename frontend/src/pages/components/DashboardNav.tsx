@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Plus } from "react-feather";
+import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
+import { ProfileModal } from "./profilemodal";
+import CreateProjectModal from "./CreateProjectModal";
 
 // example project for mockup purposes
 
@@ -69,9 +71,7 @@ export const DashboardNav = () => {
                 My projects
               </div>
               <div className="text-right">
-                <button className="rounded-full p-1.5 heading-md" onClick={() => console.log("Add new page")}>
-                  <Plus size={16} />
-                </button>
+                <CreateProjectModal />
               </div>
             </div>
 
@@ -87,11 +87,10 @@ export const DashboardNav = () => {
 
       {collapseNav 
         ? 
+        
         <div className="px-4 py-2 grid grid-flow-col items-center bg-dark-blue-100 w-full h-16">
-          <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8 " 
-            onClick={() => console.log("Open user settings")}>
-            A
-          </button>
+          <ProfileModal />
+         
           <div>
             <button className="bg-grayscale-0 heading-xs text-light-font hover:text-primary-200 w-fit p-2 float-right 
               hover:bg-grayscale-0 " onClick={() => console.log("Log out")}>

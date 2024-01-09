@@ -14,13 +14,14 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
   return (
     <div
       className={`flex justify-center items-center fixed inset-0 transition-colors ${
-        confirmDeleteEdit ? "visible bg-dark-blue-100/20" : "invisible"
-      }`}
+        confirmDeleteEdit ? "visible bg-dark-blue-100/20" : "invisible"}`}
+      onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
     >
       <div
         className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
           confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"
         }`}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-end">
           <button

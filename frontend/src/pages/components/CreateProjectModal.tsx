@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Plus } from "react-feather";
 
 const CreateProjectModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -16,13 +17,10 @@ const CreateProjectModal = () => {
 
   return (
     <>
-      <button
-        className="btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-primary-200"
-        type="button"
-        onClick={() => setModalIsOpen(true)}
-      >
-        Create new project
+      <button className="rounded-full p-1.5 heading-md" onClick={() => setModalIsOpen(true)}>
+        <Plus size={16} />
       </button>
+
       {modalIsOpen ? (
         <div
           onClick={() => closeModal()}
@@ -30,7 +28,7 @@ const CreateProjectModal = () => {
             modalIsOpen ? "visible bg-dark-blue-100/20" : "invisible"
           }`}
         >
-          <div className="relative w-[500px] h-[300px] my-6 mx-auto">
+          <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
             <div
               onClick={(e) => e.stopPropagation()}
               className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
@@ -48,7 +46,7 @@ const CreateProjectModal = () => {
                 </div>
 
                 <h1 className="heading-xl pb-4"> Create new project</h1>
-                <label className="heading-sm ">Project name </label>
+                <label className="heading-sm ">Project name</label>
                 <input
                   type="text"
                   placeholder="Give a project name!"
@@ -67,7 +65,7 @@ const CreateProjectModal = () => {
                     className="btn-text-md  w-48 "
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                 </div>
               </div>
