@@ -52,7 +52,7 @@ export const DashboardNav = () => {
   return (
     <nav className={`bg-dark-blue-300 min-h-screen text-light-font ${collapseNav ? "w-72" : "w-12"}`}>
       <div className="min-h-[calc(100vh-4rem)]">
-        <div className="mb-8 grid grid-flow-col justify-end">
+        <div className="grid grid-flow-col justify-end">
           <button className="w-fit text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 p-4 heading-md" 
             onClick={() => setcollapseNav(!collapseNav)}>
             {collapseNav ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
@@ -67,7 +67,7 @@ export const DashboardNav = () => {
             </h4>
 
             <div className="grid grid-flow-col items-center px-6 py-4 border-b border-solid border-dark-blue-100">
-              <div className="heading-md">
+              <div className="heading-sm">
                 My projects
               </div>
               <div className="text-right">
