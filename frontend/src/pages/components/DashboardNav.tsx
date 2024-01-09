@@ -45,19 +45,19 @@ const exampleProjects = [
 // Logout
 
 export const DashboardNav = () => {
-  const [collapse, setCollapse] = useState<boolean>(true);
+  const [collapseNav, setcollapseNav] = useState<boolean>(true);
  
   return (
-    <nav className={`bg-dark-blue-300 min-h-screen text-light-font ${collapse ? "w-72" : "w-12"}`}>
+    <nav className={`bg-dark-blue-300 min-h-screen text-light-font ${collapseNav ? "w-72" : "w-12"}`}>
       <div className="min-h-[calc(100vh-4rem)]">
         <div className="mb-8 grid grid-flow-col justify-end">
           <button className="w-fit text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 p-4 heading-md" 
-            onClick={() => setCollapse(!collapse)}>
-            {collapse ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+            onClick={() => setcollapseNav(!collapseNav)}>
+            {collapseNav ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
         </div>
 
-        { collapse && (
+        {collapseNav && (
           <>
             <h4 className="px-6 mb-6 heading-md">
               Project <br /> Management App
@@ -83,7 +83,7 @@ export const DashboardNav = () => {
         )}
       </div>
 
-      { collapse && (
+      {collapseNav && (
         <div className="px-4 py-2 grid grid-flow-col items-center bg-dark-blue-100 w-full h-16">
           <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8 " 
             onClick={() => console.log("Open user settings")}>
