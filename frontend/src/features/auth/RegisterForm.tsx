@@ -4,10 +4,10 @@ import {useState} from "react";
 import { useRegisterUserMutation } from "../api/apiSlice";
 
 // React Router
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Hook Form and Yup
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { registerUserSchema } from "./authValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
@@ -16,7 +16,7 @@ import { DevTool } from "@hookform/devtools";
 import { Eye, EyeOff } from "react-feather";
 
 // Interfaces
-interface FormValues {
+interface RegisterFormValues {
   email: string;
   name: string;
   password: string;
@@ -24,48 +24,67 @@ interface FormValues {
 
 export const RegisterForm = () => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
-  const { control, formState: {errors}, handleSubmit, register } = useForm<FormValues>({
+  const {
+    control,
+    formState: {dirtyFields, isSubmitting, isSubmitSuccessful, errors},
+    handleSubmit,
+    register,
+    reset
+  } = useForm<RegisterFormValues>({
     defaultValues: {
       email: "",
       name: "",
       password: "",
-    }
+    },
+    resolver: yupResolver(registerUserSchema),
   });
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const [formError, setFormError] = useState<null | string>(null);
 
-  const onHandleSubmit = (formData: FormValues) => {
-    console.log("Register form submitted", formData);
+  const canSave = dirtyFields && !isLoading;
+
+  const onHandleSubmit = async (formData: RegisterFormValues) => {
+    if (canSave) {
+      try {
+        const user = await registerUser({ ...formData }).unwrap();
+        console.log("Register form submitted");
+        console.log("User:", user);
+      } catch (err) {
+        onError;
+        console.error("Failed to save the user", err);
+        // TO DO: Refactor this
+        if ((
+          err &&
+          typeof err === "object" &&
+          "data" in err &&
+          err.data &&
+          typeof err.data === "object"
+        )) {
+          const errorMessage = Object.values(err.data);
+          setFormError(errorMessage.toString());
+        }
+      } finally {
+        if (isSubmitSuccessful) {
+          reset();
+          setFormError(null);
+          // Log user in and redirect to the users front page
+          // TO DO: Fix path to user home page
+          navigate("/");
+        }
+      }
+    }
   };
 
-  // const [email, setEmail] = useState("");
-  // const [name, setName] = useState("");
-  // const [password, setPassword] = useState("");
+  const onError = (errors: FieldErrors<RegisterFormValues>) => {
+    console.log("Form field errors:", errors);
+  };
 
-
-  // const canSave = [email, name, password].every(Boolean) && !isLoading;
-
-  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log("Email:", email);
-  //   console.log("Name:", name);
-  //   console.log("Password:", password);
-
-  //   if (canSave) {
-  //     try {
-  //       const user = await registerUser({ email, name, password }).unwrap();
-  //       console.log("user:", user);
-  //       setEmail("");
-  //       setName("");
-  //       setPassword("");
-  //     } catch (err) {
-  //       console.error("Failed to save the user: ", err);
-  //     }
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset();
   //   }
-  //   // To do
-  //   // input validation
-  //   // error handling / message
-  //   // if registration is successfull, log the user in and redirect user to the "user's homepage"
-  // };
+  // }, [isSubmitSuccessful, reset]);
 
   return (
     <section className="w-fit mt-14 mx-auto">
@@ -73,7 +92,7 @@ export const RegisterForm = () => {
         Create <br /> your account
       </h2>
       <form
-        onSubmit={handleSubmit(onHandleSubmit)} noValidate>
+        onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
 
         <label
           className="body-text-sm text-dark-font block mb-3">
@@ -81,9 +100,9 @@ export const RegisterForm = () => {
           <input
             type="text"
             {...register("email")}
-            placeholder="john.doe@mail.com"
+            placeholder="e.g. john.doe@mail.com"
             className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50" />
-          <p className="text-center body-text-xs text-caution-200">{errors.email?.message}</p>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{errors.email?.message}</p>
         </label>
 
         <label
@@ -94,7 +113,7 @@ export const RegisterForm = () => {
             {...register("name")}
             placeholder="John Doe"
             className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
-          <p className="text-center body-text-xs text-caution-200">{errors.name?.message}</p>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{errors.name?.message}</p>
         </label>
 
         <label
@@ -106,15 +125,17 @@ export const RegisterForm = () => {
               {...register("password")}
               className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
             <button
+              type="button"
               onClick={() => setIsVisible(!isVisible)}
               className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
               {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
             </button>
           </section>
-          <p className="text-center body-text-xs text-caution-200">{errors.password?.message}</p>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{errors.password?.message}</p>
+          <p className="text-center body-text-xs text-caution-200 mt-1">{formError}</p>
         </label>
 
-        <button type="submit" className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
+        <button type="submit" disabled={isSubmitting} className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Register</button>
       </form>
 
       {/* For development only */}
@@ -128,5 +149,3 @@ export const RegisterForm = () => {
     </section>
   );
 };
-
-// RegisterForm.action = registerAction;
