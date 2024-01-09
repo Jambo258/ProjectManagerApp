@@ -46,16 +46,16 @@ const CreateProjectModal = () => {
                 showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
             >
-              <div className="flex flex-col px-4 ">
-                <div className="flex justify-end">
-                  <button
-                    className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
-                    onClick={() => closeModal()}
-                  >                  
-                    <X size={20} />
-                  </button>
-                </div>
+              <div className="flex justify-end">
+                <button
+                  className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
+                  onClick={() => closeModal()}
+                >                  
+                  <X size={20} />
+                </button>
+              </div>
 
+              <div className="flex flex-col m-4">
                 <h1 className="heading-xl pb-4"> Create new project</h1>
                 <label className="heading-sm ">Project name</label>
                 <input
