@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 // Redux Toolkit
 import { useLoginUserMutation } from "../api/apiSlice";
