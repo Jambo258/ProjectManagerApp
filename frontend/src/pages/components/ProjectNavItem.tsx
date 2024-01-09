@@ -34,7 +34,7 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
 
         <button className="font-light heading-xs m-0 p-0 bg-grayscale-0 hover:bg-grayscale-0 text-light-font hover:text-primary-200"
           onClick={() => setShowPages(!showPages)}>
-          {showPages ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+          {showPages ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </button>
 
       </div>
