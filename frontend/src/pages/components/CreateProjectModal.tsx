@@ -1,17 +1,29 @@
 import { useState } from "react";
+import { useAddNewProjectMutation } from "../../features/api/apiSlice";
 import { Plus, X } from "react-feather";
 
 const CreateProjectModal = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [inputName, setInputName] = useState("");
+  const [addNewProject] = useAddNewProjectMutation();
 
-  const newProject = () => {
-    //add functionality to create a new project here
-    setModalIsOpen(false);
+  const newProject = async () => {
+    try {
+      const project = await addNewProject(inputName).unwrap();
+
+      if (project) closeModal();
+    } catch (err) {
+      console.error("failed to create project", err);
+    }
+  };
+
+  const openModal = () => {
+    setInputName("");
+    setShowModal(true);
   };
 
   const closeModal = () => {
-    setModalIsOpen(false);
+    setShowModal(false);
     setInputName("");
   };
 
@@ -20,19 +32,18 @@ const CreateProjectModal = () => {
       <button className="rounded-full p-1.5 heading-md" onClick={() => setModalIsOpen(true)}>
         <Plus size={16} />
       </button>
-
-      {modalIsOpen ? (
+      {showModal ? (
         <div
           onClick={() => closeModal()}
           className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
-            modalIsOpen ? "visible bg-dark-blue-100/40" : "invisible"
+            showModal ? "visible bg-dark-blue-100/20" : "invisible"
           }`}
         >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
             <div
               onClick={(e) => e.stopPropagation()}
               className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
-                modalIsOpen ? "scale-100 opacity-100" : "scale-110 opacity-0"
+                showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
             >
               <div className="flex flex-col px-4 ">
