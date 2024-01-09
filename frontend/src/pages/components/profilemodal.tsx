@@ -22,20 +22,20 @@ export const ProfileModal = () => {
             onClick={() => closeModal()}
           >
             <div
-              className={`flex-none rounded-lg shadow p-2 transition-all bg-grayscale-100 text-dark-font  ${
+              className={`flex-none rounded-lg shadow p-2 transition-all bg-grayscale-100 text-dark-font ${
                 showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-end">
                 <button
-                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
+                  className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0 "
                   onClick={() => closeModal()}
                 >
                   x
                 </button>
               </div>
-              <div className="relative p-6 flex-auto">
+              <div className="relative px-6 pb-2 flex-auto">
                 <ProfileView />
               </div>
             </div>
