@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "react-feather";
+import { ChevronLeft, ChevronRight, Plus } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 
 // example project for mockup purposes
@@ -69,8 +69,8 @@ export const DashboardNav = () => {
                 My projects
               </div>
               <div className="text-right">
-                <button className="rounded-full p-0 h-7 w-7 heading-md" onClick={() => console.log("Add new project")}>
-                  <p className="-mt-1.5">+</p>
+                <button className="rounded-full p-1.5 heading-md" onClick={() => console.log("Add new page")}>
+                  <Plus size={16} />
                 </button>
               </div>
             </div>
