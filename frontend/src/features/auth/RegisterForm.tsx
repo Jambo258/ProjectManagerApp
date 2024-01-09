@@ -41,7 +41,8 @@ export const RegisterForm = () => {
     resolver: yupResolver(registerUserSchema),
   });
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConf, setShowPasswordConf] = useState(false);
   const [formError, setFormError] = useState<null | string>(null);
 
   const canSave = dirtyFields && !isLoading;
@@ -123,18 +124,18 @@ export const RegisterForm = () => {
         </label>
 
         <label
-          className="body-text-sm text-dark-font mb-8 block">
+          className="body-text-sm text-dark-font mb-3 block">
             Password:
           <section className="mx-auto mt-1 relative">
             <input
-              type={isVisible ? "text" : "password"}
+              type={showPassword ? "text" : "password"}
               {...register("password")}
               className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
             <button
               type="button"
-              onClick={() => setIsVisible(!isVisible)}
+              onClick={() => setShowPassword(!showPassword)}
               className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
-              {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
+              {showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
             </button>
           </section>
           <p className="text-center body-text-xs text-caution-200 mt-1">{errors.password?.message}</p>
@@ -146,14 +147,14 @@ export const RegisterForm = () => {
             Confirm Password:
           <section className="mx-auto mt-1 relative">
             <input
-              type={isVisible ? "text" : "password"}
+              type={showPasswordConf ? "text" : "password"}
               {...register("passwordConf")}
               className="body-text-md py-1.5 px-4 w-full inline-block focus:outline-none focus:ring focus:ring-dark-blue-50"/>
             <button
               type="button"
-              onClick={() => setIsVisible(!isVisible)}
+              onClick={() => setShowPasswordConf(!showPasswordConf)}
               className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
-              {isVisible ? <Eye size={18}/> : <EyeOff size={18}/>}
+              {showPasswordConf ? <Eye size={18}/> : <EyeOff size={18}/>}
             </button>
           </section>
           <p className="text-center body-text-xs text-caution-200 mt-1">{errors.password?.message}</p>
