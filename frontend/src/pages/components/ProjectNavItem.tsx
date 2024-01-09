@@ -39,7 +39,7 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
 
       </div>
 
-      {showPages && (
+      {showPages ? (
         project.pages.map(page => (
           <Link key={page.id} to={"/"}>
             <button 
@@ -50,7 +50,8 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
             </button>
           </Link>
         ))
-      )}
+      )
+        : null}
     </>
 
   );
