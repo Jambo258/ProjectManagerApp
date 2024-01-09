@@ -10,7 +10,7 @@ export const ProfileModal = () => {
 
   return (
     <>
-      <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8 " 
+      <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8" 
         onClick={() => setShowModal(!showModal)}>
             A
       </button>
@@ -18,7 +18,7 @@ export const ProfileModal = () => {
         <>
           <div
             className={`z-10 flex justify-center items-center fixed inset-0 transition-colors ${
-              showModal ? "visible bg-dark-blue-100/20" : "invisible"}`}
+              showModal ? "visible bg-dark-blue-100/40" : "invisible"}`}
             onClick={() => closeModal()}
           >
             <div

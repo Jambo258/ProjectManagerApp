@@ -12,7 +12,7 @@ import { ProjectView } from "../pages/views/projectView.tsx";
 import { PrivatePage } from "../pages/privatePage.tsx";
 import { HomeView } from "../pages/views/homeView.tsx";
 
-const loggedIn = false;
+const loggedIn = true;
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

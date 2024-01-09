@@ -25,7 +25,7 @@ const CreateProjectModal = () => {
         <div
           onClick={() => closeModal()}
           className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
-            modalIsOpen ? "visible bg-dark-blue-100/20" : "invisible"
+            modalIsOpen ? "visible bg-dark-blue-100/40" : "invisible"
           }`}
         >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
