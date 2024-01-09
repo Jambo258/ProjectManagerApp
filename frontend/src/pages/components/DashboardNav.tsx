@@ -57,7 +57,8 @@ export const DashboardNav = () => {
           </button>
         </div>
 
-        {collapseNav && (
+        {collapseNav
+          ?
           <>
             <h4 className="px-6 mb-6 heading-md">
               Project <br /> Management App
@@ -80,10 +81,12 @@ export const DashboardNav = () => {
               </div>
             )}
           </>
-        )}
+
+          : null}
       </div>
 
-      {collapseNav && (
+      {collapseNav 
+        ? 
         <div className="px-4 py-2 grid grid-flow-col items-center bg-dark-blue-100 w-full h-16">
           <button className="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8 " 
             onClick={() => console.log("Open user settings")}>
@@ -96,7 +99,8 @@ export const DashboardNav = () => {
             </button>
           </div>
         </div>
-      )}
+
+        : null}
 
     </nav>
   );
