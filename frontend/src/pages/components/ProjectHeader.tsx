@@ -1,5 +1,9 @@
-import { Link, NavLink } from "react-router-dom";
-import { MoreVertical, Plus } from "react-feather";
+import { NavLink } from "react-router-dom";
+import { Plus } from "react-feather";
+
+// Components
+import { Menu } from "../../components/Menu";
+import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 
 const project = {
   id: 2,
@@ -24,11 +28,18 @@ const project = {
 export const ProjectHeader = () => {
   return (
     <header className="border-b border-solid border-grayscale-300 p-6 relative overflow-x-hidden bg-grayscale-100">
-      <p className="heading-xl mb-2">{project.name}</p>
+
+      <section className="flex flex-auto justify-between">
+        <h2 className="heading-xl mb-2">{project.name}</h2>
+        <Menu>
+          <RenameProjectModal />
+          <section className="py-1 ps-2 pe-4">Temp content</section>
+        </Menu>
+      </section>
 
       <nav className="flex flex-wrap gap-x-2 gap-y-2 body-text-md">
         {project.pages.length > 0 && project.pages.map(page => (
-          <NavLink to="/" key={page.id} 
+          <NavLink to="/" key={page.id}
             className={({ isActive }) => (isActive ? "underline mr-4" : "mr-4")}>
             {page.name}
           </NavLink>
@@ -38,9 +49,6 @@ export const ProjectHeader = () => {
         </button>
       </nav>
 
-      <button className="heading-lg fixed top-6 right-6 py-0 px-2 bg-grayscale-0 hover:bg-grayscale-0">
-        <Link to="/"><MoreVertical size={20} /></Link>
-      </button>
     </header>
   );
 };
