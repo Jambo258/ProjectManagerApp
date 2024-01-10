@@ -1,4 +1,4 @@
-import {ReactNode, useState} from "react";
+import {ReactNode, useState, useRef, useEffect} from "react";
 import { X, MoreVertical } from "react-feather";
 
 interface MenuProps {
@@ -6,6 +6,7 @@ interface MenuProps {
 }
 
 export const Menu = ({children}: MenuProps) => {
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
@@ -16,8 +17,23 @@ export const Menu = ({children}: MenuProps) => {
     setIsMenuOpen(false);
   };
 
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside, true);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <section className="flex flex-col place-items-end fixed right-6">
+    <section ref={menuRef} className="flex flex-col place-items-end fixed right-6">
       <button className="max-w-fit py-0 px-2 mb-1 bg-grayscale-0 hover:bg-grayscale-0"
         onClick={toggleMenu}>
         <MoreVertical size={20} />
