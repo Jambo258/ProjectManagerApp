@@ -1,29 +1,23 @@
-import { useState } from "react";
-import { useGetProjectQuery, useAddNewPageMutation } from "../api/apiSlice";
+import { useAddNewPageMutation } from "../api/apiSlice";
 
 const AddPage = (projectid: number) => {
-  const [getProject] = useGetProjectQuery();
   const [addNewPage] = useAddNewPageMutation();
 
-  const [pageName, setPageName] = useState("name");
+  const defaultPageName = "New page";
 
   // check if project id exists in database
 
-  const checkProjectID = async () => {
+  const createNewpage = async () => {
     try {
-      const project = await getProject(projectid).unwrap();
+      const page = await addNewPage({
+        projectid: projectid,
+        pageName: defaultPageName,
+      }).unwrap();
+      console.log(page);
     } catch (error) {
-      console.error();
+      console.error("failed to create a new page", error);
     }
   };
-
-  // apislice addNewPage query tarttee päivittää sisältämään project id
-  const createNewpage = async () => {
-    const page = await addNewPage({ projectid, pageName }).unwrap();
-  };
-
-  // create a page with project id
-  // return page id or something i guess
 
   return (
     <>
