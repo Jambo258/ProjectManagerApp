@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useAddNewPageMutation } from "../api/apiSlice";
 
-const AddPage = (projectid: number) => {
+const AddPage = (projectid: any) => {
   const [addNewPage] = useAddNewPageMutation();
 
   const defaultPageName = "New page";
-
-  // check if project id exists in database
 
   const createNewpage = async () => {
     try {
