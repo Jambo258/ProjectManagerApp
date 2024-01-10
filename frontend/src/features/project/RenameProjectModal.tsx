@@ -10,7 +10,6 @@ interface RenameProjectFormValues {
 export const RenameProjectModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const {
-    formState: {isDirty, isSubmitting, errors},
     register,
   } = useForm<RenameProjectFormValues>({
     defaultValues: {
@@ -20,6 +19,10 @@ export const RenameProjectModal = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -53,8 +56,14 @@ export const RenameProjectModal = () => {
                 <p className="text-center body-text-xs text-caution-200 mt-1">Project name required</p>
               </label>
               <section className="flex">
-                <button type="submit" className="w-full me-1 btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Save</button>
-                <button type="reset" className="w-full ms-1 btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Cancel</button>
+                <button type="submit" className="w-full me-1 btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-caution-100 bg-caution-100 hover:bg-caution-200">Save</button>
+                <button
+                  type="reset"
+                  onClick={closeModal}
+                  className="w-full ms-1 btn-text-xs px-4 py-1.5 outline-none focus:outline focus:outline-primary-200"
+                >
+                    Cancel
+                </button>
               </section>
             </form>
           </body>
