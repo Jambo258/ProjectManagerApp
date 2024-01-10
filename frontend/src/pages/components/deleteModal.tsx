@@ -24,12 +24,14 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
-          onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
-        >                  
-          <X size={20} />
-        </button>
+        <div className="text-right">
+          <button
+            className="bg-grayscale-0 p-2 hover:bg-grayscale-0"
+            onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
+          >                  
+            <X size={20} />
+          </button>
+        </div>
 
         <div className="px-8">
           <p>{deleteModalText}</p>
