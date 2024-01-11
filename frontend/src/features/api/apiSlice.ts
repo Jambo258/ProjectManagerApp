@@ -69,6 +69,12 @@ export interface ProjectAndUser {
   role: string;
 }
 
+export interface NewPage {
+  pageName: string;
+  projectid: number;
+  content: object;
+}
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -149,11 +155,11 @@ export const api = createApi({
       query: (pageId) => `/pages/${pageId}`,
       providesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
     }),
-    addNewPage: builder.mutation<Page, string>({
-      query: (pageName) => ({
+    addNewPage: builder.mutation<Page, NewPage>({
+      query: ({pageName, projectid, content}) => ({
         url: "/pages",
         method: "POST",
-        body: { name: pageName },
+        body: { name: pageName, projectid: projectid, content: content },
       }),
       invalidatesTags: ["Pages"],
     }),

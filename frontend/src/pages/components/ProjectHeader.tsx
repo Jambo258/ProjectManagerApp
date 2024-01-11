@@ -4,6 +4,7 @@ import { Plus } from "react-feather";
 // Components
 import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
+import AddPage from "../../features/Page/AddPage";
 
 const project = {
   id: 2,
@@ -11,18 +12,17 @@ const project = {
   pages: [
     {
       id: 21,
-      name: "Task Board"
+      name: "Task Board",
     },
     {
       id: 22,
-      name: "To do"
-    }
-    ,
+      name: "To do",
+    },
     {
       id: 23,
-      name: "Notepad"
-    }
-  ]
+      name: "Notepad",
+    },
+  ],
 };
 
 export const ProjectHeader = () => {
@@ -34,6 +34,8 @@ export const ProjectHeader = () => {
         <Menu>
           <RenameProjectModal />
           <section className="py-1 ps-1 pe-4">Temp content</section>
+          {/* Projectid still a placeholder! */}
+          <AddPage projectid={212} buttonSelector={"menu"} />
         </Menu>
       </section>
 
@@ -48,7 +50,6 @@ export const ProjectHeader = () => {
           <Plus size={16} />
         </button>
       </nav>
-
     </header>
   );
 };
