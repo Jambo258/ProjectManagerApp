@@ -3,7 +3,7 @@ import { NavBar } from "./components/NavBar";
 
 export const PublicPage = () => {
   return (
-    <div className="w-screen min-h-screen bg-grayscale-200">
+    <div className="w-full min-h-screen bg-grayscale-200">
       <NavBar />
       <Outlet/>
     </div>
