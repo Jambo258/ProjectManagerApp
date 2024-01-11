@@ -50,8 +50,9 @@ export const RenameProjectModal = () => {
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
     if (canSubmit) {
       try {
-        const project = await editProject({ id:1, name: formData.projectName }).unwrap();
-
+        const project = await editProject({ id: 2, name: formData.projectName }).unwrap();
+        console.log("Login form submitted");
+        console.log("Project:", project);
         if (project) {
           closeModal();
         }
@@ -76,7 +77,7 @@ export const RenameProjectModal = () => {
 
   return (
     <>
-      <button type="button" className="min-w-max p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0"
+      <button type="button" className="min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
         onClick={openModal}>
         Rename project
       </button>
@@ -118,14 +119,14 @@ export const RenameProjectModal = () => {
                 <section className="flex">
                   <button
                     type="submit"
-                    className="w-full me-1 px-4 py-1.5 btn-text-xs outline-none focus:outline focus:outline-success-100 bg-success-100 hover:bg-success-200"
+                    className="w-full me-1 px-4 py-1.5 btn-text-xs bg-success-100 hover:bg-success-200"
                   >
                   Save
                   </button>
                   <button
                     type="reset"
                     onClick={closeModal}
-                    className="w-full ms-1 btn-text-xs px-4 py-1.5 outline-none focus:outlinefocus:outline-caution-100 bg-caution-100 hover:bg-caution-200"
+                    className="w-full ms-1 btn-text-xs px-4 py-1.5 bg-primary-100 hover:bg-primary-200"
                   >
                     Cancel
                   </button>
