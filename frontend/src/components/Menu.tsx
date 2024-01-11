@@ -13,17 +13,17 @@ export const Menu = ({children}: MenuProps) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (e: MouseEvent) => {
+  //     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+  //       setIsMenuOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside, true);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   return (
     <section ref={menuRef} className="fixed right-6 flex flex-col place-items-end">
@@ -38,13 +38,12 @@ export const Menu = ({children}: MenuProps) => {
           <section className="grid grid-cols-1 divide-y divide-grayscale-200">
             {children.map((child, index) => {
               return (
-                <button
+                <section
                   key={index}
-                  type="button"
                   className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
                 >
                   {child}
-                </button>
+                </section>
               );
             })}
           </section>
