@@ -56,8 +56,8 @@ const CreateProjectModal = () => {
               </div>
 
               <div className="flex flex-col m-4">
-                <h1 className="heading-xl pb-4"> Create new project</h1>
-                <label className="heading-sm ">Project name</label>
+                <h1 className="heading-md pb-4"> Create new project</h1>
+                <label className="heading-xs">Project name</label>
                 <input
                   type="text"
                   placeholder="Give a project name!"
