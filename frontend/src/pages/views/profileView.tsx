@@ -280,7 +280,7 @@ export const ProfileView = () => {
         )}
         <div className="col-span-3 my-4">
           <p className="font-semibold heading-xs">Password</p>
-          <p className="">Set a permanent password to login to your account</p>
+          <p className="">Set a permanent password to login to your account.</p>
         </div>
         <button
           onClick={() => {
@@ -326,7 +326,7 @@ export const ProfileView = () => {
         <div className="col-span-3 my-4">
           <p className="font-semibold heading-xs">Delete Account</p>
           <p className="">
-            Permanently delete the account and remove access to all projects
+            Permanently delete the account and remove access to all projects.
           </p>
         </div>
         <button
