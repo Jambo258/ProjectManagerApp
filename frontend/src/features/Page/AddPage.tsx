@@ -47,9 +47,10 @@ const AddPage = ({
           <Plus size={16} />
         </button>
       ) : (
-        <section className="py-1 ps-1 pe-4" onClick={() => openModal()}>
-          Add page
-        </section>
+        <button type="button" className="w-full heading-xs bg-grayscale-0 p-2 hover:bg-grayscale-0 text-left"
+          onClick={openModal}>
+        Add page
+        </button>
       )}
 
       {showModal && (
@@ -86,6 +87,7 @@ const AddPage = ({
                   placeholder="Give a page name!"
                   value={pageName}
                   onChange={(e) => setPageName(e.target.value)}
+                  className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
                 />
 
                 <div className="my-4 flex justify-between">
