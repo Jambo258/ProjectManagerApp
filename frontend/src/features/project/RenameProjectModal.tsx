@@ -75,7 +75,7 @@ export const RenameProjectModal = () => {
   };
 
   return (
-    <div>
+    <>
       <button type="button" className="min-w-max p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0"
         onClick={openModal}>
         Rename project
@@ -137,6 +137,6 @@ export const RenameProjectModal = () => {
           <DevTool control={control}/>
         </section>
       }
-    </div>
+    </>
   );
 };
