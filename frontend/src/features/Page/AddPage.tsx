@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAddNewPageMutation } from "../api/apiSlice";
-import { Plus } from "react-feather";
+import { Plus, X } from "react-feather";
 
 const AddPage = ({
   projectid,
@@ -52,7 +52,7 @@ const AddPage = ({
         </section>
       )}
 
-      {showModal ? (
+      {showModal && (
         <div
           onClick={() => closeModal()}
           className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
@@ -66,19 +66,18 @@ const AddPage = ({
                 showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
             >
-              <div className="flex flex-col px-4 ">
-                <div className="flex justify-end">
-                  <button
-                    className="flex justify-end w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
-                    onClick={() => closeModal()}
-                  >
-                    x
-                  </button>
-                </div>
+              <div className="flex justify-end m-2">
+                <X
+                  size={20}
+                  className="flex justify-end bg-grayscale-0 hover:bg-grayscale-0"
+                  onClick={() => closeModal()}
+                />
+              </div>
+              <div className="flex flex-col m-4 ">
                 <h1 className="flex justify-start heading-sm pb-4">
                   Add new page
                 </h1>
-                <label className="flex justify-start heading-sm ">
+                <label className="flex justify-start heading-xs ">
                   Page name
                 </label>
                 <input
@@ -99,14 +98,14 @@ const AddPage = ({
                     className="btn-text-md  w-48 "
                     onClick={() => closeModal()}
                   >
-                    cancel
+                    Cancel
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
