@@ -56,17 +56,28 @@ export async function getProjectById(id: number) {
 }
 
 export async function getProjectAllDetailsById(id: number) {
-  const project = await prisma.projectUsers.findMany({
-    where: { userid: id },
-    include: {
-      project: {
+
+  const project = await prisma.projects.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      name: true,
+      users: {
         select: {
+          userid: true,
+          role: true,
+        },
+      },
+      pages: {
+        select: {
+          id: true,
           name: true,
         },
       },
     },
   });
-
   return project;
 }
 
@@ -132,7 +143,7 @@ export async function removeUserFromProject(userId: number, projectId: number) {
 
   const remainingUsers = await getProjectAllDetailsById(projectId);
 
-  if (remainingUsers.length === 0) {
+  if (remainingUsers?.users.length === 0) {
     await prisma.projects.delete({
       where: { id: projectId },
     });
