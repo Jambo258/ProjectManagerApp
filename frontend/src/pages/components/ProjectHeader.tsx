@@ -27,7 +27,7 @@ const project = {
 
 export const ProjectHeader = () => {
   return (
-    <header className="border-b border-solid border-grayscale-300 p-6 relative overflow-x-hidden bg-grayscale-100">
+    <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
 
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
@@ -44,7 +44,7 @@ export const ProjectHeader = () => {
             {page.name}
           </NavLink>
         ))}
-        <button className="rounded-full p-1.5 heading-md" onClick={() => console.log("Add new page")}>
+        <button className="p-1.5 heading-md rounded-full" onClick={() => console.log("Add new page")}>
           <Plus size={16} />
         </button>
       </nav>
