@@ -66,12 +66,13 @@ const AddPage = ({
                 showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
             >
-              <div className="flex justify-end m-2">
-                <X
-                  size={20}
-                  className="flex justify-end bg-grayscale-0 hover:bg-grayscale-0"
+              <div className="flex justify-end">
+                <button
+                  className="text-right bg-grayscale-0 p-2 hover:bg-grayscale-0"
                   onClick={() => closeModal()}
-                />
+                >
+                  <X size={20} />
+                </button>
               </div>
               <div className="flex flex-col m-4 ">
                 <h1 className="flex justify-start heading-sm pb-4">
