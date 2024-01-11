@@ -52,8 +52,10 @@ export const DashboardNav = () => {
     <nav className={`bg-dark-blue-300 min-h-screen text-light-font flex-shrink-0 ${collapseNav ? "w-72" : "w-12"}`}>
       <div className="min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] overflow-y-auto">
         <div className="sticky top-0 grid grid-flow-col justify-end bg-dark-blue-300">
-          <button className="w-fit p-4 heading-md text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0"
-            onClick={() => setcollapseNav(!collapseNav)}>
+          <button
+            className="w-fit p-4 heading-md text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            onClick={() => setcollapseNav(!collapseNav)}
+          >
             {collapseNav ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
         </div>
@@ -83,7 +85,7 @@ export const DashboardNav = () => {
       {collapseNav &&
       <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
         <ProfileModal />
-        
+
         <div>
           <button
             onClick={() => console.log("Log out")}
