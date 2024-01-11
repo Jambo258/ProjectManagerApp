@@ -72,6 +72,7 @@ export interface ProjectAndUser {
 export interface NewPage {
   pageName: string;
   projectid: number;
+  content: object;
 }
 
 export const api = createApi({
@@ -155,10 +156,10 @@ export const api = createApi({
       providesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
     }),
     addNewPage: builder.mutation<Page, NewPage>({
-      query: ({pageName, projectid}) => ({
+      query: ({pageName, projectid, content}) => ({
         url: "/pages",
         method: "POST",
-        body: { name: pageName, projectidid: projectid },
+        body: { name: pageName, projectid: projectid, content: content },
       }),
       invalidatesTags: ["Pages"],
     }),

@@ -4,6 +4,7 @@ import { Plus } from "react-feather";
 // Components
 import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
+import AddPage from "../../features/Page/AddPage";
 
 const project = {
   id: 2,
@@ -11,44 +12,48 @@ const project = {
   pages: [
     {
       id: 21,
-      name: "Task Board"
+      name: "Task Board",
     },
     {
       id: 22,
-      name: "To do"
-    }
-    ,
+      name: "To do",
+    },
     {
       id: 23,
-      name: "Notepad"
-    }
-  ]
+      name: "Notepad",
+    },
+  ],
 };
 
 export const ProjectHeader = () => {
   return (
     <header className="border-b border-solid border-grayscale-300 p-6 relative overflow-x-hidden bg-grayscale-100">
-
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
           <RenameProjectModal />
           <section className="py-1 ps-1 pe-4">Temp content</section>
+          {/* Projectid still a placeholder! */}
+          <AddPage projectid={212} buttonSelector={"menu"} />
         </Menu>
       </section>
 
       <nav className="flex flex-wrap gap-x-2 gap-y-2 body-text-md">
-        {project.pages.length > 0 && project.pages.map(page => (
-          <NavLink to="/" key={page.id}
-            className={({ isActive }) => (isActive ? "underline mr-4" : "mr-4")}>
-            {page.name}
-          </NavLink>
-        ))}
-        <button className="rounded-full p-1.5 heading-md" onClick={() => console.log("Add new page")}>
-          <Plus size={16} />
-        </button>
+        {project.pages.length > 0 &&
+          project.pages.map((page) => (
+            <NavLink
+              to="/"
+              key={page.id}
+              className={({ isActive }) =>
+                isActive ? "underline mr-4" : "mr-4"
+              }
+            >
+              {page.name}
+            </NavLink>
+          ))}
+        {/* Projectid still a placeholder! */}
+        <AddPage projectid={212} buttonSelector={"plus"} />
       </nav>
-
     </header>
   );
 };
