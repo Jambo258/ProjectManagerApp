@@ -56,7 +56,6 @@ export async function getProjectById(id: number) {
 }
 
 export async function getProjectAllDetailsById(id: number) {
-
   const project = await prisma.projects.findUnique({
     where: {
       id: id,
@@ -64,6 +63,8 @@ export async function getProjectAllDetailsById(id: number) {
     select: {
       id: true,
       name: true,
+      updated_at: true,
+      created_at: true,
       users: {
         select: {
           userid: true,
