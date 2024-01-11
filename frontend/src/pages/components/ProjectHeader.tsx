@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 
 // Components
-import { Plus } from "react-feather";
 import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
@@ -46,7 +45,7 @@ export const ProjectHeader = () => {
               to="/"
               key={page.id}
               className={({ isActive }) =>
-                isActive ? "underline mr-4" : "mr-4"
+                isActive ? "mr-4 underline focus:outline-none" : "mr-4 focus:outline-none"
               }
             >
               {page.name}
