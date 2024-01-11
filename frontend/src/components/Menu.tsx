@@ -1,5 +1,5 @@
 import {ReactNode, useState, useRef, useEffect} from "react";
-import { X, MoreVertical } from "react-feather";
+import { MoreVertical } from "react-feather";
 
 interface MenuProps {
     children: ReactNode[];
