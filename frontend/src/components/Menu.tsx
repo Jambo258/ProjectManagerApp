@@ -13,20 +13,13 @@ export const Menu = ({children}: MenuProps) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setIsMenuOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside, true);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -39,20 +32,20 @@ export const Menu = ({children}: MenuProps) => {
         <MoreVertical size={20} />
       </button>
       {isMenuOpen ? (
-        <dialog className="w-fit relative flex flex-col z-30 border-[1px] border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-          <section className="flex w-full justify-end">
-            <button
-              onClick={closeMenu}
-              className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
-              <X size={20}/>
-            </button>
-          </section>
+        <dialog className="w-fit relative flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
           <section className="grid-cols-1">
-            {children.map((child) => {
-              return  <>
-                <hr className="border-grayscale-300"/>
-                <button type="button" className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0">{child}</button>
-              </>;
+            {children.map((child, index) => {
+              if (index === 0) {
+                return  <>
+                  <button type="button" className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0">{child}</button>
+                </>;
+              } else {
+
+                return  <>
+                  <hr className="border border-grayscale-200"/>
+                  <button type="button" className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0">{child}</button>
+                </>;
+              }
             })}
           </section>
         </dialog>
