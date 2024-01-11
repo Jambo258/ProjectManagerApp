@@ -1,4 +1,4 @@
-import {ReactNode, useState, useRef, useEffect} from "react";
+import { type ReactNode, useState, useRef, useEffect } from "react";
 import { MoreVertical } from "react-feather";
 
 interface MenuProps {
@@ -26,26 +26,26 @@ export const Menu = ({children}: MenuProps) => {
   }, []);
 
   return (
-    <section ref={menuRef} className="flex flex-col place-items-end fixed right-6">
+    <section ref={menuRef} className="fixed right-6 flex flex-col place-items-end">
+
       <button className="max-w-fit py-0 px-2 mb-1 bg-grayscale-0 hover:bg-grayscale-0"
         onClick={toggleMenu}>
         <MoreVertical size={20} />
       </button>
-      {isMenuOpen ? (
-        <dialog className="w-fit relative flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-          <section className="grid grid-cols-1">
-            {children.map((child, index) => {
-              if (index === 0) {
-                return  <>
-                  <button type="button" className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0">{child}</button>
-                </>;
-              } else {
 
-                return  <>
-                  <hr className="border border-grayscale-200"/>
-                  <button type="button" className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0">{child}</button>
-                </>;
-              }
+      {isMenuOpen ? (
+        <dialog className="relative w-fit flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+          <section className="grid grid-cols-1 divide-y divide-grayscale-200">
+            {children.map((child, index) => {
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                >
+                  {child}
+                </button>
+              );
             })}
           </section>
         </dialog>
