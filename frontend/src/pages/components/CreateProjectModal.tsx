@@ -29,26 +29,26 @@ const CreateProjectModal = () => {
 
   return (
     <>
-      <button className="rounded-full p-1.5 heading-md" onClick={() => openModal()}>
+      <button className="p-1.5 rounded-full heading-md" onClick={() => openModal()}>
         <Plus size={16} />
       </button>
-      {showModal ? (
+      {showModal &&
         <div
           onClick={() => closeModal()}
-          className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
+          className={`fixed flex inset-0 z-50 justify-center items-center transition-colors ${
             showModal ? "visible bg-dark-blue-100/40" : "invisible"
           }`}
         >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
+              className={`p-2 rounded-lg shadow transition-all bg-grayscale-100  ${
                 showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
               }`}
             >
               <div className="flex justify-end">
                 <button
-                  className="bg-grayscale-0 p-2 hover:bg-grayscale-0 text-right"
+                  className="text-right bg-grayscale-0 p-2 hover:bg-grayscale-0"
                   onClick={() => closeModal()}
                 >
                   <X size={20} />
@@ -56,24 +56,27 @@ const CreateProjectModal = () => {
               </div>
 
               <div className="flex flex-col m-4">
-                <h1 className="heading-md pb-4"> Create new project</h1>
-                <label className="heading-xs">Project name</label>
-                <input
-                  type="text"
-                  placeholder="Give a project name!"
-                  value={inputName}
-                  onChange={(e) => setInputName(e.target.value)}
-                />
+                <h1 className="pb-4 heading-md"> Create new project</h1>
+                <label className="heading-xs block">
+                  Project name
+                  <input
+                    type="text"
+                    placeholder="Give a project name!"
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+                  />
+                </label>
 
-                <div className="my-4 flex justify-between">
+                <div className="flex my-4 justify-between">
                   <button
-                    className="btn-text-md bg-success-100 w-48 hover:bg-success-200"
+                    className="btn-text-md w-48 bg-success-100 hover:bg-success-200"
                     onClick={() => newProject()}
                   >
                     Add Project
                   </button>
                   <button
-                    className="btn-text-md  w-48 "
+                    className="btn-text-md w-48 bg-caution-100 hover:bg-caution-200"
                     onClick={() => closeModal()}
                   >
                     Cancel
@@ -83,7 +86,7 @@ const CreateProjectModal = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      }
     </>
   );
 };
