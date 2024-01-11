@@ -33,7 +33,7 @@ export const Menu = ({children}: MenuProps) => {
       </button>
       {isMenuOpen ? (
         <dialog className="w-fit relative flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-          <section className="grid-cols-1">
+          <section className="grid grid-cols-1">
             {children.map((child, index) => {
               if (index === 0) {
                 return  <>
