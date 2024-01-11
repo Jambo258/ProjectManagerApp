@@ -33,7 +33,7 @@ export const Menu = ({children}: MenuProps) => {
         <MoreVertical size={20} />
       </button>
 
-      {isMenuOpen ? (
+      {isMenuOpen &&
         <dialog className="relative w-fit flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
           <section className="grid grid-cols-1 divide-y divide-grayscale-200">
             {children.map((child, index) => {
@@ -49,7 +49,7 @@ export const Menu = ({children}: MenuProps) => {
             })}
           </section>
         </dialog>
-      ) : null}
+      }
     </section>
   );
 };
