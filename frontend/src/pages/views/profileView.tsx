@@ -185,7 +185,7 @@ export const ProfileView = () => {
 
   return (
     <>
-      <div className="grid grid-flow-row max-w-2xl m-auto gap-x-3 body-text-md">
+      <div className="grid grid-flow-row items-center max-w-2xl m-auto gap-x-3 body-text-md">
         <div className="heading-xl col-span-4 mt-4">Account settings</div>
         <div className="col-span-3 my-4">
           <p className="font-semibold heading-xs">Name</p>
