@@ -20,12 +20,26 @@ export async function createNewProject(name: string, id: number) {
   return newProject;
 }
 
-export async function getAllProjectsByUserId(id: number) {
-  const projects = await prisma.projects.findMany({
+export async function getAllProjectsAndPagesByUserId(id: number) {
+  const projects = await prisma.projectUsers.findMany({
     where: {
-      users: {
-        some: {
-          userid: id,
+      userid: id,
+    },
+    select: {
+      project: {
+        include: {
+          users: {
+            select: {
+              userid: true,
+              role: true,
+            },
+          },
+          pages: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       },
     },
@@ -43,7 +57,7 @@ export async function getProjectById(id: number) {
 
 export async function getProjectAllDetailsById(id: number) {
   const project = await prisma.projectUsers.findMany({
-    where: { projectid: id },
+    where: { userid: id },
     include: {
       project: {
         select: {

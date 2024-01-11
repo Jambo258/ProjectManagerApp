@@ -6,11 +6,11 @@ import {
   changeUserRoleOnProject,
   createNewProject,
   deleteProject,
-  getAllProjectsByUserId,
   getProjectAllDetailsById,
   getProjectById,
   updateProject,
   checkForUserExistingOnProject,
+  getAllProjectsAndPagesByUserId,
 } from "../services/projectService.js";
 import { getUserById } from "../services/userService.js";
 import { Role } from "@prisma/client";
@@ -35,7 +35,7 @@ projectsRouter.get("/", async (req, res, next) => {
   try {
     const userId = req.session.userId!;
 
-    const usersProjects = await getAllProjectsByUserId(userId);
+    const usersProjects = await getAllProjectsAndPagesByUserId(userId);
 
     res.json(usersProjects);
   } catch (error) {

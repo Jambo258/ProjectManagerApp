@@ -21,7 +21,7 @@ model Projects {
   updated_at DateTime       @default(now())
   created_at DateTime       @default(now())
   users      ProjectUsers[]
-  Pages      Pages[]
+  pages      Pages[]
 }
 
 model ProjectUsers {
