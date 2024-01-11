@@ -85,7 +85,7 @@ export const DashboardNav = () => {
       {collapseNav &&
       <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
         <ProfileModal />
-
+        
         <div>
           <button
             onClick={() => console.log("Log out")}
