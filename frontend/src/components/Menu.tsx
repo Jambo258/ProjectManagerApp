@@ -13,17 +13,17 @@ export const Menu = ({children}: MenuProps) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-  //       setIsMenuOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside, true);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <section ref={menuRef} className="fixed right-6 flex flex-col place-items-end">
