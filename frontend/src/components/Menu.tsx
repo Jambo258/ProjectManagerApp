@@ -48,8 +48,8 @@ export const Menu = ({children}: MenuProps) => {
               );
             })}
           </section>
-        </dialog>
-      }
+        </dialog>}
+
     </section>
   );
 };
