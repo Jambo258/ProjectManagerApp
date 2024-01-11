@@ -75,7 +75,7 @@ export const RenameProjectModal = () => {
   };
 
   return (
-    <>
+    <div>
       <button type="button" className="min-w-max p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0"
         onClick={openModal}>
         Rename project
@@ -87,7 +87,9 @@ export const RenameProjectModal = () => {
             isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"
           }`}
         >
-          <dialog className="fixed min-w-fit flex flex-col p-2 pb-4 inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
+          <dialog
+            onClick={(e) => e.stopPropagation()}
+            className="fixed min-w-fit flex flex-col p-2 pb-4 inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
             <header className="w-full flex flex-col mb-4 place-items-end">
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -96,7 +98,7 @@ export const RenameProjectModal = () => {
               </button>
               <h3 className="place-self-start heading-md text-dark-font">Rename project</h3>
             </header>
-            <body className="w-fit mx-auto">
+            <main className="w-fit mx-auto">
               <form
                 onSubmit={handleSubmit(onHandleSubmit, onError)}
                 noValidate
@@ -129,12 +131,12 @@ export const RenameProjectModal = () => {
                   </button>
                 </section>
               </form>
-            </body>
+            </main>
           </dialog>
           {/* For development only */}
           <DevTool control={control}/>
         </section>
       }
-    </>
+    </div>
   );
 };
