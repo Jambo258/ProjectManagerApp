@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { Plus } from "react-feather";
 
 // Components
 import { Menu } from "../../components/Menu";
