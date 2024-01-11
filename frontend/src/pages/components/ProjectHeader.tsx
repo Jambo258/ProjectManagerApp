@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Plus } from "react-feather";
 
 // Components
+import { Plus } from "react-feather";
 import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
@@ -40,15 +40,20 @@ export const ProjectHeader = () => {
       </section>
 
       <nav className="flex flex-wrap gap-x-2 gap-y-2 body-text-md">
-        {project.pages.length > 0 && project.pages.map(page => (
-          <NavLink to="/" key={page.id}
-            className={({ isActive }) => (isActive ? "underline mr-4" : "mr-4")}>
-            {page.name}
-          </NavLink>
-        ))}
-        <button className="p-1.5 heading-md rounded-full" onClick={() => console.log("Add new page")}>
-          <Plus size={16} />
-        </button>
+        {project.pages.length > 0 &&
+          project.pages.map((page) => (
+            <NavLink
+              to="/"
+              key={page.id}
+              className={({ isActive }) =>
+                isActive ? "underline mr-4" : "mr-4"
+              }
+            >
+              {page.name}
+            </NavLink>
+          ))}
+        {/* Projectid still a placeholder! */}
+        <AddPage projectid={212} buttonSelector={"plus"} />
       </nav>
     </header>
   );
