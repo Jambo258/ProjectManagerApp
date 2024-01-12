@@ -32,7 +32,6 @@ export const ProjectHeader = () => {
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
           <RenameProjectModal />
-          <section className="py-1 ps-1 pe-4">Temp content</section>
           {/* Projectid still a placeholder! */}
           <AddPage projectid={212} buttonSelector={"menu"} />
         </Menu>
