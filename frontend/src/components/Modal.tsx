@@ -1,11 +1,11 @@
-import { type ReactNode, useState, } from "react";
+import React, { type ReactElement, useState, } from "react";
 import { X } from "react-feather";
 
 interface ModalProps {
     btnText: string;
     btnStyling: string;
     modalTitle: string | null;
-    children: ReactNode;
+    children: ReactElement;
 }
 
 export const Modal = ({
@@ -31,7 +31,7 @@ export const Modal = ({
         type="button"
         onClick={openModal}
         className={btnStyling}>
-        {btnText}
+        { btnText }
       </button>
 
       {isModalOpen &&
@@ -48,11 +48,11 @@ export const Modal = ({
               <X size={20}/>
             </button>
             <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
-              {modalTitle}
+              { modalTitle }
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            {children}
+            { React.cloneElement(children, { openModal, closeModal }) }
           </main>
         </dialog>
       </section>
