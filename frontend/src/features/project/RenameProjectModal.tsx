@@ -17,7 +17,7 @@ interface RenameProjectFormValues {
   projectName: string;
 }
 
-export const RenameProjectModal = () => {
+export const RenameProjectModal = ({projectId, projectName}: { projectId: number; projectName: string; }) => {
   const [editProject, { isLoading }] = useEditProjectMutation();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formError, setFormError] = useState<null | string>(null);
@@ -28,7 +28,7 @@ export const RenameProjectModal = () => {
     handleSubmit,
   } = useForm<RenameProjectFormValues>({
     defaultValues: {
-      projectName: "",
+      projectName: projectName,
     },
     resolver: yupResolver(renameProjectSchema)
   });
@@ -45,13 +45,16 @@ export const RenameProjectModal = () => {
     console.log("Form field errors:", errors);
   };
 
+  // Some endge cases that needs to be looked at
+  // If user ends up with the same name as when starting they cannot save
+  // and no message is shown to explain this either
   const canSubmit = isDirty && !isLoading;
 
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
     if (canSubmit) {
       try {
-        const project = await editProject({ id: 2, name: formData.projectName }).unwrap();
-        console.log("Login form submitted");
+        const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
+        console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
           closeModal();
