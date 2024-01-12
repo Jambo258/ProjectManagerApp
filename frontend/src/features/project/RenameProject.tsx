@@ -51,7 +51,7 @@ export const RenameProject = ({ projectId, projectName, closeModal }: RenameProj
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal();
+          closeModal!();
         }
       }
       catch (err) {
