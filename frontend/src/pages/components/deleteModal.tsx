@@ -3,13 +3,15 @@ import { X } from "react-feather";
 interface propTypes {
   confirmDeleteEdit: boolean;
   setConfirmDeleteEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSubmitForModal: () => void;
+  handleSubmitForModal: (id?: number) => void;
+  id?:number;
   deleteModalText: string;
 }
 export const DeleteModal: React.FunctionComponent<propTypes> = ({
   confirmDeleteEdit,
   setConfirmDeleteEdit,
   handleSubmitForModal,
+  id,
   deleteModalText,
 }) => {
   return (
@@ -34,11 +36,11 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         </div>
 
         <div className="px-8">
-          <p>{deleteModalText}</p>
+          <p>{deleteModalText} {id}</p>
           <section className="flex">
             <button
               onClick={() => {
-                handleSubmitForModal();
+                handleSubmitForModal(id);
                 setConfirmDeleteEdit(!confirmDeleteEdit);
               }}
               className="w-full me-2 my-4 btn-text-xs py-1.5 outline-none focus:outline focus:outline-caution-100 bg-caution-100 hover:bg-caution-200"

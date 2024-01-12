@@ -163,8 +163,9 @@ export const ProfileView = () => {
     console.log("Form field errors:", errors);
   };
 
-  const handleSubmitForModal = async () => {
+  const handleSubmitForModal = async (id?:number) => {
     try {
+      console.log(id);
       const user = await deleteUser().unwrap();
       console.log("User deleted:", user);
       navigate("/");
@@ -344,6 +345,7 @@ export const ProfileView = () => {
           <DeleteModal
             setConfirmDeleteEdit={setConfirmDeleteEdit}
             confirmDeleteEdit={confirmDeleteEdit}
+            id={5}
             handleSubmitForModal={handleSubmitForModal}
             deleteModalText={deleteModalText}
           ></DeleteModal>
