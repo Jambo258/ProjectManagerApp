@@ -16,6 +16,10 @@
     @apply bg-primary-200;
   }
 
+  button:focus {
+    @apply outline-none ring ring-dark-blue-50
+  }
+
   input {
     @apply text-dark-font body-text-lg border border-solid border-grayscale-400 rounded py-3 px-6;
   }

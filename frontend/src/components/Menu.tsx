@@ -38,18 +38,17 @@ export const Menu = ({children}: MenuProps) => {
           <section className="grid grid-cols-1 divide-y divide-grayscale-200">
             {children.map((child, index) => {
               return (
-                <button
+                <section
                   key={index}
-                  type="button"
                   className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
                 >
                   {child}
-                </button>
+                </section>
               );
             })}
           </section>
-        </dialog>
-      }
+        </dialog>}
+
     </section>
   );
 };
