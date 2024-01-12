@@ -1,5 +1,5 @@
 // React
-import { useState} from "react";
+import { Dispatch, SetStateAction, useState} from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
@@ -14,9 +14,14 @@ interface RenameProjectFormValues {
   projectName: string;
 }
 
-export const RenameProject = ({projectId, projectName}: { projectId: number; projectName: string; }) => {
+interface RenameProjectProps {
+  projectId: number;
+  projectName: string;
+  closeModal: () => void;
+}
+
+export const RenameProject = ({ projectId, projectName, closeModal }: RenameProjectProps) => {
   const [editProject, { isLoading }] = useEditProjectMutation();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -29,10 +34,6 @@ export const RenameProject = ({projectId, projectName}: { projectId: number; pro
     },
     resolver: yupResolver(renameProjectSchema)
   });
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const onError = (errors: FieldErrors<RenameProjectFormValues>) => {
     console.log("Form field errors:", errors);
@@ -79,7 +80,7 @@ export const RenameProject = ({projectId, projectName}: { projectId: number; pro
       >
         <label
           className="block mb-6 heading-xs text-left text-dark-font">
-                Project name:
+          Project name:
           <input
             type="text"
             {...register("projectName")}
@@ -92,16 +93,14 @@ export const RenameProject = ({projectId, projectName}: { projectId: number; pro
         <section className="grid grid-cols-2 gap-4">
           <button
             type="submit"
-            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
-          >
-                  Save
+            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
+            Save
           </button>
           <button
             type="reset"
             onClick={closeModal}
-            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
-          >
-                    Cancel
+            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200">
+            Cancel
           </button>
         </section>
       </form>
