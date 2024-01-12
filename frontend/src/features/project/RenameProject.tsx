@@ -1,5 +1,5 @@
 // React
-import { Dispatch, SetStateAction, useState} from "react";
+import { useState } from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
@@ -17,7 +17,7 @@ interface RenameProjectFormValues {
 interface RenameProjectProps {
   projectId: number;
   projectName: string;
-  closeModal: () => void;
+  closeModal?: () => void;
 }
 
 export const RenameProject = ({ projectId, projectName, closeModal }: RenameProjectProps) => {
