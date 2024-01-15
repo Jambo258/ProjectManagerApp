@@ -3,21 +3,12 @@ import { ChevronDown, ChevronUp } from "react-feather";
 import { Link } from "react-router-dom";
 
 // Interfaces for testing purposes
-interface Page {
-  id: number;
-  name: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-}
 
 interface Project {
   id: number;
   name: string;
-  pages: Page[];
-  users: User[];
+  pages: [{ id: number; name: string }];
+  users: [{ id: number; name: string }];
 }
 
 interface ProjectNavItemProps {
