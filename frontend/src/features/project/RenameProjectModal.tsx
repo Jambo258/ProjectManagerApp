@@ -17,7 +17,7 @@ interface RenameProjectFormValues {
 interface RenameProjectProps {
   projectId: number;
   projectName: string;
-  closeModal?: () => void;
+  closeModal: () => void;
 }
 
 export const RenameProjectModal = ( {projectId, projectName, closeModal }: RenameProjectProps) => {
@@ -39,19 +39,17 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
     console.log("Form field errors:", errors);
   };
 
-  // Some endge cases that needs to be looked at
-  // If user ends up with the same name as when starting they cannot save
-  // and no message is shown to explain this either
-  const canSubmit = isDirty && !isLoading;
-
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
-    if (canSubmit) {
+    if (!isDirty) {
+      closeModal();
+    } else if (!isLoading) {
       try {
         const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
+        // For development purposes
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal!();
+          closeModal();
         }
       }
       catch (err) {
