@@ -4,28 +4,32 @@ import { Link } from "react-router-dom";
 
 // Interfaces for testing purposes
 interface Page {
-  id: number,
-  name: string
+  id: number;
+  name: string;
+}
+
+interface User {
+  id: number;
+  name: string;
 }
 
 interface Project {
-  id: number,
-  name: string,
-  pages: Page[]
+  id: number;
+  name: string;
+  pages: Page[];
+  users: User[];
 }
 
 interface ProjectNavItemProps {
-  project: Project
+  project: Project;
 }
 
-export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
+export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
   const [showPages, setShowPages] = useState<boolean>(false);
 
   return (
     <section>
-      <div
-        className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 px-6 py-3 overflow-auto flex justify-between">
-
+      <div className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 px-6 py-3 overflow-auto flex justify-between">
         <Link
           to={"/"}
           onClick={() => console.log("Open " + project.name)}
@@ -36,14 +40,14 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
 
         <button
           className="m-0 p-0 font-light heading-xs text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100"
-          onClick={() => setShowPages(!showPages)}>
+          onClick={() => setShowPages(!showPages)}
+        >
           {showPages ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </button>
-
       </div>
 
       {showPages &&
-        project.pages.map(page => (
+        project.pages.map((page) => (
           <Link
             key={page.id}
             to={"/"}
@@ -52,9 +56,7 @@ export const ProjectNavItem = ({project}: ProjectNavItemProps) => {
           >
             {page.name}
           </Link>
-        ))
-      }
+        ))}
     </section>
-
   );
 };
