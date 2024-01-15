@@ -5,6 +5,7 @@ import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
 import { Modal } from "../../components/Modal";
+import { ProjectMembersModal } from "../../features/project/ProjectMembersModal";
 
 const project = {
   id: 2,
@@ -38,6 +39,9 @@ export const ProjectHeader = () => {
           </Modal>
           {/* Projectid still a placeholder! */}
           <AddPage projectid={212} buttonSelector={"menu"} />
+          <Modal btnText={"Project members"} btnStyling={"min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"} modalTitle={"Project members"}>
+            <ProjectMembersModal />
+          </Modal>
         </Menu>
       </section>
 
