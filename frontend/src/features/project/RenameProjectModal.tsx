@@ -93,14 +93,14 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
         <section className="flex">
           <button
             type="submit"
-            className="w-full me-1 px-4 py-1.5 btn-text-xs bg-success-100 hover:bg-success-200"
+            className="w-full me-4 py-1.5 btn-text-sm bg-success-100 hover:bg-success-200"
           >
             Save
           </button>
           <button
             type="reset"
             onClick={closeModal}
-            className="w-full ms-1 btn-text-xs px-4 py-1.5 bg-primary-100 hover:bg-primary-200"
+            className="w-full py-1.5 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
             Cancel
           </button>
