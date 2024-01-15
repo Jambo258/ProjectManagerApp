@@ -35,12 +35,13 @@ export const Modal = ({
       </button>
 
       {isModalOpen &&
-      <section
+      <div
         onClick={closeModal}
         className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}>
         <dialog
           onClick={(e) => e.stopPropagation()}
-          className="fixed w-4/12 min-w-max max-w-prose flex flex-col p-2 pb-4 inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
+          // The sizing of the modal (w, min-w and max-w) might need to be modified
+          className="fixed w-4/12 min-w-max max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
@@ -55,7 +56,7 @@ export const Modal = ({
             { React.cloneElement(children, { openModal, closeModal }) }
           </main>
         </dialog>
-      </section>
+      </div>
       }
     </>
   );
