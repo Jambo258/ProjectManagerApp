@@ -5,7 +5,6 @@ import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
 import { Modal } from "../../components/Modal";
-import { RenameProject } from "../../features/project/RenameProject";
 
 const project = {
   id: 2,
