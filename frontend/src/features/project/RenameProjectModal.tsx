@@ -17,7 +17,7 @@ interface RenameProjectFormValues {
 interface RenameProjectProps {
   projectId: number;
   projectName: string;
-  closeModal: () => void;
+  closeModal?: () => void;
 }
 
 export const RenameProjectModal = ( {projectId, projectName, closeModal }: RenameProjectProps) => {
@@ -41,7 +41,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
 
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
     if (!isDirty) {
-      closeModal();
+      closeModal!();
     } else if (!isLoading) {
       try {
         const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
@@ -49,7 +49,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal();
+          closeModal!();
         }
       }
       catch (err) {
