@@ -10,16 +10,18 @@ import { renameProjectSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 
-// Components
-import { X } from "react-feather";
-
 interface RenameProjectFormValues {
   projectName: string;
 }
 
-export const RenameProjectModal = ({projectId, projectName}: { projectId: number; projectName: string; }) => {
+interface RenameProjectProps {
+  projectId: number;
+  projectName: string;
+  closeModal?: () => void;
+}
+
+export const RenameProjectModal = ( {projectId, projectName, closeModal }: RenameProjectProps) => {
   const [editProject, { isLoading }] = useEditProjectMutation();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -32,14 +34,6 @@ export const RenameProjectModal = ({projectId, projectName}: { projectId: number
     },
     resolver: yupResolver(renameProjectSchema)
   });
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const onError = (errors: FieldErrors<RenameProjectFormValues>) => {
     console.log("Form field errors:", errors);
@@ -57,7 +51,7 @@ export const RenameProjectModal = ({projectId, projectName}: { projectId: number
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal();
+          closeModal!();
         }
       }
       catch (err) {
@@ -80,67 +74,41 @@ export const RenameProjectModal = ({projectId, projectName}: { projectId: number
 
   return (
     <>
-      <button type="button" className="min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-        onClick={openModal}>
-        Rename project
-      </button>
-      {isModalOpen &&
-        <section
-          onClick={() => closeModal()}
-          className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${
-            isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"
-          }`}
-        >
-          <dialog
-            onClick={(e) => e.stopPropagation()}
-            className="fixed min-w-fit flex flex-col p-2 pb-4 inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
-            <header className="w-full flex flex-col mb-4 place-items-end">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
-                <X size={20}/>
-              </button>
-              <h3 className="place-self-start heading-md text-dark-font">Rename project</h3>
-            </header>
-            <main className="w-fit mx-auto">
-              <form
-                onSubmit={handleSubmit(onHandleSubmit, onError)}
-                noValidate
-              >
-                <label
-                  className="block mb-6 body-text-sm text-left text-dark-font">
+      <form
+        onSubmit={handleSubmit(onHandleSubmit, onError)}
+        noValidate
+      >
+        <label
+          className="block mb-6 body-text-sm text-left text-dark-font">
                 Project name:
-                  <input
-                    type="text"
-                    {...register("projectName")}
-                    placeholder="e.g. To do"
-                    className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
-                  />
-                  <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
-                  <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
-                </label>
-                <section className="flex">
-                  <button
-                    type="submit"
-                    className="w-full me-1 px-4 py-1.5 btn-text-xs bg-success-100 hover:bg-success-200"
-                  >
-                  Save
-                  </button>
-                  <button
-                    type="reset"
-                    onClick={closeModal}
-                    className="w-full ms-1 btn-text-xs px-4 py-1.5 bg-primary-100 hover:bg-primary-200"
-                  >
-                    Cancel
-                  </button>
-                </section>
-              </form>
-            </main>
-          </dialog>
-          {/* For development only */}
-          <DevTool control={control}/>
+          <input
+            type="text"
+            {...register("projectName")}
+            placeholder="e.g. To do"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+          />
+          <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
+        </label>
+        <section className="flex">
+          <button
+            type="submit"
+            className="w-full me-1 px-4 py-1.5 btn-text-xs bg-success-100 hover:bg-success-200"
+          >
+            Save
+          </button>
+          <button
+            type="reset"
+            onClick={closeModal}
+            className="w-full ms-1 btn-text-xs px-4 py-1.5 bg-primary-100 hover:bg-primary-200"
+          >
+            Cancel
+          </button>
         </section>
-      }
+      </form>
+
+      {/* For development only */}
+      <DevTool control={control}/>
     </>
   );
 };
