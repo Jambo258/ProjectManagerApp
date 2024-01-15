@@ -1,5 +1,5 @@
-import server from "./server.js";
+import app from "./server.js";
 
 const PORT = process.env.BACKEND_PORT;
 
-server.listen(PORT, () => console.log("Listening to port", PORT));
+app.listen(PORT, () => console.log("Listening to port", PORT));

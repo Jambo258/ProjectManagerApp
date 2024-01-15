@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
+import { Modal } from "../../components/Modal";
 
 const project = {
   id: 2,
@@ -30,8 +31,10 @@ export const ProjectHeader = () => {
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
-          <RenameProjectModal />
-          <section className="py-1 ps-1 pe-4">Temp content</section>
+          {/* ProjectId still a placeholder! */}
+          <Modal btnText={"Rename project"} btnStyling={"min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"} modalTitle={"Rename project"}>
+            <RenameProjectModal projectId={1} projectName={project.name}/>
+          </Modal>
           {/* Projectid still a placeholder! */}
           <AddPage projectid={212} buttonSelector={"menu"} />
         </Menu>
