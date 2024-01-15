@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "react-feather";
 import { Link } from "react-router-dom";
-
-// Interfaces for testing purposes
-
-interface Project {
-  id: number;
-  name: string;
-  pages: [{ id: number; name: string }];
-  users: [{ id: number; name: string }];
-}
+import type { Project } from "../../features/api/apiSlice";
 
 interface ProjectNavItemProps {
   project: Project;

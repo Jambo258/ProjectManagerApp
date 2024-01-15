@@ -30,6 +30,8 @@ export interface Project {
   name: string;
   created_at: string;
   updated_at: string;
+  pages: Page[];
+  users: User[];
 }
 
 export interface ProjectEditRequest {
@@ -156,7 +158,7 @@ export const api = createApi({
       providesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
     }),
     addNewPage: builder.mutation<Page, NewPage>({
-      query: ({pageName, projectid, content}) => ({
+      query: ({ pageName, projectid, content }) => ({
         url: "/pages",
         method: "POST",
         body: { name: pageName, projectid: projectid, content: content },
