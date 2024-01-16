@@ -1,5 +1,5 @@
 import { Loader } from "react-feather";
-import { useGetProjectsQuery } from "../../features/api/apiSlice";
+import { useGetProjectsQuery } from "../api/apiSlice";
 
 export const HomeView = () => {
   const { data: projects = [], isLoading, isSuccess, isError } = useGetProjectsQuery();

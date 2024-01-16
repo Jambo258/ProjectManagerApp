@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProfileView } from "../views/profileView";
+import { ProfileView } from "./ProfileView";
 import { X } from "react-feather";
 
 export const ProfileModal = () => {
@@ -46,5 +46,3 @@ export const ProfileModal = () => {
     </>
   );
 };
-
-

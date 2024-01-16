@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAddNewProjectMutation } from "../../features/api/apiSlice";
+import { useAddNewProjectMutation } from "../api/apiSlice";
 import { Plus, X } from "react-feather";
 
 const CreateProjectModal = () => {

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { DashboardNav } from "./components/DashboardNav";
-import { ProjectHeader } from "./components/ProjectHeader";
+import { DashboardNav } from "./DashboardNav";
+import { ProjectHeader } from "../project/ProjectHeader";
 
 export const PrivatePage = () => {
   return (

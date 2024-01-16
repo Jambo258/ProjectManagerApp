@@ -1,5 +1,5 @@
 import React from "react";
-import { AppRouter } from "./routes/routes.tsx";
+import { AppRouter } from "./routes/Routes.tsx";
 import ReactDOM from "react-dom/client";
 import { persistor, store } from "./app/store";
 import { Provider } from "react-redux";
