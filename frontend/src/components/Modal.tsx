@@ -1,11 +1,11 @@
-import React, { type ReactElement, useState, } from "react";
+import React, { type ReactElement, ReactNode, useState, } from "react";
 import { X } from "react-feather";
 
 interface ModalProps {
-    btnText: string;
-    btnStyling: string;
-    modalTitle: string | null;
-    children: ReactElement;
+  btnText: string | ReactNode;
+  btnStyling: string;
+  modalTitle: string | null;
+  children: ReactElement;
 }
 
 export const Modal = ({
