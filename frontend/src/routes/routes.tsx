@@ -31,31 +31,3 @@ export const AppRouter = () =>  {
   return(
     <RouterProvider router={router} />);
 };
-
-
-/*
-export const AppEntryPoint = () => {
-  const user = useAppSelector((state) => state.auth.user);
-
-  const router = useMemo(
-    () =>
-      createBrowserRouter(
-        createRoutesFromElements(
-          <Route path="/" element={<App />}>
-            <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
-              <Route index element={user ? <ProjectView /> : <HomeView />} />
-              <Route path="login" element={<LoginView />} />
-              <Route path="dropdown" element={<DropDownComponent />} />
-              <Route path="profile" element={<ProfileModal />} />
-              <Route path="register" element={<RegisterView />} />
-            </Route>
-          </Route>
-        )
-      ),
-    [user]
-  );
-  return (
-    <RouterProvider router={router} />
-  );
-};
-*/
