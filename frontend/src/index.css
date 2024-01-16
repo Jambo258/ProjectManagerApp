@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 @layer base {
+
   button,
   [type="button"],
   [type="reset"],
@@ -20,8 +21,13 @@
     @apply outline-none ring ring-dark-blue-50
   }
 
-  input {
+  input, select {
     @apply text-dark-font body-text-lg border border-solid border-grayscale-400 rounded py-3 px-6;
+  }
+
+  input:focus,
+  select:focus {
+    @apply focus:outline-none focus:ring focus:ring-dark-blue-50;
   }
 }
 
