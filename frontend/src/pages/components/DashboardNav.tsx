@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import { ProfileModal } from "./profilemodal";
 import CreateProjectModal from "./CreateProjectModal";
+import { useLogoutMutation } from "../../features/api/apiSlice";
 
 // Example project for mockup purposes
 const exampleProjects = [
@@ -46,6 +47,7 @@ const exampleProjects = [
 // Logout
 
 export const DashboardNav = () => {
+  const [logout] = useLogoutMutation();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
 
   return (
@@ -85,10 +87,10 @@ export const DashboardNav = () => {
       {collapseNav &&
       <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
         <ProfileModal />
-        
+
         <div>
           <button
-            onClick={() => console.log("Log out")}
+            onClick={() => logout()}
             className="float-right w-fit p-2 heading-xs text-light-font bg-grayscale-0 hover:text-primary-200 hover:bg-grayscale-0"
           >
             <p>Log out</p>

@@ -1,7 +1,8 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Route
+  Route,
+  RouterProvider,
 } from "react-router-dom";
 import App from "../app/App.tsx";
 import { PublicPage } from "../pages/publicPage.tsx";
@@ -11,18 +12,50 @@ import { ProfileModal } from "../pages/components/profilemodal.tsx";
 import { ProjectView } from "../pages/views/projectView.tsx";
 import { PrivatePage } from "../pages/privatePage.tsx";
 import { HomeView } from "../pages/views/homeView.tsx";
+import { useAppSelector } from "../app/hooks.ts";
 
-const loggedIn = true;
-
-export const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="/" element={loggedIn ? <PrivatePage /> : <PublicPage />} >
-        <Route index element={loggedIn ? <ProjectView /> : <HomeView />} />
-        <Route path="login" element={<LoginView />} />
-        <Route path="profile" element={<ProfileModal/>} />
-        <Route path="register" element={<RegisterView />} />
+export const AppRouter = () =>  {
+  const user = useAppSelector((state) => state.auth.user);
+  console.log(user);
+  const router =  createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<App />}>
+        <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
+          <Route index element={user ? <ProjectView /> : <HomeView />} />
+          <Route path="login" element={<LoginView />} />
+          <Route path="profile" element={<ProfileModal />} />
+          <Route path="register" element={<RegisterView />} />
+        </Route>
       </Route>
-    </Route>
-  )
-);
+    ));
+  return(
+    <RouterProvider router={router} />);
+};
+
+
+/*
+export const AppEntryPoint = () => {
+  const user = useAppSelector((state) => state.auth.user);
+
+  const router = useMemo(
+    () =>
+      createBrowserRouter(
+        createRoutesFromElements(
+          <Route path="/" element={<App />}>
+            <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
+              <Route index element={user ? <ProjectView /> : <HomeView />} />
+              <Route path="login" element={<LoginView />} />
+              <Route path="dropdown" element={<DropDownComponent />} />
+              <Route path="profile" element={<ProfileModal />} />
+              <Route path="register" element={<RegisterView />} />
+            </Route>
+          </Route>
+        )
+      ),
+    [user]
+  );
+  return (
+    <RouterProvider router={router} />
+  );
+};
+*/
