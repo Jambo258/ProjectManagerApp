@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
-import { ProfileModal } from "./profilemodal";
-import CreateProjectModal from "./CreateProjectModal";
-import { useLogoutMutation } from "../../features/api/apiSlice";
+import { ProfileModal } from "./ProfileModal";
+import CreateProjectModal from "../project/CreateProjectModal";
+import { useLogoutMutation } from "../api/apiSlice";
 
 // Example project for mockup purposes
 const exampleProjects = [

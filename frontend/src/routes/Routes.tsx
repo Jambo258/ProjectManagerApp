@@ -5,13 +5,13 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "../app/App.tsx";
-import { PublicPage } from "../pages/publicPage.tsx";
-import { RegisterView } from "../pages/views/registerView.tsx";
-import { LoginView } from "../pages/views/loginView.tsx";
-import { ProfileModal } from "../pages/components/profilemodal.tsx";
-import { ProjectView } from "../pages/views/projectView.tsx";
-import { PrivatePage } from "../pages/privatePage.tsx";
-import { HomeView } from "../pages/views/homeView.tsx";
+import { PublicPage } from "../features/frontpage/PublicPage.tsx";
+import { RegisterView } from "../features/auth/RegisterView.tsx";
+import { LoginView } from "../features/auth/LoginView.tsx";
+import { ProfileModal } from "../features/user/ProfileModal.tsx";
+import { ProjectView } from "../features/project/ProjectView.tsx";
+import { PrivatePage } from "../features/user/PrivatePage.tsx";
+import { HomeView } from "../features/frontpage/HomeView.tsx";
 import Editor from "../features/editor/Editor.tsx";
 import { useAppSelector } from "../app/hooks.ts";
 
