@@ -8,6 +8,7 @@ COPY ./src ./src
 COPY ./prisma ./prisma
 COPY ./tsconfig*.json ./
 COPY ./types ./types
+COPY ./patches ./patches
 
 RUN npm ci
 RUN npm run build

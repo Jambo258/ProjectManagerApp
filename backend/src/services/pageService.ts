@@ -1,40 +1,63 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function getpageById(id: number) {
-  const page = await prisma.pages.findUnique({
+const getpageById = async (id: number) => {
+  return await prisma.pages.findUnique({
     where: { id: id },
   });
-  return page;
-}
+};
 
-export async function createPage(
-  name: string,
-  projectid: number,
-  content: object
-) {
-  const newPage = await prisma.pages.create({
-    data: { name: name, projectid: projectid, content: content },
+const createPage = async (name: string, projectid: number) => {
+  return await prisma.pages.create({
+    data: { name: name, projectid: projectid },
   });
-  return newPage;
-}
+};
 
-export async function updatePage(
-  id: number,
-  name: string,
-  content: object
-) {
-  const page = await prisma.pages.update({
+const updatePageName = async (id: number, name: string) => {
+  return await prisma.pages.update({
     where: { id: id },
-    data: { name: name, content: content },
+    data: { name: name },
   });
-  return page;
-}
+};
 
-export async function deletePage(id: number) {
-  const page = await prisma.pages.delete({
+const updatePageContent = async (id: number, content: Buffer) => {
+  return await prisma.pages.update({
+    where: { id: id },
+    data: { content: content },
+  });
+};
+
+const deletePage = async (id: number) => {
+  return await prisma.pages.delete({
     where: { id },
   });
-  return page;
-}
+};
+
+const canEditPage = async (userId: number, pageId: number) => {
+  return !!await prisma.projects.findFirst({
+    where: {
+      users: {
+        some: {
+          userid: userId,
+          OR: [
+            { role: Role.manager },
+            { role: Role.editor }
+          ],
+        },
+      },
+      pages: {
+        some: { id: pageId },
+      }
+    },
+  });
+};
+
+export {
+  getpageById,
+  createPage,
+  updatePageName,
+  updatePageContent,
+  deletePage,
+  canEditPage,
+};

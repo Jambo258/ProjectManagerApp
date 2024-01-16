@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { agent } from "supertest";
 import { it, describe, beforeAll, afterAll, expect } from "vitest";
-import server from "../src/server.js";
+import app from "../src/server.js";
 
-const request = agent(server);
+const request = agent(app);
 
 beforeAll(async () => {
   await request

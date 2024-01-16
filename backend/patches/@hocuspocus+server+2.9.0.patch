@@ -1,0 +1,26 @@
+diff --git a/node_modules/@hocuspocus/server/dist/packages/server/src/Hocuspocus.d.ts b/node_modules/@hocuspocus/server/dist/packages/server/src/Hocuspocus.d.ts
+index 4344c52..f5ded7e 100644
+--- a/node_modules/@hocuspocus/server/dist/packages/server/src/Hocuspocus.d.ts
++++ b/node_modules/@hocuspocus/server/dist/packages/server/src/Hocuspocus.d.ts
+@@ -1,7 +1,7 @@
+ /// <reference types="node" />
+ import { IncomingMessage } from 'http';
+ import WebSocket, { AddressInfo } from 'ws';
+-import { Server as HocuspocusServer } from './Server';
++import { Server as HocuspocusServer } from './Server.js';
+ import { Debugger } from './Debugger.js';
+ import { DirectConnection } from './DirectConnection.js';
+ import Document from './Document.js';
+diff --git a/node_modules/@hocuspocus/server/dist/packages/server/src/Server.d.ts b/node_modules/@hocuspocus/server/dist/packages/server/src/Server.d.ts
+index 3137617..3621ee1 100644
+--- a/node_modules/@hocuspocus/server/dist/packages/server/src/Server.d.ts
++++ b/node_modules/@hocuspocus/server/dist/packages/server/src/Server.d.ts
+@@ -1,7 +1,7 @@
+ /// <reference types="node" />
+ import { IncomingMessage, Server as HTTPServer, ServerResponse } from 'http';
+ import { WebSocketServer } from 'ws';
+-import { Hocuspocus } from './Hocuspocus';
++import { Hocuspocus } from './Hocuspocus.js';
+ export declare class Server {
+     httpServer: HTTPServer;
+     webSocketServer: WebSocketServer;

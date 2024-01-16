@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getpageById,
   createPage,
-  updatePage,
+  updatePageName,
   deletePage,
 } from "../services/pageService.js";
 import { checkForUserExistingOnProject } from "../services/projectService.js";
@@ -13,7 +13,7 @@ const pagesRouter = Router();
 pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {
     const userid = req.session.userId!;
-    const foundPage = await getpageById(parseInt(req.params.id));
+    const foundPage = await getpageById(Number(req.params.id));
 
     if (!foundPage) return res.status(404).json({ error: "Page not found" });
 
@@ -36,17 +36,14 @@ pagesRouter.post("/", async (req, res, next) => {
     const {
       name,
       projectid,
-      content ,
     } = req.body;
     const userid = req.session.userId!;
 
     if (
       !name ||
       !projectid ||
-      !content ||
       typeof name !== "string" ||
-      typeof projectid !== "number" ||
-      typeof content !== "object"
+      typeof projectid !== "number"
     ) {
       return res.status(400).json({ error: "missing parameters" });
     }
@@ -56,7 +53,7 @@ pagesRouter.post("/", async (req, res, next) => {
     if (findUser?.role !== (Role.editor && Role.manager))
       res.status(401).json({ error: "missing role" });
 
-    const newPage = await createPage(name, projectid, content as object);
+    const newPage = await createPage(name, projectid);
     return res.status(200).json(newPage);
   } catch (error) {
     next(error);
@@ -66,7 +63,8 @@ pagesRouter.post("/", async (req, res, next) => {
 pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
   try {
     const userid = req.session.userId!;
-    const foundPage = await getpageById(parseInt(req.params.id));
+    const pageId = Number(req.params.id);
+    const foundPage = await getpageById(pageId);
 
     if (!foundPage)
       return res.status(404).json({ error: "page doesn't exist" });
@@ -76,7 +74,7 @@ pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
     if (findUser?.role !== Role.manager)
       res.status(401).json({ error: "missing role" });
 
-    const page = await deletePage(parseInt(req.params.id));
+    const page = await deletePage(pageId);
     return res.status(200).json({ id: page.id });
   } catch (error) {
     next(error);
@@ -87,10 +85,14 @@ pagesRouter.put("/:id(\\d+)", async (req, res, next) => {
   try {
     const {
       name,
-      content,
     } = req.body;
+    const pageId = Number(req.params.id);
 
-    const foundPage = await getpageById(parseInt(req.params.id));
+    if (!name || typeof name !== "string") {
+      return res.status(400).json({ error: "missing parameters" });
+    }
+
+    const foundPage = await getpageById(pageId);
     if (!foundPage)
       return res.status(404).json({ error: "page doesn't exist" });
 
@@ -101,11 +103,7 @@ pagesRouter.put("/:id(\\d+)", async (req, res, next) => {
     if (findUser?.role !== (Role.editor && Role.manager))
       res.status(401).json({ error: "missing role" });
 
-    const updatedPage = await updatePage(
-      parseInt(req.params.id),
-      name as string,
-      content as object
-    );
+    const updatedPage = await updatePageName(pageId, name);
     return res.status(200).json(updatedPage);
   } catch (error) {
     next(error);

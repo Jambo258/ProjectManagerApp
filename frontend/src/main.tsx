@@ -1,6 +1,5 @@
 import React from "react";
-import { router } from "./routes/routes.tsx";
-import { RouterProvider } from "react-router-dom";
+import { AppRouter } from "./routes/routes.tsx";
 import ReactDOM from "react-dom/client";
 import { persistor, store } from "./app/store";
 import { Provider } from "react-redux";
@@ -12,7 +11,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
+        <AppRouter/>
       </PersistGate>
     </Provider>
   </React.StrictMode>

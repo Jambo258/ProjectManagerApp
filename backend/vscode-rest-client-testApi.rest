@@ -1,0 +1,56 @@
+POST http://localhost:3001/users/register
+Content-Type: application/json
+
+{
+  "email": "a@a.a",
+  "name": "pekka",
+  "password": "aaaaaa"
+}
+###
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+{
+  "email": "a@a.a",
+  "password": "aaaaaa"
+}
+###
+GET http://localhost:3001/users/getallusers
+###
+GET http://localhost:3001/users/logout
+###
+DELETE http://localhost:3001/users/delete
+###
+PUT http://localhost:3001/users/update
+Content-Type: application/json
+
+{
+  "name": "matti"
+}
+###
+GET http://localhost:3001/projects
+###
+POST http://localhost:3001/pages
+Content-Type: application/json
+
+{
+  "name": "page2",
+  "projectid": 57
+}
+###
+GET http://localhost:3001/pages/32
+###
+POST http://localhost:3001/projects/
+Content-Type: application/json
+
+{
+  "name": "proju1"
+}
+###
+POST http://localhost:3001/pages/
+Content-Type: application/json
+
+{
+  "projectid": 96,
+  "name": "sivu1"
+}

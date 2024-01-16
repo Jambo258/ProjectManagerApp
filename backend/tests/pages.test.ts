@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { agent } from "supertest";
 import { it, describe, beforeAll, afterAll, expect } from "vitest";
-import server from "../src/server.js";
+import app from "../src/server.js";
 
-const manager = agent(server);
-const viewer = agent(server);
-const editor = agent(server);
+const manager = agent(app);
+const viewer = agent(app);
+const editor = agent(app);
 
-const noUser = agent(server);
+const noUser = agent(app);
 
 let projectid = 0;
 let pageid = 0;
