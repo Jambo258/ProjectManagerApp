@@ -1,9 +1,4 @@
 import { NavLink } from "react-router-dom";
-<<<<<<< HEAD:frontend/src/pages/components/NavBar.tsx
-=======
-import { useAppSelector } from "../../app/hooks";
-import { useLogoutMutation } from "../api/apiSlice";
->>>>>>> 1f12b5fc145874227a98ff0b829f0c921e75b9c6:frontend/src/features/frontpage/NavBar.tsx
 
 export const NavBar = () => {
   return (
