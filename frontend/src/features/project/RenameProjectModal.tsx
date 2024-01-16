@@ -6,7 +6,7 @@ import { useEditProjectMutation } from "../api/apiSlice";
 
 // Hook Form and Yup
 import { FieldErrors, useForm } from "react-hook-form";
-import { renameProjectSchema } from "./projectValidation";
+import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 
@@ -32,7 +32,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
     defaultValues: {
       projectName: projectName,
     },
-    resolver: yupResolver(renameProjectSchema)
+    resolver: yupResolver(projectNameSchema)
   });
 
   const onError = (errors: FieldErrors<RenameProjectFormValues>) => {
