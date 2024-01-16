@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import { ProfileModal } from "./profilemodal";
 import CreateProjectModal from "./CreateProjectModal";
+import { useLogoutMutation } from "../../features/api/apiSlice";
 import { useGetProjectsQuery } from "../../features/api/apiSlice";
 
 // TO DO:
@@ -11,6 +12,7 @@ import { useGetProjectsQuery } from "../../features/api/apiSlice";
 // Logout
 
 export const DashboardNav = () => {
+  const [logout] = useLogoutMutation();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
   const { data: projects = [] } = useGetProjectsQuery();
 
@@ -62,7 +64,7 @@ export const DashboardNav = () => {
 
           <div>
             <button
-              onClick={() => console.log("Log out")}
+              onClick={() => logout()}
               className="float-right w-fit p-2 heading-xs text-light-font bg-grayscale-0 hover:text-primary-200 hover:bg-grayscale-0"
             >
               <p>Log out</p>
