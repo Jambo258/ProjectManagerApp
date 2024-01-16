@@ -15,10 +15,10 @@ import { HomeView } from "../pages/views/homeView.tsx";
 import Editor from "../features/editor/Editor.tsx";
 import { useAppSelector } from "../app/hooks.ts";
 
-export const AppRouter = () =>  {
+export const AppRouter = () => {
   const user = useAppSelector((state) => state.auth.user);
   console.log(user);
-  const router =  createBrowserRouter(
+  const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<App />}>
         <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
@@ -29,7 +29,7 @@ export const AppRouter = () =>  {
           <Route path="register" element={<RegisterView />} />
         </Route>
       </Route>
-    ));
-  return(
-    <RouterProvider router={router} />);
+    )
+  );
+  return <RouterProvider router={router} />;
 };

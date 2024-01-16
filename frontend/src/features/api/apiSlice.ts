@@ -126,7 +126,7 @@ export const api = createApi({
       query: () => "/projects",
       providesTags: ["Projects"],
     }),
-    getProject: builder.query<ProjectWithPages, number>({
+    getProject: builder.query<Project, number>({
       query: (projectId) => `/projects/${projectId}`,
       providesTags: (_result, _error, projectId) => [{ type: "Pages", id: projectId }],
     }),

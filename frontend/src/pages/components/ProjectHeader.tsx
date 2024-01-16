@@ -5,28 +5,14 @@ import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "../../features/project/RenameProjectModal";
 import AddPage from "../../features/Page/AddPage";
 import { Modal } from "../../components/Modal";
-
-const project = {
-  id: 2,
-  name: "Group Project",
-  pages: [
-    {
-      id: 21,
-      name: "Task Board",
-    },
-    {
-      id: 22,
-      name: "To do",
-    },
-    {
-      id: 23,
-      name: "Notepad",
-    },
-  ],
-};
+import { useGetProjectPageQuery } from "../../features/api/apiSlice";
 
 export const ProjectHeader = () => {
-  const currentPage = parseInt(useParams().id!);
+  const pageid = parseInt(useParams().pageId!);
+
+  const { data: project } = useGetProjectPageQuery(pageid);
+
+  if (!project) return null;
   return (
     <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
@@ -40,10 +26,13 @@ export const ProjectHeader = () => {
             }
             modalTitle={"Rename project"}
           >
-            <RenameProjectModal projectId={1} projectName={project.name} />
+            <RenameProjectModal
+              projectId={project.projectid}
+              projectName={project.name}
+            />
           </Modal>
           {/* Projectid still a placeholder! */}
-          <AddPage projectid={currentPage} buttonSelector={"menu"} />
+          <AddPage projectid={project.projectid} buttonSelector={"menu"} />
         </Menu>
       </section>
 
@@ -59,11 +48,11 @@ export const ProjectHeader = () => {
                   : "mr-4 focus:outline-none"
               }
             >
-              {page.name}
+              {project.name}
             </NavLink>
           ))}
         {/* Projectid still a placeholder! */}
-        <AddPage projectid={currentPage} buttonSelector={"plus"} />
+        <AddPage projectid={project.projectid} buttonSelector={"plus"} />
       </nav>
     </header>
   );
