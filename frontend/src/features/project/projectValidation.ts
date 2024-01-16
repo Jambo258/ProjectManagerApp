@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const renameProjectSchema = yup.object().shape({
+export const projectNameSchema = yup.object().shape({
   projectName: yup
     .string()
     .trim()
@@ -9,4 +9,4 @@ export const renameProjectSchema = yup.object().shape({
     .required("Project name is required"),
 });
 
-export type registerUserSchemaType = yup.InferType<typeof renameProjectSchema>;
+export type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
