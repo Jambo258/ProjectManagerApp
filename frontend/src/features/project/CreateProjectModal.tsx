@@ -1,92 +1,103 @@
+// React
 import { useState } from "react";
+
+// Redux Toolkit
 import { useAddNewProjectMutation } from "../api/apiSlice";
-import { Plus, X } from "react-feather";
 
-const CreateProjectModal = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [inputName, setInputName] = useState("");
-  const [addNewProject] = useAddNewProjectMutation();
+// Hook Form and Yup
+import { FieldErrors, useForm } from "react-hook-form";
+import { projectNameSchema } from "./projectValidation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { DevTool } from "@hookform/devtools";
 
-  const newProject = async () => {
-    try {
-      const project = await addNewProject(inputName).unwrap();
+interface CreateProjectFormValues {
+  projectName: string;
+}
 
-      if (project) closeModal();
-    } catch (err) {
-      console.error("failed to create project", err);
+interface CreateProjectProps {
+  closeModal?: () => void;
+}
+
+const CreateProjectModal = ({ closeModal }: CreateProjectProps) => {
+  const [addNewProject, { isLoading }] = useAddNewProjectMutation();
+  const [formError, setFormError] = useState<null | string>(null);
+  const {
+    control,
+    register,
+    formState: {isDirty, errors},
+    handleSubmit,
+  } = useForm<CreateProjectFormValues>({
+    resolver: yupResolver(projectNameSchema)
+  });
+
+  const onError = (errors: FieldErrors<CreateProjectFormValues>) => {
+    console.log("Form field errors:", errors);
+  };
+
+  const canSave = isDirty && !isLoading;
+
+  const newProject = async (formData: CreateProjectFormValues) => {
+    if (canSave) {
+      try {
+        const project = await addNewProject(formData.projectName).unwrap();
+        // For development purposes
+        console.log("Form submitted");
+        console.log("Project:", project);
+        if (project) {
+          closeModal!();
+        }
+      } catch (err) {
+        onError;
+        console.error("failed to create project", err);
+        // TO DO: Refactor this
+        if (
+          err &&
+          typeof err === "object" &&
+          "data" in err &&
+          err.data &&
+          typeof err.data === "object"
+        ) {
+          const errorMessage = Object.values(err.data);
+          setFormError(errorMessage.toString());
+        }
+      }
     }
-  };
-
-  const openModal = () => {
-    setInputName("");
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setInputName("");
   };
 
   return (
     <>
-      <button className="p-1.5 rounded-full heading-md" onClick={() => openModal()}>
-        <Plus size={16} />
-      </button>
-      {showModal &&
-        <div
-          onClick={() => closeModal()}
-          className={`fixed flex inset-0 z-50 justify-center items-center transition-colors ${
-            showModal ? "visible bg-dark-blue-100/40" : "invisible"
-          }`}
-        >
-          <div className="relative w-[500px] h-[300px] my-6 mx-auto text-dark-font text-left">
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className={`p-2 rounded-lg shadow transition-all bg-grayscale-100  ${
-                showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
-              }`}
-            >
-              <div className="flex justify-end">
-                <button
-                  className="text-right bg-grayscale-0 p-2 hover:bg-grayscale-0"
-                  onClick={() => closeModal()}
-                >
-                  <X size={20} />
-                </button>
-              </div>
+      <form
+        onSubmit={handleSubmit(newProject, onError)}
+        noValidate>
+        <label
+          className="block mb-6 body-text-sm text-left text-dark-font">
+            Project name:
+          <input
+            type="text"
+            {...register("projectName")}
+            placeholder="Give a project name!"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+          />
+          <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
+        </label>
+        <section className="grid grid-cols-2 gap-6">
+          <button
+            type="submit"
+            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
+              Add Project
+          </button>
+          <button
+            type="reset"
+            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
+            onClick={closeModal}>
+              Cancel
+          </button>
+        </section>
+      </form>
 
-              <div className="flex flex-col m-4">
-                <h1 className="pb-4 heading-md"> Create new project</h1>
-                <label className="heading-xs block">
-                  Project name
-                  <input
-                    type="text"
-                    placeholder="Give a project name!"
-                    value={inputName}
-                    onChange={(e) => setInputName(e.target.value)}
-                    className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
-                  />
-                </label>
-
-                <div className="flex my-4 justify-between">
-                  <button
-                    className="btn-text-md w-48 bg-success-100 hover:bg-success-200"
-                    onClick={() => newProject()}
-                  >
-                    Add Project
-                  </button>
-                  <button
-                    className="btn-text-md w-48 bg-caution-100 hover:bg-caution-200"
-                    onClick={() => closeModal()}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }
+      {/* For development only */}
+      <DevTool control={control}/>
     </>
   );
 };
