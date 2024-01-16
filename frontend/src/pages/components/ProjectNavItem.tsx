@@ -33,7 +33,7 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
         project.pages.map((page) => (
           <Link
             key={page.id}
-            to={"/"}
+            to={`/pages/${page.id}`}
             onClick={() => console.log("Open " + page.name)}
             className="block w-full px-6 py-3 text-left body-text-sm text-light-font border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100"
           >

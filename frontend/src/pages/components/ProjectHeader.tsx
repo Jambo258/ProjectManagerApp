@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 // Components
 import { Menu } from "../../components/Menu";
@@ -26,17 +26,24 @@ const project = {
 };
 
 export const ProjectHeader = () => {
+  const currentPage = parseInt(useParams().id!);
   return (
     <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
           {/* ProjectId still a placeholder! */}
-          <Modal btnText={"Rename project"} btnStyling={"min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"} modalTitle={"Rename project"}>
-            <RenameProjectModal projectId={1} projectName={project.name}/>
+          <Modal
+            btnText={"Rename project"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            }
+            modalTitle={"Rename project"}
+          >
+            <RenameProjectModal projectId={1} projectName={project.name} />
           </Modal>
           {/* Projectid still a placeholder! */}
-          <AddPage projectid={212} buttonSelector={"menu"} />
+          <AddPage projectid={currentPage} buttonSelector={"menu"} />
         </Menu>
       </section>
 
@@ -56,7 +63,7 @@ export const ProjectHeader = () => {
             </NavLink>
           ))}
         {/* Projectid still a placeholder! */}
-        <AddPage projectid={74} buttonSelector={"plus"} />
+        <AddPage projectid={currentPage} buttonSelector={"plus"} />
       </nav>
     </header>
   );
