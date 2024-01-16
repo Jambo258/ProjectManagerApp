@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import request from "supertest";
-import server from "../src/server.js";
+import app from "../src/server.js";
 import { it, describe, beforeAll, afterAll, expect } from "vitest";
 
-const req = request.agent(server);
+const req = request.agent(app);
 let projectId: number;
 let secondProjectId: number;
 let dummyUserId: number;

@@ -41,7 +41,7 @@ model Pages {
   name       String
   project    Projects @relation(fields: [projectid], references: [id], onDelete: Cascade, onUpdate: Cascade)
   projectid  Int
-  content    Json     @default("[]")
+  content    Bytes?
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
 }

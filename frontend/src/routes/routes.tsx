@@ -12,6 +12,7 @@ import { ProfileModal } from "../pages/components/profilemodal.tsx";
 import { ProjectView } from "../pages/views/projectView.tsx";
 import { PrivatePage } from "../pages/privatePage.tsx";
 import { HomeView } from "../pages/views/homeView.tsx";
+import Editor from "../features/editor/Editor.tsx";
 import { useAppSelector } from "../app/hooks.ts";
 
 export const AppRouter = () =>  {
@@ -22,6 +23,7 @@ export const AppRouter = () =>  {
       <Route path="/" element={<App />}>
         <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
           <Route index element={user ? <ProjectView /> : <HomeView />} />
+          <Route path="pages/:pageId" element={<Editor />} />
           <Route path="login" element={<LoginView />} />
           <Route path="profile" element={<ProfileModal />} />
           <Route path="register" element={<RegisterView />} />
