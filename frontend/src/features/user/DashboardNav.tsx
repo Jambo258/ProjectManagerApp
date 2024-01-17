@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "react-feather";
+import { ChevronLeft, ChevronRight, Plus } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import { ProfileModal } from "./ProfileModal";
 import CreateProjectModal from "../project/CreateProjectModal";
@@ -8,6 +8,8 @@ import {
   useLogoutMutation,
 } from "../../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../components/Modal";
+
 
 // TO DO:
 // Properly link existing projects and pages
@@ -58,7 +60,12 @@ export const DashboardNav = () => {
             <div className="grid grid-flow-col px-6 py-4 items-center border-b border-solid border-dark-blue-100">
               <div className="heading-sm">My projects</div>
               <div className="text-right">
-                <CreateProjectModal />
+                <Modal
+                  btnText={<Plus size={16} />}
+                  btnStyling={"p-1.5 rounded-full heading-md"}
+                  modalTitle={"Add new page"}>
+                  <CreateProjectModal />
+                </Modal>
               </div>
             </div>
 
