@@ -43,7 +43,6 @@ const AddPage = ({ projectId }: { projectId: number; }) => {
         const page = await addNewPage({
           projectid: projectId,
           pageName: formData.pageName,
-          content: [{}],
         }).unwrap();
         // For development purposes
         console.log("Form submitted");
