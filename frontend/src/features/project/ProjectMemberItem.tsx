@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { DeleteModal } from "../../components/DeleteModal";
 
 interface ProjectMemberProps {
   id: number,
   role: string,
-  handleUserRemoval: () => void;
 }
 
 // For testing purposes current user's role
@@ -17,16 +17,29 @@ const userRole = "manager";
 
 export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) => {
   const [currentRole, setCurrentRole] = useState<string>(role);
+  const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
+  const deleteModalText = "Are you sure you want to remove this user?";
   
   const onRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "remove") {
-      handleUserRemoval();
+      setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       // Update users role here
       setCurrentRole(e.target.value);
       console.log("Current role: " + e.target.value);
     }
   };
+  
+  const handleSubmitForModal = () => {
+    try {
+      // const user = await deleteUser().unwrap();
+      console.log("User removed");
+
+    } catch (err) {
+      console.error("Failed to delete user", err);
+    }
+  };
+
 
   return (
     <div className="flex flex-row items-center gap-3">
@@ -52,11 +65,21 @@ export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) =
         <option value="manager" 
           className="btn-text-xs">Manager</option>
         {(role === "manager") &&
-          <option value="remove" onSelect={() => handleUserRemoval()}
-            className="bg-caution-100 btn-text-xs">Remove</option>
+          <option value="remove"
+            className="bg-caution-100 btn-text-xs">
+            Remove
+          </option>
         }
       </select>
 
+      {confirmDeleteEdit && (
+        <DeleteModal
+          setConfirmDeleteEdit={setConfirmDeleteEdit}
+          confirmDeleteEdit={confirmDeleteEdit}
+          handleSubmitForModal={handleSubmitForModal}
+          deleteModalText={deleteModalText}
+        ></DeleteModal>
+      )}
     </div>
   );
 };

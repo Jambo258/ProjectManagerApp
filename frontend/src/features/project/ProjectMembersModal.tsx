@@ -3,7 +3,8 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { useAddNewProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
-import { ProjectMember } from "./ProjectMember";
+import { ProjectMember } from "./ProjectMemberItem";
+import { RemoveProjectMember } from "./RemoveProjectMember";
 
 interface Member {
   id: number,
@@ -23,7 +24,6 @@ interface InviteProjectMemberValues {
 // TO DO
 // Add new user (only managers)
 // - Check if user with that email exists
-// - Check if that user is already a project member
 
 // Change role (only managers)
 // - If you're only manager, you can't change your own role?
@@ -33,8 +33,7 @@ interface InviteProjectMemberValues {
 
 // Leave project
 // - Can't leave if you're only manager and there's still other members
-// - Is project deleted if you're last one to leave? 
-// - Use DeleteModal 
+// - Delete project if last one to leave
 
 export const ProjectMembersModal = () => {
   const [selectValue, setSelectValue] = useState<string>("");
@@ -145,12 +144,7 @@ export const ProjectMembersModal = () => {
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <button 
-          className="bg-caution-100 hover:bg-caution-200 btn-text-xs p-2" 
-          onClick={() => handleUserRemoval()}
-          disabled={userRole !== "manager"}>
-            Leave project
-        </button>
+        <RemoveProjectMember />
       </div>
     </>
   );
