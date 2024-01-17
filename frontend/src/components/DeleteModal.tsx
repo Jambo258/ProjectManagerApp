@@ -1,11 +1,13 @@
 import * as React from "react";
 import { X } from "react-feather";
+
 interface propTypes {
   confirmDeleteEdit: boolean;
   setConfirmDeleteEdit: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmitForModal: () => void;
   deleteModalText: string;
 }
+
 export const DeleteModal: React.FunctionComponent<propTypes> = ({
   confirmDeleteEdit,
   setConfirmDeleteEdit,
@@ -14,45 +16,46 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
 }) => {
   return (
     <div
-      className={`flex justify-center items-center fixed inset-0 transition-colors rounded-lg ${
+      className={`fixed flex inset-0 justify-center items-center transition-colors rounded ${
         confirmDeleteEdit ? "visible bg-dark-blue-100/40" : "invisible"}`}
       onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
     >
       <div
-        className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
+        onClick={(e) => e.stopPropagation()}
+        className={`min-w-max p-2 pb-4 flex flex-col inset-0 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
           confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"
         }`}
-        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-end">
+        <div className="w-full flex flex-col place-items-end">
           <button
-            className="w-12 bg-grayscale-0 px-2 py-2 hover:bg-grayscale-0"
             onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
+            className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="px-8">
-          <p>{deleteModalText}</p>
-          <section className="flex">
+        <main className="w-full mx-auto px-2">
+          <p className="w-10/12 mx-auto mb-4 text-center">{deleteModalText}</p>
+          <section className="grid grid-cols-2 gap-6">
             <button
+              type="button"
               onClick={() => {
                 handleSubmitForModal();
                 setConfirmDeleteEdit(!confirmDeleteEdit);
               }}
-              className="w-full me-2 my-4 btn-text-xs py-1.5 outline-none focus:outline focus:outline-caution-100 bg-caution-100 hover:bg-caution-200"
-            >
+              className="w-full py-2 btn-text-sm bg-caution-100 hover:bg-caution-200">
             Yes, I am sure
             </button>
             <button
+              type="reset"
               onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
-              className="w-full ms-2 my-4 btn-text-xs py-1.5 outline-none focus:outline focus:outline-primary-200"
-            >
+              className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200">
             Cancel
             </button>
           </section>
-        </div>
+        </main>
+
       </div>
     </div>
   );
