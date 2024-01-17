@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -15,21 +16,27 @@ import { HomeView } from "../features/frontpage/HomeView.tsx";
 import Editor from "../features/editor/Editor.tsx";
 import { useAppSelector } from "../app/hooks.ts";
 
-export const AppRouter = () =>  {
+export const AppRouter = () => {
   const user = useAppSelector((state) => state.auth.user);
   console.log(user);
-  const router =  createBrowserRouter(
+  const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<App />}>
         <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
           <Route index element={user ? <ProjectView /> : <HomeView />} />
-          <Route path="pages/:pageId" element={<Editor />} />
           <Route path="login" element={<LoginView />} />
-          <Route path="profile" element={<ProfileModal />} />
+          {user && (
+            <>
+              <Route path="projects/:projectId/:pageId" element={<Editor />} />
+              <Route path="projects/:projectId" element={<ProjectView />} />
+              <Route path="profile" element={<ProfileModal />} />
+            </>
+          )}
           <Route path="register" element={<RegisterView />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Route>
-    ));
-  return(
-    <RouterProvider router={router} />);
+    )
+  );
+  return <RouterProvider router={router} />;
 };
