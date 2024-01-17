@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
-import { ProfileModal } from "./ProfileModal";
 import CreateProjectModal from "../project/CreateProjectModal";
 import {
   useGetProjectsQuery,
@@ -9,7 +8,7 @@ import {
 } from "../../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
-
+import { ProfileModal } from "./ProfileModal";
 
 // TO DO:
 // Properly link existing projects and pages
@@ -80,8 +79,13 @@ export const DashboardNav = () => {
 
       {collapseNav && (
         <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
-          <ProfileModal />
-
+          <Modal
+            btnText="A"
+            btnStyling="bg-purple-200 hover:bg-purple-200 rounded m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
+            modalTitle="Account settings"
+          >
+            <ProfileModal/>
+          </Modal>
           <div>
             <button
               onClick={() => Logout()}
