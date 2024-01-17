@@ -6,6 +6,7 @@ import { RenameProjectModal } from "./RenameProjectModal";
 import AddPage from "../page/AddPage";
 import { Modal } from "../../components/Modal";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
+import { ProjectMembersModal } from "./ProjectMembersModal";
 
 export const ProjectHeader = () => {
   const projectid = parseInt(useParams().projectId!);
@@ -22,9 +23,7 @@ export const ProjectHeader = () => {
         <Menu>
           <Modal
             btnText={"Rename project"}
-            btnStyling={
-              "min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-            }
+            btnStyling={"min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
             modalTitle={"Rename project"}
           >
             <RenameProjectModal
@@ -33,6 +32,14 @@ export const ProjectHeader = () => {
             />
           </Modal>
 
+          <Modal 
+            btnText={"Project members"}
+            btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
+            modalTitle={"Project members"}
+          >    
+            <ProjectMembersModal projectId={projectid} />
+          </Modal>
+          
           <AddPage projectid={projectid} buttonSelector={"menu"} />
         </Menu>
       </section>

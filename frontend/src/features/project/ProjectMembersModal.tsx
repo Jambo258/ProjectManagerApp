@@ -3,17 +3,22 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { useAddNewProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
-import { ProjectMember } from "./ProjectMemberItem";
+import { useAppSelector } from "../../app/hooks";
+
 import { RemoveProjectMember } from "./RemoveProjectMember";
+import { ProjectMemberItem } from "./ProjectMemberItem";
 
 interface Member {
-  id: number,
-  role: string,
-  handleUserRemoval: () => void
+  id: number;
+  role: string;
+}
+
+interface ProjectMembersModalProps {
+  projectId: number
 }
 
 // For testing
-// Current user's role and projectId
+// Current user's role
 const userRole = "manager";
 
 interface InviteProjectMemberValues {
@@ -35,9 +40,10 @@ interface InviteProjectMemberValues {
 // - Can't leave if you're only manager and there's still other members
 // - Delete project if last one to leave
 
-export const ProjectMembersModal = () => {
+export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const [selectValue, setSelectValue] = useState<string>("");
-  
+  const user = useAppSelector((state) => state.auth.user);
+
   const {
     formState: {isDirty, isSubmitting, errors},
     handleSubmit,
@@ -85,13 +91,7 @@ export const ProjectMembersModal = () => {
     console.log("Form field errors:", errors);
   };
 
-  const handleUserRemoval = () => {
-    // Remove user here
-    // Need project and user id?
-  };
-
-  // Project number as dummy data
-  const { data: project } = useGetProjectQuery(3);
+  const { data: project } = useGetProjectQuery(projectId);
 
   return (
     <>
@@ -128,14 +128,9 @@ export const ProjectMembersModal = () => {
       }
       
       <h2 className="heading-xs mt-4">Current project members</h2>
-      { project?.users.map((member: Member) => (
-        <>
-          <ProjectMember 
-            key={member.id} id={member.id} role={member.role} handleUserRemoval={handleUserRemoval} />
-        </>
-      )
-      )
-      }
+      { project!.users.map((member: Member) => (
+        <ProjectMemberItem key={member.id} id={member.id} role={member.role} userRole={userRole} />
+      ))}
 
       <div className="flex flex-row gap-4 items-center pt-4">
         <div className="flex-1 items-center">
@@ -144,7 +139,7 @@ export const ProjectMembersModal = () => {
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <RemoveProjectMember />
+        <RemoveProjectMember userId={user!.id}/>
       </div>
     </>
   );

@@ -4,18 +4,15 @@ import { DeleteModal } from "../../components/DeleteModal";
 interface ProjectMemberProps {
   id: number,
   role: string,
+  userRole: string
 }
-
-// For testing purposes current user's role
-// Different things shown to manager and viewer/editor
-const userRole = "manager";
 
 // TO DO
 // Get name and email
 // Change role
 // Remove/leave from project
 
-export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) => {
+export const ProjectMemberItem = ({ id, role, userRole }: ProjectMemberProps) => {
   const [currentRole, setCurrentRole] = useState<string>(role);
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to remove this user?";
@@ -39,7 +36,6 @@ export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) =
       console.error("Failed to delete user", err);
     }
   };
-
 
   return (
     <div className="flex flex-row items-center gap-3">

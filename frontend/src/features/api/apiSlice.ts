@@ -8,6 +8,11 @@ export interface User {
   updated_at: string;
 }
 
+export interface ProjectMember {
+  id: number;
+  role: string;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -31,7 +36,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   pages: Page[];
-  users: User[];
+  users: ProjectMember[];
 }
 
 export interface ProjectEditRequest {
