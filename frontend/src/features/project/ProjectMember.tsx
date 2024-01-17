@@ -2,35 +2,38 @@ import { useState } from "react";
 
 interface Member {
   id?: number,
-  name: string,
-  email: string,
   role: string
 }
 
-// For testing purposes
-// Current user's id and role
-// Different things shown to manager and member
-const userId = 2;
+// For testing purposes current user's role
+// Different things shown to manager and viewer/editor
 const userRole = "manager";
 
-export const ProjectMember = ({ id, name, email, role }: Member) => {
+// TO DO
+// Get name and email
+// Change role
+// Remove/leave from project
+
+export const ProjectMember = ({ id, role }: Member) => {
   const [currentRole, setCurrentRole] = useState<string>(role);
 
+  const handleLeaveProject = () => {
+    try {
+      // Remove user from project here
+      console.log("User removed.");
+    } catch (err) {
+      console.error("Failed to delete user", err);
+    }
+  };
   
   const onRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "remove") {
-      removeUser();
+      handleLeaveProject();
     } else {
-      // Update users changed role here
+      // Update users role here
       setCurrentRole(e.target.value);
       console.log("Current role: " + e.target.value);
     }
-  };
-
-  // Remove user from project
-  const removeUser = () => {
-    // Remove user from project's members here
-    console.log("Remove user");
   };
 
   return (
@@ -38,25 +41,26 @@ export const ProjectMember = ({ id, name, email, role }: Member) => {
 
       <div className="w-8 h-8 btn-text-sm pt-1 text-center text-[white]
       bg-purple-200 rounded-full">
-        {name[0].toUpperCase()}
+        { /* temporary letter, when there is data for the name, use name[0].toUppercase */ }
+        A
       </div>
 
       <div className="flex-1">
-        <p className="body-text-md">{name}</p>
-        <p className="body-text-xs">{email}</p>
+        <p className="body-text-md">Name here</p>
+        <p className="body-text-xs">E-mail here</p>
       </div>
 
       <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
         value={currentRole} 
-        onChange={(e) => onRoleChange(e)} disabled={userRole != "manager"}>
+        onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager"}>
         <option value="editor" 
           className="btn-text-xs">Editor</option>
         <option value="viewer" 
           className="btn-text-xs">Viewer</option>
         <option value="manager" 
           className="btn-text-xs">Manager</option>
-        {(id !== userId && userRole === "manager") &&
-          <option value="remove" onSelect={() => removeUser()}
+        {(currentRole === "manager") &&
+          <option value="remove" onSelect={() => handleLeaveProject()}
             className="bg-caution-100 btn-text-xs">Remove</option>
         }
       </select>

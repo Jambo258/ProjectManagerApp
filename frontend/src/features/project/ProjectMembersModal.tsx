@@ -1,43 +1,17 @@
 import { useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useAddNewProjectUserMutation } from "../api/apiSlice";
+import { useAddNewProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
 import { ProjectMember } from "./ProjectMember";
 
-// For testing purposes
 interface Member {
   id?: number,
-  name: string,
-  email: string,
   role: string
 }
 
-// For testing purposes
-const members: Member[] = [
-  {
-    id: 1,
-    name: "Anni Aatos",
-    email: "anni.aatos@mail.com",
-    role: "editor"
-  },
-  {
-    id: 2,
-    name: "Berit Käppänä",
-    email: "berit@mail.com",
-    role: "manager"
-  },
-  {
-    id: 3,
-    name: "Carita Sammal",
-    email: "caritasammal@mail.com",
-    role: "viewer"
-  }
-];    
-
-// For testing purposes
+// For testing
 // Current user's role
-// Different things shown to manager and member
 const userRole = "manager";
 
 interface InviteProjectMemberValues {
@@ -45,11 +19,25 @@ interface InviteProjectMemberValues {
   role: string;
 }
 
+// TO DO
+// Add new user (only managers)
+// - Check if user with that email exists
+// - Check if that user already is in a project
+
+// Change role (only managers)
+// - If you're only manager, you can't change your own role?
+
+// Remove user from project (only managers)
+// - Use DeleteModal for confimation?
+
+// Leave project
+// - Can't leave if you're only manager and there's still other members
+// - Is project deleted if you're last one to leave? 
+// - Use DeleteModal 
+
 export const ProjectMembersModal = () => {
   const [selectValue, setSelectValue] = useState<string>("");
-
-  const [addNewProjectUser, { isLoading }] = useAddNewProjectUserMutation();
-  const [formError, setFormError] = useState<null | string>(null);
+  const [, { isLoading }] = useAddNewProjectUserMutation();
 
   const {
     formState: {isDirty, isSubmitting, errors},
@@ -59,20 +47,23 @@ export const ProjectMembersModal = () => {
   } = useForm<InviteProjectMemberValues>({
     defaultValues: {
       email: "",
-      role: "viewer"
+      role: "editor"
     },
     resolver: yupResolver(inviteUserSchema),
   });
 
+  const [formError, setFormError] = useState<null | string>(null);
   const canSubmit = isDirty && !isLoading;
 
-  const onHandleSubmit = async (formData: InviteProjectMemberValues) => {
-    console.log(formData.role);
+  // const [addProjectMember] = useAddNewProjectUserMutation();
+
+  const onHandleSubmit = (formData: InviteProjectMemberValues) => {
+    // Delete this when this is updated
+    console.log(formData);
 
     if (canSubmit) {
       try {
-        // await addNewProjectUser({ role: ?? } ).unwrap();
-        console.log("User invited (NOT WORKING YET): ", formData);
+        // Add new project member here
         reset();
         setFormError(null);
       } catch (err) {
@@ -96,10 +87,13 @@ export const ProjectMembersModal = () => {
     console.log("Form field errors:", errors);
   };
 
+  // Project number as dummy data
+  const { data: project } = useGetProjectQuery(3);
+
   return (
     <>
       { (userRole === "manager") &&
-      <>
+      <section>
         <form  className="flex flex-row gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input 
@@ -124,20 +118,20 @@ export const ProjectMembersModal = () => {
           Invite
           </button>
         </form>
-      
+        
         <p className="body-text-xs text-caution-200 mt-1">{errors.email?.message}</p>
         <p className="body-text-xs text-caution-200 mt-1">{formError}</p>
-      </>
+      </section>
       }
       
       <h2 className="heading-xs mt-4">Current project members</h2>
-      {
-        // Get members from project
-        members.map((member: Member) => (
+      { project?.users.map((member: Member) => (
+        <>
           <ProjectMember 
-            key={member.id} id={member.id} name={member.name} email={member.email} role={member.role} />
-        )
-        )
+            key={member.id} id={member.id} role={member.role} />
+        </>
+      )
+      )
       }
 
       <div className="flex flex-row gap-4 items-center pt-4">
@@ -149,7 +143,10 @@ export const ProjectMembersModal = () => {
         </div>
         <button 
           className="bg-caution-100 hover:bg-caution-200 btn-text-xs p-2" 
-          onClick={() => console.log("Leave project")}>Leave project</button>
+          onClick={() => console.log("Leave project.")}
+          disabled={userRole !== "manager"}>
+            Leave project
+        </button>
       </div>
     </>
   );
