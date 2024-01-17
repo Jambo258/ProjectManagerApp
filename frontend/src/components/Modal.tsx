@@ -1,8 +1,16 @@
-import React, { type ReactElement, ReactNode, useState, } from "react";
+import { type ReactElement, useState, createContext } from "react";
 import { X } from "react-feather";
 
+interface ModalContextType {
+  isModalOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}
+
+export const ModalContext = createContext<ModalContextType>(null!);
+
 interface ModalProps {
-  btnText: string | ReactNode;
+  btnText: string | ReactElement;
   btnStyling: string;
   modalTitle: string | null;
   children: ReactElement;
@@ -14,7 +22,7 @@ export const Modal = ({
   modalTitle,
   children
 }: ModalProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,7 +31,6 @@ export const Modal = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   return (
     <>
@@ -53,7 +60,9 @@ export const Modal = ({
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            { React.cloneElement(children, { openModal, closeModal }) }
+            <ModalContext.Provider value={{isModalOpen,  openModal, closeModal}}>
+              {children}
+            </ModalContext.Provider>
           </main>
         </dialog>
       </div>
