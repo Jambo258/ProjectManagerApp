@@ -12,7 +12,7 @@ interface Member {
 }
 
 // For testing
-// Current user's role
+// Current user's role and projectId
 const userRole = "manager";
 
 interface InviteProjectMemberValues {
@@ -23,7 +23,7 @@ interface InviteProjectMemberValues {
 // TO DO
 // Add new user (only managers)
 // - Check if user with that email exists
-// - Check if that user already is in a project
+// - Check if that user is already a project member
 
 // Change role (only managers)
 // - If you're only manager, you can't change your own role?
@@ -38,8 +38,7 @@ interface InviteProjectMemberValues {
 
 export const ProjectMembersModal = () => {
   const [selectValue, setSelectValue] = useState<string>("");
-  const [, { isLoading }] = useAddNewProjectUserMutation();
-
+  
   const {
     formState: {isDirty, isSubmitting, errors},
     handleSubmit,
@@ -54,9 +53,8 @@ export const ProjectMembersModal = () => {
   });
 
   const [formError, setFormError] = useState<null | string>(null);
+  const [addProjectMember, { isLoading }] = useAddNewProjectUserMutation();
   const canSubmit = isDirty && !isLoading;
-
-  // const [addProjectMember] = useAddNewProjectUserMutation();
 
   const onHandleSubmit = (formData: InviteProjectMemberValues) => {
     // Delete this when this is updated

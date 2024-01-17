@@ -51,7 +51,7 @@ export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) =
           className="btn-text-xs">Viewer</option>
         <option value="manager" 
           className="btn-text-xs">Manager</option>
-        {(currentRole === "manager") &&
+        {(role === "manager") &&
           <option value="remove" onSelect={() => handleUserRemoval()}
             className="bg-caution-100 btn-text-xs">Remove</option>
         }
