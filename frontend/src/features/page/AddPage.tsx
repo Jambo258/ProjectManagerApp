@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // Redux Toolkit
 import { useAddNewPageMutation } from "../api/apiSlice";
@@ -10,12 +10,16 @@ import { pageNameSchema } from "./pageValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 
+// Context
+import { ModalContext } from "../../components/Modal";
+
 interface AddPageFormValues {
   pageName: string;
 }
 
-const AddPage = ({ projectId, closeModal }: { projectId: number; closeModal?: () => void; }) => {
+const AddPage = ({ projectId }: { projectId: number; }) => {
   const [addNewPage, { isLoading }] = useAddNewPageMutation();
+  const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -45,7 +49,7 @@ const AddPage = ({ projectId, closeModal }: { projectId: number; closeModal?: ()
         console.log("Form submitted");
         console.log("Page:", page);
         if (page) {
-          closeModal!();
+          closeModal();
         }
       } catch (err) {
         onError;
