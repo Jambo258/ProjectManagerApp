@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useContext, useState , } from "react";
 
 // Redux Toolkit
 import { useAddNewProjectMutation } from "../api/apiSlice";
@@ -10,16 +10,16 @@ import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 
+// Context
+import { ModalContext } from "../../components/Modal";
+
 interface CreateProjectFormValues {
   projectName: string;
 }
 
-interface CreateProjectProps {
-  closeModal?: () => void;
-}
-
-const CreateProjectModal = ({ closeModal }: CreateProjectProps) => {
+const CreateProjectModal = () => {
   const [addNewProject, { isLoading }] = useAddNewProjectMutation();
+  const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -44,7 +44,7 @@ const CreateProjectModal = ({ closeModal }: CreateProjectProps) => {
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal!();
+          closeModal();
         }
       } catch (err) {
         onError;
