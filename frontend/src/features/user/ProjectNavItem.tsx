@@ -14,7 +14,7 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
     <section>
       <div className="bg-dark-blue-200 border-b border-solid border-dark-blue-100 px-6 py-3 overflow-auto flex justify-between">
         <Link
-          to={"/"}
+          to={`/projects/${project.id}`}
           onClick={() => console.log("Open " + project.name)}
           className="m-0 p-0 text-left leading-8 heading-xs text-light-font bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100"
         >
@@ -33,7 +33,7 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
         project.pages.map((page) => (
           <Link
             key={page.id}
-            to={`/pages/${page.id}`}
+            to={`/projects/${project.id}/${page.id}`}
             onClick={() => console.log("Open " + page.name)}
             className="block w-full px-6 py-3 text-left body-text-sm text-light-font border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100"
           >

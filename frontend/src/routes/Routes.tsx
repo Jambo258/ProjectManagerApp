@@ -27,7 +27,8 @@ export const AppRouter = () => {
           <Route path="login" element={<LoginView />} />
           {user && (
             <>
-              <Route path="pages/:pageId" element={<Editor />} />
+              <Route path="projects/:projectId/:pageId" element={<Editor />} />
+              <Route path="projects/:projectId" element={<ProjectView />} />
               <Route path="profile" element={<ProfileModal />} />
             </>
           )}

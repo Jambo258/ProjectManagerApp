@@ -5,20 +5,21 @@ import { Menu } from "../../components/Menu";
 import { RenameProjectModal } from "./RenameProjectModal";
 import AddPage from "../page/AddPage";
 import { Modal } from "../../components/Modal";
-import { useGetProjectPageQuery } from "../../features/api/apiSlice";
+import { useGetProjectQuery } from "../../features/api/apiSlice";
 
 export const ProjectHeader = () => {
-  const pageid = parseInt(useParams().pageId!);
+  const projectid = parseInt(useParams().projectId!);
 
-  const { data: project } = useGetProjectPageQuery(pageid);
+  const { data: project } = useGetProjectQuery(projectid);
 
-  if (!project) return null;
+  if (!project) {
+    return null;
+  }
   return (
     <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
-          {/* ProjectId still a placeholder! */}
           <Modal
             btnText={"Rename project"}
             btnStyling={
@@ -27,12 +28,12 @@ export const ProjectHeader = () => {
             modalTitle={"Rename project"}
           >
             <RenameProjectModal
-              projectId={project.projectid}
+              projectId={projectid}
               projectName={project.name}
             />
           </Modal>
-          {/* Projectid still a placeholder! */}
-          <AddPage projectid={project.projectid} buttonSelector={"menu"} />
+
+          <AddPage projectid={projectid} buttonSelector={"menu"} />
         </Menu>
       </section>
 
@@ -40,7 +41,7 @@ export const ProjectHeader = () => {
         {project.pages.length > 0 &&
           project.pages.map((page) => (
             <NavLink
-              to="/"
+              to={`/projects/${project.id}/${page.id}`}
               key={page.id}
               className={({ isActive }) =>
                 isActive
@@ -48,11 +49,11 @@ export const ProjectHeader = () => {
                   : "mr-4 focus:outline-none"
               }
             >
-              {project.name}
+              {page.name}
             </NavLink>
           ))}
-        {/* Projectid still a placeholder! */}
-        <AddPage projectid={project.projectid} buttonSelector={"plus"} />
+
+        <AddPage projectid={projectid} buttonSelector={"plus"} />
       </nav>
     </header>
   );
