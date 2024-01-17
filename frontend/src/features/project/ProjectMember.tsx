@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-interface Member {
-  id?: number,
+interface ProjectMemberProps {
+  id: number,
   role: string,
   handleUserRemoval: () => void;
 }
@@ -15,7 +15,7 @@ const userRole = "manager";
 // Change role
 // Remove/leave from project
 
-export const ProjectMember = ({ role, handleUserRemoval }: Member) => {
+export const ProjectMember = ({ role, handleUserRemoval }: ProjectMemberProps) => {
   const [currentRole, setCurrentRole] = useState<string>(role);
   
   const onRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

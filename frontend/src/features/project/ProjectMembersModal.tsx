@@ -6,7 +6,7 @@ import { inviteUserSchema } from "../auth/authValidation";
 import { ProjectMember } from "./ProjectMember";
 
 interface Member {
-  id?: number,
+  id: number,
   role: string,
   handleUserRemoval: () => void
 }
