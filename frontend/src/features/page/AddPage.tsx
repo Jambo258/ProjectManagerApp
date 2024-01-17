@@ -28,7 +28,6 @@ const AddPage = ({
       await addNewPage({
         projectid: projectid,
         pageName: pageName,
-        content: [{}],
       }).unwrap();
       setPageName("");
       closeModal();
@@ -49,23 +48,21 @@ const AddPage = ({
       ) : (
         <button type="button" className="w-full heading-xs bg-grayscale-0 p-2 hover:bg-grayscale-0 text-left"
           onClick={openModal}>
-        Add page
+          Add page
         </button>
       )}
 
       {showModal && (
         <div
           onClick={() => closeModal()}
-          className={`flex justify-center fixed inset-0 z-50 items-center transition-colors ${
-            showModal ? "visible bg-dark-blue-100/20" : "invisible"
-          }`}
+          className={`flex justify-center fixed inset-0 z-50 items-center transition-colors
+           ${showModal ? "visible bg-dark-blue-100/20" : "invisible"}`}
         >
           <div className="relative w-[500px] h-[300px] my-6 mx-auto">
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`rounded-lg shadow p-2 transition-all bg-grayscale-100  ${
-                showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"
-              }`}
+              className={`rounded-lg shadow p-2 transition-all bg-grayscale-100
+              ${showModal ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
             >
               <div className="flex justify-end">
                 <button
