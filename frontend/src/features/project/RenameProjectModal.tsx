@@ -1,5 +1,5 @@
 // React
-import { useState} from "react";
+import { useState, useContext} from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
@@ -10,6 +10,9 @@ import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 
+// Context
+import { ModalContext } from "../../components/Modal";
+
 interface RenameProjectFormValues {
   projectName: string;
 }
@@ -17,11 +20,11 @@ interface RenameProjectFormValues {
 interface RenameProjectProps {
   projectId: number;
   projectName: string;
-  closeModal?: () => void;
 }
 
-export const RenameProjectModal = ( {projectId, projectName, closeModal }: RenameProjectProps) => {
+export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProps) => {
   const [editProject, { isLoading }] = useEditProjectMutation();
+  const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -41,7 +44,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
 
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
     if (!isDirty) {
-      closeModal!();
+      closeModal();
     } else if (!isLoading) {
       try {
         const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
@@ -49,7 +52,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal!();
+          closeModal();
         }
       }
       catch (err) {
