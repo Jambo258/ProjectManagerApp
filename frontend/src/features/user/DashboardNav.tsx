@@ -3,44 +3,11 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import { ProfileModal } from "./ProfileModal";
 import CreateProjectModal from "../project/CreateProjectModal";
-import { useLogoutMutation } from "../../features/api/apiSlice";
+import {
+  useGetProjectsQuery,
+  useLogoutMutation,
+} from "../../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
-
-// Example project for mockup purposes
-const exampleProjects = [
-  {
-    id: 1,
-    name: "Personal Project",
-    pages: [
-      {
-        id: 11,
-        name: "To Dos",
-      },
-      {
-        id: 21,
-        name: "Notepad",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Group Project",
-    pages: [
-      {
-        id: 21,
-        name: "Task Board",
-      },
-      {
-        id: 22,
-        name: "To do",
-      },
-      {
-        id: 23,
-        name: "Notepad",
-      },
-    ],
-  },
-];
 
 // TO DO:
 // Properly link existing projects and pages
@@ -51,6 +18,7 @@ export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
+  const { data: projects = [] } = useGetProjectsQuery();
 
   const Logout = async () => {
     try {
@@ -94,7 +62,7 @@ export const DashboardNav = () => {
               </div>
             </div>
 
-            {exampleProjects.map((project) => (
+            {projects.map((project) => (
               <div key={project.id}>
                 <ProjectNavItem project={project} />
               </div>
