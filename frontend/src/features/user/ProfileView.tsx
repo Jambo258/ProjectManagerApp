@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { DeleteModal } from "../components/deleteModal";
-import { useDeleteUserMutation, useUpdateUserMutation } from "../../features/api/apiSlice";
-import { changeEmailSchema, changeNameSchema, changePasswordSchema } from "../../features/auth/authValidation";
+import { DeleteModal } from "../../components/DeleteModal";
+import { useDeleteUserMutation, useUpdateUserMutation } from "../api/apiSlice";
+import { changeEmailSchema, changeNameSchema, changePasswordSchema } from "../auth/authValidation";
 import { FieldErrors, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppSelector } from "../../app/hooks";

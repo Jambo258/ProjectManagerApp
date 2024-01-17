@@ -1,10 +1,46 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
-import { ProfileModal } from "./profilemodal";
-import CreateProjectModal from "./CreateProjectModal";
+import { ProfileModal } from "./ProfileModal";
+import CreateProjectModal from "../project/CreateProjectModal";
 import { useLogoutMutation } from "../../features/api/apiSlice";
-import { useGetProjectsQuery } from "../../features/api/apiSlice";
+import { useNavigate } from "react-router-dom";
+
+// Example project for mockup purposes
+const exampleProjects = [
+  {
+    id: 1,
+    name: "Personal Project",
+    pages: [
+      {
+        id: 11,
+        name: "To Dos",
+      },
+      {
+        id: 21,
+        name: "Notepad",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Group Project",
+    pages: [
+      {
+        id: 21,
+        name: "Task Board",
+      },
+      {
+        id: 22,
+        name: "To do",
+      },
+      {
+        id: 23,
+        name: "Notepad",
+      },
+    ],
+  },
+];
 
 // TO DO:
 // Properly link existing projects and pages
@@ -13,8 +49,17 @@ import { useGetProjectsQuery } from "../../features/api/apiSlice";
 
 export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
-  const { data: projects = [] } = useGetProjectsQuery();
+
+  const Logout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <nav
@@ -49,7 +94,7 @@ export const DashboardNav = () => {
               </div>
             </div>
 
-            {projects.map((project) => (
+            {exampleProjects.map((project) => (
               <div key={project.id}>
                 <ProjectNavItem project={project} />
               </div>
@@ -64,7 +109,7 @@ export const DashboardNav = () => {
 
           <div>
             <button
-              onClick={() => logout()}
+              onClick={() => Logout()}
               className="float-right w-fit p-2 heading-xs text-light-font bg-grayscale-0 hover:text-primary-200 hover:bg-grayscale-0"
             >
               <p>Log out</p>

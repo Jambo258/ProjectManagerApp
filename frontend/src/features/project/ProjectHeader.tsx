@@ -2,8 +2,8 @@ import { NavLink, useParams } from "react-router-dom";
 
 // Components
 import { Menu } from "../../components/Menu";
-import { RenameProjectModal } from "../../features/project/RenameProjectModal";
-import AddPage from "../../features/Page/AddPage";
+import { RenameProjectModal } from "./RenameProjectModal";
+import AddPage from "../page/AddPage";
 import { Modal } from "../../components/Modal";
 import { useGetProjectPageQuery } from "../../features/api/apiSlice";
 
