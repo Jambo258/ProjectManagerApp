@@ -2,7 +2,8 @@ import { useState } from "react";
 
 interface Member {
   id?: number,
-  role: string
+  role: string,
+  handleUserRemoval: () => void;
 }
 
 // For testing purposes current user's role
@@ -14,21 +15,12 @@ const userRole = "manager";
 // Change role
 // Remove/leave from project
 
-export const ProjectMember = ({ id, role }: Member) => {
+export const ProjectMember = ({ role, handleUserRemoval }: Member) => {
   const [currentRole, setCurrentRole] = useState<string>(role);
-
-  const handleLeaveProject = () => {
-    try {
-      // Remove user from project here
-      console.log("User removed.");
-    } catch (err) {
-      console.error("Failed to delete user", err);
-    }
-  };
   
   const onRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "remove") {
-      handleLeaveProject();
+      handleUserRemoval();
     } else {
       // Update users role here
       setCurrentRole(e.target.value);
@@ -60,7 +52,7 @@ export const ProjectMember = ({ id, role }: Member) => {
         <option value="manager" 
           className="btn-text-xs">Manager</option>
         {(currentRole === "manager") &&
-          <option value="remove" onSelect={() => handleLeaveProject()}
+          <option value="remove" onSelect={() => handleUserRemoval()}
             className="bg-caution-100 btn-text-xs">Remove</option>
         }
       </select>

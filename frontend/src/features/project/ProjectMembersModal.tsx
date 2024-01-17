@@ -7,7 +7,8 @@ import { ProjectMember } from "./ProjectMember";
 
 interface Member {
   id?: number,
-  role: string
+  role: string,
+  handleUserRemoval: () => void
 }
 
 // For testing
@@ -87,6 +88,11 @@ export const ProjectMembersModal = () => {
     console.log("Form field errors:", errors);
   };
 
+  const handleUserRemoval = () => {
+    // Remove user here
+    // Need project and user id?
+  };
+
   // Project number as dummy data
   const { data: project } = useGetProjectQuery(3);
 
@@ -128,7 +134,7 @@ export const ProjectMembersModal = () => {
       { project?.users.map((member: Member) => (
         <>
           <ProjectMember 
-            key={member.id} id={member.id} role={member.role} />
+            key={member.id} id={member.id} role={member.role} handleUserRemoval={handleUserRemoval} />
         </>
       )
       )
@@ -143,7 +149,7 @@ export const ProjectMembersModal = () => {
         </div>
         <button 
           className="bg-caution-100 hover:bg-caution-200 btn-text-xs p-2" 
-          onClick={() => console.log("Leave project.")}
+          onClick={() => handleUserRemoval()}
           disabled={userRole !== "manager"}>
             Leave project
         </button>
