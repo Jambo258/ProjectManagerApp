@@ -89,8 +89,8 @@ const CreateProjectModal = () => {
           </button>
           <button
             type="reset"
-            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
-            onClick={closeModal}>
+            onClick={closeModal}
+            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200">
               Cancel
           </button>
         </section>

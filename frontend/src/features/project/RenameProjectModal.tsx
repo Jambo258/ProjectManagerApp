@@ -91,19 +91,19 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
         </label>
-        <section className="flex">
+        <section className="grid grid-cols-2 gap-6">
           <button
             type="submit"
-            className="w-full me-6 py-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
-            Save
+            Save Changes
           </button>
           <button
             type="reset"
             onClick={closeModal}
             className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
-            Cancel
+            Cancel Changes
           </button>
         </section>
       </form>
