@@ -40,7 +40,6 @@ export const DeleteProjectModal = ({btnText, btnStyling}: IProps) => {
           closeModal();
           navigate("..", { relative: "path" });
           navigate(0);
-        //   redirect("/");
           // TO DO: Find better solution for this
         //   window.location.reload();
         }
