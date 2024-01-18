@@ -1,4 +1,13 @@
+// React
 import { useState } from "react";
+
+// React Router
+import { useNavigate, useParams } from "react-router-dom";
+
+// Redux Toolkit
+import { useDeleteProjectMutation } from "../api/apiSlice";
+
+// Components
 import { DeleteModal } from "../../components/DeleteModal";
 
 interface IProps {
@@ -7,6 +16,9 @@ interface IProps {
   }
 
 export const DeleteProjectModal = ({btnText, btnStyling}: IProps) => {
+  const navigate = useNavigate();
+  const projectId = Number(useParams().projectId!);
+  const [deleteProject, { isLoading }] = useDeleteProjectMutation();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const deleteConfirmationTitle = "Are you sure you want to delete this project?";
   const deleteConfirmationTtext = "All of the resources in this project will be removed permanently from all the project members.";
@@ -15,8 +27,38 @@ export const DeleteProjectModal = ({btnText, btnStyling}: IProps) => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteProject = () => {
-    console.log("project deleted");
+  const closeModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteProject = async () => {
+    if (!isLoading) {
+      try {
+        const project = await deleteProject(projectId).unwrap();
+        console.log("Project deleted", project);
+        if (project) {
+          closeModal();
+          navigate("..", { relative: "path" });
+          navigate(0);
+        //   redirect("/");
+          // TO DO: Find better solution for this
+        //   window.location.reload();
+        }
+      } catch (err) {
+        console.error("Failed to delete the project", err);
+        // TO DO: Refactor this
+        if (
+          err &&
+          typeof err === "object" &&
+          "data" in err &&
+          err.data &&
+          typeof err.data === "object"
+        ) {
+          const errorMessage = Object.values(err.data);
+          console.error(errorMessage);
+        }
+      }
+    }
   };
 
   return (
