@@ -92,7 +92,7 @@ usersRouter.post("/getuserbyemail", authenticate, async (req, res, next) => {
 
     if (!user) return res.status(404).json({ error: "Couldnt find user" });
 
-    return res.status(200).json(user?.id);
+    return res.status(200).json(user.id);
   } catch (error) {
     next(error);
   }
