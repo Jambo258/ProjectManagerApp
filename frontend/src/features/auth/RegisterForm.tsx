@@ -60,7 +60,6 @@ export const RegisterForm = () => {
         console.log("User:", user);
         reset();
         setFormError(null);
-        // TO DO: Fix path to user home page
         navigate("/");
       } catch (err) {
         onError;
