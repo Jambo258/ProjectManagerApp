@@ -38,8 +38,6 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         </div>
 
         <main className="w-min mx-auto px-2">
-
-
           {deleteModalTitle &&
           <p className="w-max px-2 mx-auto mb-2 heading-sm text-center">
             {deleteModalTitle}

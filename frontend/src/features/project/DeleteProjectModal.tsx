@@ -11,9 +11,9 @@ import { useDeleteProjectMutation } from "../api/apiSlice";
 import { DeleteModal } from "../../components/DeleteModal";
 
 interface IProps {
-    btnText: string;
-    btnStyling: string;
-  }
+  btnText: string;
+  btnStyling: string;
+}
 
 export const DeleteProjectModal = ({btnText, btnStyling}: IProps) => {
   const navigate = useNavigate();
@@ -75,8 +75,7 @@ export const DeleteProjectModal = ({btnText, btnStyling}: IProps) => {
         confirmDeleteEdit={isDeleteModalOpen}
         handleSubmitForModal={handleDeleteProject}
         deleteModalTitle={deleteConfirmationTitle}
-        deleteModalText={deleteConfirmationTtext}
-      ></DeleteModal>
+        deleteModalText={deleteConfirmationTtext} />
       }
     </>
 

@@ -336,8 +336,7 @@ export const ProfileModal = () => {
             setConfirmDeleteEdit={setConfirmDeleteEdit}
             confirmDeleteEdit={confirmDeleteEdit}
             handleSubmitForModal={handleSubmitForModal}
-            deleteModalText={deleteModalText}
-          ></DeleteModal>
+            deleteModalText={deleteModalText} />
         )}
       </div>
     </>
