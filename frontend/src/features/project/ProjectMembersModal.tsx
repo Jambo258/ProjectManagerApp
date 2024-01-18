@@ -4,6 +4,7 @@ import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProje
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router-dom";
 
 import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
@@ -37,6 +38,8 @@ interface InviteProjectMemberValues {
 // - Delete project if last one to leave
 
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
+  const navigate = useNavigate();
+
   const [selectValue, setSelectValue] = useState<string>("");
   const user = useAppSelector((state) => state.auth.user);
 
@@ -119,7 +122,8 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const handleSubmitForModal = async () => {
     try {
       await deleteUser({projectId: projectId, userId: user!.id, role: userRole}).unwrap();
-
+      navigate("..", { relative: "path" });
+      navigate(0);
     } catch (err) {
       console.error("Failed to delete user", err);
     }

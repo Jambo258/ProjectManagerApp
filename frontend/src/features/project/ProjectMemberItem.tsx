@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
 import { useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
-import { User } from "react-feather";
 
 interface ProjectMemberProps {
   id: number,
@@ -20,33 +19,33 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId }: ProjectMemb
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to remove this user?";
 
+  // Change role
   const [editProjectMember] = useEditProjectUserMutation();
   
+  // Fix setCurrentRole, gets currently stuck
   const onRoleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "remove") {
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
-        await editProjectMember({userId: id, projectId: projectId, role: currentRole}).unwrap();
+        await editProjectMember({userId: id, projectId: projectId, role: e.target.value}).unwrap();
         setCurrentRole(e.target.value);
-        console.log("Role changed to: " + e.target.value);
       } catch {
         console.log("Error!");
       }
     }
   };
   
+  // Remove user from project
   const [deleteUser] = useDeleteProjectUserMutation();
 
   const handleSubmitForModal = async () => {
     try {
       await deleteUser({projectId: projectId, userId: id, role: role}).unwrap();
-
     } catch (err) {
       console.error("Failed to delete user", err);
     }
   };
-
 
   return (
     <div className="flex flex-row items-center gap-3">
