@@ -169,6 +169,16 @@ describe("Project endpoint tests", () => {
     expect(res.body.error).toEqual("User is not on the project");
   });
 
+  it("Leave project as a viewer", async () => {
+    console.log("test");
+    const res = await req
+      .delete(`/projects/${projectId}/users/${dummyUserId}`)
+      .expect(200)
+      .expect("content-Type", /json/);
+    expect(res.body.userid).toEqual(dummyUserId);
+    console.log(res.body);
+  });
+
   it("Login as project creator and delete user from project and delete projects", async () => {
     await req
       .post("/users/login")
@@ -176,12 +186,12 @@ describe("Project endpoint tests", () => {
       .expect(200)
       .expect("Content-Type", /json/);
 
-    const resAfterDeleteUser = await req
-      .delete(`/projects/${projectId}/users/${dummyUserId}`)
-      .expect(200)
-      .expect("Content-Type", /json/);
+    // const resAfterDeleteUser = await req
+    //   .delete(`/projects/${projectId}/users/${dummyUserId}`)
+    //   .expect(200)
+    //   .expect("Content-Type", /json/);
 
-    expect(resAfterDeleteUser.body.userid).toEqual(dummyUserId);
+    // expect(resAfterDeleteUser.body.userid).toEqual(dummyUserId);
 
     const resAfterDeleteProject = await req
       .delete(`/projects/${projectId}`)

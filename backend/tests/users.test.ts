@@ -5,10 +5,18 @@ import app from "../src/server.js";
 
 const request = agent(app);
 
+let testUserID = 0;
+
 beforeAll(async () => {
   await request
     .post("/users/register")
     .send({ email: "pekka@mail.com", name: "pekka", password: "salainen" });
+
+  const res = await request
+    .post("/users/getuserbyemail")
+    .send({email: "pekka@mail.com"});
+
+  testUserID = res.body;
 });
 
 afterAll(async () => {
@@ -147,6 +155,30 @@ describe("Server", () => {
       .expect("Content-Type", /json/);
     expect(res.body.error).toBeDefined();
   });
+  it("get user id by email", async () => {
+    const res = await request
+      .post("/users/getuserbyemail")
+      .send({email: "pekka@mail.com"})
+      .expect(200)
+      .expect("Content-Type", /json/);
+    expect(res.body).toEqual(testUserID);
+  });
+  it("get user id by wrong email", async () => {
+    const res = await request
+      .post("/users/getuserbyemail")
+      .send({email: "pekka@wrongmail.com"})
+      .expect(404)
+      .expect("Content-Type", /json/);
+    expect(res.body.error).toEqual("Couldnt find user");
+  });
+  it("get user id with no email", async () => {
+    const res = await request
+      .post("/users/getuserbyemail")
+      .send({})
+      .expect(400)
+      .expect("Content-Type", /json/);
+    expect(res.body.error).toEqual("Empty req body");
+  });
   it("Logout", async () => {
     const res = await request
       .get("/users/logout")
@@ -274,4 +306,6 @@ describe("Server", () => {
       .expect("Content-Type", /json/);
     expect(res.body.error).toBeDefined();
   });
+
+
 });
