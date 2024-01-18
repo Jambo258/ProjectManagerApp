@@ -273,7 +273,7 @@ projectsRouter.delete(
           .json({ error: "Session holder is not on this project" });
       }
 
-      if (findSessionUser.role !== Role.manager) {
+      if (findSessionUser.role !== Role.manager && sessionUserId !== userId) {
         return res.status(401).json({ error: "Manager role required" });
       }
 
