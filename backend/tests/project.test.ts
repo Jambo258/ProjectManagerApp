@@ -186,13 +186,6 @@ describe("Project endpoint tests", () => {
       .expect(200)
       .expect("Content-Type", /json/);
 
-    // const resAfterDeleteUser = await req
-    //   .delete(`/projects/${projectId}/users/${dummyUserId}`)
-    //   .expect(200)
-    //   .expect("Content-Type", /json/);
-
-    // expect(resAfterDeleteUser.body.userid).toEqual(dummyUserId);
-
     const resAfterDeleteProject = await req
       .delete(`/projects/${projectId}`)
       .expect(200)

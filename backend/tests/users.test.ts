@@ -306,6 +306,4 @@ describe("Server", () => {
       .expect("Content-Type", /json/);
     expect(res.body.error).toBeDefined();
   });
-
-
 });
