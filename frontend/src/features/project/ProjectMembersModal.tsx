@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useAddNewProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
+import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
@@ -9,17 +9,13 @@ import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
 interface Member {
-  id: number;
+  userid: number;
   role: string;
 }
 
 interface ProjectMembersModalProps {
   projectId: number
 }
-
-// For testing
-// Current user's role
-const userRole = "manager";
 
 interface InviteProjectMemberValues {
   email: string;
@@ -28,7 +24,7 @@ interface InviteProjectMemberValues {
 
 // TO DO
 // Add new user (only managers)
-// - Check if user with that email exists
+// - Check if user with that email exists (waiting for backend changes)
 
 // Change role (only managers)
 // - If you're only manager, you can't change your own role?
@@ -43,6 +39,17 @@ interface InviteProjectMemberValues {
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const [selectValue, setSelectValue] = useState<string>("");
   const user = useAppSelector((state) => state.auth.user);
+
+  const [userRole, setUserRole] = useState<string>("");
+
+  // Check if current user is manager
+  useEffect(() => {
+    project?.users.map((member: Member) => {
+      if (member.userid === user!.id) {
+        setUserRole(member.role);
+      }
+    });
+  }), [];
 
   const {
     formState: {isDirty, isSubmitting, errors},
@@ -93,10 +100,37 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
 
   const { data: project } = useGetProjectQuery(projectId);
 
+  // Add new user
+  // WAITING for backend changes
+  const [addNewMember] = useAddNewProjectUserMutation();
+
+  const addTestUser = async () => {
+    try {
+      await addNewMember({userId: 4, projectId: projectId, role: "viewer"}).unwrap();
+    } catch (err) {
+      console.log("Failed to add user", err);
+    }
+  };
+  
+  // Remove yourself from project
+  // WAITING for backend changes
+  const [deleteUser] = useDeleteProjectUserMutation();
+
+  const handleSubmitForModal = async () => {
+    try {
+      await deleteUser({projectId: projectId, userId: user!.id, role: userRole}).unwrap();
+
+    } catch (err) {
+      console.error("Failed to delete user", err);
+    }
+  };
+
   return (
     <>
+      <button onClick={() => addTestUser()} className="p-2 btn-text-xs">Lisää testikäyttäjä</button>
       { (userRole === "manager") &&
-      <section>
+      <section><br />
+      
         <form  className="flex flex-row gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input 
@@ -129,7 +163,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project!.users.map((member: Member) => (
-        <ProjectMemberItem key={member.id} id={member.id} role={member.role} userRole={userRole} />
+        <ProjectMemberItem key={member.userid} id={member.userid} role={member.role} userRole={userRole} projectId={projectId} handleRemove={handleSubmitForModal} />
       ))}
 
       <div className="flex flex-row gap-4 items-center pt-4">
@@ -139,7 +173,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <RemoveProjectMember userId={user!.id}/>
+        <RemoveProjectMember handleRemove={handleSubmitForModal} />
       </div>
     </>
   );

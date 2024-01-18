@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface ProjectMember {
-  id: number;
+  userid: number;
   role: string;
 }
 

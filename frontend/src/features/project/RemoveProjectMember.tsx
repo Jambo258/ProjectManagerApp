@@ -2,24 +2,14 @@ import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
 
 interface RemoveProjectMemberProps {
-  userId: number
+  handleRemove: () => void
 }
 
-export const RemoveProjectMember = ( { userId }: RemoveProjectMemberProps ) => {
+export const RemoveProjectMember = ( { handleRemove }: RemoveProjectMemberProps ) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to leave the project?";
   // Add extra mention to deleteTextModal if only manager is leaving
   // Or last member is leaving (project will be deleted)
-
-  const handleSubmitForModal = () => {
-    try {
-      // const user = await deleteUser().unwrap();
-      console.log("User removed: " + userId);
-
-    } catch (err) {
-      console.error("Failed to delete user", err);
-    }
-  };
 
   return (
     <> 
@@ -35,7 +25,7 @@ export const RemoveProjectMember = ( { userId }: RemoveProjectMemberProps ) => {
         <DeleteModal
           setConfirmDeleteEdit={setConfirmDeleteEdit}
           confirmDeleteEdit={confirmDeleteEdit}
-          handleSubmitForModal={handleSubmitForModal}
+          handleSubmitForModal={handleRemove}
           deleteModalText={deleteModalText}
         ></DeleteModal>
       )}
