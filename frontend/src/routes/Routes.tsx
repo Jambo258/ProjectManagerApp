@@ -12,7 +12,7 @@ import { ProfileModal } from "../features/user/ProfileModal.tsx";
 import { ProjectView } from "../features/project/ProjectView.tsx";
 import { PrivatePage } from "../features/user/PrivatePage.tsx";
 import { HomeView } from "../features/frontpage/HomeView.tsx";
-import Editor from "../features/editor/Editor.tsx";
+import { Page } from "../features/page/Page.tsx";
 import { useAppSelector } from "../app/hooks.ts";
 
 export const AppRouter = () => {
@@ -25,7 +25,7 @@ export const AppRouter = () => {
         <Route path="login" element={<LoginView />} />
         {user && (
           <>
-            <Route path="projects/:projectId/:pageId" element={<Editor />} />
+            <Route path="projects/:projectId/:pageId" element={<Page />} />
             <Route path="projects/:projectId" element={<ProjectView />} />
             <Route path="profile" element={<ProfileModal />} />
           </>

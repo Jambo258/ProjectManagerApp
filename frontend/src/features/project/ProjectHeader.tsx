@@ -1,10 +1,11 @@
 import { NavLink, useParams } from "react-router-dom";
 
 // Components
+import { Plus } from "react-feather";
 import { Menu } from "../../components/Menu";
+import { Modal } from "../../components/Modal";
 import { RenameProjectModal } from "./RenameProjectModal";
 import AddPage from "../page/AddPage";
-import { Modal } from "../../components/Modal";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
 import { ProjectMembersModal } from "./ProjectMembersModal";
 
@@ -31,16 +32,14 @@ export const ProjectHeader = () => {
               projectName={project.name}
             />
           </Modal>
-
-          <Modal 
-            btnText={"Project members"}
-            btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
-            modalTitle={"Project members"}
-          >    
-            <ProjectMembersModal projectId={projectid} />
+          <Modal
+            btnText={"Add page"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            }
+            modalTitle={"Add new page"}>
+            <AddPage projectId={projectid} />
           </Modal>
-          
-          <AddPage projectid={projectid} buttonSelector={"menu"} />
         </Menu>
       </section>
 
@@ -59,8 +58,19 @@ export const ProjectHeader = () => {
               {page.name}
             </NavLink>
           ))}
-
-        <AddPage projectid={projectid} buttonSelector={"plus"} />
+        <Modal
+          btnText={<Plus size={16} />}
+          btnStyling={"p-1.5 rounded-full heading-md"}
+          modalTitle={"Add new page"}>
+          <AddPage projectId={projectid}/>
+        </Modal>
+         <Modal 
+            btnText={"Project members"}
+            btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
+            modalTitle={"Project members"}
+          >    
+            <ProjectMembersModal projectId={projectid} />
+          </Modal>
       </nav>
     </header>
   );

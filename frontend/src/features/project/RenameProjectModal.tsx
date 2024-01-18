@@ -1,14 +1,17 @@
 // React
-import { useState} from "react";
+import { useState, useContext} from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
 
 // Hook Form and Yup
 import { FieldErrors, useForm } from "react-hook-form";
-import { renameProjectSchema } from "./projectValidation";
+import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
+
+// Context
+import { ModalContext } from "../../components/Modal";
 
 interface RenameProjectFormValues {
   projectName: string;
@@ -17,11 +20,11 @@ interface RenameProjectFormValues {
 interface RenameProjectProps {
   projectId: number;
   projectName: string;
-  closeModal?: () => void;
 }
 
-export const RenameProjectModal = ( {projectId, projectName, closeModal }: RenameProjectProps) => {
+export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProps) => {
   const [editProject, { isLoading }] = useEditProjectMutation();
+  const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
     control,
@@ -32,7 +35,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
     defaultValues: {
       projectName: projectName,
     },
-    resolver: yupResolver(renameProjectSchema)
+    resolver: yupResolver(projectNameSchema)
   });
 
   const onError = (errors: FieldErrors<RenameProjectFormValues>) => {
@@ -41,7 +44,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
 
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {
     if (!isDirty) {
-      closeModal!();
+      closeModal();
     } else if (!isLoading) {
       try {
         const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
@@ -49,7 +52,7 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
         console.log("Form submitted");
         console.log("Project:", project);
         if (project) {
-          closeModal!();
+          closeModal();
         }
       }
       catch (err) {
@@ -88,19 +91,19 @@ export const RenameProjectModal = ( {projectId, projectName, closeModal }: Renam
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
         </label>
-        <section className="flex">
+        <section className="grid grid-cols-2 gap-6">
           <button
             type="submit"
-            className="w-full me-6 py-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
-            Save
+            Save Changes
           </button>
           <button
             type="reset"
             onClick={closeModal}
             className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
-            Cancel
+            Cancel Changes
           </button>
         </section>
       </form>

@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
-export const projectNameSchema = yup.object().shape({
-  projectName: yup
+export const pageNameSchema = yup.object().shape({
+  pageName: yup
     .string()
     .trim()
     .min(2, "Must be at least 2 characters long")
@@ -9,4 +9,4 @@ export const projectNameSchema = yup.object().shape({
     .required("Project name is required"),
 });
 
-export type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
+export type pageNameSchemaType = yup.InferType<typeof pageNameSchema>;

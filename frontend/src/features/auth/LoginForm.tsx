@@ -38,6 +38,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<null | string>(null);
+  const redirectLinkText = "Create account";
 
   const canSubmit = isDirty && !isLoading;
 
@@ -49,7 +50,6 @@ export const LoginForm = () => {
         console.log("User:", user);
         reset();
         setFormError(null);
-        // TO DO: Fix path to user home page
         navigate("/");
       } catch (err) {
         onError;
@@ -117,12 +117,13 @@ export const LoginForm = () => {
         <button type="submit" disabled={isSubmitting} className="w-full btn-text-md focus:outline-none focus:ring focus:ring-dark-blue-50">Login</button>
       </form>
 
+      <p className="body-text-sm text-dark-font mt-3 mb-1 text-center">If you don&#39;t yet have an account</p>
+      <Link to="/register" className="block body-text-md underline text-center text-dark-font hover:text-dark-blue-50 focus:outline-none focus:ring-0 focus:text-caution-100">
+        {redirectLinkText}
+      </Link>
+
       {/* For development only */}
       <DevTool control={control}/>
-
-      <Link to="/register" className="focus:outline-dark-blue-50">
-        <p className="body-text-md text-dark-font underline text-center mt-3">Create account</p>
-      </Link>
 
     </section>
   );
