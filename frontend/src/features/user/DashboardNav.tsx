@@ -81,7 +81,7 @@ export const DashboardNav = () => {
         <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
           <Modal
             btnText="A"
-            btnStyling="bg-purple-200 hover:bg-purple-200 rounded m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
+            btnStyling="bg-purple-200 hover:bg-purple-200 rounded-full m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
             modalTitle="Account settings"
           >
             <ProfileModal/>
