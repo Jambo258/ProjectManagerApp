@@ -79,16 +79,23 @@ usersRouter.get("/logout", (req, res, next) => {
   });
 });
 
-usersRouter.post("/getuserbyemail", authenticate, async (req, res) => {
-  const {email}: {email: string} = req.body;
+usersRouter.post("/getuserbyemail", authenticate, async (req, res, next) => {
 
-  if (!email) return res.status(400).json({error: "Empty req body"});
+  try {
+    const {email}= req.body;
 
-  const user = await getUserByEmail(email);
+    if (!email || typeof email !== "string") {
+      return res.status(400).json({error: "Empty req body"});
+    }
 
-  if (!user) return res.status(404).json({ error: "Couldnt find user" });
+    const user = await getUserByEmail(email);
 
-  return res.status(200).json(user?.id);
+    if (!user) return res.status(404).json({ error: "Couldnt find user" });
+
+    return res.status(200).json(user?.id);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Remove this route
