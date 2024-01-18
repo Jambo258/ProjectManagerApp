@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { DashboardNav } from "./DashboardNav";
 import { ProjectHeader } from "../project/ProjectHeader";
+import { DnDComponent } from "../page/DnDComponent";
 
 export const PrivatePage = () => {
   return (
@@ -8,6 +9,7 @@ export const PrivatePage = () => {
       <DashboardNav />
       <div className="flex flex-col w-full overflow-hidden">
         <ProjectHeader />
+        <DnDComponent />
         <Outlet />
       </div>
     </div>
