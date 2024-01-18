@@ -5,6 +5,7 @@ import { Plus } from "react-feather";
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { RenameProjectModal } from "./RenameProjectModal";
+import { DeleteProjectModal } from "./DeleteProjectModal";
 import AddPage from "../page/AddPage";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
 
@@ -24,7 +25,7 @@ export const ProjectHeader = () => {
           <Modal
             btnText={"Rename project"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Rename project"}
           >
@@ -41,6 +42,12 @@ export const ProjectHeader = () => {
             modalTitle={"Add new page"}>
             <AddPage projectId={projectid} />
           </Modal>
+          <DeleteProjectModal
+            btnText={"Delete project"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            }
+          />
         </Menu>
       </section>
 
