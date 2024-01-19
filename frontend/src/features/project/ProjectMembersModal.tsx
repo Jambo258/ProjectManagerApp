@@ -10,7 +10,7 @@ import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
 interface Member {
-  userid: number;
+  userid?: number;
   role: string;
 }
 
@@ -66,7 +66,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const canSubmit = isDirty && !isLoading;
 
   const onHandleSubmit = async (formData: InviteProjectMemberValues) => {
-    // Delete this when this works
+    // Delete this when function works
     console.log(formData);
 
     if (canSubmit) {

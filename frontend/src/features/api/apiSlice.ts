@@ -28,7 +28,7 @@ export interface UpdateUserRequest {
 }
 
 export interface Member {
-  userid: number;
+  id: number;
   role: Role;
   name: string;
   email: string;

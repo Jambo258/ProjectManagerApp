@@ -3,7 +3,7 @@ import { DeleteModal } from "../../components/DeleteModal";
 import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
 
 interface ProjectMemberProps {
-  id: number,
+  id: number | undefined,
   role: Role,
   projectId: number,
   userRole: Role,
@@ -27,7 +27,7 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
-        await editProjectMember({userId: id, projectId: projectId, role: (e.target.value as Role)}).unwrap();
+        await editProjectMember({userId: id!, projectId: projectId, role: (e.target.value as Role)}).unwrap();
       } catch {
         console.log("Error!");
       }
@@ -39,7 +39,7 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
 
   const handleSubmitForModal = async () => {
     try {
-      await deleteUser({projectId: projectId, userId: id, role: role}).unwrap();
+      await deleteUser({projectId: projectId, userId: id!, role: role}).unwrap();
     } catch (err) {
       console.error("Failed to delete user", err);
     }
