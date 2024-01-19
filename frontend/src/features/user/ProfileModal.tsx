@@ -60,9 +60,10 @@ export const ProfileModal = () => {
         const user = await updateUser({
           name: formData.name,
         }).unwrap();
+        // For development only
         console.log("User:", user);
         if (user) {
-          resetName({name: user.name});
+          resetName({ name: user.name });
           setNameFormError(null);
           setNameEdit(false);
         }
@@ -90,7 +91,7 @@ export const ProfileModal = () => {
     register: registerEmail,
     reset: resetEmail,
     handleSubmit: handleEmail,
-    formState: { errors: errorsEmail},
+    formState: { errors: errorsEmail },
   } = useForm<changeEmailFormValues>({
     defaultValues: {
       email: user?.email,
@@ -106,9 +107,10 @@ export const ProfileModal = () => {
         const user = await updateUser({
           email: formData.email,
         }).unwrap();
+        // For development only
         console.log("User:", user);
         if (user) {
-          resetEmail({email: user.email});
+          resetEmail({ email: user.email });
           setEmailFormError(null);
           setEmailEdit(false);
         }
@@ -151,6 +153,7 @@ export const ProfileModal = () => {
         const user = await updateUser({
           password: formData.password,
         }).unwrap();
+        // For development only
         console.log("User:", user);
         if (user) {
           resetPassword();
@@ -181,6 +184,7 @@ export const ProfileModal = () => {
   const handleSubmitForModal = async () => {
     try {
       const user = await deleteUser().unwrap();
+      // For development only
       console.log("User deleted:", user);
       navigate("/");
 
