@@ -27,9 +27,6 @@ interface InviteProjectMemberValues {
 // Add new user (only managers)
 // - Check if user with that email exists (waiting for backend changes)
 
-// Remove user from project (only managers)
-// - Use DeleteModal for confimation?
-
 // Leave project
 // - Can't leave if you're only manager and there's still other members
 // - Delete project if last one to leave
@@ -165,7 +162,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project!.users.map((member: Member) => (
-        <ProjectMemberItem key={member.userid} id={member.userid} userId={user.id} role={member.role} userRole={userRole} projectId={projectId} />
+        <ProjectMemberItem key={member.userid} id={member.userid} userId={user!.id} role={member.role} userRole={userRole} projectId={projectId} />
       ))}
 
       <div className="flex flex-row gap-4 items-center pt-4">
@@ -175,7 +172,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <RemoveProjectMember handleRemove={handleSubmitForModal} />
+        <RemoveProjectMember handleRemove={handleSubmitForModal} userRole={userRole} projectSize={project?.users.length} />
       </div>
     </>
   );
