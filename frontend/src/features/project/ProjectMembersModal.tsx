@@ -65,13 +65,13 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const [addProjectMember, { isLoading }] = useAddNewProjectUserMutation();
   const canSubmit = isDirty && !isLoading;
 
-  const onHandleSubmit = (formData: InviteProjectMemberValues) => {
-    // Delete this when this is updated
+  const onHandleSubmit = async (formData: InviteProjectMemberValues) => {
+    // Delete this when this works
     console.log(formData);
 
     if (canSubmit) {
       try {
-        // Add new project member here
+        await addProjectMember({email: formData.email, projectId: projectId, role: formData.role as Role}).unwrap();
         reset();
         setFormError(null);
       } catch (err) {
@@ -94,15 +94,6 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const onError = (errors: FieldErrors<InviteProjectMemberValues>) => {
     console.log("Form field errors:", errors);
   };
-
-  // Add new user
-  const addTestUser = async () => {
-    try {
-      await addProjectMember({email: "testi@testi.fi", projectId: projectId, role: "viewer" as Role}).unwrap();
-    } catch (err) {
-      console.log("Failed to add user", err);
-    }
-  };
   
   // Remove yourself from project
   const [deleteUser] = useDeleteProjectUserMutation();
@@ -120,7 +111,6 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   return (
     <>
       <p className="btn-text-xs">{JSON.stringify(project?.users)}</p>
-      <button onClick={() => addTestUser()} className="p-2 btn-text-xs">Lisää testikäyttäjä</button>
 
       { (userRole === "manager") &&
       <section>
