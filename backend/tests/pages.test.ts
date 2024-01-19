@@ -11,35 +11,25 @@ const noUser = agent(app);
 
 let projectid = 0;
 let pageid = 0;
-let managerID = 0;
-let editorID = 0;
-let viewerID = 0;
-
 
 beforeAll(async () => {
-  const resViewer = await viewer.post("/users/register").send({
+  await viewer.post("/users/register").send({
     email: "authTesting1@mail.com",
     name: "test",
     password: "salainen",
   });
 
-  const resEditor = await editor.post("/users/register").send({
+  await editor.post("/users/register").send({
     email: "authTesting22@mail.com",
     name: "test2",
     password: "salainen",
   });
 
-  const resManager = await manager.post("/users/register").send({
+  await manager.post("/users/register").send({
     email: "testing@mail.com",
     name: "pekka",
     password: "salainen"
   });
-
-
-  managerID = resManager.body.id;
-  editorID = resEditor.body.id;
-  viewerID = resViewer.body.id;
-
 
   const testProject = await manager
     .post("/projects/")
@@ -48,31 +38,26 @@ beforeAll(async () => {
   projectid = testProject.body.id;
 
   await manager
-    .post(`/projects/${projectid}/users/${managerID}`)
-    .send({ role: "manager" });
+    .post(`/projects/${projectid}/users/`)
+    .send({ role: "viewer", email: "authTesting1@mail.com" });
 
-  await viewer
-    .post(`/projects/${projectid}/users/${viewerID}`)
-    .send({ role: "viewer" });
-
-  await editor
-    .post(`/projects/${projectid}/users/${editorID}`)
-    .send({ role: "editor" });
+  await manager
+    .post(`/projects/${projectid}/users/`)
+    .send({ role: "editor", email: "authTesting22@mail.com" });
 });
 
 afterAll(async () => {
   await manager
     .post("/users/login")
     .send({ email: "testing@mail.com", password: "salainen" });
-  await manager.delete("/users/delete/" + projectid);
-  await manager.delete("/pages/delete/" + pageid);
+  await manager.delete("/pages/" + pageid);
+  await manager.delete("/projects/" + projectid);
   await manager.delete("/users/delete");
   await viewer.delete("/users/delete");
   await editor.delete("/users/delete");
 });
 
 describe("server", () => {
-
   it("create new page", async () => {
     const res = await manager
       .post("/pages/")
@@ -89,7 +74,7 @@ describe("server", () => {
       .send({ projectid: projectid })
       .expect(400)
       .expect("content-type", /json/);
-    expect(res.body.error).toEqual("missing parameters");
+    expect(res.body.error).toEqual("Missing name or projectid");
   });
 
   it("try to create page with missing projectid", async () => {
@@ -98,7 +83,7 @@ describe("server", () => {
       .send({ name: "pagetest" })
       .expect(400)
       .expect("content-type", /json/);
-    expect(res.body.error).toEqual("missing parameters");
+    expect(res.body.error).toEqual("Missing name or projectid");
   });
 
   it("get page by id", async () => {
@@ -136,7 +121,7 @@ describe("server", () => {
   it("update page with no id", async () => {
     const res = await manager
       .put("/pages/")
-      .send({ name: "pagetestupdate"})
+      .send({ name: "pagetestupdate" })
       .expect(404);
     expect(res.body.error).toEqual("Not Found");
   });
@@ -147,15 +132,15 @@ describe("server", () => {
       .send({ name: "testpage", projectid: projectid, content: [{}] })
       .expect(401)
       .expect("content-type", /json/);
-    expect(res.body.error).toEqual("missing role");
+    expect(res.body.error).toEqual("Manager or editor role required");
   });
 
   it("try to update page as viewer", async () => {
     const res = await viewer
       .put("/pages/" + pageid)
-      .send({ name: "pagetestupdate"})
+      .send({ name: "pagetestupdate" })
       .expect(401);
-    expect(res.body.error).toEqual("missing role");
+    expect(res.body.error).toEqual("Manager or editor role required");
   });
 
   it("try to get page without logging in", async () => {
@@ -178,7 +163,7 @@ describe("server", () => {
   it("try to update page without logging in", async () => {
     const res = await noUser
       .put("/pages/" + pageid)
-      .send({ name: "pagetestupdate"})
+      .send({ name: "pagetestupdate" })
       .expect(401);
     expect(res.body.error).toEqual("Unauthorized");
   });
@@ -201,7 +186,7 @@ describe("server", () => {
     const res = await editor
       .delete("/pages/" + pageid)
       .expect(401);
-    expect(res.body.error).toEqual("missing role");
+    expect(res.body.error).toEqual("Manager role required");
   });
 
   it("create new page", async () => {
@@ -215,7 +200,7 @@ describe("server", () => {
     const res = await viewer
       .delete("/pages/" + pageid)
       .expect(401);
-    expect(res.body.error).toEqual("missing role");
+    expect(res.body.error).toEqual("Manager role required");
   });
 
   it("create new page", async () => {
