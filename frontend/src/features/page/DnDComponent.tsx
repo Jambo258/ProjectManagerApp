@@ -1,4 +1,4 @@
-import { DndContext, DragEndEvent, closestCenter} from "@dnd-kit/core";
+import { DndContext, DragEndEvent, PointerSensor, closestCenter, useSensor, useSensors} from "@dnd-kit/core";
 import { SortableItem } from "./SortableItem";
 import { useEffect, useState } from "react";
 import {
@@ -12,6 +12,14 @@ import AddPage from "./AddPage";
 export const DnDComponent = () => {
   const { data: getProjectData, isSuccess } = useGetProjectQuery(6);
   const [dataArray, setDataArray] = useState<Page[] | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -33,7 +41,7 @@ export const DnDComponent = () => {
   return (
     <div className="border border-grayscale-400 max-w-sm">
       {dataArray && (
-        <DndContext onDragEnd={setPosition} collisionDetection={closestCenter}>
+        <DndContext sensors={sensors}onDragEnd={setPosition} collisionDetection={closestCenter}>
           <SortableContext
             strategy={verticalListSortingStrategy}
             items={dataArray.map((i) => i.id)}

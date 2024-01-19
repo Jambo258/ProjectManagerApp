@@ -9,7 +9,10 @@ export const PrivatePage = () => {
       <DashboardNav />
       <div className="flex flex-col w-full overflow-hidden">
         <ProjectHeader />
-        <DnDComponent />
+        <section className="p-12 max-h-full overflow-auto">
+          <DnDComponent />
+        </section>
+
         <Outlet />
       </div>
     </div>

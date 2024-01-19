@@ -12,7 +12,7 @@ interface SortableItem {
 export const SortableItem = ({ children, id }: SortableItem) => {
   const [deletePage] = useDeletePageMutation();
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
-  const deleteModalText = "Are you sure you wanna delete page?";
+  const deleteModalText = `Are you sure you wanna delete page? ${id}`;
   console.log(confirmDeleteEdit);
   const handleSubmitForModali = async (id?: number) => {
     try {
