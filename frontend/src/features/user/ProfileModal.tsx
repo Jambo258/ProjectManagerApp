@@ -44,7 +44,7 @@ export const ProfileModal = () => {
     register: registerName,
     reset: resetName,
     handleSubmit: handleName,
-    formState: {errors: errorsName },
+    formState: { errors: errorsName },
   } = useForm<changeNameFormValues>({
     defaultValues: {
       name: user?.name,
@@ -209,7 +209,7 @@ export const ProfileModal = () => {
   };
 
   return (
-    <div className="border min-w-full max-w-2xl m-auto grid grid-cols-4 gap-x-3 grid-flow-row items-center body-text-sm">
+    <div className="min-w-full max-w-2xl m-auto grid grid-cols-4 gap-x-3 grid-flow-row items-center body-text-sm">
 
       {nameEdit ? (
         <form
