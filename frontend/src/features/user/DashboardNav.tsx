@@ -1,46 +1,14 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "react-feather";
+import { ChevronLeft, ChevronRight, Plus } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
-import { ProfileModal } from "./ProfileModal";
 import CreateProjectModal from "../project/CreateProjectModal";
-import { useLogoutMutation } from "../../features/api/apiSlice";
+import {
+  useGetProjectsQuery,
+  useLogoutMutation,
+} from "../../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
-
-// Example project for mockup purposes
-const exampleProjects = [
-  {
-    id: 1,
-    name: "Personal Project",
-    pages: [
-      {
-        id: 11,
-        name: "To Dos",
-      },
-      {
-        id: 21,
-        name: "Notepad",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Group Project",
-    pages: [
-      {
-        id: 21,
-        name: "Task Board",
-      },
-      {
-        id: 22,
-        name: "To do",
-      },
-      {
-        id: 23,
-        name: "Notepad",
-      },
-    ],
-  },
-];
+import { Modal } from "../../components/Modal";
+import { ProfileModal } from "./ProfileModal";
 
 // TO DO:
 // Properly link existing projects and pages
@@ -51,6 +19,7 @@ export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
+  const { data: projects = [] } = useGetProjectsQuery();
 
   const Logout = async () => {
     try {
@@ -90,11 +59,16 @@ export const DashboardNav = () => {
             <div className="grid grid-flow-col px-6 py-4 items-center border-b border-solid border-dark-blue-100">
               <div className="heading-sm">My projects</div>
               <div className="text-right">
-                <CreateProjectModal />
+                <Modal
+                  btnText={<Plus size={16} />}
+                  btnStyling={"p-1.5 rounded-full heading-md"}
+                  modalTitle={"Add new page"}>
+                  <CreateProjectModal />
+                </Modal>
               </div>
             </div>
 
-            {exampleProjects.map((project) => (
+            {projects.map((project) => (
               <div key={project.id}>
                 <ProjectNavItem project={project} />
               </div>
@@ -105,8 +79,13 @@ export const DashboardNav = () => {
 
       {collapseNav && (
         <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
-          <ProfileModal />
-
+          <Modal
+            btnText="A"
+            btnStyling="bg-purple-200 hover:bg-purple-200 rounded m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
+            modalTitle="Account settings"
+          >
+            <ProfileModal/>
+          </Modal>
           <div>
             <button
               onClick={() => Logout()}

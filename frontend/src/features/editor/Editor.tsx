@@ -1,7 +1,6 @@
 import "./editor.css";
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -27,16 +26,18 @@ const getInitialUser = (name: string | undefined) => {
   };
 };
 
-const Editor = () => {
-  const pageId = useParams().pageId!;
+interface IProps {
+  pageId: string;
+}
 
+const Editor = ({ pageId }: IProps) => {
   const [editable, setEditable] = useState(true);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
   const [provider] = useState(
     () => new HocuspocusProvider({
       url: "ws://localhost:3001/collaboration",
-      name: pageId.toString(),
+      name: pageId,
       document: ydoc,
       token: "token",
       onAuthenticated: () => setEditable(true),

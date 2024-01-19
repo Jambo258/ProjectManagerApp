@@ -1,11 +1,19 @@
-import React, { type ReactElement, useState, } from "react";
+import { type ReactElement, useState, createContext } from "react";
 import { X } from "react-feather";
 
+interface ModalContextType {
+  isModalOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}
+
+export const ModalContext = createContext<ModalContextType>(null!);
+
 interface ModalProps {
-    btnText: string;
-    btnStyling: string;
-    modalTitle: string | null;
-    children: ReactElement;
+  btnText: string | ReactElement;
+  btnStyling: string;
+  modalTitle: string | null;
+  children: ReactElement;
 }
 
 export const Modal = ({
@@ -14,7 +22,7 @@ export const Modal = ({
   modalTitle,
   children
 }: ModalProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,7 +31,6 @@ export const Modal = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   return (
     <>
@@ -41,7 +48,7 @@ export const Modal = ({
         <dialog
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
-          className="fixed w-4/12 min-w-max max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none">
+          className="fixed w-4/12 min-w-max max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all">
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
@@ -53,7 +60,9 @@ export const Modal = ({
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            { React.cloneElement(children, { openModal, closeModal }) }
+            <ModalContext.Provider value={{isModalOpen,  openModal, closeModal}}>
+              {children}
+            </ModalContext.Provider>
           </main>
         </dialog>
       </div>

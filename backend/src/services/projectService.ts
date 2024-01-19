@@ -73,6 +73,12 @@ export async function getProjectAllDetailsById(id: number) {
         select: {
           userid: true,
           role: true,
+          user: {
+            select: {
+              email: true,
+              name: true,
+            }
+          }
         },
       },
       pages: {
@@ -83,6 +89,7 @@ export async function getProjectAllDetailsById(id: number) {
       },
     },
   });
+
   return project;
 }
 

@@ -30,9 +30,11 @@ export interface Project {
   name: string;
   created_at: string;
   updated_at: string;
+  pages: Page[];
+  users: User[];
 }
 
-export interface ProjectEditRequest {
+export interface EditProjectRequest {
   id: number;
   name: string;
 }
@@ -51,16 +53,14 @@ export interface Page {
   updated_at: string;
 }
 
-export interface PageRequest {
+export interface AddPageRequest {
   name: string;
-  content: JSON;
   projectid: number;
 }
 
-export interface PageEditRequest {
+export interface EditPageRequest {
   id: number;
-  name?: string;
-  content?: JSON;
+  name: string;
 }
 
 export interface ProjectAndUser {
@@ -72,7 +72,6 @@ export interface ProjectAndUser {
 export interface NewPage {
   pageName: string;
   projectid: number;
-  content: object;
 }
 
 export const api = createApi({
@@ -122,11 +121,14 @@ export const api = createApi({
     }),
     getProjects: builder.query<Project[], void>({
       query: () => "/projects",
-      providesTags: ["Projects"],
+      providesTags: (result = []) => [
+        { type: "Projects", id: "LIST" },
+        ...result.map(({ id }) => ({ type: "Projects" as const, id }))
+      ]
     }),
-    getProject: builder.query<ProjectWithPages, number>({
+    getProject: builder.query<Project, number>({
       query: (projectId) => `/projects/${projectId}`,
-      providesTags: (_result, _error, projectId) => [{ type: "Pages", id: projectId }],
+      providesTags: (_result, _error, projectId) => [{ type: "Projects", id: projectId }],
     }),
     addNewProject: builder.mutation<Project, string>({
       query: (projectName) => ({
@@ -134,9 +136,9 @@ export const api = createApi({
         method: "POST",
         body: { name: projectName },
       }),
-      invalidatesTags: ["Projects"],
+      invalidatesTags: [{ type: "Projects", id: "LIST" }],
     }),
-    editProject: builder.mutation<Project, ProjectEditRequest>({
+    editProject: builder.mutation<Project, EditProjectRequest>({
       query: ({ id, name }) => ({
         url: `/projects/${id}`,
         method: "PUT",
@@ -156,14 +158,14 @@ export const api = createApi({
       providesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
     }),
     addNewPage: builder.mutation<Page, NewPage>({
-      query: ({pageName, projectid, content}) => ({
+      query: ({ pageName, projectid }) => ({
         url: "/pages",
         method: "POST",
-        body: { name: pageName, projectid: projectid, content: content },
+        body: { name: pageName, projectid: projectid },
       }),
-      invalidatesTags: ["Pages"],
+      invalidatesTags: (_result, _error, page) => [{ type: "Projects", id: page.projectid }],
     }),
-    editPage: builder.mutation<Page, PageEditRequest>({
+    editPage: builder.mutation<Page, EditPageRequest>({
       query: ({ id, ...body }) => ({
         url: `/pages/${id}`,
         method: "PUT",
