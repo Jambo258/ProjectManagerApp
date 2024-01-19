@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
-import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
+import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation, useGetUserByEmailMutation } from "../api/apiSlice";
 
 interface ProjectMemberProps {
-  id: number | undefined,
-  role: Role,
+  memberId: number | undefined,
+  memberRole: Role,
   projectId: number,
   userRole: Role,
   userId: number
@@ -15,7 +15,7 @@ interface ProjectMemberProps {
 // Change role
 // Remove from project
 
-export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: ProjectMemberProps) => {
+export const ProjectMemberItem = ({ memberId, memberRole, projectId, userId, userRole }: ProjectMemberProps) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to remove this user?";
 
@@ -27,7 +27,7 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
-        await editProjectMember({userId: id!, projectId: projectId, role: (e.target.value as Role)}).unwrap();
+        await editProjectMember({userId: memberId!, projectId: projectId, role: (e.target.value as Role)}).unwrap();
       } catch {
         console.log("Error!");
       }
@@ -39,7 +39,7 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
 
   const handleSubmitForModal = async () => {
     try {
-      await deleteUser({projectId: projectId, userId: id!, role: role}).unwrap();
+      await deleteUser({projectId: projectId, userId: memberId!, role: memberRole}).unwrap();
     } catch (err) {
       console.error("Failed to delete user", err);
     }
@@ -49,7 +49,7 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
     <section className="flex flex-row items-center gap-3">
       <div className="w-8 h-8 btn-text-sm pt-1 text-center text-[white]
       bg-purple-200 rounded-full">
-        {id}
+        {memberId}
       </div>
 
       <div className="flex-1">
@@ -58,8 +58,8 @@ export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: Pro
       </div>
       
       <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
-        value={role} 
-        onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager" || id === userId}>
+        value={memberRole} 
+        onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager" || memberId === userId}>
         <option value="editor" 
           className="btn-text-xs">Editor</option>
         <option value="viewer" 

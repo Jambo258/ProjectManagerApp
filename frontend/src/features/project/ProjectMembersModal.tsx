@@ -27,10 +27,6 @@ interface InviteProjectMemberValues {
 // Add new user (only managers)
 // - Check if user with that email exists 
 
-// Leave project
-// - Can't leave if you're only manager and there's still other members
-// - Delete project if last one to leave
-
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const navigate = useNavigate();
 
@@ -146,7 +142,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project?.users.map((member: Member) => (
-        <ProjectMemberItem key={member.userid} id={member.userid} role={member.role as Role} projectId={projectId} userId={user!.id} userRole={userRole} />
+        <ProjectMemberItem key={member.userid} memberId={member.userid} memberRole={member.role as Role} projectId={projectId} userId={user!.id} userRole={userRole} />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
