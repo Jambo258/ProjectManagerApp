@@ -37,7 +37,7 @@ describe("Project endpoint tests", () => {
       .get("/projects/123456789")
       .expect(404)
       .expect("Content-Type", /json/);
-    expect(res.body.error).toEqual("Couldnt find project");
+    expect(res.body.error).toEqual("Couldn't find project");
   });
 
   it("Try to add new project without name", async () => {
@@ -54,7 +54,7 @@ describe("Project endpoint tests", () => {
       .delete("/projects/123456789")
       .expect(404)
       .expect("Content-Type", /json/);
-    expect(res.body.error).toEqual("Couldnt find project");
+    expect(res.body.error).toEqual("Couldn't find project");
   });
 
   it("Add new project", async () => {
@@ -79,8 +79,8 @@ describe("Project endpoint tests", () => {
 
   it("Try to add user to project with wrong role", async () => {
     const res = await req
-      .post(`/projects/${projectId}/users/${dummyUserId}`)
-      .send({ role: "somerole" })
+      .post(`/projects/${projectId}/users/`)
+      .send({ role: "somerole", email: "dummy@gmail.com" })
       .expect(400)
       .expect("Content-Type", /json/);
 
@@ -89,8 +89,8 @@ describe("Project endpoint tests", () => {
 
   it("Add user to project as viewer", async () => {
     const res = await req
-      .post(`/projects/${projectId}/users/${dummyUserId}`)
-      .send({ role: "viewer" })
+      .post(`/projects/${projectId}/users/`)
+      .send({ role: "viewer", email: "dummy@gmail.com" })
       .expect(200)
       .expect("Content-Type", /json/);
 
@@ -100,8 +100,8 @@ describe("Project endpoint tests", () => {
 
   it("Try to add same user to project again", async () => {
     const res = await req
-      .post(`/projects/${projectId}/users/${dummyUserId}`)
-      .send({ role: "viewer" })
+      .post(`/projects/${projectId}/users/`)
+      .send({ role: "viewer", email: "dummy@gmail.com" })
       .expect(400)
       .expect("Content-Type", /json/);
 
@@ -110,22 +110,22 @@ describe("Project endpoint tests", () => {
 
   it("Try to add user to project which doesnt exist", async () => {
     const res = await req
-      .post(`/projects/${12345}/users/${dummyUserId}`)
-      .send({ role: "editor" })
+      .post(`/projects/${12345}/users/`)
+      .send({ role: "editor", email: "dummy@gmail.com" })
       .expect(401)
       .expect("Content-Type", /json/);
 
-    expect(res.body.error).toEqual("Session holder is not on this project");
+    expect(res.body.error).toEqual("You are not on this project");
   });
 
   it("Try to add user which doesnt exist to project", async () => {
     const res = await req
-      .post(`/projects/${projectId}/users/${123456789}`)
-      .send({ role: "viewer" })
+      .post(`/projects/${projectId}/users/`)
+      .send({ role: "viewer", email: "dummyNOTINPROJECT@gmail.com" })
       .expect(404)
       .expect("Content-Type", /json/);
 
-    expect(res.body.error).toEqual("Couldnt find user");
+    expect(res.body.error).toEqual("Couldn't find user with such email");
   });
 
   it("View user projects", async () => {
@@ -170,13 +170,11 @@ describe("Project endpoint tests", () => {
   });
 
   it("Leave project as a viewer", async () => {
-    console.log("test");
     const res = await req
       .delete(`/projects/${projectId}/users/${dummyUserId}`)
       .expect(200)
       .expect("content-Type", /json/);
     expect(res.body.userid).toEqual(dummyUserId);
-    console.log(res.body);
   });
 
   it("Login as project creator and delete user from project and delete projects", async () => {
