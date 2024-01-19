@@ -8,9 +8,7 @@ interface RemoveProjectMemberProps {
 export const RemoveProjectMember = ( { handleRemove }: RemoveProjectMemberProps ) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalTitle = "Are you sure you want to leave the project?";
-  const deleteModalText = "You can't access the project anymore unless you are invited back by a manager. If you are the last member, whole project will be deleted.";
-  // Add extra mention to deleteTextModal if only manager is leaving
-  // Or last member is leaving (project will be deleted)
+  const deleteModalText = "You can't access the project anymore unless you are invited back by a manager.";
 
   return (
     <> 
@@ -27,8 +25,9 @@ export const RemoveProjectMember = ( { handleRemove }: RemoveProjectMemberProps 
           setConfirmDeleteEdit={setConfirmDeleteEdit}
           confirmDeleteEdit={confirmDeleteEdit}
           handleSubmitForModal={handleRemove}
-          deleteModalText={deleteModalTitle}
-        ></DeleteModal>
+          deleteModalTitle={deleteModalTitle}
+          deleteModalText={deleteModalText}
+        />
       )}
     </>
   );

@@ -27,9 +27,6 @@ interface InviteProjectMemberValues {
 // Add new user (only managers)
 // - Check if user with that email exists (waiting for backend changes)
 
-// Change role (only managers)
-// - If you're only manager, you can't change your own role?
-
 // Remove user from project (only managers)
 // - Use DeleteModal for confimation?
 
@@ -131,6 +128,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
 
   return (
     <>
+      <p className="btn-text-xs">{JSON.stringify(project)}</p>
       <button onClick={() => addTestUser()} className="p-2 btn-text-xs">Lisää testikäyttäjä</button>
       { (userRole === "manager") &&
       <section><br />
@@ -167,7 +165,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project!.users.map((member: Member) => (
-        <ProjectMemberItem key={member.userid} id={member.userid} role={member.role} userRole={userRole} projectId={projectId} handleRemove={handleSubmitForModal} />
+        <ProjectMemberItem key={member.userid} id={member.userid} userId={user.id} role={member.role} userRole={userRole} projectId={projectId} />
       ))}
 
       <div className="flex flex-row gap-4 items-center pt-4">

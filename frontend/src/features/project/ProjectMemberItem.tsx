@@ -6,7 +6,8 @@ interface ProjectMemberProps {
   id: number,
   role: string,
   userRole: string,
-  projectId: number
+  projectId: number,
+  userId: number
 }
 
 // TO DO
@@ -14,22 +15,20 @@ interface ProjectMemberProps {
 // Change role
 // Remove from project
 
-export const ProjectMemberItem = ({ id, role, userRole, projectId }: ProjectMemberProps) => {
-  const [currentRole, setCurrentRole] = useState<string>(role);
+export const ProjectMemberItem = ({ id, role, userRole, projectId, userId }: ProjectMemberProps) => {
+
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to remove this user?";
 
   // Change role
   const [editProjectMember] = useEditProjectUserMutation();
-  
-  // Fix setCurrentRole, gets currently stuck
+
   const onRoleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "remove") {
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
         await editProjectMember({userId: id, projectId: projectId, role: e.target.value}).unwrap();
-        setCurrentRole(e.target.value);
       } catch {
         console.log("Error!");
       }
@@ -49,7 +48,6 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId }: ProjectMemb
 
   return (
     <div className="flex flex-row items-center gap-3">
-
       <div className="w-8 h-8 btn-text-sm pt-1 text-center text-[white]
       bg-purple-200 rounded-full">
         {id}
@@ -61,8 +59,8 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId }: ProjectMemb
       </div>
       
       <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
-        value={currentRole} 
-        onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager"}>
+        value={role} 
+        onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager" || id === userId}>
         <option value="editor" 
           className="btn-text-xs">Editor</option>
         <option value="viewer" 
@@ -82,7 +80,7 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId }: ProjectMemb
           confirmDeleteEdit={confirmDeleteEdit}
           handleSubmitForModal={handleSubmitForModal}
           deleteModalText={deleteModalText}
-        ></DeleteModal>
+        />
       )}
     </div>
   );
