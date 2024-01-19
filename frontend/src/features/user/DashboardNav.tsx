@@ -62,7 +62,7 @@ export const DashboardNav = () => {
                 <Modal
                   btnText={<Plus size={16} />}
                   btnStyling={"p-1.5 rounded-full heading-md"}
-                  modalTitle={"Add new page"}>
+                  modalTitle={"Create new project"}>
                   <CreateProjectModal />
                 </Modal>
               </div>

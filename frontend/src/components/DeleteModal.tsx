@@ -5,6 +5,7 @@ interface propTypes {
   confirmDeleteEdit: boolean;
   setConfirmDeleteEdit: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmitForModal: () => void;
+  deleteModalTitle?: string;
   deleteModalText: string;
 }
 
@@ -12,6 +13,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
   confirmDeleteEdit,
   setConfirmDeleteEdit,
   handleSubmitForModal,
+  deleteModalTitle,
   deleteModalText,
 }) => {
   return (
@@ -35,9 +37,15 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
           </button>
         </div>
 
-        <main className="w-full mx-auto px-2">
-          <p className="w-10/12 mx-auto mb-4 text-center">{deleteModalText}</p>
-          <section className="grid grid-cols-2 gap-6">
+        <main className="w-min mx-auto px-2">
+          {deleteModalTitle &&
+          <p className="w-max px-2 mx-auto mb-2 heading-sm text-center">
+            {deleteModalTitle}
+          </p>
+          }
+          <p className="w-11/12 mx-auto mb-6 body-text-md text-center">{deleteModalText}</p>
+
+          <section className="w-full min-w-max mx-auto grid grid-cols-2 gap-6">
             <button
               type="button"
               onClick={() => {
