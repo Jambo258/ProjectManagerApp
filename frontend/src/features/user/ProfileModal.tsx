@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Redux Toolkit
 import { useDeleteUserMutation, useUpdateUserMutation } from "../api/apiSlice";
