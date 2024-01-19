@@ -8,21 +8,11 @@ interface RemoveProjectMemberProps {
   projectSize: number;
 }
 
-export const RemoveProjectMember = ( { handleRemove, userRole, projectSize }: RemoveProjectMemberProps ) => {
+export const RemoveProjectMember = ( { handleRemove }: RemoveProjectMemberProps ) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalTitle = "Are you sure you want to leave the project?";
-  
-  const handleDeleteModalText = () => {
-    if (userRole === "manager" && projectSize > 1) {
-      return "Project will be left without a manager. You can give someone manager role before leaving.";
-    } else if (projectSize === 1) {
-      return "Project will be deleted as there will be no members left.";
-    } else {
-      return "You can't access the project anymore unless you are invited back by a manager.";
-    }
-  };
 
-  const deleteModalText = handleDeleteModalText();
+  const deleteModalText = "You can't access the project anymore unless you are invited back by a manager.";
 
   return (
     <> 

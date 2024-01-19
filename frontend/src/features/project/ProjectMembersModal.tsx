@@ -9,9 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
-interface Member {
-  userid?: number;
+export interface Member {
+  id: number;
   role: string;
+  email: string;
+  name: string;
 }
 
 interface ProjectMembersModalProps {
@@ -23,22 +25,18 @@ interface InviteProjectMemberValues {
   role: string;
 }
 
-// TO DO
-// Add new user (only managers)
-// - Check if user with that email exists 
-
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const navigate = useNavigate();
 
   const [selectValue, setSelectValue] = useState<string>("");
-  const [userRole, setUserRole] = useState<Role>("editor");
+  const [userRole, setUserRole] = useState<Role>("manager");
 
   const user = useAppSelector((state) => state.auth.user);
   const { data: project } = useGetProjectQuery(projectId);
 
   useEffect(() => {
     project?.users.map((member: Member) => {
-      if (member.userid === user?.id) {
+      if (member.id === user?.id) {
         setUserRole(member.role as Role);
       }
     });
@@ -106,8 +104,6 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
 
   return (
     <>
-      <p className="btn-text-xs">{JSON.stringify(project?.users)}</p>
-
       { (userRole === "manager") &&
       <section>
         <form  className="flex flex-row gap-2 mb-2"
@@ -142,7 +138,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project?.users.map((member: Member) => (
-        <ProjectMemberItem key={member.userid} memberId={member.userid} memberRole={member.role as Role} projectId={projectId} userId={user!.id} userRole={userRole} />
+        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user!.id} userRole={userRole}  />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
