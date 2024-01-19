@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
+import { Role, useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
@@ -25,7 +25,7 @@ interface InviteProjectMemberValues {
 
 // TO DO
 // Add new user (only managers)
-// - Check if user with that email exists (waiting for backend changes)
+// - Check if user with that email exists 
 
 // Leave project
 // - Can't leave if you're only manager and there's still other members
@@ -35,15 +35,15 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const navigate = useNavigate();
 
   const [selectValue, setSelectValue] = useState<string>("");
+  const [userRole, setUserRole] = useState<Role>("editor");
+
   const user = useAppSelector((state) => state.auth.user);
+  const { data: project } = useGetProjectQuery(projectId);
 
-  const [userRole, setUserRole] = useState<string>("");
-
-  // Check if current user is manager
   useEffect(() => {
     project?.users.map((member: Member) => {
-      if (member.userid === user!.id) {
-        setUserRole(member.role);
+      if (member.userid === user?.id) {
+        setUserRole(member.role as Role);
       }
     });
   }), [];
@@ -95,22 +95,16 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     console.log("Form field errors:", errors);
   };
 
-  const { data: project } = useGetProjectQuery(projectId);
-
   // Add new user
-  // WAITING for backend changes
-  const [addNewMember] = useAddNewProjectUserMutation();
-
   const addTestUser = async () => {
     try {
-      await addNewMember({userId: 4, projectId: projectId, role: "viewer"}).unwrap();
+      await addProjectMember({email: "testi@testi.fi", projectId: projectId, role: "viewer" as Role}).unwrap();
     } catch (err) {
       console.log("Failed to add user", err);
     }
   };
   
   // Remove yourself from project
-  // WAITING for backend changes
   const [deleteUser] = useDeleteProjectUserMutation();
 
   const handleSubmitForModal = async () => {
@@ -125,11 +119,11 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
 
   return (
     <>
-      <p className="btn-text-xs">{JSON.stringify(project)}</p>
+      <p className="btn-text-xs">{JSON.stringify(project?.users)}</p>
       <button onClick={() => addTestUser()} className="p-2 btn-text-xs">Lisää testikäyttäjä</button>
+
       { (userRole === "manager") &&
-      <section><br />
-      
+      <section>
         <form  className="flex flex-row gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input 
@@ -161,19 +155,19 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
       
       <h2 className="heading-xs mt-4">Current project members</h2>
-      { project!.users.map((member: Member) => (
-        <ProjectMemberItem key={member.userid} id={member.userid} userId={user!.id} role={member.role} userRole={userRole} projectId={projectId} />
+      { project?.users.map((member: Member) => (
+        <ProjectMemberItem key={member.userid} id={member.userid} role={member.role as Role} projectId={projectId} userId={user!.id} userRole={userRole} />
       ))}
 
-      <div className="flex flex-row gap-4 items-center pt-4">
+      <section className="flex flex-row gap-4 items-center pt-4">
         <div className="flex-1 items-center">
           <h3 className="heading-xs">
           Leave project
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <RemoveProjectMember handleRemove={handleSubmitForModal} userRole={userRole} projectSize={project?.users.length} />
-      </div>
+        <RemoveProjectMember handleRemove={handleSubmitForModal} userRole={userRole} projectSize={project!.users.length} />
+      </section>
     </>
   );
 };

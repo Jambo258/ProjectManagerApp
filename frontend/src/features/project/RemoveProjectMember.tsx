@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
+import { Role } from "../api/apiSlice";
 
 interface RemoveProjectMemberProps {
   handleRemove: () => void;
-  userRole: string;
-  projectSize: number
+  userRole: Role;
+  projectSize: number;
 }
 
 export const RemoveProjectMember = ( { handleRemove, userRole, projectSize }: RemoveProjectMemberProps ) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalTitle = "Are you sure you want to leave the project?";
+  
   const handleDeleteModalText = () => {
     if (userRole === "manager" && projectSize > 1) {
       return "Project will be left without a manager. You can give someone manager role before leaving.";

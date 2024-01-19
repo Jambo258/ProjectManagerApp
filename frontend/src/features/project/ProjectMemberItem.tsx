@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
-import { useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
+import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
 
 interface ProjectMemberProps {
   id: number,
-  role: string,
-  userRole: string,
+  role: Role,
   projectId: number,
+  userRole: Role,
   userId: number
 }
 
 // TO DO
-// Get name and email -> NEEDS BACKEND CHANGES
+// Get name and email
 // Change role
 // Remove from project
 
-export const ProjectMemberItem = ({ id, role, userRole, projectId, userId }: ProjectMemberProps) => {
-
+export const ProjectMemberItem = ({ id, role, projectId, userId, userRole }: ProjectMemberProps) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalText = "Are you sure you want to remove this user?";
 
@@ -28,7 +27,7 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId, userId }: Pro
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
-        await editProjectMember({userId: id, projectId: projectId, role: e.target.value}).unwrap();
+        await editProjectMember({userId: id, projectId: projectId, role: (e.target.value as Role)}).unwrap();
       } catch {
         console.log("Error!");
       }
@@ -47,7 +46,7 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId, userId }: Pro
   };
 
   return (
-    <div className="flex flex-row items-center gap-3">
+    <section className="flex flex-row items-center gap-3">
       <div className="w-8 h-8 btn-text-sm pt-1 text-center text-[white]
       bg-purple-200 rounded-full">
         {id}
@@ -82,6 +81,6 @@ export const ProjectMemberItem = ({ id, role, userRole, projectId, userId }: Pro
           deleteModalText={deleteModalText}
         />
       )}
-    </div>
+    </section>
   );
 };
