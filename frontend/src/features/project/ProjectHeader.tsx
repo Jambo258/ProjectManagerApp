@@ -24,6 +24,14 @@ export const ProjectHeader = () => {
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
           <Modal
+            btnText={"Add page"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            }
+            modalTitle={"Add new page"}>
+            <AddPage projectId={projectid} />
+          </Modal>
+          <Modal
             btnText={"Rename project"}
             btnStyling={
               "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
@@ -41,14 +49,6 @@ export const ProjectHeader = () => {
             modalTitle={"Project members"}
           >    
             <ProjectMembersModal projectId={projectid} />
-          </Modal>
-          <Modal
-            btnText={"Add page"}
-            btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-            }
-            modalTitle={"Add new page"}>
-            <AddPage projectId={projectid} />
           </Modal>
           <DeleteProjectModal
             btnText={"Delete project"}
