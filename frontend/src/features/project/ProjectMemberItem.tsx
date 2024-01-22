@@ -3,6 +3,7 @@ import { DeleteModal } from "../../components/DeleteModal";
 import { useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
 
 import { type Member } from "../api/apiSlice";
+import { UserIcon } from "../user/UserIcon";
 
 interface ProjectMemberProps {
   member: Member,
@@ -43,10 +44,7 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
 
   return (
     <section className="flex flex-row items-center gap-3">
-      <div className="w-8 h-8 btn-text-sm pt-1 text-center text-[white]
-      bg-purple-200 rounded-full">
-        {member.name[0].toUpperCase()}
-      </div>
+      <UserIcon name={member.name} id={member.id} />
 
       <div className="flex-1">
         <p className="body-text-md">{member.name}</p>
