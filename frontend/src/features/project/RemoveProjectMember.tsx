@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
-import { Role } from "../api/apiSlice";
 
 interface RemoveProjectMemberProps {
   handleRemove: () => void;
-  userRole: Role;
+  userstring: string;
   projectSize: number;
 }
 
