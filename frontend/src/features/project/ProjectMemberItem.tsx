@@ -7,7 +7,7 @@ import { type Member } from "../api/apiSlice";
 interface ProjectMemberProps {
   member: Member,
   projectId: number,
-  userRole: Role,
+  userRole: string,
   userId: number
 }
 
