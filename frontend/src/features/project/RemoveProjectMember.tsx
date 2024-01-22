@@ -3,7 +3,7 @@ import { DeleteModal } from "../../components/DeleteModal";
 
 interface RemoveProjectMemberProps {
   handleRemove: () => void;
-  userstring: string;
+  userRole: string;
   projectSize: number;
 }
 
