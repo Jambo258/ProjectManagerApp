@@ -1,61 +1,63 @@
-import { useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useDeletePageMutation } from "../api/apiSlice";
-import { useState } from "react";
-import { DeleteModal } from "../../components/DeleteModal";
+import { useMemo } from "react";
+import { SortablePage } from "./SortablePage";
+import { Column, Task } from "./DnDComponent";
 
-interface SortableItem {
-  id: number;
-  children?: React.ReactNode;
+interface Props {
+  column: Column;
+  deleteColumn: (id: string | number) => void;
+  createTask: (columnId: string | number) => void;
+  tasks: Task[];
+  deleteTask: (id: string | number) => void;
 }
 
-export const SortableItem = ({ children, id }: SortableItem) => {
-  const [deletePage] = useDeletePageMutation();
-  const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
-  const deleteModalText = `Are you sure you wanna delete page? ${id}`;
-  console.log(confirmDeleteEdit);
-  const handleSubmitForModali = async (id?: number) => {
-    try {
-      const deletedPage = await deletePage(id!).unwrap();
-      console.log("Page deleted:", deletedPage);
-    } catch (err) {
-      console.error("Failed to delete page", err);
-    }
-  };
+export const SortableItem = (props: Props) => {
+  const { column, deleteColumn, createTask, tasks, deleteTask } = props;
+
+  const taskIds = useMemo(() => {
+    return tasks.map((element) => element.Id);
+  }, [tasks]);
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
-      id,
+      id: column.Id,
+      data: {
+        type: "Column",
+        column,
+      },
     });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  // Design here the Card component inside
-  console.log(id);
+
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      <div className="border border-green-300 bg-dark-blue-300 text-yellow-200">
-        {children}
-        <button
-          className="mt-4 rounded-lg shadow-lg bg-black flex justify-center
-                      text-sm
-                      items-center py-2 text-slate-300 font-semibold"
-          onClick={() => {
-            setConfirmDeleteEdit(!confirmDeleteEdit);
-            console.log(id);
-          }}
-        >
-          Delete!
-        </button>
-        {confirmDeleteEdit && (
-          <DeleteModal
-            setConfirmDeleteEdit={setConfirmDeleteEdit}
-            confirmDeleteEdit={confirmDeleteEdit}
-            handleSubmitForModal={handleSubmitForModali}
-            deleteModalText={deleteModalText}
-          ></DeleteModal>
-        )}
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg bg-grayscale-100 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+    >
+      <div
+        {...attributes}
+        {...listeners}
+        className="text-md h-[60px] rounded-md flex justify-between"
+      >
+        {column.title}
+        <button onClick={() => deleteColumn(column.Id)}>Delete Column</button>
       </div>
+      <div className="flex flex-grow flex-col gap-4">
+        <SortableContext items={taskIds}>
+          {tasks.map((element) => (
+            <SortablePage
+              task={element}
+              key={element.Id}
+              deleteTask={deleteTask}
+            />
+          ))}
+        </SortableContext>
+      </div>
+      <button onClick={() => createTask(column.Id)}>Add task</button>
     </div>
   );
 };
