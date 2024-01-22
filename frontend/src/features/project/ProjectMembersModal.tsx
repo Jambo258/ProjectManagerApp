@@ -84,6 +84,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
     }
   };
+  
   // Leave project
   const [deleteUser] = useDeleteProjectUserMutation();
 
