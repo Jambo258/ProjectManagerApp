@@ -8,6 +8,7 @@ import { RenameProjectModal } from "./RenameProjectModal";
 import { DeleteProjectModal } from "./DeleteProjectModal";
 import AddPage from "../page/AddPage";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
+import { ProjectMembersModal } from "./ProjectMembersModal";
 
 export const ProjectHeader = () => {
   const projectid = parseInt(useParams().projectId!);
@@ -23,6 +24,14 @@ export const ProjectHeader = () => {
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
           <Modal
+            btnText={"Add page"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            }
+            modalTitle={"Add new page"}>
+            <AddPage projectId={projectid} />
+          </Modal>
+          <Modal
             btnText={"Rename project"}
             btnStyling={
               "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
@@ -34,13 +43,12 @@ export const ProjectHeader = () => {
               projectName={project.name}
             />
           </Modal>
-          <Modal
-            btnText={"Add page"}
-            btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-            }
-            modalTitle={"Add new page"}>
-            <AddPage projectId={projectid} />
+          <Modal 
+            btnText={"Project members"}
+            btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
+            modalTitle={"Project members"}
+          >    
+            <ProjectMembersModal projectId={projectid} />
           </Modal>
           <DeleteProjectModal
             btnText={"Delete project"}

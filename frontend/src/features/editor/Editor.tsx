@@ -30,13 +30,16 @@ interface IProps {
   pageId: string;
 }
 
+const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
+  .replace(/(http)(s)?:\/\//, "ws$2://") + "/collaboration";
+
 const Editor = ({ pageId }: IProps) => {
   const [editable, setEditable] = useState(true);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
   const [provider] = useState(
     () => new HocuspocusProvider({
-      url: "ws://localhost:3001/collaboration",
+      url: BACKEND_WS_URL,
       name: pageId,
       document: ydoc,
       token: "token",
