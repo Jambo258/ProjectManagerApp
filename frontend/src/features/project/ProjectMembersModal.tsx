@@ -11,12 +11,7 @@ import { useAppSelector } from "../../app/hooks";
 import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
-export interface Member {
-  id: number;
-  role: string;
-  email: string;
-  name: string;
-}
+import { type Member } from "../api/apiSlice";
 
 interface ProjectMembersModalProps {
   projectId: number
@@ -89,7 +84,6 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
     }
   };
-  
   // Leave project
   const [deleteUser] = useDeleteProjectUserMutation();
 
@@ -107,7 +101,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     <>
       { (userRole === "manager") &&
       <section>
-        <form  className="flex flex-row gap-2 mb-2"
+        <form className="flex flex-row gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input 
             type="email"

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
 import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
 
-import { Member } from "./ProjectMembersModal";
+import { type Member } from "../api/apiSlice";
 
 interface ProjectMemberProps {
   member: Member,
