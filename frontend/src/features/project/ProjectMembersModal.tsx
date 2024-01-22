@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Role, useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
+import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
 
@@ -26,7 +26,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const navigate = useNavigate();
 
   const [selectValue, setSelectValue] = useState<string>("");
-  const [userRole, setUserRole] = useState<Role>("viewer");
+  const [userRole, setUserRole] = useState<string>("viewer");
 
   const user = useAppSelector((state) => state.auth.user);
   const { data: project } = useGetProjectQuery(projectId);
@@ -34,7 +34,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   useEffect(() => {
     project?.users.map((member: Member) => {
       if (member.id === user?.id) {
-        setUserRole(member.role as Role);
+        setUserRole(member.role);
       }
     });
   }), [];
@@ -65,7 +65,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const onHandleSubmit = async (formData: InviteProjectMemberValues) => {
     if (canSubmit) {
       try {
-        await addProjectMember({email: formData.email, projectId: projectId, role: formData.role as Role}).unwrap();
+        await addProjectMember({email: formData.email, projectId: projectId, role: formData.role}).unwrap();
         reset();
         setFormError(null);
       } catch (err) {

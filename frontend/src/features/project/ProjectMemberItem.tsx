@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DeleteModal } from "../../components/DeleteModal";
-import { Role, useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
+import { useDeleteProjectUserMutation, useEditProjectUserMutation } from "../api/apiSlice";
 
 import { type Member } from "../api/apiSlice";
 
@@ -23,7 +23,7 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
       setConfirmDeleteEdit(!confirmDeleteEdit);
     } else {
       try {
-        await editProjectMember({userId: member.id, projectId: projectId, role: (e.target.value as Role)}).unwrap();
+        await editProjectMember({userId: member.id, projectId: projectId, role: (e.target.value)}).unwrap();
       } catch {
         console.log("Error!");
       }
@@ -35,7 +35,7 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
 
   const handleSubmitForModal = async () => {
     try {
-      await deleteUser({projectId: projectId, userId: member.id, role: member.role as Role}).unwrap();
+      await deleteUser({projectId: projectId, userId: member.id, role: member.role}).unwrap();
     } catch (err) {
       console.error("Failed to delete user", err);
     }
@@ -50,7 +50,7 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
 
       <div className="flex-1">
         <p className="body-text-md">{member.name}</p>
-        <p className="body-text-xs">{member.email}</p>
+        <p className="body-text-sm">{member.email}</p>
       </div>
       
       <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
