@@ -62,7 +62,6 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
           className="btn-text-xs">Viewer</option>
         <option value="manager" 
           className="btn-text-xs">Manager</option>
-        {/* Check if user is manager */}
         <option value="remove"
           className="bg-caution-100 btn-text-xs">
             Remove

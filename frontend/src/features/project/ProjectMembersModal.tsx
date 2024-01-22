@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { Role, useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
+import { useNavigate } from "react-router-dom";
+
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import { Role, useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
-import { useNavigate } from "react-router-dom";
 
 import { RemoveProjectMember } from "./RemoveProjectMember";
 import { ProjectMemberItem } from "./ProjectMemberItem";
@@ -29,7 +31,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const navigate = useNavigate();
 
   const [selectValue, setSelectValue] = useState<string>("");
-  const [userRole, setUserRole] = useState<Role>("manager");
+  const [userRole, setUserRole] = useState<Role>("viewer");
 
   const user = useAppSelector((state) => state.auth.user);
   const { data: project } = useGetProjectQuery(projectId);
@@ -42,6 +44,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     });
   }), [];
 
+  // Add new member
   const {
     formState: {isDirty, isSubmitting, errors},
     handleSubmit,
@@ -50,19 +53,21 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   } = useForm<InviteProjectMemberValues>({
     defaultValues: {
       email: "",
-      role: "editor"
+      role: "viewer"
     },
     resolver: yupResolver(inviteUserSchema),
   });
 
   const [formError, setFormError] = useState<null | string>(null);
+
+  const onError = (errors: FieldErrors<InviteProjectMemberValues>) => {
+    console.log("Form field errors:", errors);
+  };
+  
   const [addProjectMember, { isLoading }] = useAddNewProjectUserMutation();
   const canSubmit = isDirty && !isLoading;
 
   const onHandleSubmit = async (formData: InviteProjectMemberValues) => {
-    // Delete this when function works
-    console.log(formData);
-
     if (canSubmit) {
       try {
         await addProjectMember({email: formData.email, projectId: projectId, role: formData.role as Role}).unwrap();
@@ -84,12 +89,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
     }
   };
-
-  const onError = (errors: FieldErrors<InviteProjectMemberValues>) => {
-    console.log("Form field errors:", errors);
-  };
-  
-  // Remove yourself from project
+  // Leave project
   const [deleteUser] = useDeleteProjectUserMutation();
 
   const handleSubmitForModal = async () => {
@@ -138,7 +138,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project?.users.map((member: Member) => (
-        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user!.id} userRole={userRole}  />
+        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user!.id} userRole={userRole} />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
