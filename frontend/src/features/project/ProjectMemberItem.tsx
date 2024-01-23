@@ -54,10 +54,10 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
       <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
         value={member.role} 
         onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager" || member.id === userId}>
-        <option value="editor" 
-          className="btn-text-xs">Editor</option>
         <option value="viewer" 
           className="btn-text-xs">Viewer</option>
+        <option value="editor" 
+          className="btn-text-xs">Editor</option>
         <option value="manager" 
           className="btn-text-xs">Manager</option>
         <option value="remove"

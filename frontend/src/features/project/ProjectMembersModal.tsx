@@ -25,7 +25,7 @@ interface InviteProjectMemberValues {
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const navigate = useNavigate();
 
-  const [selectValue, setSelectValue] = useState<string>("");
+  const [selectValue, setSelectValue] = useState<string>("viewer");
   const [userRole, setUserRole] = useState<string>("viewer");
 
   const user = useAppSelector((state) => state.auth.user);
@@ -37,7 +37,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
         setUserRole(member.role);
       }
     });
-  }), [];
+  });
 
   // Add new member
   const {
@@ -66,6 +66,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     if (canSubmit) {
       try {
         await addProjectMember({email: formData.email, projectId: projectId, role: formData.role}).unwrap();
+        setSelectValue("viewer");
         reset();
         setFormError(null);
       } catch (err) {
@@ -114,10 +115,10 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
             {...register("role")}
             onChange={(e) => setSelectValue(e.target.value)}
             className="p-2 btn-text-xs border border-grayscale-300">
-            <option value="editor" 
-              className="btn-text-xs">Editor</option>
             <option value="viewer" 
               className="btn-text-xs">Viewer</option>
+            <option value="editor" 
+              className="btn-text-xs">Editor</option>
             <option value="manager" 
               className="btn-text-xs">Manager</option>
           </select> 
