@@ -57,6 +57,10 @@
     @apply text-inherit p-0 bg-grayscale-0 text-sm;
   }
 
+  .tiptap ul {
+    @apply px-4 list-disc;
+  }
+
   .tiptap-task-item {
     @apply flex gap-3;
   }
