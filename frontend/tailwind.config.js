@@ -6,7 +6,6 @@ export default {
     theme: {
         colors: {
             inherit: "inherit",
-            current: "current",
             // Layout
             // Project
             'grayscale': {
