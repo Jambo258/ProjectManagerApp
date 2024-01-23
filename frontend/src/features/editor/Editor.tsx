@@ -54,6 +54,11 @@ const Editor = ({ pageId }: IProps) => {
     extensions: [
       StarterKit.configure({
         history: false,
+        bulletList: {
+          itemTypeName: "listItem",
+          keepMarks: true,
+          keepAttributes: true,
+        }
       }),
       Highlight,
       TaskList.configure({
