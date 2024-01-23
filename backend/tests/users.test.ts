@@ -8,15 +8,11 @@ const request = agent(app);
 let testUserID = 0;
 
 beforeAll(async () => {
-  await request
+  const res = await request
     .post("/users/register")
     .send({ email: "pekka@mail.com", name: "pekka", password: "salainen" });
 
-  const res = await request
-    .post("/users/getuserbyemail")
-    .send({ email: "pekka@mail.com" });
-
-  testUserID = res.body;
+  testUserID = res.body.id;
 });
 
 afterAll(async () => {
@@ -176,7 +172,7 @@ describe("Server", () => {
       .send({ email: "pekka@mail.com" })
       .expect(200)
       .expect("Content-Type", /json/);
-    expect(res.body).toEqual(testUserID);
+    expect(res.body.id).toEqual(testUserID);
   });
 
   it("get user id by wrong email", async () => {

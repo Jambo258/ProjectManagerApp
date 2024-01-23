@@ -5,12 +5,12 @@ import expressWebsockets from "express-ws";
 import { Server, type onAuthenticatePayload } from "@hocuspocus/server";
 import { Logger } from "@hocuspocus/extension-logger";
 import { Database } from "@hocuspocus/extension-database";
-import usersRouter from "./routes/userRouter.js";
-import projectsRouter from "./routes/projectRouter.js";
+import authenticate from "./middlewares/authenticate.js";
 import requestLog from "./middlewares/requestLog.js";
 import unknownEndpoint from "./middlewares/unknownEndpoint.js";
+import projectsRouter from "./routes/projectRouter.js";
 import pagesRouter from "./routes/pageRouter.js";
-import authenticate from "./middlewares/authenticate.js";
+import usersRouter from "./routes/userRouter.js";
 import { canEditPage, getpageById, updatePageContent } from "./services/pageService.js";
 
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;

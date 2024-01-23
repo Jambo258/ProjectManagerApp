@@ -31,7 +31,7 @@ interface IProps {
 }
 
 const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
-  .replace(/(http)(s)?:\/\//, "ws$2://") + "/collaboration";
+  .replace(/(http)(s)?:\/\//, "ws$2://") + "collaboration";
 
 const Editor = ({ pageId }: IProps) => {
   const [editable, setEditable] = useState(true);

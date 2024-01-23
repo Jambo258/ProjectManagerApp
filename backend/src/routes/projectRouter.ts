@@ -25,7 +25,7 @@ projectsRouter.post("/", async (req, res, next) => {
     }
     const userId = req.session.userId!;
     const newProject = await createNewProject(name, userId);
-    res.status(200).json(newProject);
+    return res.status(200).json(newProject);
   } catch (error) {
     next(error);
   }
@@ -37,7 +37,7 @@ projectsRouter.get("/", async (req, res, next) => {
 
     const usersProjects = await getAllProjectsAndPagesByUserId(userId);
 
-    res.json(usersProjects);
+    return res.json(usersProjects);
   } catch (error) {
     next(error);
   }
@@ -64,7 +64,7 @@ projectsRouter.delete("/:pid(\\d+)", async (req, res, next) => {
     }
     const deletedProject = await deleteProject(projectId);
 
-    res.status(200).json(deletedProject);
+    return res.status(200).json(deletedProject);
   } catch (error) {
     next(error);
   }
@@ -98,7 +98,7 @@ projectsRouter.put("/:pid(\\d+)", async (req, res, next) => {
     }
 
     const updatedProject = await updateProject(projectId, name);
-    res.json(updatedProject);
+    return res.json(updatedProject);
   } catch (error) {
     next(error);
   }
@@ -122,7 +122,7 @@ projectsRouter.get("/:pid(\\d+)", async (req, res, next) => {
     }
 
     const allProjectDetails = await getProjectAllDetailsById(projectId);
-    res.json(allProjectDetails);
+    return res.json(allProjectDetails);
   } catch (error) {
     next(error);
   }
@@ -177,7 +177,7 @@ projectsRouter.post("/:pid(\\d+)/users/", async (req, res, next) => {
 
     const newUserToProject = await addUserToProject(userId, projectId, role);
 
-    res.json(newUserToProject);
+    return res.json(newUserToProject);
   } catch (error) {
     next(error);
   }
@@ -215,9 +215,7 @@ projectsRouter.put("/:pid(\\d+)/users/:uid(\\d+)", async (req, res, next) => {
     );
 
     if (!findSessionUser) {
-      return res
-        .status(401)
-        .json({ error: "Session holder is not on this project" });
+      return res.status(401).json({ error: "You are not on the project" });
     }
 
     if (findSessionUser.role !== Role.manager) {
@@ -235,7 +233,7 @@ projectsRouter.put("/:pid(\\d+)/users/:uid(\\d+)", async (req, res, next) => {
       role
     );
 
-    res.json(newUserRoleToProject);
+    return res.json(newUserRoleToProject);
   } catch (error) {
     next(error);
   }
@@ -269,9 +267,7 @@ projectsRouter.delete(
       );
 
       if (!findSessionUser) {
-        return res
-          .status(401)
-          .json({ error: "Session holder is not on this project" });
+        return res.status(401).json({ error: "You are not on the project" });
       }
 
       if (findSessionUser.role !== Role.manager && sessionUserId !== userId) {
@@ -287,7 +283,7 @@ projectsRouter.delete(
         projectId
       );
 
-      res.json(deletedUserFromProject);
+      return res.json(deletedUserFromProject);
     } catch (error) {
       next(error);
     }

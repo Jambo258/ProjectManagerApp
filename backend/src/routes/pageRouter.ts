@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Role } from "@prisma/client";
 import {
   getpageById,
   createPage,
@@ -6,7 +7,6 @@ import {
   deletePage,
 } from "../services/pageService.js";
 import { checkForUserExistingOnProject } from "../services/projectService.js";
-import { Role } from "@prisma/client";
 
 const pagesRouter = Router();
 
@@ -15,11 +15,15 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
     const userid = req.session.userId!;
     const foundPage = await getpageById(Number(req.params.id));
 
-    if (!foundPage) return res.status(404).json({ error: "Page not found" });
+    if (!foundPage) {
+      return res.status(404).json({ error: "Page not found" });
+    }
 
     const findUser = await checkForUserExistingOnProject(userid, foundPage.projectid);
 
-    if (!findUser) res.status(401).json({ error: "User is not on the project" });
+    if (!findUser) {
+      return res.status(401).json({ error: "User is not on the project" });
+    }
 
     return res.status(200).json(foundPage);
   } catch (error) {
@@ -48,7 +52,7 @@ pagesRouter.post("/", async (req, res, next) => {
     }
 
     if (findUser.role !== Role.editor && findUser.role !== Role.manager) {
-      res.status(401).json({ error: "Manager or editor role required" });
+      return res.status(401).json({ error: "Manager or editor role required" });
     }
 
     const newPage = await createPage(name, projectid);
@@ -73,8 +77,9 @@ pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
       return res.status(401).json({ error: "You are not on this project" });
     }
 
-    if (findUser.role !== Role.manager)
-      res.status(401).json({ error: "Manager role required" });
+    if (findUser.role !== Role.manager) {
+      return res.status(401).json({ error: "Manager role required" });
+    }
 
     const page = await deletePage(pageId);
     return res.status(200).json({ id: page.id });
@@ -104,7 +109,7 @@ pagesRouter.put("/:id(\\d+)", async (req, res, next) => {
     }
 
     if (findUser.role !== Role.editor && findUser.role !== Role.manager) {
-      res.status(401).json({ error: "Manager or editor role required" });
+      return res.status(401).json({ error: "Manager or editor role required" });
     }
 
     const updatedPage = await updatePageName(pageId, name);
