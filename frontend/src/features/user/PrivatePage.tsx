@@ -31,7 +31,7 @@ export const PrivatePage = () => {
           <div className="absolute z-10">
             <DashboardNav />
           </div>
-          <div className="ml-12">
+          <div className="ml-12 max-h-screen overflow-auto">
             <ProjectHeader />
             <Outlet />
           </div>
