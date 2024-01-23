@@ -11,7 +11,7 @@ import unknownEndpoint from "./middlewares/unknownEndpoint.js";
 import projectsRouter from "./routes/projectRouter.js";
 import pagesRouter from "./routes/pageRouter.js";
 import usersRouter from "./routes/userRouter.js";
-import { canEditPage, getpageById, updatePageContent } from "./services/pageService.js";
+import { canEditPage, canViewPage, getpageById, updatePageContent } from "./services/pageService.js";
 
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;
 const PORT = process.env.BACKEND_PORT!;
@@ -39,20 +39,16 @@ const hocuspocusServer = Server.configure({
   ],
   port: Number(PORT),
   async onAuthenticate(data) {
-    const { request } = data as onAuthenticatePayloadWithRequest;
+    const { request, documentName } = data as onAuthenticatePayloadWithRequest;
     const sessionUserId = request.session.userId;
-    if (!sessionUserId || !await canEditPage(sessionUserId, Number(data.documentName))) {
+    const pageId = Number(documentName);
+    if (!sessionUserId || !await canViewPage(sessionUserId, pageId)) {
       console.log("Not authorized! Userid =", sessionUserId, ", page =", data.documentName);
       throw new Error("Not authorized!");
     }
-
-    // You can set contextual data to use it in other hooks
-    return {
-      user: {
-        id: sessionUserId,
-        name: "John",
-      },
-    };
+    if (!await canEditPage(sessionUserId, pageId)) {
+      data.connection.readOnly = true;
+    }
   },
 });
 
