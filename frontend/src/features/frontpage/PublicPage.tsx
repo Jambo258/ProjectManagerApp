@@ -5,7 +5,7 @@ export const PublicPage = () => {
   return (
     <div className="w-full min-h-screen bg-grayscale-200">
       <NavBar />
-      <Outlet/>
+      <Outlet />
     </div>
   );
 };
