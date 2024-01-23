@@ -1,6 +1,6 @@
 import "./editor.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -34,7 +34,7 @@ const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
   .replace(/(http)(s)?:\/\//, "ws$2://") + "collaboration";
 
 const Editor = ({ pageId }: IProps) => {
-  const [editable, setEditable] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
   const [provider] = useState(
@@ -43,13 +43,14 @@ const Editor = ({ pageId }: IProps) => {
       name: pageId,
       document: ydoc,
       token: "token",
-      onAuthenticated: () => setEditable(true),
-      onAuthenticationFailed: () => setEditable(false),
+      onAuthenticated: () => setIsAuthenticated(true),
+      onAuthenticationFailed: () => setIsAuthenticated(false),
       connect: true,
     })
   );
 
   const editor = useEditor({
+    editable: false,
     extensions: [
       StarterKit.configure({
         history: false,
@@ -70,26 +71,29 @@ const Editor = ({ pageId }: IProps) => {
     ],
     editorProps: {
       attributes: {
-        class: "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-5 p-2 focus:outline-none border border-grayscale-400 rounded-b-lg min-h-[10rem]",
+        class: "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 focus:outline-none min-h-[10rem]",
       },
-      editable: () => editable,
     },
   });
 
+  useEffect(() => {
+    editor?.setEditable(isAuthenticated && provider.authorizedScope !== "readonly");
+  }, [editor, isAuthenticated, provider.authorizedScope]);
+
   return (
-    <div>
-      {editor && <MenuBar editor={editor} />}
+    <div className="border border-grayscale-400 rounded-lg">
+      {editor?.isEditable && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
-      <div className="flex justify-between m-5">
+      <div className="flex p-1 justify-between border-t border-grayscale-400">
         <div className="flex items-center">
-          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl mr-1`}>●</p>
+          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
             : "offline"}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
