@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { userColor } from "./UserColor";
 import { ProfileModal } from "./ProfileModal";
 import { useLogoutMutation } from "../api/apiSlice";
@@ -11,6 +11,7 @@ interface UserMenuProps {
 }
 
 export const UserMenu = ({id, name}: UserMenuProps) => {
+  const menuRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
@@ -23,9 +24,21 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
       console.log(error);
     }
   };
+  
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (        
-    <section className="w-full px-2 py-4 bg-dark-blue-100">
+    <section ref={menuRef} className="w-full px-2 py-4 bg-dark-blue-100">
 
       <button
         onClick={() => setOpenMenu(!openMenu)} 
@@ -38,13 +51,13 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
         className="flex flex-col bg-grayscale-100 absolute left-12 bottom-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
         <Modal 
           btnText={"Account settings"} 
-          btnStyling="min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+          btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
           modalTitle={"Account settings"} >
           <ProfileModal />
         </Modal>
         <button 
           onClick={() => Logout()}
-          className="min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100">
+          className="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100">
             Logout
         </button>   
       </section>
