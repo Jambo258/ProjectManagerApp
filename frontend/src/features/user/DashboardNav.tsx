@@ -9,12 +9,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
 import { ProfileModal } from "./ProfileModal";
+import { UserMenu } from "./UserMenu";
+import { userColor } from "./UserColor";
+import { useAppSelector } from "../../app/hooks";
 
 export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
   const [openNav, setOpenNav] = useState<boolean>(true);
   const { data: projects = [] } = useGetProjectsQuery();
+  const user = useAppSelector((state) => state.auth.user);
 
   const Logout = async () => {
     try {
@@ -72,10 +76,15 @@ export const DashboardNav = () => {
         )}
       </div>
 
-     
-      <section className={openNav ? "grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full" : "flex pt-4 px-2"}>
-        <ProfileModal/>
-        {openNav && (
+      {openNav 
+        ? 
+        <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
+          <Modal 
+            btnText={user!.name[0]} 
+            btnStyling={"rounded-full m-0 p-0 w-8 h-8 " + userColor(user!.id).text + " text-center heading-xs leading-8 " + userColor(user!.id).bg + " hover:" + userColor(user!.id).bg + " cursor-pointer"} 
+            modalTitle={"Account settings"} >
+            <ProfileModal />
+          </Modal>
           <div>
             <button
               onClick={() => Logout()}
@@ -84,8 +93,10 @@ export const DashboardNav = () => {
               <p>Log out</p>
             </button>
           </div>
-        )}
-      </section>
+        </section>
+        :
+        <UserMenu name={user!.name} id={user!.id} />
+      }
     </nav>
   );
 };
