@@ -33,6 +33,10 @@
 
 @layer components {
 
+  .tiptap p {
+    @apply font-serif text-base;
+  }
+
   .tiptap h1 {
     @apply font-sans text-4xl font-bold;
   }
@@ -50,9 +54,12 @@
   }
 
   .tiptap pre code {
-    @apply text-inherit p-0 bg-grayscale-0 font-[0.8rem];
+    @apply text-inherit p-0 bg-grayscale-0 text-sm;
   }
 
+  .tiptap-task-item {
+    @apply flex gap-3;
+  }
 }
 
 @layer utilities {
