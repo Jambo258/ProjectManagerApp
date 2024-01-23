@@ -71,7 +71,7 @@ const Editor = ({ pageId }: IProps) => {
     ],
     editorProps: {
       attributes: {
-        class: "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 focus:outline-none border border-grayscale-400 rounded-b min-h-[10rem]",
+        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-5 p-2 focus:outline-none border border-grayscale-400 rounded-b min-h-[10rem]",
       },
     },
   });
