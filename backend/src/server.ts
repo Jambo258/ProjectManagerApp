@@ -63,7 +63,7 @@ app.use(
     resave: true,
     saveUninitialized: false,
     rolling: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: "none", secure: isProduction ? true : false },
+    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: isProduction ? "none" : false, secure: isProduction ? true : false },
   })
 );
 
