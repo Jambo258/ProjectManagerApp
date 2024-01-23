@@ -50,7 +50,7 @@
   }
 
   .tiptap pre {
-    @apply bg-grayscale-300 text-dark-font font-mono py-3 px-4 rounded;
+    @apply bg-grayscale-300/50 text-dark-font font-mono py-3 px-4 rounded;
   }
 
   .tiptap pre code {
