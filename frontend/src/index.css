@@ -31,7 +31,32 @@
   }
 }
 
+@layer components {
+
+  .tiptap h1 {
+    @apply font-sans text-4xl font-bold;
+  }
+
+  .tiptap h2 {
+    @apply font-sans text-[2rem] font-medium;
+  }
+
+  .tiptap blockquote {
+    @apply ps-4 border-l-2 border-grayscale-300;
+  }
+
+  .tiptap pre {
+    @apply bg-grayscale-300 text-dark-font font-mono py-3 px-4 rounded;
+  }
+
+  .tiptap pre code {
+    @apply text-inherit p-0 bg-grayscale-0 font-[0.8rem];
+  }
+
+}
+
 @layer utilities {
+
   .heading-xxl {
     font-family: "Kumbh Sans", sans-serif;
     font-size: 3rem;
