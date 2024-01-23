@@ -56,8 +56,14 @@ const Editor = ({ pageId }: IProps) => {
         history: false,
       }),
       Highlight,
-      TaskList,
-      TaskItem,
+      TaskList.configure({
+        itemTypeName: "taskItem",
+      }),
+      TaskItem.configure({
+        HTMLAttributes: {
+          class: "tiptap-task-item",
+        }
+      }),
       CharacterCount.configure({
         limit: 10000,
       }),
