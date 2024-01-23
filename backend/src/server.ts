@@ -58,13 +58,16 @@ const hocuspocusServer = Server.configure({
 
 const { app } = expressWebsockets(express());
 
+const isProduction = process.env.NODE_ENV === "production";
+
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: sessionSecret,
     resave: true,
     saveUninitialized: false,
     rolling: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: "none", secure: isProduction ? true : false },
   })
 );
 
