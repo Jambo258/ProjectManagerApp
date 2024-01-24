@@ -1,4 +1,4 @@
-import { type ReactElement, useState, createContext } from "react";
+import { type ReactElement, useState, createContext, useEffect } from "react";
 import { X } from "react-feather";
 
 interface ModalContextType {
@@ -23,7 +23,7 @@ export const Modal = ({
   children
 }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -48,7 +48,7 @@ export const Modal = ({
         <dialog
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
-          className="fixed w-4/12 min-w-max max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all">
+          className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all">
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}

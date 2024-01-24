@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Plus } from "react-feather";
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Plus } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import CreateProjectModal from "../project/CreateProjectModal";
 import {
@@ -15,6 +15,16 @@ export const DashboardNav = () => {
   const navigate = useNavigate();
   const [collapseNav, setcollapseNav] = useState<boolean>(true);
   const { data: projects = [] } = useGetProjectsQuery();
+  const [width, setWidth]  = useState(window.innerWidth);
+
+  const updateDimensions = () => {
+    setWidth(window.innerWidth);
+  };
+  
+  useEffect(() => {
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   const Logout = async () => {
     try {
@@ -27,21 +37,27 @@ export const DashboardNav = () => {
 
   return (
     <nav
-      className={`bg-dark-blue-300 min-h-screen text-light-font flex-shrink-0 ${
-        collapseNav ? "w-72" : "w-12"
-      }`}
+      className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen sticky sm:relative flex-shrink-0 ${
+        collapseNav ? "sm:w-72 h-full" : "sm:w-12 h-14"}`}
     >
       <div className="min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] overflow-y-auto">
-        <div className="sticky top-0 grid grid-flow-col justify-end bg-dark-blue-300">
+        <div className="sm:sticky top-0 grid grid-flow-col sm:justify-end bg-dark-blue-300">
           <button
             className="w-fit p-4 heading-md text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setcollapseNav(!collapseNav)}
           >
-            {collapseNav ? (
-              <ChevronLeft size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            
+            {width > 768 ?
+              collapseNav ? (
+                <ChevronLeft size={20} />
+              ) : (
+                <ChevronRight size={20} />
+              )
+              : collapseNav ? (
+                <ChevronUp size={20} />
+              ) : (
+                <ChevronDown size={20} />
+              )}
           </button>
         </div>
 
@@ -73,7 +89,7 @@ export const DashboardNav = () => {
       </div>
 
       {collapseNav && (
-        <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
+        <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center sbg-dark-blue-100">
           <ProfileModal/>
           <div>
             <button
