@@ -15,8 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppSelector } from "../../app/hooks";
 import { changeEmailSchema, changeNameSchema, changePasswordSchema } from "../auth/authValidation";
 import { DeleteModal } from "../../components/DeleteModal";
-import { Eye, EyeOff, X } from "react-feather";
-import { UserIcon } from "./UserIcon";
+import { Eye, EyeOff } from "react-feather";
 
 interface changeNameFormValues {
   name: string;
@@ -212,237 +211,197 @@ export const ProfileModal = () => {
     setEmailFormError(null);
     setPasswordFormError(null);
   };
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  
 
   return (
-    <>
-      <button
-        type="button" className="p-0 m-0 bg-grayscale-0 w-fit hover:bg-grayscale-0" onClick={() => openModal()}>
-        <UserIcon name={user!.name} id={user!.id}/>
-      </button>
+    <div className="min-w-full max-w-2xl m-auto grid grid-cols-4 gap-x-3 grid-flow-row items-center body-text-sm">
 
-      {isModalOpen &&
-      <div
-        onClick={closeModal}
-        className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}>
-        <dialog
-          onClick={(e) => e.stopPropagation()}
-          className="fixed w-4/12 min-w-max max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all">
-          <header className="w-full flex flex-col mb-2 place-items-end">
+      {nameEdit ? (
+        <form
+          onSubmit={handleName(onHandleSubmitName, onErrorName)}
+          className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <label className="heading-xs">
+              Name
+              <input
+                type="text"
+                {...registerName("name")}
+                className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+              />
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {errorsName.name?.message}
+              </p>
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {formErrorName}
+              </p>
+            </label>
+          </section>
+          <section className="col-span-1">
             <button
-              onClick={closeModal}
-              className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
-              <X size={20}/>
+              type="submit"
+              className="w-full py-2 btn-text-xs">
+              Submit
             </button>
-            <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
-              User Settings
-            </h3>
-          </header>
-          <main className="w-full mx-auto px-2">
-            <div className="min-w-full max-w-2xl m-auto grid grid-cols-4 gap-x-3 grid-flow-row items-center body-text-sm">
+          </section>
+        </form>
+      ):(
+        <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <p className="heading-xs">Name</p>
+            <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.name}</p>
+          </section>
+          <section className="col-span-1">
+            <button
+              type="button"
+              onClick={() => {
+                setNameEdit(!nameEdit);
+                setEmailEdit(false);
+                setPasswordEdit(false);
+                resetFields();
+              }}
+              className="w-full py-2 btn-text-xs">
+              Change Name
+            </button>
+          </section>
+        </section>
+      )}
 
-              {nameEdit ? (
-                <form
-                  onSubmit={handleName(onHandleSubmitName, onErrorName)}
-                  className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <label className="heading-xs">
-                        Name
-                      <input
-                        type="text"
-                        {...registerName("name")}
-                        className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
-                      />
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {errorsName.name?.message}
-                      </p>
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {formErrorName}
-                      </p>
-                    </label>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="submit"
-                      className="w-full py-2 btn-text-xs">
-                        Submit
-                    </button>
-                  </section>
-                </form>
-              ):(
-                <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <p className="heading-xs">Name</p>
-                    <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.name}</p>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setNameEdit(!nameEdit);
-                        setEmailEdit(false);
-                        setPasswordEdit(false);
-                        resetFields();
-                      }}
-                      className="w-full py-2 btn-text-xs">
-                        Change Name
-                    </button>
-                  </section>
-                </section>
-              )}
+      {emailEdit ? (
+        <form
+          onSubmit={handleEmail(onHandleSubmitEmail, onErrorEmail)}
+          className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <label className="heading-xs">
+              Email
+              <input
+                type="email"
+                {...registerEmail("email")}
+                className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+              />
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {errorsEmail.email?.message}
+              </p>
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {formErrorEmail}
+              </p>
+            </label>
+          </section>
+          <section className="col-span-1">
+            <button
+              type="submit"
+              className="w-full py-2 btn-text-xs">
+              Submit
+            </button>
+          </section>
+        </form>
+      ):(
+        <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <p className="heading-xs">Email</p>
+            <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.email}</p>
+          </section>
+          <section className="col-span-1">
+            <button
+              type="button"
+              onClick={() => {
+                setNameEdit(false);
+                setEmailEdit(!emailEdit);
+                setPasswordEdit(false);
+                resetFields();
+              }}
+              className="w-full py-2 btn-text-xs">
+              Change Email
+            </button>
+          </section>
+        </section>
+      )}
 
-              {emailEdit ? (
-                <form
-                  onSubmit={handleEmail(onHandleSubmitEmail, onErrorEmail)}
-                  className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <label className="heading-xs">
-                        Email
-                      <input
-                        type="email"
-                        {...registerEmail("email")}
-                        className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
-                      />
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {errorsEmail.email?.message}
-                      </p>
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {formErrorEmail}
-                      </p>
-                    </label>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="submit"
-                      className="w-full py-2 btn-text-xs">
-                        Submit
-                    </button>
-                  </section>
-                </form>
-              ):(
-                <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <p className="heading-xs">Email</p>
-                    <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.email}</p>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setNameEdit(false);
-                        setEmailEdit(!emailEdit);
-                        setPasswordEdit(false);
-                        resetFields();
-                      }}
-                      className="w-full py-2 btn-text-xs">
-                        Change Email
-                    </button>
-                  </section>
-                </section>
-              )}
-
-              {passwordEdit ? (
-                <form
-                  onSubmit={handlePassword(onHandleSubmitPassword, onErrorPassword)}
-                  className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <label className="heading-xs">
-                      Password
-                      <section className="relative">
-                        <input
-                          type={showPassword ? "text" : "password"}
-                          {...registerPassword("password")}
-                          autoComplete="new-password"
-                          className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 top-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
-                          {showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
-                        </button>
-                      </section>
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {errorsPassword.password?.message}
-                      </p>
-                      <p className="mt-1 text-center body-text-xs text-caution-200">
-                        {formErrorPassword}
-                      </p>
-                    </label>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="submit"
-                      className="w-full py-2 btn-text-xs">
-                        Submit
-                    </button>
-                  </section>
-                </form>
-              ):(
-                <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                  <section className="col-span-3">
-                    <p className="heading-xs">Password</p>
-                    <p className="w-full py-1.5 px-4 mb-3 body-text-md">Set a new password to login to your account.</p>
-                  </section>
-                  <section className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setNameEdit(false);
-                        setEmailEdit(false);
-                        setPasswordEdit(!passwordEdit);
-                        resetFields();
-                      }}
-                      className="w-full min-w-max px-[0] py-2 btn-text-xs">
-                        Change Password
-                    </button>
-                  </section>
-                </section>
-              )}
-
-              <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-                <section className="col-span-3">
-                  <p className="heading-xs">Delete Account</p>
-                  <p className="w-full py-1.5 px-4 mb-3 body-text-md">
-                    Permanently delete your account and remove access to all projects.
-                  </p>
-                </section>
-                <section className="col-span-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setNameEdit(false);
-                      setEmailEdit(false);
-                      setPasswordEdit(false);
-                      setConfirmDeleteEdit(!confirmDeleteEdit);
-                    }}
-                    className="w-full min-w-max px-[0] py-2 btn-text-xs bg-caution-100 hover:bg-caution-200">
-                      Delete Account
-                  </button>
-                </section>
+      {passwordEdit ? (
+        <form
+          onSubmit={handlePassword(onHandleSubmitPassword, onErrorPassword)}
+          className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <label className="heading-xs">
+              Password
+              <section className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...registerPassword("password")}
+                  autoComplete="new-password"
+                  className="block w-full py-1.5 px-4 mb-3 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 top-0 align-middle focus:outline-none focus:ring focus:ring-dark-blue-50">
+                  {showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
+                </button>
               </section>
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {errorsPassword.password?.message}
+              </p>
+              <p className="mt-1 text-center body-text-xs text-caution-200">
+                {formErrorPassword}
+              </p>
+            </label>
+          </section>
+          <section className="col-span-1">
+            <button
+              type="submit"
+              className="w-full py-2 btn-text-xs">
+              Submit
+            </button>
+          </section>
+        </form>
+      ):(
+        <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-3">
+            <p className="heading-xs">Password</p>
+            <p className="w-full py-1.5 px-4 mb-3 body-text-md">Set a new password to login to your account.</p>
+          </section>
+          <section className="col-span-1">
+            <button
+              type="button"
+              onClick={() => {
+                setNameEdit(false);
+                setEmailEdit(false);
+                setPasswordEdit(!passwordEdit);
+                resetFields();
+              }}
+              className="w-full min-w-max px-[0] py-2 btn-text-xs">
+              Change Password
+            </button>
+          </section>
+        </section>
+      )}
 
-              {confirmDeleteEdit &&
-                <DeleteModal
-                  setConfirmDeleteEdit={setConfirmDeleteEdit}
-                  confirmDeleteEdit={confirmDeleteEdit}
-                  handleSubmitForModal={handleSubmitForModal}
-                  deleteModalText={deleteModalText} />}
-            </div>
-          </main>
-        </dialog>
-      </div>
-      }
-    </>
+      <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
+        <section className="col-span-3">
+          <p className="heading-xs">Delete Account</p>
+          <p className="w-full py-1.5 px-4 mb-3 body-text-md">
+              Permanently delete your account and remove access to all projects.
+          </p>
+        </section>
+        <section className="col-span-1">
+          <button
+            type="button"
+            onClick={() => {
+              setNameEdit(false);
+              setEmailEdit(false);
+              setPasswordEdit(false);
+              setConfirmDeleteEdit(!confirmDeleteEdit);
+            }}
+            className="w-full min-w-max px-[0] py-2 btn-text-xs bg-caution-100 hover:bg-caution-200">
+              Delete Account
+          </button>
+        </section>
+      </section>
+
+      {confirmDeleteEdit &&
+        <DeleteModal
+          setConfirmDeleteEdit={setConfirmDeleteEdit}
+          confirmDeleteEdit={confirmDeleteEdit}
+          handleSubmitForModal={handleSubmitForModal}
+          deleteModalText={deleteModalText} />}
+    </div>
   );
 };
