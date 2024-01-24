@@ -86,7 +86,7 @@ const Editor = ({ pageId }: IProps) => {
       <EditorContent editor={editor} />
       <div className="flex p-1 justify-between border-t border-grayscale-400">
         <div className="flex items-center">
-          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl`}>●</p>
+          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl mr-1`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
