@@ -67,12 +67,12 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       action: () => editor.chain().focus().toggleBulletList().run(),
       isActive: () => editor.isActive("bulletList"),
     },
-    // {
-    //   name: "li",
-    //   title: "Ordered List",
-    //   action: () => editor.chain().focus().toggleOrderedList().run(),
-    //   isActive: () => editor.isActive("orderedList"),
-    // },
+    {
+      name: "li",
+      title: "Ordered List",
+      action: () => editor.chain().focus().toggleOrderedList().run(),
+      isActive: () => editor.isActive("orderedList"),
+    },
     {
       name: "☑li",
       icon: CheckSquare,
