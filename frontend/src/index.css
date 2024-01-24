@@ -61,6 +61,10 @@
     @apply px-4 list-disc;
   }
 
+  .tiptap ol {
+    @apply px-4 list-decimal body-text-md;
+  }
+
   .tiptap-task-item {
     @apply flex gap-3;
   }
