@@ -8,13 +8,13 @@ import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProje
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
 
-import { RemoveProjectMember } from "./RemoveProjectMember";
+import { LeaveProject } from "./LeaveProject";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
 import { type Member } from "../api/apiSlice";
 
 interface ProjectMembersModalProps {
-  projectId: number
+  projectId: number;
 }
 
 interface InviteProjectMemberValues {
@@ -58,7 +58,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const onError = (errors: FieldErrors<InviteProjectMemberValues>) => {
     console.log("Form field errors:", errors);
   };
-  
+
   const [addProjectMember, { isLoading }] = useAddNewProjectUserMutation();
   const canSubmit = isDirty && !isLoading;
 
@@ -85,13 +85,17 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
     }
   };
-  
+
   // Leave project
   const [deleteUser] = useDeleteProjectUserMutation();
 
-  const handleSubmitForModal = async () => {
+  if (!user) {
+    return null;
+  }
+
+  const leaveProject = async () => {
     try {
-      await deleteUser({projectId: projectId, userId: user!.id, role: userRole}).unwrap();
+      await deleteUser({projectId: projectId, userId: user.id, role: userRole}).unwrap();
       navigate("..", { relative: "path" });
       navigate(0);
     } catch (err) {
@@ -105,37 +109,37 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       <section>
         <form className="flex flex-row gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
-          <input 
+          <input
             type="email"
             {...register("email")}
             placeholder="E.g. example@mail.com"
             className="flex-1 w-1/2 p-2 body-text-sm border border-grayscale-300" />
-      
-          <select value={selectValue} 
+
+          <select value={selectValue}
             {...register("role")}
             onChange={(e) => setSelectValue(e.target.value)}
             className="p-2 btn-text-xs border border-grayscale-300">
-            <option value="viewer" 
+            <option value="viewer"
               className="btn-text-xs">Viewer</option>
-            <option value="editor" 
+            <option value="editor"
               className="btn-text-xs">Editor</option>
-            <option value="manager" 
+            <option value="manager"
               className="btn-text-xs">Manager</option>
-          </select> 
+          </select>
 
           <button type="submit" className="p-2 btn-text-xs" disabled={isSubmitting} >
           Invite
           </button>
         </form>
-        
+
         <p className="body-text-xs text-caution-200 mt-1">{errors.email?.message}</p>
         <p className="body-text-xs text-caution-200 mt-1">{formError}</p>
       </section>
       }
-      
+
       <h2 className="heading-xs mt-4">Current project members</h2>
       { project?.users.map((member: Member) => (
-        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user!.id} userRole={userRole} />
+        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
@@ -145,7 +149,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <RemoveProjectMember handleRemove={handleSubmitForModal} userRole={userRole} projectSize={project!.users.length} />
+        <LeaveProject handleRemove={leaveProject} />
       </section>
     </>
   );

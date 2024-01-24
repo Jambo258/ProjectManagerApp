@@ -41,6 +41,10 @@ export const DashboardNav = () => {
     }
   };
 
+  if(!user) {
+    return null;
+  }
+
   return (
     <nav
       className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen sticky sm:relative flex-shrink-0 ${openNav ? "sm:w-72 h-full" : "sm:w-12 h-14"}`}>
@@ -92,12 +96,12 @@ export const DashboardNav = () => {
         )}
       </div>
 
-      {openNav 
-        ? 
+      {openNav
+        ?
         <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
-          <Modal 
-            btnText={user!.name[0].toUpperCase()} 
-            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user!.id).textColor} text-center heading-xs leading-8 ${userColor(user!.id).bg} cursor-pointer`} 
+          <Modal
+            btnText={user.name[0]}
+            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user.id).textColor} text-center heading-xs leading-8 ${userColor(user.id).bg} cursor-pointer`}
             modalTitle={"Account settings"} >
             <ProfileModal />
           </Modal>
@@ -111,7 +115,7 @@ export const DashboardNav = () => {
           </div>
         </section>
         :
-        (width > 640) && <UserMenu name={user!.name} id={user!.id} />
+        <UserMenu name={user.name} id={user.id} />
       }
     </nav>
   );
