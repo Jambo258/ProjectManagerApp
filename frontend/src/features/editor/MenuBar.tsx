@@ -133,7 +133,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
   ];
 
   return (
-    <div className="flex items-center flex-wrap gap-x-2 bg-grayscale-100 border-grayscale-400 rounded-t border-t border-x p-2 mx-5 mt-5">
+    <div className="flex flex-wrap gap-x-2 p-2 items-center bg-grayscale-100 border-grayscale-300 border-b rounded-t">
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === "divider" ? <div className="w-px h-8 bg-grayscale-300" /> : <MenuItem {...item} />}
