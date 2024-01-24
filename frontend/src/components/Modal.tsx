@@ -1,4 +1,4 @@
-import { type ReactElement, useState, createContext, useEffect } from "react";
+import { type ReactElement, useState, createContext } from "react";
 import { X } from "react-feather";
 
 interface ModalContextType {
