@@ -13,12 +13,12 @@ interface UserMenuProps {
 export const UserMenu = ({id, name}: UserMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
-  const [logout] = useLogoutMutation();
+  const [userLogout] = useLogoutMutation();
   const navigate = useNavigate();
 
-  const Logout = async () => {
+  const logout = async () => {
     try {
-      await logout();
+      await userLogout();
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -42,13 +42,13 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
 
       <button
         onClick={() => setOpenMenu(!openMenu)} 
-        className={"rounded-full m-0 p-0 w-8 h-8 " + userColor(id).text + " text-center heading-xs leading-8 " + userColor(id).bg + " hover:" + userColor(id).bg + " cursor-pointer"}>
+        className={"rounded-full m-0 p-0 w-8 h-8 " + userColor(id).textColor + " text-center heading-xs leading-8 " + userColor(id).bg + " hover:" + userColor(id).bg + " cursor-pointer"}>
         {name[0].toUpperCase()}
       </button>  
 
       {openMenu &&
       <section 
-        className="flex flex-col bg-grayscale-100 absolute left-12 bottom-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
+        className="flex flex-col z-10 bg-grayscale-100 absolute left-12 bottom-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
         <Modal 
           btnText={"Account settings"} 
           btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
@@ -56,7 +56,7 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
           <ProfileModal />
         </Modal>
         <button 
-          onClick={() => Logout()}
+          onClick={() => logout()}
           className="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100">
             Logout
         </button>   

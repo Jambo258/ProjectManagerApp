@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Components
 import { Plus } from "react-feather";
@@ -62,17 +62,12 @@ export const ProjectHeader = () => {
       <nav className="flex flex-wrap gap-x-2 gap-y-2 body-text-md">
         {project.pages.length > 0 &&
           project.pages.map((page) => (
-            <NavLink
+            <Link
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
-              className={({ isActive }) =>
-                isActive
-                  ? "mr-4 underline focus:outline-none"
-                  : "mr-4 focus:outline-none"
-              }
-            >
+              className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
               {page.name}
-            </NavLink>
+            </Link>
           ))}
         <Modal
           btnText={<Plus size={16} />}
