@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
-import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List } from "react-feather";
+import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus } from "react-feather";
 
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
@@ -98,6 +98,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "――",
+      icon: Minus,
       title: "Horizontal Rule",
       action: () => editor.chain().focus().setHorizontalRule().run(),
     },
