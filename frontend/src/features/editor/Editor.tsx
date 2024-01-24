@@ -82,7 +82,7 @@ const Editor = ({ pageId }: IProps) => {
     ],
     editorProps: {
       attributes: {
-        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl mx-5 p-2 bg-grayscale-100 focus:outline-none border border-grayscale-400 rounded-b min-h-[10rem]",
+        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
       },
     },
   });
@@ -92,12 +92,12 @@ const Editor = ({ pageId }: IProps) => {
   }, [editor, isAuthenticated, provider.authorizedScope]);
 
   return (
-    <div className="border border-grayscale-400 rounded-lg">
+    <div className="border border-grayscale-300 rounded">
       {editor?.isEditable && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
-      <div className="flex p-1 justify-between border-t border-grayscale-400">
-        <div className="flex items-center">
-          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl mr-1`}>●</p>
+      <div className="flex justify-between border-t border-grayscale-300 bg-grayscale-100 rounded-b">
+        <div className="flex items-center label-text">
+          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl ms-2 mr-1 mb-1`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
