@@ -18,10 +18,18 @@ export interface Column {
   Id: string | number;
   title: string;
 }
+export interface Label {
+  id: string | number;
+  name: string;
+  color: string;
+}
 export interface Task {
   Id: string | number;
+  title: string;
   columnId: string | number;
   content: string;
+  done: boolean;
+  labels?: Label[];
 }
 
 export const DnDComponent = () => {
@@ -45,11 +53,47 @@ export const DnDComponent = () => {
   const createTask = (columnId: string | number) => {
     const newTask: Task = {
       Id: Math.floor(Math.random() * 10001),
+      title: `Task ${tasks.length + 1}`,
       columnId,
-      content: `Task ${tasks.length + 1}`,
+      content: "Lorem ipsum",
+      done: false,
+      labels: [
+        { id: 1, name: "frontend", color: "bg-green-100" },
+        { id: 2, name: "Design", color: "bg-yellow-100" },
+      ],
     };
 
     setTasks([...tasks, newTask]);
+  };
+
+  const updateColumn = (id: string | number, title: string) => {
+    const newColumns = columns.map((element) => {
+      if (element.Id !== id) {
+        return element;
+      }
+      return { ...element, title: title };
+    });
+    setColumns(newColumns);
+  };
+
+  const updateTask = (id: string | number, content: string) => {
+    const newTasks = tasks.map((element) => {
+      if (element.Id !== id) {
+        return element;
+      }
+      return { ...element, content: content };
+    });
+    setTasks(newTasks);
+  };
+
+  const updateTaskTitle = (id: string | number, title: string) => {
+    const newTasks = tasks.map((element) => {
+      if (element.Id !== id) {
+        return element;
+      }
+      return { ...element, title: title };
+    });
+    setTasks(newTasks);
   };
 
   const deleteColumn = (id: string | number) => {
@@ -127,8 +171,7 @@ export const DnDComponent = () => {
       setTasks((elements) => {
         const activeIndex = elements.findIndex((el) => el.Id === activeId);
         const overIndex = elements.findIndex((el) => el.Id === overId);
-
-        elements[activeIndex].columnId = elements[overIndex].columnId;
+        // elements[activeIndex].columnId = elements[overIndex].columnId;
 
         return arrayMove(elements, activeIndex, overIndex);
       });
@@ -160,7 +203,7 @@ export const DnDComponent = () => {
       <button className="mb-3" onClick={() => createNewColumn()}>
         Add Column
       </button>
-      <div className="m-auto flex w-full overflow-x-auto overflow-y-hidden">
+      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2">
         <DndContext
           sensors={sensors}
           onDragEnd={onDragEnd}
@@ -176,7 +219,10 @@ export const DnDComponent = () => {
                     key={element.Id}
                     column={element}
                     deleteColumn={deleteColumn}
+                    updateColumn={updateColumn}
                     createTask={createTask}
+                    updateTask={updateTask}
+                    updateTaskTitle={updateTaskTitle}
                     tasks={tasks.filter((ele) => ele.columnId === element.Id)}
                   />
                 ))}
@@ -194,10 +240,18 @@ export const DnDComponent = () => {
                   column={activeColumn}
                   deleteColumn={deleteColumn}
                   deleteTask={deleteTask}
+                  updateTask={updateTask}
+                  updateColumn={updateColumn}
+                  updateTaskTitle={updateTaskTitle}
                 />
               )}
               {activeTask && (
-                <SortablePage task={activeTask} deleteTask={deleteTask} />
+                <SortablePage
+                  task={activeTask}
+                  updateTaskTitle={updateTaskTitle}
+                  updateTask={updateTask}
+                  deleteTask={deleteTask}
+                />
               )}
             </DragOverlay>,
             document.body
