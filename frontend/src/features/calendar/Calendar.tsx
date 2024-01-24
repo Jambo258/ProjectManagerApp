@@ -14,9 +14,16 @@ import {
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { Modal } from "../../components/Modal";
-import AddEventModal from "./AddEventModal";
+import { useParams } from "react-router-dom";
 
 const CalendarModal = () => {
+  const projectid = parseInt(useParams().projectId!);
+  const pageid = parseInt(useParams().pageId!);
+  const [events, setEvents] = useState([
+    { idx: 0, projectid: 0, pageid: 0, day: new Date(), eventTitle: "" },
+  ]);
+  const [eventTitle, setEventTitle] = useState("");
+
   const today = startOfToday();
   const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
@@ -48,19 +55,25 @@ const CalendarModal = () => {
     setcurrentMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
   };
 
+  const createEvent = (idx: number, day: Date) => {
+    setEvents([
+      ...events,
+      {
+        idx: idx,
+        projectid: projectid,
+        pageid: pageid,
+        day: day,
+        eventTitle: "event",
+      },
+    ]);
+
+    console.log(events);
+  };
+
   return (
     <>
-      <Modal
-        btnText={"Add event"}
-        btnStyling={
-          "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-        }
-        modalTitle={"Add event"}
-      >
-        <AddEventModal></AddEventModal>
-      </Modal>
       <div className="flex w-screen h-screen ">
-        <div className="w-[800px] h-[645px] m-20 border-2">
+        <div className="w-auto h-auto m-20 border-2">
           <div className="flex imems-center  justify-center">
             <ChevronLeft
               className="cursor-pointer mr-6"
@@ -97,6 +110,37 @@ const CalendarModal = () => {
                   >
                     {format(day, "d")}
                   </p>
+                  {events.map(
+                    (event) =>
+                      isToday(event.day) && (
+                        <div key={idx}>{event.eventTitle}</div>
+                      )
+                  )}
+
+                  <Modal
+                    btnText={"Add event"}
+                    btnStyling={
+                      "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+                    }
+                    modalTitle={"Add event"}
+                  >
+                    <div>
+                      {eventTitle}
+                      <div className="flex justify-center">
+                        <p>{format(day, "d")}</p>
+                        <form>
+                          <input
+                            onChange={(e) => setEventTitle(e.target.value)}
+                            placeholder={"Event title"}
+                          />
+                        </form>
+                        <button onClick={() => createEvent(1, day)}>
+                          Confirm
+                        </button>
+                        <button>Cancel</button>
+                      </div>
+                    </div>
+                  </Modal>
                 </div>
               );
             })}
