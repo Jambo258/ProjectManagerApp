@@ -58,6 +58,11 @@ const Editor = ({ pageId }: IProps) => {
           itemTypeName: "listItem",
           keepMarks: true,
           keepAttributes: true,
+        },
+        orderedList: {
+          itemTypeName: "listItem",
+          keepMarks: true,
+          keepAttributes: true,
         }
       }),
       Highlight,
