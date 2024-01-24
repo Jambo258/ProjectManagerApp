@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Menu, Plus, X } from "react-feather";
+import { ChevronLeft, ChevronRight, Menu, Plus, X } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import CreateProjectModal from "../project/CreateProjectModal";
 import {
@@ -48,10 +48,10 @@ export const DashboardNav = () => {
   return (
     <nav
       className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen sticky sm:relative flex-shrink-0 ${openNav ? "sm:w-72 h-full" : "sm:w-12 h-14"}`}>
-      <div className={`md:min-h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)] overflow-y-auto ${openNav ? "min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)]" : "h-fit"}`}>
+      <div className={`sm:min-h-[calc(100vh-4rem)] sm:h-[calc(100vh-4rem)] overflow-y-auto ${openNav ? "min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)]" : "h-fit"}`}>
         <div className="sm:sticky top-0 grid grid-flow-col sm:justify-end bg-dark-blue-300">
           <button
-            className="w-fit p-4 heading-md text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            className="w-fit p-4 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setOpenNav(!openNav)}
           >
             
@@ -71,7 +71,7 @@ export const DashboardNav = () => {
 
         {openNav && (
           <section>
-            <h4 className="px-6 mb-6 heading-md">
+            <h4 className="px-6 mb-6 heading-sm">
               Project <br /> Management App
             </h4>
 
@@ -80,7 +80,7 @@ export const DashboardNav = () => {
               <div className="text-right">
                 <Modal
                   btnText={<Plus size={16} />}
-                  btnStyling={"p-1.5 rounded-full heading-md"}
+                  btnStyling={"p-1.5 rounded-full heading-sm"}
                   modalTitle={"Create new project"}>
                   <CreateProjectModal />
                 </Modal>
