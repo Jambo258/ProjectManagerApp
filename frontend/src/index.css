@@ -66,7 +66,7 @@
   }
 
   .tiptap-task-item {
-    @apply flex gap-3;
+    @apply flex gap-2 list-none -ms-4;
   }
 }
 
