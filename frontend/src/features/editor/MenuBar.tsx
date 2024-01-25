@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
-// import OrderedList from "./OrderedList";
+import OrderedList from "./OrderedList";
 import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
 
 
@@ -77,7 +77,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "li",
-      // icon: OrderedList,
+      icon: OrderedList,
       title: "Ordered List",
       action: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: () => editor.isActive("orderedList"),
