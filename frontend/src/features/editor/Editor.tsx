@@ -1,8 +1,9 @@
 // React
 import { useEffect, useState } from "react";
 
-// Tiptap, Hocuspocus, YJS
+// Hocuspocus, YJS, Tiptap
 import { HocuspocusProvider, } from "@hocuspocus/provider";
+import * as Y from "yjs";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -11,14 +12,14 @@ import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
-import * as Y from "yjs";
 
-
-import { userColor } from "../user/UserColor";
-
-import MenuBar from "./MenuBar";
+// Redux
 import { useAppSelector } from "../../app/hooks";
-import { User } from "../api/apiSlice";
+import { type User } from "../api/apiSlice";
+
+// Components
+import MenuBar from "./MenuBar";
+import { userColor } from "../user/UserColor";
 
 const getInitialUser = (user: User) => {
   const userColors = userColor(user.id);
