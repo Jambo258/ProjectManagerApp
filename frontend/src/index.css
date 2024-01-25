@@ -74,8 +74,7 @@
   }
 
   .tiptap-collaboration-cursor-label {
-    @apply
-    absolute -top-[1.4em] rounded-[3px] rounded-bl-none -left-[1px] py-[0.1rem] px-[0.3rem] label-text text-[#0d0d0d] leading-normal whitespace-nowrap select-none;
+    @apply absolute -top-[1.4em] rounded-[3px] rounded-bl-none -left-[1px] py-[0.1rem] px-[0.3rem] label-text text-[#0d0d0d] leading-normal whitespace-nowrap select-none;
   }
 }
 

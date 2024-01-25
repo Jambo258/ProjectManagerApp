@@ -1,6 +1,7 @@
-import "./editor.css";
-
+// React
 import { useEffect, useState } from "react";
+
+// Tiptap, Hocuspocus, YJS
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -12,17 +13,20 @@ import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import * as Y from "yjs";
 
+
+import { userColor } from "../user/UserColor";
+
 import MenuBar from "./MenuBar";
 import { useAppSelector } from "../../app/hooks";
+import { User } from "../api/apiSlice";
 
-const colors = ["#958DF1", "#F98181", "#FBBC88", "#FAF594", "#70CFF8", "#94FADB", "#B9F18D"];
-
-const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
-
-const getInitialUser = (name: string | undefined) => {
+const getInitialUser = (user: User) => {
+  const userColors = userColor(user.id);
   return {
-    name: name,
-    color: getRandomColor(),
+    name: user.name,
+    textColor: userColors.textColor,
+    borderColor: userColors.border,
+    bgColor: userColors.bg
   };
 };
 
@@ -82,7 +86,25 @@ const Editor = ({ pageId }: IProps) => {
       }),
       CollaborationCursor.configure({
         provider: provider,
-        user: getInitialUser(useAppSelector(state => state.auth.user?.name)),
+        // user: getInitialUser(useAppSelector(state => state.auth.user?.name)),
+        user: getInitialUser(useAppSelector(state => state.auth.user!)),
+        render: user => {
+          const cursor = document.createElement("span");
+
+          cursor.classList.add("tiptap-collaboration-cursor-caret");
+          cursor.classList.add(user.borderColor);
+
+          const label = document.createElement("div");
+
+          label.classList.add("tiptap-collaboration-cursor-label");
+          label.classList.add(user.bgColor);
+          label.classList.add(user.textColor);
+
+          label.insertBefore(document.createTextNode(user.name), null);
+          cursor.insertBefore(label, null);
+
+          return cursor;
+        }
       }),
     ],
     editorProps: {
