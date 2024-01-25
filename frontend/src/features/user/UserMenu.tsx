@@ -38,7 +38,7 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
   }, []);
 
   return (        
-    <section ref={menuRef} className="w-full px-2 py-4 bg-dark-blue-100">
+    <section ref={menuRef} className="w-full px-2 py-4 sm:bg-dark-blue-100">
 
       <button
         onClick={() => setOpenMenu(!openMenu)} 
@@ -48,7 +48,7 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
 
       {openMenu &&
       <section 
-        className="flex flex-col z-10 bg-grayscale-100 absolute left-12 bottom-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
+        className="flex flex-col bg-grayscale-100 absolute z-20 sm:left-12 sm:bottom-0 right-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
         <Modal 
           btnText={"Account settings"} 
           btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"

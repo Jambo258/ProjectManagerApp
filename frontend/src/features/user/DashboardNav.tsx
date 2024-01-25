@@ -47,7 +47,7 @@ export const DashboardNav = () => {
 
   return (
     <nav
-      className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen sticky sm:relative flex-shrink-0 ${openNav ? "sm:w-72 h-full" : "sm:w-12 h-14"}`}>
+      className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen flex-shrink-0 ${openNav ? "sm:w-72 h-full fixed sm:relative z-40" : "sm:w-12 h-14"}`}>
       <div className={`sm:min-h-[calc(100vh-4rem)] sm:h-[calc(100vh-4rem)] overflow-y-auto ${openNav ? "min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)]" : "h-fit"}`}>
         <div className="sm:sticky top-0 grid grid-flow-col sm:justify-end bg-dark-blue-300">
           <button
@@ -115,7 +115,7 @@ export const DashboardNav = () => {
           </div>
         </section>
         :
-        <UserMenu name={user.name} id={user.id} />
+        <section className="absolute top-0 right-0 z-10 -mt-1 sm:block sm:mt-0 sm:top-auto sm:right-auto"><UserMenu name={user.name} id={user.id} /></section>
       }
     </nav>
   );

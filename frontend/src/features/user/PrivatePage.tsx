@@ -27,9 +27,9 @@ export const PrivatePage = () => {
           </div>
         </div>
         :
-        <div className="h-screen w-full bg-grayscale-200">
+        <div className="flex flex-col h-screen w-full bg-grayscale-200">
+          <DashboardNav />
           <div className="flex flex-col w-full overflow-hidden">
-            <DashboardNav />
             <ProjectHeader />
             <Outlet />
           </div>
