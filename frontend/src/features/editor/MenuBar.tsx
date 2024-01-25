@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
-import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus } from "react-feather";
+// import OrderedList from "./OrderedList";
+import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
 
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
@@ -25,6 +26,13 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       title: "Strike",
       action: () => editor.chain().focus().toggleStrike().run(),
       isActive: () => editor.isActive("strike"),
+    },
+    {
+      name: "U",
+      icon: Underline,
+      title: "Underline",
+      action: () => editor.chain().focus().toggleUnderline().run(),
+      isActive: () => editor.isActive("underline"),
     },
     // {
     //   name: "C",
@@ -69,6 +77,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "li",
+      // icon: OrderedList,
       title: "Ordered List",
       action: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: () => editor.isActive("orderedList"),
