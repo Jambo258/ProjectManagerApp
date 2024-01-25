@@ -51,20 +51,20 @@ export const DashboardNav = () => {
       <div className={`sm:min-h-[calc(100vh-4rem)] sm:h-[calc(100vh-4rem)] overflow-y-auto ${openNav ? "min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)]" : "h-fit"}`}>
         <div className="sm:sticky top-0 grid grid-flow-col sm:justify-end bg-dark-blue-300">
           <button
-            className="w-fit p-4 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            className="w-fit p-3 sm:p-4 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setOpenNav(!openNav)}
           >
             
-            {width > 640 ?
+            {width >= 640 ?
               openNav ? (
                 <ChevronLeft size={20} />
               ) : (
                 <ChevronRight size={20} />
               )
               : openNav ? (
-                <X size={20} />
+                <X size={28} />
               ) : (
-                <Menu size={20} />
+                <Menu size={28} />
               )}
           </button>
         </div>
@@ -115,7 +115,7 @@ export const DashboardNav = () => {
           </div>
         </section>
         :
-        <section className="absolute top-0 right-0 z-10 -mt-1 sm:block sm:mt-0 sm:top-auto sm:right-auto"><UserMenu name={user.name} id={user.id} /></section>
+        <section className="absolute top-0 right-0 -mt-1 sm:block sm:mt-0 sm:top-auto sm:right-auto"><UserMenu name={user.name} id={user.id} /></section>
       }
     </nav>
   );
