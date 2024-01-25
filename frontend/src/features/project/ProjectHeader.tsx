@@ -19,7 +19,7 @@ export const ProjectHeader = () => {
     return null;
   }
   return (
-    <header className="sticky top-0 flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
+    <header className="sticky z-10 top-0 flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2">{project.name}</h2>
         <Menu>
@@ -43,11 +43,11 @@ export const ProjectHeader = () => {
               projectName={project.name}
             />
           </Modal>
-          <Modal 
+          <Modal
             btnText={"Project members"}
             btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
             modalTitle={"Project members"}
-          >    
+          >
             <ProjectMembersModal projectId={projectid} />
           </Modal>
           <DeleteProjectModal
