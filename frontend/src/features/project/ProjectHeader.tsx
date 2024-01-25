@@ -43,11 +43,11 @@ export const ProjectHeader = () => {
               projectName={project.name}
             />
           </Modal>
-          <Modal 
+          <Modal
             btnText={"Project members"}
             btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
             modalTitle={"Project members"}
-          >    
+          >
             <ProjectMembersModal projectId={projectid} />
           </Modal>
           <DeleteProjectModal

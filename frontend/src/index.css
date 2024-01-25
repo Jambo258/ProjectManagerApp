@@ -31,7 +31,51 @@
   }
 }
 
+@layer components {
+
+  .tiptap p {
+    @apply font-serif text-base;
+  }
+
+  .tiptap h1 {
+    @apply font-sans text-4xl font-bold;
+  }
+
+  .tiptap h2 {
+    @apply font-sans text-[2rem] font-medium;
+  }
+
+  .tiptap blockquote {
+    @apply ps-4 border-l-2 border-grayscale-300;
+  }
+
+  .tiptap pre {
+    @apply bg-grayscale-300/50 text-dark-font font-mono py-3 px-4 rounded;
+  }
+
+  .tiptap pre code {
+    @apply text-inherit p-0 bg-grayscale-0 text-sm;
+  }
+
+  .tiptap ul {
+    @apply px-4 list-disc;
+  }
+
+  .tiptap ol {
+    @apply px-4 list-decimal body-text-md;
+  }
+
+  .tiptap-collaboration-cursor-caret {
+    @apply relative -mx-px border-x pointer-events-none break-normal border-[#0d0d0d];
+  }
+
+  .tiptap-collaboration-cursor-label {
+    @apply absolute -top-[1.4em] rounded-[3px] rounded-bl-none -left-[1px] py-[0.1rem] px-[0.3rem] label-text text-[#0d0d0d] leading-normal whitespace-nowrap select-none;
+  }
+}
+
 @layer utilities {
+
   .heading-xxl {
     font-family: "Kumbh Sans", sans-serif;
     font-size: 3rem;

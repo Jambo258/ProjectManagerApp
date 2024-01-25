@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
 import { ProfileModal } from "./ProfileModal";
 import { UserMenu } from "./UserMenu";
-import { userColor } from "./UserColor";
+import { userColor } from "./userColor";
 import { useAppSelector } from "../../app/hooks";
 
 export const DashboardNav = () => {

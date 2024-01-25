@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
-import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List } from "react-feather";
+import OrderedList from "../../icons/OrderedList";
+import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
 
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
@@ -25,6 +26,13 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       title: "Strike",
       action: () => editor.chain().focus().toggleStrike().run(),
       isActive: () => editor.isActive("strike"),
+    },
+    {
+      name: "U",
+      icon: Underline,
+      title: "Underline",
+      action: () => editor.chain().focus().toggleUnderline().run(),
+      isActive: () => editor.isActive("underline"),
     },
     // {
     //   name: "C",
@@ -67,12 +75,13 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       action: () => editor.chain().focus().toggleBulletList().run(),
       isActive: () => editor.isActive("bulletList"),
     },
-    // {
-    //   name: "li",
-    //   title: "Ordered List",
-    //   action: () => editor.chain().focus().toggleOrderedList().run(),
-    //   isActive: () => editor.isActive("orderedList"),
-    // },
+    {
+      name: "li",
+      icon: OrderedList,
+      title: "Ordered List",
+      action: () => editor.chain().focus().toggleOrderedList().run(),
+      isActive: () => editor.isActive("orderedList"),
+    },
     {
       name: "☑li",
       icon: CheckSquare,
@@ -98,6 +107,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "――",
+      icon: Minus,
       title: "Horizontal Rule",
       action: () => editor.chain().focus().setHorizontalRule().run(),
     },
@@ -133,10 +143,10 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
   ];
 
   return (
-    <div className="buttons flex items-center flex-wrap gap-x-2 border-grayscale-400 rounded-t-lg border-b p-2">
+    <div className="flex flex-wrap gap-x-2 p-2 items-center bg-grayscale-100 border-grayscale-300 border-b rounded-t">
       {items.map((item, index) => (
         <Fragment key={index}>
-          {item.type === "divider" ? <div className="w-1 h-8 bg-grayscale-300" /> : <MenuItem {...item} />}
+          {item.type === "divider" ? <div className="w-px h-8 bg-grayscale-300" /> : <MenuItem {...item} />}
         </Fragment>
       ))
       }

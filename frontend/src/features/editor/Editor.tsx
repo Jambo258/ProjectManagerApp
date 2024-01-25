@@ -1,7 +1,9 @@
-import "./editor.css";
-
+// React
 import { useEffect, useState } from "react";
+
+// Hocuspocus, YJS, Tiptap
 import { HocuspocusProvider, } from "@hocuspocus/provider";
+import * as Y from "yjs";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CharacterCount from "@tiptap/extension-character-count";
@@ -10,19 +12,24 @@ import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
-import * as Y from "yjs";
+import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 
-import MenuBar from "./MenuBar";
+// Redux
 import { useAppSelector } from "../../app/hooks";
+import { type User } from "../api/apiSlice";
 
-const colors = ["#958DF1", "#F98181", "#FBBC88", "#FAF594", "#70CFF8", "#94FADB", "#B9F18D"];
+// Components
+import MenuBar from "./MenuBar";
+import { userColor } from "../user/userColor";
 
-const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
-
-const getInitialUser = (name: string | undefined) => {
+const getInitialUser = (user: User) => {
+  const userColors = userColor(user.id);
   return {
-    name: name,
-    color: getRandomColor(),
+    name: user.name,
+    textColor: userColors.textColor,
+    borderColor: userColors.border,
+    bgColor: userColors.bg
   };
 };
 
@@ -54,10 +61,31 @@ const Editor = ({ pageId }: IProps) => {
     extensions: [
       StarterKit.configure({
         history: false,
+        bulletList: {
+          itemTypeName: "listItem",
+          keepMarks: true,
+          keepAttributes: true,
+        },
+        orderedList: {
+          itemTypeName: "listItem",
+          keepMarks: true,
+          keepAttributes: true,
+        }
       }),
       Highlight,
-      TaskList,
-      TaskItem,
+      Underline,
+      TaskList.configure({
+        itemTypeName: "taskItem",
+      }),
+      TaskItem.configure({
+        HTMLAttributes: {
+          class: "flex gap-2 list-none -ms-4",
+        }
+      }),
+      Placeholder.configure({
+        emptyEditorClass: "first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left",
+        placeholder: "Write something...",
+      }),
       CharacterCount.configure({
         limit: 10000,
       }),
@@ -66,12 +94,29 @@ const Editor = ({ pageId }: IProps) => {
       }),
       CollaborationCursor.configure({
         provider: provider,
-        user: getInitialUser(useAppSelector(state => state.auth.user?.name)),
+        user: getInitialUser(useAppSelector(state => state.auth.user!)),
+        render: (user: Record<string, string>) => {
+          const cursor = document.createElement("span");
+
+          cursor.classList.add("tiptap-collaboration-cursor-caret");
+          cursor.classList.add(user.borderColor);
+
+          const label = document.createElement("div");
+
+          label.classList.add("tiptap-collaboration-cursor-label");
+          label.classList.add(user.bgColor);
+          label.classList.add(user.textColor);
+
+          label.insertBefore(document.createTextNode(user.name), null);
+          cursor.insertBefore(label, null);
+
+          return cursor;
+        }
       }),
     ],
     editorProps: {
       attributes: {
-        class: "static prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 focus:outline-none min-h-[10rem]",
+        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
       },
     },
   });
@@ -81,12 +126,12 @@ const Editor = ({ pageId }: IProps) => {
   }, [editor, isAuthenticated, provider.authorizedScope]);
 
   return (
-    <div className="border border-grayscale-400 rounded-lg">
+    <div className="border border-grayscale-300 rounded">
       {editor?.isEditable && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
-      <div className="flex p-1 justify-between border-t border-grayscale-400">
-        <div className="flex items-center">
-          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl mr-1`}>●</p>
+      <div className="flex justify-between border-t border-grayscale-300 bg-grayscale-100 rounded-b">
+        <div className="flex items-center label-text">
+          <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl ms-2 mr-1 mb-1`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
