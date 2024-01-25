@@ -13,6 +13,7 @@ import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
@@ -80,6 +81,10 @@ const Editor = ({ pageId }: IProps) => {
         HTMLAttributes: {
           class: "tiptap-task-item",
         }
+      }),
+      Placeholder.configure({
+        emptyEditorClass: "tiptap-is-editor-empty",
+        placeholder: "Write something...",
       }),
       CharacterCount.configure({
         limit: 10000,
