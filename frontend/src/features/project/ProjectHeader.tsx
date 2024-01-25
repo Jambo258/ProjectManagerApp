@@ -19,7 +19,7 @@ export const ProjectHeader = () => {
     return null;
   }
   return (
-    <header className="sticky top-0 flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
+    <header className="top-0 flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2 pr-8">{project.name}</h2>
         <Menu>
