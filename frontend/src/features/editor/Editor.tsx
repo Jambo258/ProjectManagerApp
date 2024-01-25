@@ -22,7 +22,7 @@ import { type User } from "../api/apiSlice";
 import MenuBar from "./MenuBar";
 import { userColor } from "../user/UserColor";
 
-const getInitialUser = (user: User) => {
+const getInitialUser = (user: User): { name: string, textColor: string, borderColor: string, bgColor: string } => {
   const userColors = userColor(user.id);
   return {
     name: user.name,
@@ -95,15 +95,15 @@ const Editor = ({ pageId }: IProps) => {
           const cursor = document.createElement("span");
 
           cursor.classList.add("tiptap-collaboration-cursor-caret");
-          cursor.classList.add(user.borderColor);
+          cursor.classList.add(user.borderColor as string);
 
           const label = document.createElement("div");
 
           label.classList.add("tiptap-collaboration-cursor-label");
-          label.classList.add(user.bgColor);
-          label.classList.add(user.textColor);
+          label.classList.add(user.bgColor as string);
+          label.classList.add(user.textColor as string);
 
-          label.insertBefore(document.createTextNode(user.name), null);
+          label.insertBefore(document.createTextNode(user.name as string), null);
           cursor.insertBefore(label, null);
 
           return cursor;
