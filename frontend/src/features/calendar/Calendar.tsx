@@ -5,6 +5,7 @@ import {
   endOfWeek,
   format,
   getDay,
+  isEqual,
   isSameMonth,
   isToday,
   parse,
@@ -12,20 +13,28 @@ import {
   startOfWeek,
 } from "date-fns";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "react-feather";
+import { ChevronLeft, ChevronRight, X } from "react-feather";
 import { Modal } from "../../components/Modal";
 import { useParams } from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
 
 const CalendarModal = () => {
   const projectid = parseInt(useParams().projectId!);
   const pageid = parseInt(useParams().pageId!);
   const [events, setEvents] = useState([
-    { idx: 0, projectid: 0, pageid: 0, day: new Date(), eventTitle: "" },
+    {
+      id: "",
+      projectid: 0,
+      pageid: 0,
+      day: new Date(),
+      eventTitle: "",
+      edit: false,
+    },
   ]);
   const [eventTitle, setEventTitle] = useState("");
-
+  const [newEventTitle, setNewEventTitle] = useState("");
   const today = startOfToday();
-  const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const colStartClasses = [
     "",
     "col-start-2",
@@ -55,19 +64,70 @@ const CalendarModal = () => {
     setcurrentMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
   };
 
-  const createEvent = (idx: number, day: Date) => {
+  const clearEvents = () => {
+    setEvents([
+      {
+        id: nanoid(),
+        projectid: 0,
+        pageid: 0,
+        day: new Date(),
+        eventTitle: "",
+        edit: false,
+      },
+    ]);
+  };
+
+  const createEvent = (day: Date, eventTitle: string) => {
     setEvents([
       ...events,
       {
-        idx: idx,
+        id: nanoid(),
         projectid: projectid,
         pageid: pageid,
         day: day,
-        eventTitle: "event",
+        eventTitle: eventTitle,
+        edit: false,
       },
     ]);
+    setEventTitle("");
+  };
 
-    console.log(events);
+  const checkEventDay = (day: Date) => {
+    const test = events.find((event) => isEqual(event.day, day));
+
+    if (test) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const setEdit = (eventid: string, setEdit: boolean) => {
+    const test = events.map((event) => {
+      if (event.id === eventid) {
+        return { ...event, edit: setEdit };
+      } else {
+        return event;
+      }
+    });
+    setEvents(test);
+  };
+
+  const editEvent = (eventid: string, testString: string) => {
+    const test = events.map((event) => {
+      if (event.id === eventid) {
+        return { ...event, eventTitle: testString, edit: false };
+      } else {
+        return event;
+      }
+    });
+
+    setEvents(test);
+  };
+
+  const deleteEvent = (eventid: string) => {
+    const index = events.findIndex((event) => event.id === eventid);
+    setEvents([...events.slice(0, index), ...events.slice(index + 1)]);
   };
 
   return (
@@ -89,7 +149,6 @@ const CalendarModal = () => {
               onClick={() => getNextMonth()}
             />
           </div>
-
           <div className="grid grid-cols-7 border-b-2 border-t-2 place-items-center">
             {days.map((day, id) => {
               return <div key={id}>{day}</div>;
@@ -99,45 +158,65 @@ const CalendarModal = () => {
             {daysInMonth.map((day, idx) => {
               return (
                 <div key={idx} className={colStartClasses[getDay(day)]}>
-                  <p
-                    className={`cursor-pointer flex items-center justify-center h-28 w-28 mt-1 ${
+                  <Modal
+                    btnText={format(day, "d")}
+                    btnStyling={`cursor-pointer bg-grayscale-200 flex items-center justify-center h-28 w-28 mt-1 mx-1 ${
                       isSameMonth(day, today)
                         ? "text-dark-font"
                         : "text-grayscale-400"
-                    }  
-                  ${!isToday(day) && "hover:bg-success-200 "} 
-                  ${isToday(day) && "bg-caution-100"}`}
-                  >
-                    {format(day, "d")}
-                  </p>
-                  {events.map(
-                    (event) =>
-                      isToday(event.day) && (
-                        <div key={idx}>{event.eventTitle}</div>
-                      )
-                  )}
-
-                  <Modal
-                    btnText={"Add event"}
-                    btnStyling={
-                      "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
                     }
-                    modalTitle={"Add event"}
+                    ${checkEventDay(day) && "bg-success-200 "}
+                    ${!isToday(day) && "hover:bg-success-200 "}
+                    ${isToday(day) && "border-2"}`}
+                    modalTitle={"Events"}
                   >
                     <div>
-                      {eventTitle}
+                      <div>
+                        {events.map((event) => {
+                          return (
+                            projectid === event.projectid &&
+                            isEqual(event.day, day) && (
+                              <div className="cursor-pointer" key={event.id}>
+                                {event.edit ? (
+                                  <div>
+                                    <input
+                                      onChange={(e) =>
+                                        setNewEventTitle(e.target.value)
+                                      }
+                                      placeholder={"edit event"}
+                                    />
+                                    <button
+                                      onClick={() =>
+                                        editEvent(event.id, newEventTitle)
+                                      }
+                                    >
+                                      Update event
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div onClick={() => setEdit(event.id, true)}>
+                                    {event.eventTitle}
+                                  </div>
+                                )}
+                                <X
+                                  className="cursor-pointer"
+                                  onClick={() => deleteEvent(event.id)}
+                                />
+                              </div>
+                            )
+                          );
+                        })}
+                      </div>
                       <div className="flex justify-center">
-                        <p>{format(day, "d")}</p>
                         <form>
                           <input
                             onChange={(e) => setEventTitle(e.target.value)}
-                            placeholder={"Event title"}
+                            placeholder={"Add new event"}
                           />
                         </form>
-                        <button onClick={() => createEvent(1, day)}>
+                        <button onClick={() => createEvent(day, eventTitle)}>
                           Confirm
                         </button>
-                        <button>Cancel</button>
                       </div>
                     </div>
                   </Modal>
@@ -147,6 +226,7 @@ const CalendarModal = () => {
           </div>
         </div>
       </div>
+      <button onClick={() => clearEvents()}></button>
     </>
   );
 };
