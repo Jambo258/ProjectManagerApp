@@ -21,7 +21,7 @@ import { type User } from "../api/apiSlice";
 
 // Components
 import MenuBar from "./MenuBar";
-import { userColor } from "../user/UserColor";
+import { userColor } from "../user/userColor";
 
 const getInitialUser = (user: User) => {
   const userColors = userColor(user.id);

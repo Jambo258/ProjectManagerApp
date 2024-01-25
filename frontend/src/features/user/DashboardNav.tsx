@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
 import { ProfileModal } from "./ProfileModal";
 import { UserMenu } from "./UserMenu";
-import { userColor } from "./UserColor";
+import { userColor } from "./userColor";
 import { useAppSelector } from "../../app/hooks";
 
 export const DashboardNav = () => {
@@ -76,12 +76,12 @@ export const DashboardNav = () => {
         )}
       </div>
 
-      {openNav 
-        ? 
+      {openNav
+        ?
         <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
-          <Modal 
-            btnText={user!.name[0]} 
-            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user!.id).textColor} text-center heading-xs leading-8 ${userColor(user!.id).bg} cursor-pointer`} 
+          <Modal
+            btnText={user!.name[0]}
+            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user!.id).textColor} text-center heading-xs leading-8 ${userColor(user!.id).bg} cursor-pointer`}
             modalTitle={"Account settings"} >
             <ProfileModal />
           </Modal>
