@@ -23,7 +23,7 @@ import { type User } from "../api/apiSlice";
 import MenuBar from "./MenuBar";
 import { userColor } from "../user/UserColor";
 
-const getInitialUser = (user: User): { name: string, textColor: string, borderColor: string, bgColor: string } => {
+const getInitialUser = (user: User) => {
   const userColors = userColor(user.id);
   return {
     name: user.name,
@@ -79,11 +79,11 @@ const Editor = ({ pageId }: IProps) => {
       }),
       TaskItem.configure({
         HTMLAttributes: {
-          class: "tiptap-task-item",
+          class: "flex gap-2 list-none -ms-4",
         }
       }),
       Placeholder.configure({
-        emptyEditorClass: "tiptap-is-editor-empty",
+        emptyEditorClass: "first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left",
         placeholder: "Write something...",
       }),
       CharacterCount.configure({
@@ -94,21 +94,20 @@ const Editor = ({ pageId }: IProps) => {
       }),
       CollaborationCursor.configure({
         provider: provider,
-        // user: getInitialUser(useAppSelector(state => state.auth.user?.name)),
         user: getInitialUser(useAppSelector(state => state.auth.user!)),
-        render: user => {
+        render: (user: Record<string, string>) => {
           const cursor = document.createElement("span");
 
           cursor.classList.add("tiptap-collaboration-cursor-caret");
-          cursor.classList.add(user.borderColor as string);
+          cursor.classList.add(user.borderColor);
 
           const label = document.createElement("div");
 
           label.classList.add("tiptap-collaboration-cursor-label");
-          label.classList.add(user.bgColor as string);
-          label.classList.add(user.textColor as string);
+          label.classList.add(user.bgColor);
+          label.classList.add(user.textColor);
 
-          label.insertBefore(document.createTextNode(user.name as string), null);
+          label.insertBefore(document.createTextNode(user.name), null);
           cursor.insertBefore(label, null);
 
           return cursor;
