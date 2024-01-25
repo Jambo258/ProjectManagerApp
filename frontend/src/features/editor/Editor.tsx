@@ -12,6 +12,7 @@ import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
+import Underline from "@tiptap/extension-underline";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
@@ -71,6 +72,7 @@ const Editor = ({ pageId }: IProps) => {
         }
       }),
       Highlight,
+      Underline,
       TaskList.configure({
         itemTypeName: "taskItem",
       }),
