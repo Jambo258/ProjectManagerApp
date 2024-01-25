@@ -34,15 +34,15 @@ const CalendarModal = () => {
   const [eventTitle, setEventTitle] = useState("");
   const [newEventTitle, setNewEventTitle] = useState("");
   const today = startOfToday();
-  const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
     "",
+    "col-start-1",
     "col-start-2",
     "col-start-3",
     "col-start-4",
     "col-start-5",
     "col-start-6",
-    "col-start-7",
   ];
   const [currentMonth, setcurrentMonth] = useState(() =>
     format(today, "MMM-yyyy")
@@ -50,7 +50,7 @@ const CalendarModal = () => {
   const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
 
   const daysInMonth = eachDayOfInterval({
-    start: startOfWeek(firstDayOfMonth),
+    start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfMonth)),
   });
 
@@ -161,7 +161,7 @@ const CalendarModal = () => {
                   <Modal
                     btnText={format(day, "d")}
                     btnStyling={`cursor-pointer bg-grayscale-200 flex items-center justify-center h-28 w-28 mt-1 mx-1 ${
-                      isSameMonth(day, today)
+                      isSameMonth(day, currentMonth)
                         ? "text-dark-font"
                         : "text-grayscale-400"
                     }
@@ -172,8 +172,8 @@ const CalendarModal = () => {
                   >
                     <div>
                       <div>
-                        {events.map((event) => {
-                          return (
+                        {events.map(
+                          (event) =>
                             projectid === event.projectid &&
                             isEqual(event.day, day) && (
                               <div className="cursor-pointer" key={event.id}>
@@ -204,8 +204,7 @@ const CalendarModal = () => {
                                 />
                               </div>
                             )
-                          );
-                        })}
+                        )}
                       </div>
                       <div className="flex justify-center">
                         <form>
