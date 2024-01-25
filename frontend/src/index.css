@@ -45,10 +45,6 @@
     @apply font-sans text-[2rem] font-medium;
   }
 
-  .tiptap p.tiptap-is-editor-empty {
-    @apply first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left
-  }
-
   .tiptap blockquote {
     @apply ps-4 border-l-2 border-grayscale-300;
   }
@@ -67,10 +63,6 @@
 
   .tiptap ol {
     @apply px-4 list-decimal body-text-md;
-  }
-
-  .tiptap-task-item {
-    @apply flex gap-2 list-none -ms-4;
   }
 
   .tiptap-collaboration-cursor-caret {
