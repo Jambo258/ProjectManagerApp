@@ -51,7 +51,7 @@ export const DashboardNav = () => {
       <div className={`sm:min-h-[calc(100vh-4rem)] sm:h-[calc(100vh-4rem)] overflow-y-auto ${openNav ? "min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)]" : "h-fit"}`}>
         <div className="sm:sticky top-0 grid grid-flow-col sm:justify-end bg-dark-blue-300">
           <button
-            className="w-fit p-3 sm:p-4 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+            className="w-fit sm:p-4 px-4 py-3 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setOpenNav(!openNav)}
           >
             
@@ -100,7 +100,7 @@ export const DashboardNav = () => {
         ?
         <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
           <Modal
-            btnText={user.name[0]}
+            btnText={user.name[0].toUpperCase()}
             btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user.id).textColor} text-center heading-xs leading-8 ${userColor(user.id).bg} cursor-pointer`}
             modalTitle={"Account settings"} >
             <ProfileModal />
