@@ -17,7 +17,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
-import { type User } from "../api/apiSlice";
+import { type User, useGetProjectPageQuery } from "../api/apiSlice";
 
 // Components
 import MenuBar from "./MenuBar";
@@ -41,6 +41,8 @@ interface IProps {
 }
 
 const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => {
+
+  const { data: page } = useGetProjectPageQuery(Number(pageId));
 
   const editor = useEditor({
     editable: false,
@@ -120,7 +122,7 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
           <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl ms-2 mr-1 mb-1`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
+            ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${page !== undefined ? page.name : pageId}`
             : "offline"}
         </div>
       </div>
