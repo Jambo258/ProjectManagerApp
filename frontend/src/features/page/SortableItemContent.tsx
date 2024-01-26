@@ -2,19 +2,22 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Task } from "./DnDComponent";
 import { useState } from "react";
+import { TaskModal } from "./TaskModal";
 
 interface Props {
   task: Task;
   deleteTask: (id: number | string) => void;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
+  markTaskDone: (id: number | string) => void;
 }
 
-export const SortablePage = ({
+export const SortableItemContent = ({
   task,
   deleteTask,
   updateTask,
   updateTaskTitle,
+  markTaskDone,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -40,11 +43,25 @@ export const SortablePage = ({
       {...listeners}
       className=" rounded-md p-4 grid grid-flow-row bg bg-grayscale-100"
     >
-      <div onClick={() => setEditTitle(true)} className="heading-xs">
-        {!editTitle && <div className="ml-4">{task.title}</div>}
+      <div className="heading-xs grid grid-flow-col mx-1">
+        {!editTitle && (
+          <>
+            <div onClick={() => setEditTitle(true)} className="">
+              {task.title}
+            </div>
+            {!task.done && (
+              <div className="relative left-5">
+                <TaskModal>
+                  <div onClick={() => markTaskDone(task.Id)}>Mark as Done</div>
+                  <div></div>
+                </TaskModal>
+              </div>
+            )}
+          </>
+        )}
         {editTitle && (
           <input
-            className="w-full text-sm bg bg-primary-200 rounded-md"
+            className="w-36 text-sm bg bg-primary-200 rounded-md"
             autoFocus
             onKeyDown={(e) => {
               if (e.key !== "Enter") return;
@@ -59,11 +76,11 @@ export const SortablePage = ({
 
       <div onClick={() => setEditContent(true)} className="">
         {!editContent && (
-          <div className="ml-4 mt-4 h-[50px] min-h-[50px]">{task.content}</div>
+          <div className="mx-1 mt-4 h-[50px] min-h-[50px]">{task.content}</div>
         )}
         {editContent && (
           <input
-            className="w-full text-sm bg bg-primary-200 rounded-md"
+            className="w-36 text-sm bg bg-primary-200 rounded-md"
             autoFocus
             onKeyDown={(e) => {
               if (e.key !== "Enter") return;

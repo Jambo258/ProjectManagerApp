@@ -12,7 +12,9 @@ import { SortableItem } from "./SortableItem";
 import { useMemo, useState } from "react";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { SortablePage } from "./SortablePage";
+import { SortableItemContent } from "./SortableItemContent";
+import { Modal } from "../../components/Modal";
+import { CreateLabelModal } from "./CreateLabelModal";
 
 export interface Column {
   Id: string | number;
@@ -41,6 +43,29 @@ export const DnDComponent = () => {
   );
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [color, setColor] = useState("");
+  const [label, SetLabel] = useState<Label[]>([]);
+
+  console.log(color);
+  console.log(label);
+  const arrayOfColors = [
+    { id: 1, name:"", color: "bg-green-100" },
+    { id: 2, name: "", color: "bg-green-200" },
+    { id: 3, name: "", color: "bg-green-300" },
+    { id: 4, name: "", color: "bg-purple-100" },
+    { id: 5, name: "", color: "bg-purple-200" },
+    { id: 6, name: "", color: "bg-purple-300" },
+    { id: 7, name: "", color: "bg-red-100" },
+    { id: 8, name: "", color: "bg-red-200" },
+    { id: 9, name: "", color: "bg-red-300" },
+    { id: 10, name: "", color: "bg-blue-100" },
+    { id: 11, name: "", color: "bg-blue-200" },
+    { id: 12, name: "", color: "bg-blue-300" },
+    { id: 13, name: "", color: "bg-yellow-100" },
+    { id: 14, name: "", color: "bg-yellow-200" },
+    { id: 15, name: "", color: "bg-yellow-300" },
+  ];
+
   const createNewColumn = () => {
     const newCol: Column = {
       Id: Math.floor(Math.random() * 10001),
@@ -84,6 +109,16 @@ export const DnDComponent = () => {
       return { ...element, content: content };
     });
     setTasks(newTasks);
+  };
+
+  const markTaskDone = (id: string | number) => {
+    const Tasks = tasks.map((element) => {
+      if (element.Id !== id) {
+        return element;
+      }
+      return { ...element, done: true };
+    });
+    setTasks(Tasks);
   };
 
   const updateTaskTitle = (id: string | number, title: string) => {
@@ -198,11 +233,40 @@ export const DnDComponent = () => {
     })
   );
 
+  console.log(columns);
+  console.log(tasks);
+
   return (
     <>
-      <button className="mb-3" onClick={() => createNewColumn()}>
-        Add Column
-      </button>
+      <div className="grid grid-flow-col w-16">
+        <Modal
+          btnText={"Create Label"}
+          btnStyling={"mb-3 mx-2"}
+          modalTitle={"Create Label"}
+        >
+          <CreateLabelModal
+            color={color}
+            label={label}
+            labels={arrayOfColors}
+            setLabel={SetLabel}
+            setColor={setColor}
+          />
+        </Modal>
+        <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
+          Add Column
+        </button>
+        <div className="grid grid-flow-col">
+          Labels
+          {label.map((elements) => (
+            <div
+              className={`m-1 w-16 text-center rounded-md ${elements.color}`}
+              key={elements.id}
+            >
+              {elements.name}
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2">
         <DndContext
           sensors={sensors}
@@ -223,6 +287,7 @@ export const DnDComponent = () => {
                     createTask={createTask}
                     updateTask={updateTask}
                     updateTaskTitle={updateTaskTitle}
+                    markTaskDone={markTaskDone}
                     tasks={tasks.filter((ele) => ele.columnId === element.Id)}
                   />
                 ))}
@@ -243,14 +308,16 @@ export const DnDComponent = () => {
                   updateTask={updateTask}
                   updateColumn={updateColumn}
                   updateTaskTitle={updateTaskTitle}
+                  markTaskDone={markTaskDone}
                 />
               )}
               {activeTask && (
-                <SortablePage
+                <SortableItemContent
                   task={activeTask}
                   updateTaskTitle={updateTaskTitle}
                   updateTask={updateTask}
                   deleteTask={deleteTask}
+                  markTaskDone={markTaskDone}
                 />
               )}
             </DragOverlay>,
