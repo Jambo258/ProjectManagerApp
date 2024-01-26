@@ -43,10 +43,8 @@ export const DnDComponent = () => {
   );
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [color, setColor] = useState("");
   const [label, SetLabel] = useState<Label[]>([]);
 
-  console.log(color);
   console.log(label);
   const arrayOfColors = [
     { id: 1, name:"", color: "bg-green-100" },
@@ -245,11 +243,11 @@ export const DnDComponent = () => {
           modalTitle={"Create Label"}
         >
           <CreateLabelModal
-            color={color}
+            // color={color}
             label={label}
             labels={arrayOfColors}
             setLabel={SetLabel}
-            setColor={setColor}
+            // setColor={setColor}
           />
         </Modal>
         <button className="mb-3 mx-2" onClick={() => createNewColumn()}>

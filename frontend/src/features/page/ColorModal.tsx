@@ -1,12 +1,14 @@
+import { UseFormSetValue } from "react-hook-form";
 import { Label } from "./DnDComponent";
+import { CreateLabelFormValues } from "./CreateLabelModal";
 
 interface ColorProps {
   label: Label;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setValue: UseFormSetValue<CreateLabelFormValues>;
 }
-export const ColorModal = ({ label, setColor }: ColorProps) => {
+export const ColorModal = ({ label, setValue }: ColorProps) => {
   const HandleChange = () => {
-    setColor(label.color);
+    setValue("color", label.color, { shouldValidate: true });
   };
 
   return (
