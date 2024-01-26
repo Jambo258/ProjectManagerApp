@@ -37,21 +37,23 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
     };
   }, []);
 
-  return (
-    <section ref={menuRef} className="w-full px-2 py-4 bg-dark-blue-100">
+  const bgColor: string = userColor(id).bg + " hover:" + userColor(id).bg;
+
+  return (        
+    <section ref={menuRef} className="w-full px-4 sm:px-2 py-3.5 sm:py-4 sm:bg-dark-blue-100">
 
       <button
-        onClick={() => setOpenMenu(!openMenu)}
-        className={"rounded-full m-0 p-0 w-8 h-8 " + userColor(id).textColor + " text-center heading-xs leading-8 " + userColor(id).bg + " hover:" + userColor(id).bg + " cursor-pointer"}>
+        onClick={() => setOpenMenu(!openMenu)} 
+        className={`rounded-full m-0 p-0 w-8 h-8 ${userColor(id).textColor} text-center heading-xs leading-8 ${bgColor} cursor-pointer`}>
         {name[0].toUpperCase()}
       </button>
 
       {openMenu &&
-      <section
-        className="flex flex-col z-10 bg-grayscale-100 absolute left-12 bottom-0 border-2 border-grayscale-200 shadow-md rounded divide-y divide-grayscale-200">
-        <Modal
-          btnText={"Account settings"}
-          btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+      <section 
+        className="flex flex-col bg-grayscale-100 fixed w-fit h-fit z-20 sm:left-14 sm:bottom-2 sm:top-auto right-2 top-12 border-2 border-grayscale-200 shadow-md rounded">
+        <Modal 
+          btnText={"Account settings"} 
+          btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 border-b border-grayscale-200"
           modalTitle={"Account settings"} >
           <ProfileModal />
         </Modal>
