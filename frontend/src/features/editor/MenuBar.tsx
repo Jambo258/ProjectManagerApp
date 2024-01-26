@@ -2,7 +2,8 @@ import { Fragment } from "react";
 import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
 import OrderedList from "../../icons/OrderedList";
-import { Bold, CheckSquare, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
+import CheckList from "../../icons/CheckList";
+import { Bold, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
 
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
@@ -84,7 +85,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "☑li",
-      icon: CheckSquare,
+      icon: CheckList,
       title: "Task List",
       action: () => editor.chain().focus().toggleTaskList().run(),
       isActive: () => editor.isActive("taskList"),
