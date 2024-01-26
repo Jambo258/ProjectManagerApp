@@ -11,8 +11,10 @@ import {
   parse,
   startOfToday,
   startOfWeek,
+  addMonths,
+  subMonths,
 } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "react-feather";
 import { Modal } from "../../components/Modal";
 import { useParams } from "react-router-dom";
@@ -47,7 +49,7 @@ const CalendarModal = () => {
   const [currentMonth, setcurrentMonth] = useState(() =>
     format(today, "MMM-yyyy")
   );
-  const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
+  let firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
 
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
@@ -62,6 +64,29 @@ const CalendarModal = () => {
   const getPrevMonth = () => {
     const firstDayOfPrevMonth = add(firstDayOfMonth, { months: -1 });
     setcurrentMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
+  };
+
+  const [showMonthSelect, setShowMonthSelect] = useState(false);
+  const [monthSelect, setMonthSelect] = useState([new Date()]);
+
+  const getSelectableMonths = () => {
+    const tempMonths: Date[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      tempMonths.push(addMonths(new Date(), i));
+    }
+
+    for (let i = 1; i < 6; i++) {
+      tempMonths.unshift(subMonths(new Date(), i));
+    }
+
+    setMonthSelect(tempMonths);
+  };
+
+  const setNewMonth = (month: Date) => {
+    setcurrentMonth(format(month, "MMM yyyy"));
+    firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
+    setShowMonthSelect(!showMonthSelect);
   };
 
   const createEvent = (day: Date, eventTitle: string) => {
@@ -117,6 +142,10 @@ const CalendarModal = () => {
     setEvents([...events.slice(0, index), ...events.slice(index + 1)]);
   };
 
+  useEffect(() => {
+    getSelectableMonths();
+  }, []);
+
   return (
     <>
       <div className="flex w-screen h-screen ">
@@ -127,9 +156,31 @@ const CalendarModal = () => {
               size={32}
               onClick={() => getPrevMonth()}
             />
-            <p className="grid col-span-1 ">
-              {format(firstDayOfMonth, "MMMM yyyy")}
-            </p>
+            <div
+              className="grid col-span-1 cursor-pointer"
+              onClick={() => setShowMonthSelect(!showMonthSelect)}
+            >
+              {format(currentMonth, "MMM yyyy")}
+              {showMonthSelect && (
+                <div className="fixed z-10  flex flex-col ">
+                  <dialog className="relative w-fit flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                    <section className="grid grid-cols-1 divide-y divide-grayscale-200">
+                      {monthSelect.map((month, index) => {
+                        return (
+                          <section
+                            key={index}
+                            className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                            onClick={() => setNewMonth(month)}
+                          >
+                            {format(month, "MMM yyyy")}
+                          </section>
+                        );
+                      })}
+                    </section>
+                  </dialog>
+                </div>
+              )}
+            </div>
             <ChevronRight
               className="cursor-pointer ml-6"
               size={32}
