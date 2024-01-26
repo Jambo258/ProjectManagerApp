@@ -236,10 +236,10 @@ export const ProfileModal = () => {
               </p>
             </label>
           </section>
-          <section className="col-span-1  ">
+          <section className="col-span-1">
             <button
               type="submit"
-              className="w-full py-2 btn-text-xs">
+              className="w-full px-2 py-2 btn-text-xs">
               Submit
             </button>
           </section>
@@ -252,7 +252,7 @@ export const ProfileModal = () => {
             </p>
             <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.name}</p>
           </section>
-          <section className="col-span-1  ">
+          <section className="col-span-1">
             <button
               type="button"
               onClick={() => {
@@ -288,10 +288,10 @@ export const ProfileModal = () => {
               </p>
             </label>
           </section>
-          <section className="col-span-1 ">
+          <section className="col-span-1">
             <button
               type="submit"
-              className="w-full py-2 btn-text-xs">
+              className="w-full px-2 py-2 btn-text-xs">
               Submit
             </button>
           </section>
@@ -304,7 +304,7 @@ export const ProfileModal = () => {
             </p>
             <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.email}</p>
           </section>
-          <section className="col-span-1 ">
+          <section className="col-span-1">
             <button
               type="button"
               onClick={() => {
@@ -349,10 +349,10 @@ export const ProfileModal = () => {
               </p>
             </label>
           </section>
-          <section className="col-span-1 ">
+          <section className="col-span-1">
             <button
               type="submit"
-              className="w-full py-2 btn-text-xs">
+              className="w-full px-2 py-2 btn-text-xs">
               Submit
             </button>
           </section>
@@ -365,7 +365,7 @@ export const ProfileModal = () => {
             </p>
             <p className="w-full py-1.5 px-4 mb-3 body-text-md">Set a new password to login to your account.</p>
           </section>
-          <section className="col-span-1 ">
+          <section className="col-span-1">
             <button
               type="button"
               onClick={() => {
@@ -389,7 +389,7 @@ export const ProfileModal = () => {
               Permanently delete your account and remove access to all projects.
           </p>
         </section>
-        <section className="col-span-1 ">
+        <section className="col-span-1">
           <button
             type="button"
             onClick={() => {
