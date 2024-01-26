@@ -6,22 +6,13 @@ on:
     branches: [ "main" ]
 jobs:
   build:
-    name: Lint Code Base
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-      # To report GitHub Actions status checks
-      statuses: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v5
-        env:
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_TSX: true
-          VALIDATE_TYPESCRIPT_ES: true
-          DEFAULT_BRANCH: "main"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+          node-version: '20.x'
+    - run: cd backend && npm i && npm run lint
+    - run: cd frontend && npm i && npm run lint

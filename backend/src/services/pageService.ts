@@ -53,6 +53,21 @@ const canEditPage = async (userId: number, pageId: number) => {
   });
 };
 
+const canViewPage = async (userId: number, pageId: number) => {
+  return !!await prisma.projects.findFirst({
+    where: {
+      users: {
+        some: {
+          userid: userId,
+        },
+      },
+      pages: {
+        some: { id: pageId },
+      }
+    },
+  });
+};
+
 export {
   getpageById,
   createPage,
@@ -60,4 +75,5 @@ export {
   updatePageContent,
   deletePage,
   canEditPage,
+  canViewPage,
 };

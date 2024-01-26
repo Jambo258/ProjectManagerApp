@@ -16,8 +16,7 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
         <Link
           to={`/projects/${project.id}`}
           onClick={() => console.log("Open " + project.name)}
-          className="m-0 p-0 text-left leading-8 heading-xs text-light-font bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100"
-        >
+          className={`m-0 p-0 text-left leading-8 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100 ${window.location.pathname.includes(`/projects/${project.id}`) ? "text-caution-100" : "text-light-font"}`} >
           {project.name}
         </Link>
 
@@ -25,7 +24,9 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
           className="m-0 p-0 font-light heading-xs text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100"
           onClick={() => setShowPages(!showPages)}
         >
-          {showPages ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          {project.pages.length > 0 && 
+          (showPages ? <ChevronUp size={20}/> : <ChevronDown size={20}/>)
+          }
         </button>
       </div>
 
@@ -35,7 +36,7 @@ export const ProjectNavItem = ({ project }: ProjectNavItemProps) => {
             key={page.id}
             to={`/projects/${project.id}/${page.id}`}
             onClick={() => console.log("Open " + page.name)}
-            className="block w-full px-6 py-3 text-left body-text-sm text-light-font border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100"
+            className={`block w-full px-6 py-3 text-left body-text-sm text-light-font border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100 ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}
           >
             {page.name}
           </Link>

@@ -5,13 +5,13 @@ import expressWebsockets from "express-ws";
 import { Server, type onAuthenticatePayload } from "@hocuspocus/server";
 import { Logger } from "@hocuspocus/extension-logger";
 import { Database } from "@hocuspocus/extension-database";
-import usersRouter from "./routes/userRouter.js";
-import projectsRouter from "./routes/projectRouter.js";
+import authenticate from "./middlewares/authenticate.js";
 import requestLog from "./middlewares/requestLog.js";
 import unknownEndpoint from "./middlewares/unknownEndpoint.js";
+import projectsRouter from "./routes/projectRouter.js";
 import pagesRouter from "./routes/pageRouter.js";
-import authenticate from "./middlewares/authenticate.js";
-import { canEditPage, getpageById, updatePageContent } from "./services/pageService.js";
+import usersRouter from "./routes/userRouter.js";
+import { canEditPage, canViewPage, getpageById, updatePageContent } from "./services/pageService.js";
 
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;
 const PORT = process.env.BACKEND_PORT!;
@@ -39,32 +39,31 @@ const hocuspocusServer = Server.configure({
   ],
   port: Number(PORT),
   async onAuthenticate(data) {
-    const { request } = data as onAuthenticatePayloadWithRequest;
+    const { request, documentName } = data as onAuthenticatePayloadWithRequest;
     const sessionUserId = request.session.userId;
-    if (!sessionUserId || !await canEditPage(sessionUserId, Number(data.documentName))) {
+    const pageId = Number(documentName);
+    if (!sessionUserId || !await canViewPage(sessionUserId, pageId)) {
       console.log("Not authorized! Userid =", sessionUserId, ", page =", data.documentName);
       throw new Error("Not authorized!");
     }
-
-    // You can set contextual data to use it in other hooks
-    return {
-      user: {
-        id: sessionUserId,
-        name: "John",
-      },
-    };
+    if (!await canEditPage(sessionUserId, pageId)) {
+      data.connection.readOnly = true;
+    }
   },
 });
 
 const { app } = expressWebsockets(express());
 
+const isProduction = process.env.NODE_ENV === "production";
+
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: sessionSecret,
     resave: true,
     saveUninitialized: false,
     rolling: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: isProduction ? "none" : false, secure: isProduction ? true : false },
   })
 );
 

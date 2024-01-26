@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export type Role = "viewer" | "manager" | "editor";
-
 export interface User {
   id: number;
   email: string;
@@ -29,7 +27,7 @@ export interface UpdateUserRequest {
 
 export interface Member {
   id: number;
-  role: Role;
+  role: string;
   name: string;
   email: string;
 }
@@ -70,13 +68,13 @@ export interface EditPageRequest {
 export interface AddMemberReqeust {
   projectId: number;
   email: string;
-  role: Role;
+  role: string;
 }
 
 export interface ProjectAndUser {
   userId: number;
   projectId: number;
-  role: Role;
+  role: string;
 }
 
 export interface NewPage {
@@ -89,7 +87,7 @@ export interface ProjectUser {
   projectid: number;
   updated_at: Date;
   created_at: Date;
-  role: Role;
+  role: string;
 }
 
 export const api = createApi({

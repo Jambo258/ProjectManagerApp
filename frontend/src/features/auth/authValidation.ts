@@ -35,6 +35,11 @@ export const changePasswordSchema = yup.object().shape({
     .required("Password is required")
 });
 
+export const inviteUserSchema = yup.object().shape({
+  email: yup.string().email("Must be a valid email").required("Email is required"),
+  role: yup.string().required("Role is required")
+});
+
 export type registerUserSchemaType = yup.InferType<typeof registerUserSchema>;
 export type changeNameSchemaType = yup.InferType<typeof changeNameSchema>;
 export type changeEmailSchemaType = yup.InferType<typeof changeEmailSchema>;

@@ -9,17 +9,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
 import { ProfileModal } from "./ProfileModal";
-
-// TO DO:
-// Properly link existing projects and pages
-// Open user settings
-// Logout
+import { UserMenu } from "./UserMenu";
+import { userColor } from "./userColor";
+import { useAppSelector } from "../../app/hooks";
 
 export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
-  const [collapseNav, setcollapseNav] = useState<boolean>(true);
+  const [openNav, setOpenNav] = useState<boolean>(true);
   const { data: projects = [] } = useGetProjectsQuery();
+  const user = useAppSelector((state) => state.auth.user);
 
   const Logout = async () => {
     try {
@@ -30,19 +29,23 @@ export const DashboardNav = () => {
     }
   };
 
+  if(!user) {
+    return null;
+  }
+
   return (
     <nav
       className={`bg-dark-blue-300 min-h-screen text-light-font flex-shrink-0 ${
-        collapseNav ? "w-72" : "w-12"
+        openNav ? "w-72" : "w-12"
       }`}
     >
       <div className="min-h-[calc(100vh-4rem)] h-[calc(100vh-4rem)] overflow-y-auto">
         <div className="sticky top-0 grid grid-flow-col justify-end bg-dark-blue-300">
           <button
             className="w-fit p-4 heading-md text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
-            onClick={() => setcollapseNav(!collapseNav)}
+            onClick={() => setOpenNav(!openNav)}
           >
-            {collapseNav ? (
+            {openNav ? (
               <ChevronLeft size={20} />
             ) : (
               <ChevronRight size={20} />
@@ -50,7 +53,7 @@ export const DashboardNav = () => {
           </button>
         </div>
 
-        {collapseNav && (
+        {openNav && (
           <section>
             <h4 className="px-6 mb-6 heading-md">
               Project <br /> Management App
@@ -77,14 +80,14 @@ export const DashboardNav = () => {
         )}
       </div>
 
-      {collapseNav && (
-        <section className="grid grid-flow-col w-full h-16 px-4 py-2 items-center bg-dark-blue-100">
+      {openNav
+        ?
+        <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
           <Modal
-            btnText="A"
-            btnStyling="bg-purple-200 hover:bg-purple-200 rounded m-0 p-0 w-8 h-8 text-light-font text-center heading-sm leading-8"
-            modalTitle="Account settings"
-          >
-            <ProfileModal/>
+            btnText={user.name[0]}
+            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user.id).textColor} text-center heading-xs leading-8 ${userColor(user.id).bg} cursor-pointer`}
+            modalTitle={"Account settings"} >
+            <ProfileModal />
           </Modal>
           <div>
             <button
@@ -95,7 +98,9 @@ export const DashboardNav = () => {
             </button>
           </div>
         </section>
-      )}
+        :
+        <UserMenu name={user.name} id={user.id} />
+      }
     </nav>
   );
 };

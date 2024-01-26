@@ -15,7 +15,12 @@ Content-Type: application/json
   "password": "aaaaaa"
 }
 ###
-GET http://localhost:3001/users/getallusers
+POST http://localhost:3001/users/getuserbyemail
+Content-Type: application/json
+
+{
+  "email": "pekka@mail.com"
+}
 ###
 GET http://localhost:3001/users/logout
 ###
