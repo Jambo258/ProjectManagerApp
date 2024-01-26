@@ -64,19 +64,6 @@ const CalendarModal = () => {
     setcurrentMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
   };
 
-  const clearEvents = () => {
-    setEvents([
-      {
-        id: nanoid(),
-        projectid: 0,
-        pageid: 0,
-        day: new Date(),
-        eventTitle: "",
-        edit: false,
-      },
-    ]);
-  };
-
   const createEvent = (day: Date, eventTitle: string) => {
     setEvents([
       ...events,
@@ -134,7 +121,7 @@ const CalendarModal = () => {
     <>
       <div className="flex w-screen h-screen ">
         <div className="w-auto h-auto m-20 border-2">
-          <div className="flex imems-center  justify-center">
+          <div className="flex items-center  justify-between">
             <ChevronLeft
               className="cursor-pointer mr-6"
               size={32}
@@ -225,7 +212,6 @@ const CalendarModal = () => {
           </div>
         </div>
       </div>
-      <button onClick={() => clearEvents()}></button>
     </>
   );
 };

@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import Editor from "../editor/Editor";
-import "react-calendar/dist/Calendar.css";
 import Calendar from "../calendar/Calendar";
 
 export const Page = () => {
