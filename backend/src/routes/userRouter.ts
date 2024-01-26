@@ -1,17 +1,15 @@
 import { Router, type Request } from "express";
 import argon2 from "argon2";
 import * as yup from "yup";
-
+import authenticate from "../middlewares/authenticate.js";
+import validate from "../middlewares/validate.js";
 import {
   createUser,
-  getAllUsers,
   getUserById,
   getUserByEmail,
   updateUser,
-  deleteUser
+  deleteUser,
 } from "../services/userService.js";
-import authenticate from "../middlewares/authenticate.js";
-import validate from "../middlewares/validate.js";
 
 const usersRouter = Router();
 
@@ -32,7 +30,7 @@ usersRouter.post("/register", validate(registerUserSchema), async (req: RequestB
 
     const findUser = await getUserByEmail(email);
     if (findUser) {
-      return res.status(409).json({ error: "Email already exists" });
+      return res.status(409).json({ error: "This email is already in use. Please use another one." });
     }
 
     const hash = await argon2.hash(password);
@@ -61,7 +59,9 @@ usersRouter.post("/login", async (req, res, next) => {
       req.session.regenerate((err) => {
         if (err) next(err);
         req.session.userId = findUser.id;
-        return res.status(200).json(findUser);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password, ...userDetails } = findUser;
+        return res.status(200).json(userDetails);
       });
     } else {
       return res.status(401).json({ error: "Email and password does not match" });
@@ -80,28 +80,23 @@ usersRouter.get("/logout", (req, res, next) => {
 });
 
 usersRouter.post("/getuserbyemail", authenticate, async (req, res, next) => {
-
   try {
-    const {email}= req.body;
+    const { email } = req.body;
 
     if (!email || typeof email !== "string") {
-      return res.status(400).json({error: "Empty req body"});
+      return res.status(400).json({ error: "Missing email" });
     }
 
     const user = await getUserByEmail(email);
 
-    if (!user) return res.status(404).json({ error: "Couldnt find user" });
+    if (!user) {
+      return res.status(404).json({ error: "Couldnt find user" });
+    }
 
-    return res.status(200).json(user.id);
+    return res.status(200).json({ id: user.id });
   } catch (error) {
     next(error);
   }
-});
-
-// Remove this route
-usersRouter.get("/getallusers", authenticate, async (_, res) => {
-  const users = await getAllUsers();
-  return res.json(users);
 });
 
 const updateUserSchema = yup.object({
@@ -117,7 +112,7 @@ usersRouter.put("/update", authenticate, validate(updateUserSchema), async (req:
     const { email, name, password } = req.body;
 
     if (!email && !password && !name) {
-      return res.status(400).json({ error: "Empty req body" });
+      return res.status(400).json({ error: "Missing email, password or name" });
     }
 
     const user = await getUserById(id);
@@ -130,7 +125,7 @@ usersRouter.put("/update", authenticate, validate(updateUserSchema), async (req:
     if (email) {
       const findEmail = await getUserByEmail(email);
       if (findEmail) {
-        return res.status(404).json({ error: "Email exists" });
+        return res.status(409).json({ error: "This email is already in use. Please use another one." });
       }
       updatedUserData.email = email;
     }
@@ -160,7 +155,7 @@ usersRouter.delete("/delete", authenticate, async (req, res, next) => {
       if (err) next(err);
       return res.status(200).json(deletedUser);
     });
-  }  catch (err) {
+  } catch (err) {
     next(err);
   }
 });

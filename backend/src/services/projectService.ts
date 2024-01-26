@@ -34,6 +34,7 @@ export async function getAllProjectsAndPagesByUserId(id: number) {
       name: true,
       updated_at: true,
       created_at: true,
+      // TODO Is users needed here?
       users: {
         select: {
           userid: true,
@@ -71,10 +72,10 @@ export async function getProjectAllDetailsById(id: number) {
       created_at: true,
       users: {
         select: {
-          userid: true,
           role: true,
           user: {
             select: {
+              id: true,
               email: true,
               name: true,
             }
@@ -90,7 +91,19 @@ export async function getProjectAllDetailsById(id: number) {
     },
   });
 
-  return project;
+  if (!project) {
+    return project;
+  }
+
+  const flatUsers = project.users.map(user => {
+    return { ...user.user, role: user.role };
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { users, ...projectWithoutUsers } = project;
+
+  const flatProject = { ...projectWithoutUsers, users: flatUsers };
+  return flatProject;
 }
 
 export async function updateProject(id: number, name: string) {

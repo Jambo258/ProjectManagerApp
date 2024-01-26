@@ -25,13 +25,20 @@ export interface UpdateUserRequest {
   password?: string;
 }
 
+export interface Member {
+  id: number;
+  role: string;
+  name: string;
+  email: string;
+}
+
 export interface Project {
   id: number;
   name: string;
   created_at: string;
   updated_at: string;
   pages: Page[];
-  users: User[];
+  users: Member[];
 }
 
 export interface EditProjectRequest {
@@ -39,15 +46,10 @@ export interface EditProjectRequest {
   name: string;
 }
 
-export interface ProjectWithPages extends Project {
-  members: User[];
-  pages: Page[];
-}
-
 export interface Page {
   id: number;
   name: string;
-  content: JSON;
+  content: Uint8Array | null;
   projectid: number;
   created_at: string;
   updated_at: string;
@@ -63,6 +65,12 @@ export interface EditPageRequest {
   name: string;
 }
 
+export interface AddMemberReqeust {
+  projectId: number;
+  email: string;
+  role: string;
+}
+
 export interface ProjectAndUser {
   userId: number;
   projectId: number;
@@ -74,10 +82,18 @@ export interface NewPage {
   projectid: number;
 }
 
+export interface ProjectUser {
+  userid: number;
+  projectid: number;
+  updated_at: Date;
+  created_at: Date;
+  role: string;
+}
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/",
+    baseUrl: import.meta.env.VITE_BACKEND_URL as string,
     credentials: "include",
   }),
   tagTypes: ["Projects", "Pages",],
@@ -118,6 +134,12 @@ export const api = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["Projects", "Pages"],
+    }),
+    getUserByEmail: builder.mutation<{ id: number; }, void>({
+      query: () => ({
+        url: "/users/getuserbyemail",
+        method: "POST",
+      }),
     }),
     getProjects: builder.query<Project[], void>({
       query: () => "/projects",
@@ -180,15 +202,15 @@ export const api = createApi({
       }),
       invalidatesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
     }),
-    addNewProjectUser: builder.mutation<Page, ProjectAndUser>({
-      query: (projectAndUser) => ({
-        url: `/projects/${projectAndUser.projectId}/users/${projectAndUser.userId}`,
+    addNewProjectUser: builder.mutation<ProjectUser, AddMemberReqeust>({
+      query: (addMemberReqeust) => ({
+        url: `/projects/${addMemberReqeust.projectId}/users/`,
         method: "POST",
-        body: { role: projectAndUser.role },
+        body: { role: addMemberReqeust.role, email: addMemberReqeust.email },
       }),
       invalidatesTags: (_result, _error, projectAndUser) => [{ type: "Projects", id: projectAndUser.projectId }],
     }),
-    editProjectUser: builder.mutation<Page, ProjectAndUser>({
+    editProjectUser: builder.mutation<ProjectUser, ProjectAndUser>({
       query: (projectAndUser) => ({
         url: `/projects/${projectAndUser.projectId}/users/${projectAndUser.userId}`,
         method: "PUT",
@@ -196,7 +218,7 @@ export const api = createApi({
       }),
       invalidatesTags: (_result, _error, projectAndUser) => [{ type: "Projects", id: projectAndUser.projectId }],
     }),
-    deleteProjectUser: builder.mutation<Page, ProjectAndUser>({
+    deleteProjectUser: builder.mutation<ProjectUser, ProjectAndUser>({
       query: (projectAndUser) => ({
         url: `/projects/${projectAndUser.projectId}/users/${projectAndUser.userId}`,
         method: "DELETE",
