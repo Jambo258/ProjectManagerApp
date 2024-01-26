@@ -215,27 +215,28 @@ export const ProfileModal = () => {
   return (
     <div className="sm:max-w-[600px] max-w-full"> 
 
-      <p className="heading-xs">
-      Name
-      </p>
+
       {nameEdit ? (
         <form
           onSubmit={handleName(onHandleSubmitName, onErrorName)}
           className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-          <section className="col-span-3">
-            <input
-              type="text"
-              {...registerName("name")}
-              className="block w-full py-1.5 px-4 mb-3 body-text-md"
-            />
-            <p className="mt-1 body-text-xs text-caution-200">
-              {errorsName.name?.message}
-            </p>
-            <p className="mt-1 body-text-xs text-caution-200">
-              {formErrorName}
-            </p>
+          <section className="col-span-3">                
+            <label className="heading-xs">
+            Name
+              <input
+                type="text"
+                {...registerName("name")}
+                className="block w-full py-1.5 px-4 mb-3 body-text-md"
+              />
+              <p className="mt-1 body-text-xs text-caution-200">
+                {errorsName.name?.message}
+              </p>
+              <p className="mt-1 body-text-xs text-caution-200">
+                {formErrorName}
+              </p>
+            </label>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1  ">
             <button
               type="submit"
               className="w-full py-2 btn-text-xs">
@@ -244,11 +245,14 @@ export const ProfileModal = () => {
           </section>
         </form>
       ):(
-        <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
-          <section className="col-span-3">
+        <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">     
+          <section className="col-span-3"> 
+            <p className="heading-xs">
+            Name
+            </p>
             <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.name}</p>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1  ">
             <button
               type="button"
               onClick={() => {
@@ -264,28 +268,27 @@ export const ProfileModal = () => {
         </section>
       )}
       
-      <p className="heading-xs">
-      Email
-      </p>
       {emailEdit ? (
         <form
           onSubmit={handleEmail(onHandleSubmitEmail, onErrorEmail)}
           className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
           <section className="col-span-3">
-            
-            <input
-              type="email"
-              {...registerEmail("email")}
-              className="block w-full py-1.5 px-4 mb-3 body-text-md"
-            />
-            <p className="mt-1 body-text-xs text-caution-200">
-              {errorsEmail.email?.message}
-            </p>
-            <p className="mt-1 body-text-xs text-caution-200">
-              {formErrorEmail}
-            </p>
+            <label className="heading-xs">
+            Email
+              <input
+                type="email"
+                {...registerEmail("email")}
+                className="block w-full py-1.5 px-4 mb-3 body-text-md"
+              />
+              <p className="mt-1 body-text-xs text-caution-200">
+                {errorsEmail.email?.message}
+              </p>
+              <p className="mt-1 body-text-xs text-caution-200">
+                {formErrorEmail}
+              </p>
+            </label>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1 ">
             <button
               type="submit"
               className="w-full py-2 btn-text-xs">
@@ -296,9 +299,12 @@ export const ProfileModal = () => {
       ):(
         <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
           <section className="col-span-3">
+            <p className="heading-xs">
+            Email
+            </p>
             <p className="block w-full py-1.5 px-4 mb-3 body-text-md">{user?.email}</p>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1 ">
             <button
               type="button"
               onClick={() => {
@@ -314,36 +320,36 @@ export const ProfileModal = () => {
         </section>
       )}
 
-      <p className="heading-xs">
-      Password
-      </p>
       {passwordEdit ? (
         <form
           onSubmit={handlePassword(onHandleSubmitPassword, onErrorPassword)}
           className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
           <section className="col-span-3">
-            <section className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                {...registerPassword("password")}
-                autoComplete="new-password"
-                className="block w-full py-1.5 px-4 mb-3 body-text-md   "
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 top-0 align-middle">
-                {showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
-              </button>
-            </section>
-            <p className="mt-1 body-text-xs text-caution-200">
-              {errorsPassword.password?.message}
-            </p>
-            <p className="mt-1 body-text-xs text-caution-200">
-              {formErrorPassword}
-            </p>
+            <label className="heading-xs">
+              Password
+              <section className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...registerPassword("password")}
+                  autoComplete="new-password"
+                  className="block w-full py-1.5 px-4 mb-3 body-text-md"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="bg-grayscale-0 px-2 py-2.5 rounded-l-none absolute right-0 top-0 align-middle">
+                  {showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
+                </button>
+              </section>
+              <p className="mt-1 body-text-xs text-caution-200">
+                {errorsPassword.password?.message}
+              </p>
+              <p className="mt-1 body-text-xs text-caution-200">
+                {formErrorPassword}
+              </p>
+            </label>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1 ">
             <button
               type="submit"
               className="w-full py-2 btn-text-xs">
@@ -354,9 +360,12 @@ export const ProfileModal = () => {
       ):(
         <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
           <section className="col-span-3">
+            <p className="heading-xs">
+            Password
+            </p>
             <p className="w-full py-1.5 px-4 mb-3 body-text-md">Set a new password to login to your account.</p>
           </section>
-          <section className="col-span-1">
+          <section className="col-span-1 ">
             <button
               type="button"
               onClick={() => {
@@ -373,14 +382,14 @@ export const ProfileModal = () => {
       )}
 
 
-      <p className="heading-xs">Delete Account</p>
       <section className="col-span-4 grid grid-cols-4 gap-x-3 grid-row-1">
         <section className="col-span-3">
+          <p className="heading-xs">Delete Account</p>
           <p className="w-full py-1.5 px-4 mb-3 body-text-md">
               Permanently delete your account and remove access to all projects.
           </p>
         </section>
-        <section className="col-span-1">
+        <section className="col-span-1 ">
           <button
             type="button"
             onClick={() => {
