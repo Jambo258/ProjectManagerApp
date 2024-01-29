@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { X } from "react-feather";
 
 interface propTypes {
@@ -16,6 +17,18 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
   deleteModalTitle,
   deleteModalText,
 }) => {
+  const [height, setHeight]  = useState(window.innerHeight);
+  
+  const updateDimensions = () => {
+    setHeight(window.innerHeight);
+  };
+  
+  React.useEffect(() => {
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+  
+  
   return (
     <div
       className={`fixed flex inset-0 justify-center items-center transition-colors rounded ${
@@ -24,9 +37,10 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`sm:min-w-max min-w-full max-w-full h-full sm:h-fit p-2 pb-4 flex flex-col inset-0 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
-          confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"
-        }`}
+        className={`p-2 pb-4 flex flex-col inset-0 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
+          confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"}
+          ${height < 640 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose"
+    }`}
       >
         <div className="w-full flex flex-col place-items-end">
           <button
