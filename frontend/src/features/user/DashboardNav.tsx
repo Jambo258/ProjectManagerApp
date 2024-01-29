@@ -32,6 +32,12 @@ export const DashboardNav = () => {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
+  const closeNav = () => {
+    if (width < 640) {
+      setOpenNav(false);
+    }
+  };
+
   const Logout = async () => {
     try {
       await logout();
@@ -91,7 +97,7 @@ export const DashboardNav = () => {
 
             {projects.map((project) => (
               <div key={project.id}>
-                <ProjectNavItem project={project} />
+                <ProjectNavItem project={project} closeNav={closeNav} />
               </div>
             ))}
           </section>
