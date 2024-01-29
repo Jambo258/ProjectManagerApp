@@ -49,13 +49,11 @@ const CalendarModal = () => {
   const [currentMonth, setcurrentMonth] = useState(() =>
     format(today, "MMM-yyyy")
   );
-  let firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
-
+  const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfMonth)),
   });
-
   const getNextMonth = () => {
     const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
     setcurrentMonth(format(firstDayOfNextMonth, "MMM-yyyy"));
@@ -72,11 +70,11 @@ const CalendarModal = () => {
   const getSelectableMonths = () => {
     const tempMonths: Date[] = [];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 12; i++) {
       tempMonths.push(addMonths(new Date(), i));
     }
 
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < 12; i++) {
       tempMonths.unshift(subMonths(new Date(), i));
     }
 
@@ -85,8 +83,6 @@ const CalendarModal = () => {
 
   const setNewMonth = (month: Date) => {
     setcurrentMonth(format(month, "MMM yyyy"));
-    firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
-    setShowMonthSelect(!showMonthSelect);
   };
 
   const createEvent = (day: Date, eventTitle: string) => {
@@ -149,10 +145,10 @@ const CalendarModal = () => {
   return (
     <>
       <div className="flex w-screen h-screen ">
-        <div className="w-auto h-auto m-20 border-2">
-          <div className="flex items-center  justify-between">
+        <div className="w-full h-full m-20 pr-64 pb-64">
+          <div className="flex items-start border bg-primary-200 justify-between ">
             <ChevronLeft
-              className="cursor-pointer mr-6"
+              className="cursor-pointer mr-6 "
               size={32}
               onClick={() => getPrevMonth()}
             />
@@ -162,9 +158,9 @@ const CalendarModal = () => {
             >
               {format(currentMonth, "MMM yyyy")}
               {showMonthSelect && (
-                <div className="fixed z-10  flex flex-col ">
-                  <dialog className="relative w-fit flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-                    <section className="grid grid-cols-1 divide-y divide-grayscale-200">
+                <div className="fixed z-10 flex flex-col ">
+                  <dialog className="h-[200px] relative w-fit flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                    <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
                       {monthSelect.map((month, index) => {
                         return (
                           <section
@@ -187,25 +183,25 @@ const CalendarModal = () => {
               onClick={() => getNextMonth()}
             />
           </div>
-          <div className="grid grid-cols-7 border-b-2 border-t-2 place-items-center">
+          <div className="grid grid-cols-7 border place-items-center">
             {days.map((day, id) => {
               return <div key={id}>{day}</div>;
             })}
           </div>
-          <div className="grid grid-cols-7 place-items-center">
+          <div className="grid flex-grow w-full h-full grid-cols-7 border">
             {daysInMonth.map((day, idx) => {
               return (
                 <div key={idx} className={colStartClasses[getDay(day)]}>
                   <Modal
                     btnText={format(day, "d")}
-                    btnStyling={`cursor-pointer bg-grayscale-200 flex items-center justify-center h-28 w-28 mt-1 mx-1 ${
+                    btnStyling={`cursor-pointer rounded-none border border-grayscale-300 bg-grayscale-200 flex justify-start h-full w-full group ${
                       isSameMonth(day, currentMonth)
                         ? "text-dark-font"
                         : "text-grayscale-400"
                     }
                     ${checkEventDay(day) && "bg-success-200 "}
-                    ${!isToday(day) && "hover:bg-success-200 "}
-                    ${isToday(day) && "border-2"}`}
+                    ${!isToday(day) && "hover:bg-primary-200 "}
+                    ${isToday(day) && "border-4 border-primary-200 "}`}
                     modalTitle={"Events"}
                   >
                     <div>
@@ -214,32 +210,36 @@ const CalendarModal = () => {
                           (event) =>
                             projectid === event.projectid &&
                             isEqual(event.day, day) && (
-                              <div className="cursor-pointer" key={event.id}>
-                                {event.edit ? (
-                                  <div>
-                                    <input
-                                      onChange={(e) =>
-                                        setNewEventTitle(e.target.value)
-                                      }
-                                      placeholder={"edit event"}
-                                    />
-                                    <button
-                                      onClick={() =>
-                                        editEvent(event.id, newEventTitle)
-                                      }
+                              <div key={event.id}>
+                                <div className="cursor-pointer" key={event.id}>
+                                  {event.edit ? (
+                                    <div>
+                                      <input
+                                        onChange={(e) =>
+                                          setNewEventTitle(e.target.value)
+                                        }
+                                        placeholder={"edit event"}
+                                      />
+                                      <button
+                                        onClick={() =>
+                                          editEvent(event.id, newEventTitle)
+                                        }
+                                      >
+                                        Update event
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => setEdit(event.id, true)}
                                     >
-                                      Update event
-                                    </button>
-                                  </div>
-                                ) : (
-                                  <div onClick={() => setEdit(event.id, true)}>
-                                    {event.eventTitle}
-                                  </div>
-                                )}
-                                <X
-                                  className="cursor-pointer"
-                                  onClick={() => deleteEvent(event.id)}
-                                />
+                                      {event.eventTitle}
+                                    </div>
+                                  )}
+                                  <X
+                                    className="cursor-pointer"
+                                    onClick={() => deleteEvent(event.id)}
+                                  />
+                                </div>
                               </div>
                             )
                         )}
