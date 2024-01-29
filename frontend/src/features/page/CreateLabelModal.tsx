@@ -3,7 +3,7 @@ import { ColorModal } from "./ColorModal";
 import { Label } from "./DnDComponent";
 import { ModalContext } from "../../components/Modal";
 import { FieldErrors, useForm } from "react-hook-form";
-import { createLabelSchema } from "./LabelValidation";
+import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 interface ColorProps {
