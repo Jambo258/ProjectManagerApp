@@ -59,7 +59,7 @@ export const Modal = ({
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
-          ${height < 400 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:max-w-fit"}`}>
+          ${height < 400 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
