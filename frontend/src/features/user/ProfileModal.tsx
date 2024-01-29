@@ -213,7 +213,7 @@ export const ProfileModal = () => {
   };
 
   return (
-    <div className="sm:max-w-[600px] max-w-full"> 
+    <div className="max-w-full"> 
 
 
       {nameEdit ? (
