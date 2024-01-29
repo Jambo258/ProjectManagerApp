@@ -4,9 +4,10 @@ import { HocuspocusProvider, } from "@hocuspocus/provider";
 
 import Editor from "../editor/Editor";
 import { nanoid } from "@reduxjs/toolkit";
+import { type Column, Kanban, type Label, type Task } from "../kanban/Kanban";
 
 interface Component {
-  type: string;
+  type: "editor" | "kanban";
   uuid: string;
 }
 
@@ -31,19 +32,28 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
   );
 
   const yarray = ydoc.getArray<Component>("components");
-  const ymap = ydoc.getMap<Y.XmlFragment>();
+  const ymap = ydoc.getMap<Y.XmlFragment | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>>();
 
   useEffect(() => {
+    const yarray = ydoc.getArray<Component>("components");
     yarray.observe(() => {
       setValues(yarray.toArray());
     });
-  });
+  },[ydoc]);
 
 
-  const addComponent = () => {
+  const addComponent = (type = "kanban") => {
     const uuid = nanoid();
-    ymap.set(uuid, new Y.XmlFragment());
-    yarray.push([{type: "editor", uuid}]);
+    if(type === "editor") {
+      ymap.set(uuid, new Y.XmlFragment());
+      yarray.push([{type, uuid}]);
+    } else if(type === "kanban") {
+      const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>());
+      kanbanMap.set("tasks", new Y.Array<Task>);
+      kanbanMap.set("columns", new Y.Array<Column>);
+      kanbanMap.set("labels", new Y.Array<Label>);
+      yarray.push([{type, uuid}]);
+    }
   };
 
   const deleteComponent = (uuid: string) => {
@@ -70,12 +80,26 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
 
   // yarray.delete(0, yarray.length);
 
+  const getComponent = (component: Component) => {
+    const yContent = ymap.get(component.uuid);
+    if(!yContent) {
+      return <p>Missing content in ymap</p>;
+    }    else if( component.type === "editor" && yContent instanceof Y.XmlFragment) {
+      return <Editor key={component.uuid} pageId={pageId} provider={provider} yxmlfragment={yContent} isAuthenticated={isAuthenticated} />;
+    } else if (component.type === "kanban" && yContent instanceof Y.Map) {
+      return <Kanban ykanban={yContent} />;
+    } else {
+      return <p>Unknown component type = {component.type}</p>;
+    }
+  };
+
   return (
     <section className="p-12 max-h-full overflow-auto">
-      <button onClick={addComponent}>New editor</button>
+      <button onClick={() => addComponent("editor")}>New editor</button>
+      <button onClick={() => addComponent("kanban")}>New kanban</button>
       {values.map((component) =>
         <Fragment key={component.uuid}>
-          <Editor key={component.uuid} pageId={pageId} provider={provider} yxmlfragment={ymap.get(component.uuid)!} isAuthenticated={isAuthenticated} />
+          {getComponent(component)}
           <button onClick={() => moveComponent(component.uuid)}>Move Up</button>
           <button onClick={() => deleteComponent(component.uuid)}>Delete</button>
         </Fragment>
