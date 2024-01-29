@@ -14,7 +14,8 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { SortableItemContent } from "./SortableItemContent";
 import { Modal } from "../../components/Modal";
-import { CreateLabelModal } from "./CreateLabelModal";
+import { Tag } from "react-feather";
+import { LabelModal } from "./LabelModal";
 
 export interface Column {
   Id: string | number;
@@ -43,11 +44,11 @@ export const Kanban = () => {
   );
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [label, SetLabel] = useState<Label[]>([]);
+  const [label, setLabel] = useState<Label[]>([]);
 
   console.log(label);
   const arrayOfColors = [
-    { id: 1, name:"", color: "bg-green-100" },
+    { id: 1, name: "", color: "bg-green-100" },
     { id: 2, name: "", color: "bg-green-200" },
     { id: 3, name: "", color: "bg-green-300" },
     { id: 4, name: "", color: "bg-purple-100" },
@@ -238,32 +239,24 @@ export const Kanban = () => {
     <>
       <div className="grid grid-flow-col w-16">
         <Modal
-          btnText={"Create Label"}
+          btnText={
+            <div>
+              <Tag size={16}></Tag>
+              <p>Labels</p>
+            </div>
+          }
           btnStyling={"mb-3 mx-2"}
-          modalTitle={"Create Label"}
+          modalTitle={"Labels"}
         >
-          <CreateLabelModal
-            // color={color}
+          <LabelModal
             label={label}
             labels={arrayOfColors}
-            setLabel={SetLabel}
-            // setColor={setColor}
+            setLabel={setLabel}
           />
         </Modal>
         <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
           Add Column
         </button>
-        <div className="grid grid-flow-col">
-          Labels
-          {label.map((elements) => (
-            <div
-              className={`m-1 w-16 text-center rounded-md ${elements.color}`}
-              key={elements.id}
-            >
-              {elements.name}
-            </div>
-          ))}
-        </div>
       </div>
       <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2">
         <DndContext
