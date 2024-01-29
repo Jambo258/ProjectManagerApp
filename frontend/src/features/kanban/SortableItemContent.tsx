@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Task } from "./DnDComponent";
+import { Task } from "./Kanban";
 import { useState } from "react";
 import { TaskModal } from "./TaskModal";
 

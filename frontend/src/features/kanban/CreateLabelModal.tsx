@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { ColorModal } from "./ColorModal";
-import { Label } from "./DnDComponent";
+import { Label } from "./Kanban";
 import { ModalContext } from "../../components/Modal";
 import { FieldErrors, useForm } from "react-hook-form";
-import { createLabelSchema } from "./LabelValidation";
+import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 interface ColorProps {
