@@ -24,7 +24,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`min-w-max p-2 pb-4 flex flex-col inset-0 justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
+        className={`sm:min-w-max min-w-full max-w-full h-full sm:h-fit p-2 pb-4 flex flex-col inset-0 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
           confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"
         }`}
       >
