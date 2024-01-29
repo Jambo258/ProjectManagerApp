@@ -1,5 +1,5 @@
 import { UseFormSetValue } from "react-hook-form";
-import { Label } from "./DnDComponent";
+import { Label } from "./Kanban";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 
 interface ColorProps {

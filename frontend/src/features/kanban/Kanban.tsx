@@ -34,7 +34,7 @@ export interface Task {
   labels?: Label[];
 }
 
-export const DnDComponent = () => {
+export const Kanban = () => {
   const [columns, setColumns] = useState<Column[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const columnsIds = useMemo(

@@ -2,7 +2,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { SortableItemContent } from "./SortableItemContent";
-import { Column, Task } from "./DnDComponent";
+import { Column, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 
 interface Props {
