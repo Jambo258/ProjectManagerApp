@@ -1,7 +1,7 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
-import { SortableItemContent } from "./SortableItemContent";
+import { KanbanTask } from "./KanbanTask";
 import { Column, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 
@@ -17,7 +17,7 @@ interface Props {
   markTaskDone: (id: string | number) => void;
 }
 
-export const SortableItem = (props: Props) => {
+export const KanbanColumn = (props: Props) => {
   const {
     column,
     deleteColumn,
@@ -87,7 +87,7 @@ export const SortableItem = (props: Props) => {
       <div className="flex flex-grow flex-col gap-4">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
-            <SortableItemContent
+            <KanbanTask
               task={element}
               key={element.Id}
               deleteTask={deleteTask}

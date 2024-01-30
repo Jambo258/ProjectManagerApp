@@ -8,11 +8,11 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableItem } from "./SortableItem";
+import { KanbanColumn } from "./KanbanColumn";
 import { useEffect, useMemo, useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { SortableItemContent } from "./SortableItemContent";
+import { KanbanTask } from "./KanbanTask";
 import { Modal } from "../../components/Modal";
 import { Tag } from "react-feather";
 import { LabelModal } from "./LabelModal";
@@ -375,7 +375,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
             <div className="flex gap-4">
               <SortableContext items={columnsIds}>
                 {columns.map((element) => (
-                  <SortableItem
+                  <KanbanColumn
                     deleteTask={deleteTask}
                     key={element.Id}
                     column={element}
@@ -394,7 +394,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
           {createPortal(
             <DragOverlay>
               {activeColumn && (
-                <SortableItem
+                <KanbanColumn
                   tasks={tasks.filter(
                     (ele) => ele.columnId === activeColumn.Id
                   )}
@@ -409,7 +409,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                 />
               )}
               {activeTask && (
-                <SortableItemContent
+                <KanbanTask
                   task={activeTask}
                   updateTaskTitle={updateTaskTitle}
                   updateTask={updateTask}

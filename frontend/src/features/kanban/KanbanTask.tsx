@@ -21,7 +21,7 @@ interface Props {
   markTaskDone: (id: number | string) => void;
 }
 
-export const SortableItemContent = ({
+export const KanbanTask = ({
   task,
   deleteTask,
   updateTask,
