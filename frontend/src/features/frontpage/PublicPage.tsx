@@ -7,7 +7,7 @@ export const PublicPage = () => {
       <div className="absolute w-full">
         <NavBar />
       </div>
-      <div className="mt-24 h-[calc(100%-6rem)] overflow-auto">
+      <div className="mt-24 h-[calc(100%-7rem)] overflow-auto">
         <Outlet/>
       </div>
     </div>

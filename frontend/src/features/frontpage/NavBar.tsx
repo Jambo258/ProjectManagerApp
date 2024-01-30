@@ -5,7 +5,7 @@ import useScreenDimensions from "../../utils/screenDimensions";
 
 export const NavBar = () => {
   const screenDimensions = useScreenDimensions();
-  const [openMenu, setOpenMenu] = useState<boolean>(screenDimensions.width > 640 ? true : false);
+  const [openMenu, setOpenMenu] = useState<boolean>( false);
 
   return (
     <header className="grid grid-flow-row md:grid-flow-col min-h-28 w-full-fit md:bg-dark-blue-300 bg-dark-blue-100 drop-shadow-md">
