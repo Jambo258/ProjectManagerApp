@@ -43,8 +43,6 @@ export const DashboardNav = () => {
     return null;
   }
 
-  const userIconBgColor: string = userColor(user.id).bg + " hover:" + userColor(user.id).bg;
-
   return (
     <nav
       className={`bg-dark-blue-300 text-light-font w-full sm:min-h-screen flex-shrink-0 ${openNav ? "sm:w-72 h-full sm:relative" : "sm:w-12 h-14"}`}>
@@ -100,7 +98,7 @@ export const DashboardNav = () => {
         <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
           <Modal
             btnText={user.name[0].toUpperCase()}
-            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user.id).textColor} text-center heading-xs leading-8 ${userIconBgColor} cursor-pointer`}
+            btnStyling={`rounded-full m-0 p-0 w-8 h-8 ${userColor(user.id).textColor} text-center heading-xs leading-8 ${userColor(user.id).bg} cursor-pointer`}
             modalTitle={"Account settings"} >
             <ProfileModal />
           </Modal>

@@ -46,13 +46,13 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
     <section className="grid grid-flow-rows sm:grid-flow-col grid-rows-2 sm:grid-rows-1 grid-cols-4 items-center w-full">
       <div className="row-span-1 sm:row-span-0 col-span-4 sm:col-span-3 w-full">
         <div className="flex flex-row items-center gap-3 max-w-full">
-          <div>
+          <section>
             <UserIcon name={member.name} id={member.id} />
-          </div>
-          <div className="max-w-full break-all">
+          </section>
+          <section className="max-w-full break-all">
             <p className="body-text-md">{member.name}</p>
             <p className="body-text-sm">{member.email}</p>
-          </div>
+          </section>
         </div>
       </div>
       
