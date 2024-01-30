@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "start": "prisma migrate deploy && node ./dist/index.js",
     "dev": "tsx watch -r dotenv/config ./src/index.ts",
     "build": "tsc -p tsconfig-build.json",
@@ -26,6 +27,7 @@
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
+    "@vitest/coverage-v8": "^1.2.2",
     "dotenv": "^16.4.0",
     "eslint": "^8.56.0",
     "prisma": "^5.8.1",
