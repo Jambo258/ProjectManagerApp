@@ -21,7 +21,7 @@ export const PrivatePage = () => {
         ? 
         <div className="flex flex-row h-screen w-full bg-grayscale-200">
           <DashboardNav />
-          <div className="flex flex-col w-full overflow-hidden">
+          <div className="relative flex flex-col w-full overflow-auto">
             <ProjectHeader />
             <Outlet />
           </div>
@@ -29,7 +29,7 @@ export const PrivatePage = () => {
         :
         <div className="flex flex-col h-screen w-full bg-grayscale-200">
           <DashboardNav />
-          <div className="flex flex-col w-full overflow-hidden">
+          <div className="relative flex flex-col w-full overflow-auto">
             <ProjectHeader />
             <Outlet />
           </div>

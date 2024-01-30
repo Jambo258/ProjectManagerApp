@@ -26,7 +26,7 @@ export const Menu = ({children}: MenuProps) => {
   }, []);
 
   return (
-    <section ref={menuRef} className="fixed z-10 right-6 flex flex-col place-items-end">
+    <section ref={menuRef} className="absolute z-10 right-6 flex flex-col place-items-end">
 
       <button className="max-w-fit p-0 mb-1 bg-grayscale-0 hover:bg-grayscale-0"
         onClick={toggleMenu}>
