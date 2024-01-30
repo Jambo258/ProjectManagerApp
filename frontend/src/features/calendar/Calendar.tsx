@@ -5,9 +5,6 @@ import {
   endOfWeek,
   format,
   getDay,
-  isEqual,
-  isSameMonth,
-  isToday,
   parse,
   startOfToday,
   startOfWeek,
@@ -15,10 +12,9 @@ import {
   subMonths,
 } from "date-fns";
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "react-feather";
-import { Modal } from "../../components/Modal";
+import { ChevronLeft, ChevronRight } from "react-feather";
 import { useParams } from "react-router-dom";
-import { nanoid } from "@reduxjs/toolkit";
+import CalendarEventModal from "./CalendarEventModal";
 
 const CalendarModal = () => {
   const projectid = parseInt(useParams().projectId!);
@@ -33,8 +29,6 @@ const CalendarModal = () => {
       edit: false,
     },
   ]);
-  const [eventTitle, setEventTitle] = useState("");
-  const [newEventTitle, setNewEventTitle] = useState("");
   const today = startOfToday();
   const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
@@ -52,7 +46,7 @@ const CalendarModal = () => {
   const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(firstDayOfMonth)),
+    end: endOfWeek(endOfMonth(firstDayOfMonth), { weekStartsOn: 1 }),
   });
   const getNextMonth = () => {
     const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
@@ -83,59 +77,6 @@ const CalendarModal = () => {
 
   const setNewMonth = (month: Date) => {
     setcurrentMonth(format(month, "MMM yyyy"));
-  };
-
-  const createEvent = (day: Date, eventTitle: string) => {
-    setEvents([
-      ...events,
-      {
-        id: nanoid(),
-        projectid: projectid,
-        pageid: pageid,
-        day: day,
-        eventTitle: eventTitle,
-        edit: false,
-      },
-    ]);
-    setEventTitle("");
-  };
-
-  const checkEventDay = (day: Date) => {
-    const test = events.find((event) => isEqual(event.day, day));
-
-    if (test) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const setEdit = (eventid: string, setEdit: boolean) => {
-    const test = events.map((event) => {
-      if (event.id === eventid) {
-        return { ...event, edit: setEdit };
-      } else {
-        return event;
-      }
-    });
-    setEvents(test);
-  };
-
-  const editEvent = (eventid: string, testString: string) => {
-    const test = events.map((event) => {
-      if (event.id === eventid) {
-        return { ...event, eventTitle: testString, edit: false };
-      } else {
-        return event;
-      }
-    });
-
-    setEvents(test);
-  };
-
-  const deleteEvent = (eventid: string) => {
-    const index = events.findIndex((event) => event.id === eventid);
-    setEvents([...events.slice(0, index), ...events.slice(index + 1)]);
   };
 
   useEffect(() => {
@@ -183,83 +124,30 @@ const CalendarModal = () => {
               onClick={() => getNextMonth()}
             />
           </div>
-          <div className="grid grid-cols-7 border place-items-center">
-            {days.map((day, id) => {
-              return <div key={id}>{day}</div>;
-            })}
+
+          <div className="grid grid-cols-7 border place-items-center ">
+            {days.map((day, id) => (
+              <div key={id}>{day}</div>
+            ))}
           </div>
-          <div className="grid flex-grow w-full h-full grid-cols-7 border">
-            {daysInMonth.map((day, idx) => {
-              return (
-                <div key={idx} className={colStartClasses[getDay(day)]}>
-                  <Modal
-                    btnText={format(day, "d")}
-                    btnStyling={`cursor-pointer rounded-none border border-grayscale-300 bg-grayscale-200 flex justify-start h-full w-full group ${
-                      isSameMonth(day, currentMonth)
-                        ? "text-dark-font"
-                        : "text-grayscale-400"
-                    }
-                    ${checkEventDay(day) && "bg-success-200 "}
-                    ${!isToday(day) && "hover:bg-primary-200 "}
-                    ${isToday(day) && "border-4 border-primary-200 "}`}
-                    modalTitle={"Events"}
-                  >
-                    <div>
-                      <div>
-                        {events.map(
-                          (event) =>
-                            projectid === event.projectid &&
-                            isEqual(event.day, day) && (
-                              <div key={event.id}>
-                                <div className="cursor-pointer" key={event.id}>
-                                  {event.edit ? (
-                                    <div>
-                                      <input
-                                        onChange={(e) =>
-                                          setNewEventTitle(e.target.value)
-                                        }
-                                        placeholder={"edit event"}
-                                      />
-                                      <button
-                                        onClick={() =>
-                                          editEvent(event.id, newEventTitle)
-                                        }
-                                      >
-                                        Update event
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      onClick={() => setEdit(event.id, true)}
-                                    >
-                                      {event.eventTitle}
-                                    </div>
-                                  )}
-                                  <X
-                                    className="cursor-pointer"
-                                    onClick={() => deleteEvent(event.id)}
-                                  />
-                                </div>
-                              </div>
-                            )
-                        )}
-                      </div>
-                      <div className="flex justify-center">
-                        <form>
-                          <input
-                            onChange={(e) => setEventTitle(e.target.value)}
-                            placeholder={"Add new event"}
-                          />
-                        </form>
-                        <button onClick={() => createEvent(day, eventTitle)}>
-                          Confirm
-                        </button>
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              );
-            })}
+
+          <div className="grid flex-grow w-full h-full grid-cols-7 border ">
+            {daysInMonth.map((day) => (
+              <div
+                key={day.toDateString()}
+                className={colStartClasses[getDay(day)]}
+              >
+                <CalendarEventModal
+                  key={day.toDateString()}
+                  events={events}
+                  currentMonth={currentMonth}
+                  projectid={projectid}
+                  pageid={pageid}
+                  day={day}
+                  setEvents={setEvents}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
