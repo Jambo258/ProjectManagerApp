@@ -12,16 +12,24 @@ import { ProjectMembersModal } from "./ProjectMembersModal";
 
 export const ProjectHeader = () => {
   const projectid = parseInt(useParams().projectId!);
-
   const { data: project } = useGetProjectQuery(projectid);
 
   if (!project) {
     return null;
   }
+
+  const hasSpaces = (name: string) => {
+    if (name.includes(" ")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
-        <h2 className="heading-xl mb-2 pr-8">{project.name}</h2>
+        <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!hasSpaces(project.name) && "break-all"}`}>{project.name}</h2>
         <Menu>
           <Modal
             btnText={"Add page"}
@@ -66,7 +74,10 @@ export const ProjectHeader = () => {
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
               className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
-              {page.name}
+              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) 
+                ? page.name
+                : page.name.slice(0, 10) + ((page.name.length > 10) ? "..." : "")
+              }
             </Link>
           ))}
 
