@@ -1,21 +1,23 @@
 import { useContext, useState } from "react";
-import { Label } from "./Kanban";
-import { ModalContext } from "../../components/Modal";
+import { Labels } from "./Kanban";
+// import { ModalContext } from "../../components/Modal";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 import { ColorModal } from "./ColorModal";
 import { FieldErrors, useForm } from "react-hook-form";
 import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { subModalContext } from "./SubModal";
 
 interface ColorProps {
-  label: Label[];
-  setLabel: React.Dispatch<React.SetStateAction<Label[]>>;
-  labels: Label[];
-  element: Label;
+  label: Labels[];
+  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
+  labels: Labels[];
+  element: Labels;
 }
 
 export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
-  const { closeModal } = useContext(ModalContext);
+  // const { closeModal } = useContext(ModalContext);
+  const { closeModal } = useContext(subModalContext);
   const {
     formState: { isDirty, errors },
     handleSubmit,

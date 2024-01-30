@@ -4,14 +4,19 @@ import { useState } from "react";
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Task, Labels } from "./Kanban";
 
 // Components
 import { X } from "react-feather";
-import { Task } from "./Kanban";
+
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
-// import { TaskModal } from "./TaskModal";
+
+import { LabelModal } from "./LabelModal";
+import { SubModal } from "./SubModal";
+
+import { Tag } from "react-feather";
 
 interface Props {
   task: Task;
@@ -19,6 +24,11 @@ interface Props {
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
   markTaskDone: (id: number | string) => void;
+  label: Labels[];
+  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
+  labels: Labels[];
+   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+   isModalsOpen: boolean;
 }
 
 export const KanbanTask = ({
@@ -27,6 +37,11 @@ export const KanbanTask = ({
   updateTask,
   updateTaskTitle,
   // markTaskDone,
+  label,
+  setLabel,
+  labels,
+  setIsModalsOpen,
+  isModalsOpen
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -46,6 +61,7 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  console.log(isModalsOpen);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -72,25 +88,21 @@ export const KanbanTask = ({
         className="w-full flex flex-col h-fit p-4 rounded bg-grayscale-100"
         onClick={openModal}
       >
-
         <div className="mb-6">
-          <h4 className="heading-xs mb-1">
-            {task.title}
-          </h4>
-          <p className="min-h-max line-clamp-3 body-text-xs">
-            {task.content}
-          </p>
+          <h4 className="heading-xs mb-1">{task.title}</h4>
+          <p className="min-h-max line-clamp-3 body-text-xs">{task.content}</p>
         </div>
 
         <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
           <div className="grid col-span-2">
-
             {/* Task Deadline */}
             <section className="w-full mb-[6px]">
-              <div className={`rounded w-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
-                <p className="label-text">
-                  {task.done ? "Done" : "Not Done"}
-                </p>
+              <div
+                className={`rounded w-fit px-2 py-1 text-center ${
+                  task.done ? "bg-success-100" : "bg-caution-100"
+                }`}
+              >
+                <p className="label-text">{task.done ? "Done" : "Not Done"}</p>
               </div>
             </section>
 
@@ -98,7 +110,11 @@ export const KanbanTask = ({
             {/* Grid flow dense? */}
             <section className="w-full h-fit flex flex-wrap gap-[6px]">
               {task.labels?.map((element) => (
-                <Label key={element.id} labelColor={element.color} labelText={element.name} />
+                <Label
+                  key={element.id}
+                  labelColor={element.color}
+                  labelText={element.name}
+                />
               ))}
             </section>
           </div>
@@ -109,7 +125,9 @@ export const KanbanTask = ({
         - if more than 1 move member icons to overlap
       */}
           <section className="min-w-max w-fit h-full flex flex-row">
-            <p className="w-max px-4 py-3 self-end h-fit rounded-full bg-yellow-300">M</p>
+            <p className="w-max px-4 py-3 self-end h-fit rounded-full bg-yellow-300">
+              M
+            </p>
           </section>
         </section>
       </div>
@@ -179,7 +197,11 @@ export const KanbanTask = ({
               {/* Task Labels */}
               <section className="w-full h-fit flex flex-wrap gap-[6px]">
                 {task.labels?.map((element) => (
-                  <Label key={element.id} labelColor={element.color} labelText={element.name} />
+                  <Label
+                    key={element.id}
+                    labelColor={element.color}
+                    labelText={element.name}
+                  />
                 ))}
               </section>
             </section>
@@ -188,16 +210,51 @@ export const KanbanTask = ({
               <div>
                 <p className="heading-xs mb-2">Add to task</p>
                 <div className="flex flex-col gap-2">
-                  <IconButton iconName="Members" btnText="Members" handleOnClick={() => ""}/>
-                  <IconButton iconName="Labels" btnText="Labels" handleOnClick={() => ""}/>
-                  <IconButton iconName="Deadline" btnText="Deadline" handleOnClick={() => ""}/>
+                  <IconButton
+                    iconName="Members"
+                    btnText="Members"
+                    handleOnClick={() => ""}
+                  />
+                  <SubModal
+                    btnText={
+                      <div>
+                        <Tag size={16}></Tag>
+                        <p>Labels</p>
+                      </div>
+                    }
+                    btnStyling={"mb-3 mx-2"}
+                    modalTitle={"Labels"}
+                    setIsModalsOpen={setIsModalsOpen}
+                    isModalsOpen={isModalsOpen}
+                  >
+                    <LabelModal
+                      label={label}
+                      labels={labels}
+                      setLabel={setLabel}
+                      setIsModalsOpen={setIsModalsOpen}
+                      isModalsOpen={isModalsOpen}
+                    />
+                  </SubModal>
+                  <IconButton
+                    iconName="Deadline"
+                    btnText="Deadline"
+                    handleOnClick={() => ""}
+                  />
                 </div>
               </div>
               <div>
                 <p className="heading-xs mb-2">Actions</p>
                 <div className="flex flex-col gap-2 min-w-max">
-                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={handleSave}/>
-                  <IconButton iconName="Delete" btnText="Delete task" handleOnClick={() => setIsDeleteConfirmOpen(true)}/>
+                  <IconButton btnType="submit"
+                    iconName="Save"
+                    btnText="Save changes"
+                    handleOnClick={handleSave}
+                  />
+                  <IconButton
+                    iconName="Delete"
+                    btnText="Delete task"
+                    handleOnClick={() => setIsDeleteConfirmOpen(true)}
+                  />
                 </div>
               </div>
             </section>
@@ -206,16 +263,13 @@ export const KanbanTask = ({
       </div>
       }
 
-      {isDeleteConfirmOpen &&
+      {isDeleteConfirmOpen && (
         <DeleteModal
           setConfirmDeleteEdit={setIsDeleteConfirmOpen}
           confirmDeleteEdit={isDeleteConfirmOpen}
           handleSubmitForModal={() => deleteTask(task.Id)}
-          deleteModalText={"Are you sure you want to delete this task?"} />
-      }
-
+          deleteModalText={"Are you sure you want to delete this task?"} />      )}
     </>
-
   );
 };
 

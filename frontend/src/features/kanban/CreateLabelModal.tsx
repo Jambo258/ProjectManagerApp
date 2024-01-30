@@ -1,15 +1,16 @@
 import { useContext, useState } from "react";
 import { ColorModal } from "./ColorModal";
-import { Label } from "./Kanban";
-import { ModalContext } from "../../components/Modal";
+import { Labels } from "./Kanban";
+// import { ModalContext } from "../../components/Modal";
 import { FieldErrors, useForm } from "react-hook-form";
 import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { subModalContext } from "./SubModal";
 
 interface ColorProps {
-  label: Label[];
-  setLabel: React.Dispatch<React.SetStateAction<Label[]>>;
-  labels: Label[];
+  label: Labels[];
+  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
+  labels: Labels[];
 }
 
 export interface CreateLabelFormValues {
@@ -22,7 +23,8 @@ export const CreateLabelModal = ({
   setLabel,
   labels,
 }: ColorProps) => {
-  const { closeModal } = useContext(ModalContext);
+  // const { closeModal } = useContext(ModalContext);
+  const { closeModal } = useContext(subModalContext);
   const {
     formState: { isDirty, errors },
     handleSubmit,
@@ -48,7 +50,7 @@ export const CreateLabelModal = ({
     console.log(formData.color);
     if (canSubmit) {
       try {
-        const newLabel: Label = {
+        const newLabel: Labels = {
           id: Math.floor(Math.random() * 10001),
           name: formData.name,
           color: formData.color,

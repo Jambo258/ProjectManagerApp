@@ -13,17 +13,17 @@ import { useEffect, useMemo, useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { KanbanTask } from "./KanbanTask";
-import { Modal } from "../../components/Modal";
 import { Tag } from "react-feather";
 import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
+import { SubModal } from "./SubModal";
 import { nanoid } from "@reduxjs/toolkit";
 
 export interface Column {
   Id: string | number;
   title: string;
 }
-export interface Label {
+export interface Labels {
   id: string | number;
   name: string;
   color: string;
@@ -34,10 +34,11 @@ export interface Task {
   columnId: string | number;
   content: string;
   done: boolean;
-  labels?: Label[];
+  labels?: Labels[];
 }
 
-export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>}) => {
+export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
+  const [isModalsOpen, setIsModalsOpen] = useState(false);
   const [columns, setColumns] = useState<Column[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const columnsIds = useMemo(
@@ -46,13 +47,13 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   );
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [label, setLabel] = useState<Label[]>([]);
+  const [label, setLabel] = useState<Labels[]>([]);
 
 
   useEffect(() => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
-    const ylabels = ykanban.get("labels") as Y.Array<Label>;
+    const ylabels = ykanban.get("labels") as Y.Array<Labels>;
 
     setTasks(ytasks.toArray());
     setColumns(ycolumns.toArray());
@@ -344,7 +345,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   return (
     <>
       <div className="grid grid-flow-col w-16">
-        <Modal
+        <SubModal
           btnText={
             <div>
               <Tag size={16}></Tag>
@@ -353,13 +354,18 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
           }
           btnStyling={"mb-3 mx-2"}
           modalTitle={"Labels"}
+          // iconName={"Delete"}
+          setIsModalsOpen={setIsModalsOpen}
+          isModalsOpen={isModalsOpen}
         >
           <LabelModal
             label={label}
             labels={arrayOfColors}
             setLabel={setLabel}
+            setIsModalsOpen={setIsModalsOpen}
+            isModalsOpen={isModalsOpen}
           />
-        </Modal>
+        </SubModal>
         <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
           Add Column
         </button>
@@ -386,6 +392,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     updateTaskTitle={updateTaskTitle}
                     markTaskDone={markTaskDone}
                     tasks={tasks.filter((ele) => ele.columnId === element.Id)}
+                    label={label}
+                    labels={arrayOfColors}
+                    setLabel={setLabel}
+                    setIsModalsOpen={setIsModalsOpen}
+                    isModalsOpen={isModalsOpen}
                   />
                 ))}
               </SortableContext>
@@ -406,6 +417,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                   updateColumn={updateColumn}
                   updateTaskTitle={updateTaskTitle}
                   markTaskDone={markTaskDone}
+                  label={label}
+                  labels={arrayOfColors}
+                  setLabel={setLabel}
+                  setIsModalsOpen={setIsModalsOpen}
+                  isModalsOpen={isModalsOpen}
                 />
               )}
               {activeTask && (
@@ -415,6 +431,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                   updateTask={updateTask}
                   deleteTask={deleteTask}
                   markTaskDone={markTaskDone}
+                  label={label}
+                  labels={arrayOfColors}
+                  setLabel={setLabel}
+                  setIsModalsOpen={setIsModalsOpen}
+                  isModalsOpen={isModalsOpen}
                 />
               )}
             </DragOverlay>,

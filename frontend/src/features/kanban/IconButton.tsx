@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { Clock, Save, Tag, Trash2, Users } from "react-feather";
 
 type IconType = "Deadline" | "Delete" | "Labels" | "Members" | "Save";
@@ -7,7 +8,8 @@ type ButtonType = "button" | "reset" | "submit";
 interface IconButtonProps {
     btnType?: ButtonType;
     iconName: IconType;
-    btnText: string;
+    btnText: string | ReactElement;
+    // btnStyling?: string;
     handleOnClick: () => void;
 }
 

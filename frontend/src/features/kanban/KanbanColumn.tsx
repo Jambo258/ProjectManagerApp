@@ -2,7 +2,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { KanbanTask } from "./KanbanTask";
-import { Column, Task } from "./Kanban";
+import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 
 interface Props {
@@ -15,6 +15,11 @@ interface Props {
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
   markTaskDone: (id: string | number) => void;
+  label: Labels[];
+  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
+  labels: Labels[];
+  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalsOpen: boolean;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -28,6 +33,11 @@ export const KanbanColumn = (props: Props) => {
     updateTask,
     updateTaskTitle,
     markTaskDone,
+    label,
+    setLabel,
+    labels,
+    setIsModalsOpen,
+    isModalsOpen
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -94,6 +104,11 @@ export const KanbanColumn = (props: Props) => {
               updateTask={updateTask}
               updateTaskTitle={updateTaskTitle}
               markTaskDone={markTaskDone}
+              label={label}
+              labels={labels}
+              setLabel={setLabel}
+              setIsModalsOpen={setIsModalsOpen}
+              isModalsOpen={isModalsOpen}
             />
           ))}
         </SortableContext>
