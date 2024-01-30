@@ -6,14 +6,14 @@ export const NavBar = () => {
   const [width, setWidth]  = useState(window.innerWidth);
   const [openMenu, setOpenMenu] = useState<boolean>(width > 640 ? true : false);
   
-  const updateDimensions = () => {
+  const updateWidth = () => {
     setWidth(window.innerWidth);
   };
   
   useEffect(() => {
     setOpenMenu(false);
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
 

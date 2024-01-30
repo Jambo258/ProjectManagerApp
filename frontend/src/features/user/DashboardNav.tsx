@@ -23,13 +23,13 @@ export const DashboardNav = () => {
   const { data: projects = [] } = useGetProjectsQuery();
   const user = useAppSelector((state) => state.auth.user);
 
-  const updateDimensions = () => {
+  const updateWidth = () => {
     setWidth(window.innerWidth);
   };
   
   useEffect(() => {
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
   const closeNav = () => {

@@ -25,13 +25,13 @@ export const Modal = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [height, setHeight]  = useState(window.innerHeight);
   
-  const updateDimensions = () => {
+  const updateHeight = () => {
     setHeight(window.innerHeight);
   };
   
   useEffect(() => {
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
   
   const openModal = () => {
