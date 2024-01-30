@@ -1,4 +1,4 @@
-import { Labels } from "./Kanban";
+import { type Labels } from "./Kanban";
 import { CreateLabelModal } from "./CreateLabelModal";
 // import { Modal } from "../../components/Modal";
 import { Edit2 } from "react-feather";
@@ -14,12 +14,12 @@ interface Props {
   isModalsOpen: boolean;
 }
 
-export const LabelModal = ({ label, setLabel, labels,setIsModalsOpen,isModalsOpen }: Props) => {
+export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen }: Props) => {
   console.log(isModalsOpen);
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
-        {label.map((elements) => (
+        {label.map((elements: Labels) => (
           <div
             key={elements.id}
             className="grid grid-cols-4 justify-center items-center"
