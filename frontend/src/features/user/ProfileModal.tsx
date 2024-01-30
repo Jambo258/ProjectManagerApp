@@ -250,7 +250,7 @@ export const ProfileModal = () => {
             <p className="heading-xs">
             Name
             </p>
-            <p className="block w-full py-1.5 px-4 body-text-md">{user?.name}</p>
+            <p className="block w-full py-1.5 px-4 body-text-md break-words">{user?.name}</p>
           </section>
           <section className="col-span-4 sm:col-span-1 flex items-center">
             <button
@@ -303,7 +303,7 @@ export const ProfileModal = () => {
             <p className="heading-xs">
             Email
             </p>
-            <p className="block w-full py-1.5 px-4 body-text-md">{user?.email}</p>
+            <p className="block w-full py-1.5 px-4 body-text-md break-words">{user?.email}</p>
           </section>
           <section className="col-span-4 sm:col-span-1 flex items-center">
             <button

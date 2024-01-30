@@ -43,15 +43,20 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
   };
 
   return (
-    <section className="flex flex-row items-center gap-3">
-      <UserIcon name={member.name} id={member.id} />
-
-      <div className="flex-1">
-        <p className="body-text-md">{member.name}</p>
-        <p className="body-text-sm">{member.email}</p>
+    <section className="grid grid-flow-rows sm:grid-flow-col grid-rows-2 sm:grid-rows-1 grid-cols-4 items-center w-full">
+      <div className="row-span-1 sm:row-span-0 col-span-4 sm:col-span-3 w-full">
+        <div className="flex flex-row items-center gap-3 max-w-full">
+          <div>
+            <UserIcon name={member.name} id={member.id} />
+          </div>
+          <div className="max-w-full break-all">
+            <p className="body-text-md">{member.name}</p>
+            <p className="body-text-sm">{member.email}</p>
+          </div>
+        </div>
       </div>
       
-      <select className="p-2 m-2 btn-text-xs border border-grayscale-300" 
+      <select className="col-span-4 sm:col-span-1 p-2 my-2 btn-text-xs border border-grayscale-300" 
         value={member.role} 
         onChange={(e) => onRoleChange(e)} disabled={userRole !== "manager" || member.id === userId}>
         <option value="viewer" 

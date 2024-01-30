@@ -107,18 +107,18 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     <>
       { (userRole === "manager") &&
       <section>
-        <form className="flex flex-row gap-2 mb-2"
+        <form className="grid grid-flow-rows sm:grid-flow-col sm:grid-col-3 gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input
             type="email"
             {...register("email")}
             placeholder="E.g. example@mail.com"
-            className="flex-1 w-1/2 p-2 body-text-sm border border-grayscale-300" />
+            className="col-span-3 sm:col-span-1 p-2 body-text-sm border border-grayscale-300" />
 
           <select value={selectValue}
             {...register("role")}
             onChange={(e) => setSelectValue(e.target.value)}
-            className="p-2 btn-text-xs border border-grayscale-300">
+            className="col-span-3 sm:col-span-1 p-2 btn-text-xs border border-grayscale-300">
             <option value="viewer"
               className="btn-text-xs">Viewer</option>
             <option value="editor"
@@ -127,7 +127,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
               className="btn-text-xs">Manager</option>
           </select>
 
-          <button type="submit" className="p-2 btn-text-xs" disabled={isSubmitting} >
+          <button type="submit" className="col-span-3 sm:col-span-1 p-2 btn-text-xs" disabled={isSubmitting} >
           Invite
           </button>
         </form>
