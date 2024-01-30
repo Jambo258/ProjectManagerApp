@@ -96,13 +96,14 @@ const CalendarEventModal = ({
   };
 
   const createEventTest = (day: Date, eventTitle: string) => {
+    day = setTime(day.toString());
     setEvents([
       ...events,
       {
         id: nanoid(),
         projectid: projectid,
         pageid: pageid,
-        day: setTime(day.toString()),
+        day: day,
         eventTitle: eventTitle,
         edit: false,
       },
