@@ -10,7 +10,7 @@ interface ModalContextType {
   openAllModals: () => void;
 }
 
-export const subModalContext = createContext<ModalContextType>(null!);
+export const SubModalContext = createContext<ModalContextType>(null!);
 
 interface ModalProps {
   btnStyling: string;
@@ -83,11 +83,11 @@ export const SubModal = ({
               </button>
             </header>
             <main className="w-full mx-auto px-2">
-              <subModalContext.Provider
+              <SubModalContext.Provider
                 value={{ isModalOpen, openModal, closeModal, closeAllModals, openAllModals }}
               >
                 {children}
-              </subModalContext.Provider>
+              </SubModalContext.Provider>
             </main>
           </dialog>
         </div>
