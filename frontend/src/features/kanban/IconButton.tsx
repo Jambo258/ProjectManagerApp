@@ -2,13 +2,16 @@ import { Clock, Save, Tag, Trash2, Users } from "react-feather";
 
 type IconType = "Deadline" | "Delete" | "Labels" | "Members" | "Save";
 
+type ButtonType = "button" | "reset" | "submit";
+
 interface IconButtonProps {
+    btnType?: ButtonType;
     iconName: IconType;
     btnText: string;
     handleOnClick: () => void;
 }
 
-export const IconButton = ({iconName, btnText, handleOnClick}: IconButtonProps) => {
+export const IconButton = ({iconName, btnText, btnType = "button", handleOnClick}: IconButtonProps) => {
   const getIconFromName = (iconName: IconType) => {
     switch (iconName) {
     case "Deadline":
@@ -41,13 +44,15 @@ export const IconButton = ({iconName, btnText, handleOnClick}: IconButtonProps) 
 
   return (
     <button
-      type="button"
+      type={btnType}
       onClick={handleOnClick}
       aria-label={getAriaLabelText(iconName)}
-      className={`flex px-4 py-2 btn-text-xs ${iconName === "Save" && "bg-success-100 hover:bg-success-200"} ${iconName === "Delete" && "bg-caution-100 hover:bg-caution-200"}`}
+      className={`w-full px-4 pt-2 pb-1 sm:text-left btn-text-xs ${iconName === "Save" && "bg-success-100 hover:bg-success-200"} ${iconName === "Delete" && "bg-caution-100 hover:bg-caution-200"}`}
     >
-      {getIconFromName(iconName)}
-      <p className="ms-[6px]">{btnText}</p>
+      <span className="inline-flex">
+        {getIconFromName(iconName)}
+        <p className="ms-[6px] hidden sm:visible sm:inline-block">{btnText}</p>
+      </span>
     </button>
   );
 };
