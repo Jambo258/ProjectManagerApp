@@ -5,16 +5,13 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-// React Hook Fomr
-// import { useForm } from "react-hook-form";
-
 // Components
 import { X } from "react-feather";
 import { Task } from "./Kanban";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
-import { TaskModal } from "./TaskModal";
+// import { TaskModal } from "./TaskModal";
 
 interface Props {
   task: Task;
@@ -29,7 +26,7 @@ export const SortableItemContent = ({
   deleteTask,
   updateTask,
   updateTaskTitle,
-  markTaskDone,
+  // markTaskDone,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -45,18 +42,10 @@ export const SortableItemContent = ({
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editTitle, setEditTitle] = useState(false);
+  const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
+  const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  // const {
-  //   formState: { errors },
-  //   handleSubmit,
-  //   register,
-  // } = useForm({
-  //   defaultValues: {
-  //     description: task.content
-  //   }
-  // });
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -69,6 +58,7 @@ export const SortableItemContent = ({
   const handleSave = () => {
     console.log("Task saved");
     updateTask(task.Id, editContent);
+    updateTaskTitle(task.Id, editTitle);
     closeModal();
   };
 
@@ -138,21 +128,21 @@ export const SortableItemContent = ({
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
               <X size={20}/>
             </button>
-            {editTitle ? (
+            {isEditTitleSelected ? (
               <input
                 className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key !== "Enter") return;
-                  else setEditTitle(false);
+                  else setIsEditTitleSelected(false);
                 }}
-                onBlur={() => setEditTitle(false)}
-                value={task.title}
-                onChange={(e) => updateTaskTitle(task.Id, e.target.value)}
+                onBlur={() => setIsEditTitleSelected(false)}
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
               ></input>
             ) : (
-              <h3 onClick={() => setEditTitle(true)} className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
-                { task.title }
+              <h3 onClick={() => setIsEditTitleSelected(true)} className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
+                {task.title}
               </h3>)}
           </header>
 
@@ -172,27 +162,16 @@ export const SortableItemContent = ({
                 </div>
               </div>
               <div className="">
-                <form
-                // onSubmit={handleSubmit(onHandleSubmit)}
-                >
-                  <label
-                    className="heading-xs mb-1"
-                  >
+                <form>
+                  <label className="heading-xs mb-1">
                   Description
                     <textarea
-                      // {...register("description")}
-                      // onKeyDown={(e) => {
-                      //   if (e.key !== "Enter") return;
-                      //   setEditContent(false);
-                      // }}
-                      // onBlur={() => setEditContent(false)}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
                       rows={4}
                       placeholder="Short item description goes here..."
                       className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                     />
-                    {/* <p className="text-center body-text-xs text-caution-200 mt-1">{errors.description?.message}</p> */}
                   </label>
                 </form>
               </div>
