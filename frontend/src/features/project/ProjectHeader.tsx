@@ -22,11 +22,7 @@ export const ProjectHeader = () => {
   }
 
   const hasSpaces = (name: string) => {
-    if (name.includes(" ")) {
-      return true;
-    } else {
-      return false;
-    }
+    return name.includes(" ");
   };
 
   return (
@@ -83,7 +79,7 @@ export const ProjectHeader = () => {
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
               className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
-              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) 
+              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) || (page.name.length <= 13)
                 ? page.name
                 : page.name.slice(0, 10) + ((page.name.length > 10) ? "..." : "")
               }
