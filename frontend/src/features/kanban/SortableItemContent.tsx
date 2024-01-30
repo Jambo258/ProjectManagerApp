@@ -6,6 +6,7 @@ import { TaskModal } from "./TaskModal";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { X } from "react-feather";
+import { useForm } from "react-hook-form";
 
 interface Props {
   task: Task;
@@ -38,6 +39,15 @@ export const SortableItemContent = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState(false);
   const [editContent, setEditContent] = useState(false);
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm({
+    defaultValues: {
+      description: task.content
+    }
+  });
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -47,6 +57,10 @@ export const SortableItemContent = ({
     setIsModalOpen(false);
   };
 
+  const onHandleSubmit = () => {
+    console.log("Task saved");
+  };
+
   return (
     <>
       <div
@@ -54,7 +68,7 @@ export const SortableItemContent = ({
         style={style}
         {...attributes}
         {...listeners}
-        className="flex flex-col h-fit p-4 rounded bg-grayscale-100"
+        className="w-full flex flex-col h-fit p-4 rounded bg-grayscale-100"
         onClick={openModal}
       >
 
@@ -105,7 +119,7 @@ export const SortableItemContent = ({
         className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}>
         <dialog
           onClick={(e) => e.stopPropagation()}
-          className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all">
+          className="fixed w-full h-full sm:h-fit sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all">
 
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
@@ -131,9 +145,9 @@ export const SortableItemContent = ({
               </h3>)}
           </header>
 
-          <main className="min-w-max w-full grid grid-cols-4 mx-auto px-2 gap-x-6">
+          <main className="w-full sm:max-w-full grid grid-cols-11 sm:grid-cols-4 mx-auto px-2 gap-x-6">
 
-            <section className="col-span-3 flex flex-col gap-y-3">
+            <section className="col-span-9 sm:col-span-3 flex flex-col gap-y-3">
               <div className="h-fit flex flex-row justify-between">
                 {/* Task Members */}
                 <div className="">
@@ -147,16 +161,18 @@ export const SortableItemContent = ({
                 </div>
               </div>
               <div className="">
-                <form>
+                <form onSubmit={handleSubmit(onHandleSubmit)}>
                   <label
                     className="heading-xs mb-1"
                   >
                   Description
                     <textarea
+                      {...register("description")}
                       rows={4}
                       placeholder="Short item description goes here..."
                       className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                     />
+                    <p className="text-center body-text-xs text-caution-200 mt-1">{errors.description?.message}</p>
                   </label>
                 </form>
               </div>
@@ -169,7 +185,7 @@ export const SortableItemContent = ({
               </section>
             </section>
 
-            <section className="grid col-span-1 gap-4">
+            <section className="grid col-span-2 sm:col-span-1 min-w-max gap-4">
               <div>
                 <p className="heading-xs mb-2">Add to task</p>
                 <div className="flex flex-col gap-2">
@@ -180,8 +196,8 @@ export const SortableItemContent = ({
               </div>
               <div>
                 <p className="heading-xs mb-2">Actions</p>
-                <div className="flex flex-col gap-2">
-                  <IconButton iconName="Save" btnText="Save changes" handleOnClick={() => ""}/>
+                <div className="flex flex-col gap-2 min-w-max">
+                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={onHandleSubmit}/>
                   <IconButton iconName="Delete" btnText="Delete task" handleOnClick={() => deleteTask(task.Id)}/>
                 </div>
               </div>
