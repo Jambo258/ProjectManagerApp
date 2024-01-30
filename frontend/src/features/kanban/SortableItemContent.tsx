@@ -46,7 +46,7 @@ export const SortableItemContent = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState(false);
-  const [editContent, setEditContent] = useState(false);
+  const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   // const {
   //   formState: { errors },
@@ -66,8 +66,10 @@ export const SortableItemContent = ({
     setIsModalOpen(false);
   };
 
-  const onHandleSubmit = () => {
+  const handleSave = () => {
     console.log("Task saved");
+    updateTask(task.Id, editContent);
+    closeModal();
   };
 
   return (
@@ -179,13 +181,13 @@ export const SortableItemContent = ({
                   Description
                     <textarea
                       // {...register("description")}
-                      onKeyDown={(e) => {
-                        if (e.key !== "Enter") return;
-                        setEditContent(false);
-                      }}
-                      onBlur={() => setEditContent(false)}
-                      value={task.content}
-                      onChange={(e) => updateTask(task.Id, e.target.value)}
+                      // onKeyDown={(e) => {
+                      //   if (e.key !== "Enter") return;
+                      //   setEditContent(false);
+                      // }}
+                      // onBlur={() => setEditContent(false)}
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
                       rows={4}
                       placeholder="Short item description goes here..."
                       className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
@@ -215,7 +217,7 @@ export const SortableItemContent = ({
               <div>
                 <p className="heading-xs mb-2">Actions</p>
                 <div className="flex flex-col gap-2 min-w-max">
-                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={() => ""}/>
+                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={handleSave}/>
                   <IconButton iconName="Delete" btnText="Delete task" handleOnClick={() => setIsDeleteConfirmOpen(true)}/>
                 </div>
               </div>
