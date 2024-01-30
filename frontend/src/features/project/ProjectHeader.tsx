@@ -21,14 +21,10 @@ export const ProjectHeader = () => {
     return null;
   }
 
-  const hasSpaces = (name: string) => {
-    return name.includes(" ");
-  };
-
   return (
     <header className={`flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden ${showHeader ? "h-fit" : "h-16"}`}>
       <section className="flex flex-auto justify-between">
-        <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!hasSpaces(project.name) && "break-all"} ${showHeader ? "visible" : "hidden"}`}>{project.name}</h2>
+        <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"} ${showHeader ? "visible" : "hidden"}`}>{project.name}</h2>
         <Menu>
           <button className="min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setShowHeader(!showHeader)}>

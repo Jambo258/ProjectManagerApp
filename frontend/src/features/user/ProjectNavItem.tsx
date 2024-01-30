@@ -11,10 +11,6 @@ interface ProjectNavItemProps {
 export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
   const [showPages, setShowPages] = useState<boolean>(false);
 
-  const hasSpaces = (name: string) => {
-    return name.includes(" ");
-  };
-
   return (
     <section>
       <div className="flex bg-dark-blue-200 border-b border-solid border-dark-blue-100 px-6 py-3 overflow-auto justify-between">
@@ -22,7 +18,7 @@ export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
           to={`/projects/${project.id}`}
           onClick={() => closeNav()}
           className={`overflow-x-hidden *:m-0 p-0 text-left leading-8 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100 
-          ${window.location.pathname.includes(`/projects/${project.id}`) ? "text-caution-100" : "text-light-font"} ${!hasSpaces(project.name) && "break-all"}`} >
+          ${window.location.pathname.includes(`/projects/${project.id}`) ? "text-caution-100" : "text-light-font"} ${!project.name.includes(" ") && "break-all"}`} >
           {project.name}
         </Link>
 
@@ -43,7 +39,7 @@ export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
             to={`/projects/${project.id}/${page.id}`}
             onClick={() => closeNav()}
             className={`block overflow-x-hidden w-full px-6 py-3 text-left body-text-sm text-light-fonts border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100 
-            ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"} ${!hasSpaces(page.name) && "break-all"}`}
+            ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"} ${!page.name.includes(" ") && "break-all"}`}
           >
             {page.name}
           </Link>
