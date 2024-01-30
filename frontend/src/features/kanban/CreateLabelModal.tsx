@@ -5,7 +5,7 @@ import { Labels } from "./Kanban";
 import { FieldErrors, useForm } from "react-hook-form";
 import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { subModalContext } from "./SubModal";
+import { SubModalContext } from "./SubModal";
 
 interface ColorProps {
   label: Labels[];
@@ -24,7 +24,7 @@ export const CreateLabelModal = ({
   labels,
 }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
-  const { closeModal } = useContext(subModalContext);
+  const { closeModal } = useContext(SubModalContext);
   const {
     formState: { isDirty, errors },
     handleSubmit,
