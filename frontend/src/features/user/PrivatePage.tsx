@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import { DashboardNav } from "./DashboardNav";
 import { ProjectHeader } from "../project/ProjectHeader";
 import { useEffect, useState } from "react";
-import { Kanban } from "../kanban/Kanban";
 
 export const PrivatePage = () => {
   const [width, setWidth]  = useState(window.innerWidth);
@@ -24,9 +23,6 @@ export const PrivatePage = () => {
           <DashboardNav />
           <div className="flex flex-col w-full overflow-hidden">
             <ProjectHeader />
-            <section className="p-12 max-h-full overflow-auto">
-              <Kanban />
-            </section>
             <Outlet />
           </div>
         </div>

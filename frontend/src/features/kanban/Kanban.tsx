@@ -9,13 +9,14 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { SortableItem } from "./SortableItem";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { SortableItemContent } from "./SortableItemContent";
 import { Modal } from "../../components/Modal";
 import { Tag } from "react-feather";
 import { LabelModal } from "./LabelModal";
+import * as Y from "yjs";
 
 export interface Column {
   Id: string | number;
@@ -35,7 +36,7 @@ export interface Task {
   labels?: Label[];
 }
 
-export const Kanban = () => {
+export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>}) => {
   const [columns, setColumns] = useState<Column[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const columnsIds = useMemo(
@@ -45,6 +46,28 @@ export const Kanban = () => {
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [label, setLabel] = useState<Label[]>([]);
+
+
+  useEffect(() => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    const ylabels = ykanban.get("labels") as Y.Array<Label>;
+
+    setTasks(ytasks.toArray());
+    setColumns(ycolumns.toArray());
+    setLabel(ylabels.toArray());
+
+    ytasks.observe(() => {
+      setTasks(ytasks.toArray());
+    });
+    ycolumns.observe(() => {
+      setColumns(ycolumns.toArray());
+    });
+    ylabels.observe(() => {
+      setLabel(ylabels.toArray());
+    });
+  },[ykanban]);
+
 
   console.log(label);
   const arrayOfColors = [
@@ -71,7 +94,8 @@ export const Kanban = () => {
       title: `Column ${columns.length + 1}`,
     };
 
-    setColumns([...columns, newCol]);
+    const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    ycolumns.push([newCol]);
   };
 
   const createTask = (columnId: string | number) => {
@@ -87,60 +111,85 @@ export const Kanban = () => {
       ],
     };
 
-    setTasks([...tasks, newTask]);
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    ytasks.push([newTask]);
   };
 
   const updateColumn = (id: string | number, title: string) => {
-    const newColumns = columns.map((element) => {
-      if (element.Id !== id) {
-        return element;
+    const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    let changed = false;
+    ycolumns.forEach((element,i) => {
+      if (element.Id === id && changed === false) {
+        changed = true;
+        ycolumns.delete(i);
+        ycolumns.insert(i,[{...element, title}]);
       }
-      return { ...element, title: title };
     });
-    setColumns(newColumns);
   };
 
   const updateTask = (id: string | number, content: string) => {
-    const newTasks = tasks.map((element) => {
-      if (element.Id !== id) {
-        return element;
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((element,i) => {
+      if (element.Id === id && changed === false) {
+        changed = true;
+        ytasks.delete(i);
+        ytasks.insert(i,[{ ...element, content }]);
       }
-      return { ...element, content: content };
     });
-    setTasks(newTasks);
   };
 
   const markTaskDone = (id: string | number) => {
-    const Tasks = tasks.map((element) => {
-      if (element.Id !== id) {
-        return element;
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((element,i) => {
+      if (element.Id === id && changed === false) {
+        changed = true;
+        ytasks.delete(i);
+        ytasks.insert(i,[{ ...element, done: true }]);
       }
-      return { ...element, done: true };
     });
-    setTasks(Tasks);
   };
 
   const updateTaskTitle = (id: string | number, title: string) => {
-    const newTasks = tasks.map((element) => {
-      if (element.Id !== id) {
-        return element;
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((element,i) => {
+      if (element.Id === id && changed === false) {
+        changed = true;
+        ytasks.delete(i);
+        ytasks.insert(i,[{ ...element, title }]);
       }
-      return { ...element, title: title };
     });
-    setTasks(newTasks);
   };
 
   const deleteColumn = (id: string | number) => {
-    const filteredColumns = columns.filter((element) => element.Id !== id);
-    setColumns(filteredColumns);
+    const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    ycolumns.forEach((element,i) => {
+      if (element.Id === id) {
+        ycolumns.delete(i);
+      }
+    });
 
-    const newTasks = tasks.filter((element) => element.columnId !== id);
-    setTasks(newTasks);
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    const tasksToDelete = [] as number[];
+    ytasks.forEach((element,index) => {
+      if (element.columnId === id) {
+        tasksToDelete.push(index);
+      }
+    });
+    tasksToDelete.reverse().forEach(index => {
+      ytasks.delete(index);
+    });
   };
 
   const deleteTask = (id: string | number) => {
-    const newTasks = tasks.filter((element) => element.Id !== id);
-    setTasks(newTasks);
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    ytasks.forEach((element,i) => {
+      if (element.Id === id) {
+        ytasks.delete(i);
+      }
+    });
   };
 
   const onDragStart = (e: DragStartEvent) => {
@@ -169,16 +218,26 @@ export const Kanban = () => {
     if (activeColumnId === overColumnId) {
       return;
     }
-    setColumns((elements) => {
-      const activeColumnIndex = elements.findIndex(
-        (col) => col.Id === activeColumnId
-      );
-      const overColumnIndex = elements.findIndex(
-        (col) => col.Id === overColumnId
-      );
 
-      return arrayMove(elements, activeColumnIndex, overColumnIndex);
+    let activeColumnIndex = 0;
+    let overColumnIndex = 0;
+    const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    ycolumns.forEach((element, i) => {
+      if(element.Id === activeColumnId ) {
+        activeColumnIndex = i;
+      }
+      if(element.Id === overColumnId ) {
+        overColumnIndex = i;
+      }
     });
+
+    if(activeColumnIndex === overColumnIndex) {
+      return;
+    }
+
+    const element = ycolumns.get(activeColumnIndex);
+    ycolumns.delete(activeColumnIndex);
+    ycolumns.insert(overColumnIndex, [element]);
   };
 
   const onDragOver = (e: DragOverEvent) => {
@@ -202,25 +261,57 @@ export const Kanban = () => {
     }
 
     if (isActiveTask && isOverTask) {
-      setTasks((elements) => {
-        const activeIndex = elements.findIndex((el) => el.Id === activeId);
-        const overIndex = elements.findIndex((el) => el.Id === overId);
-        // elements[activeIndex].columnId = elements[overIndex].columnId;
+      let activeIndex = 0;
+      let overIndex = 0;
 
-        return arrayMove(elements, activeIndex, overIndex);
+      const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+      ytasks.forEach((element,i) => {
+        if (element.Id === activeId) {
+          activeIndex = i;
+        }
+        if (element.Id === overId) {
+          overIndex = i;
+        }
       });
+
+      if(activeIndex !==  overIndex) {
+        const task = ytasks.get(activeIndex);
+        ytasks.delete(activeIndex);
+        ytasks.insert(overIndex, [task]);
+      }
+
+      // setTasks((elements) => {
+      //   activeIndex = elements.findIndex((el) => el.Id === activeId);
+      //   overIndex = elements.findIndex((el) => el.Id === overId);
+      //   // elements[activeIndex].columnId = elements[overIndex].columnId;
+
+      //   return arrayMove(elements, activeIndex, overIndex);
+      // });
     }
 
     const isOverColumn = over.data.current?.type === "Column";
 
     if (isActiveTask && isOverColumn) {
-      setTasks((elements) => {
-        const activeIndex = elements.findIndex((el) => el.Id === activeId);
+      let activeIndex = 0;
 
-        elements[activeIndex].columnId = overId;
-
-        return arrayMove(elements, activeIndex, activeIndex);
+      const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+      ytasks.forEach((element,i) => {
+        if (element.Id === activeId) {
+          activeIndex = i;
+        }
       });
+
+      const task = ytasks.get(activeIndex);
+      ytasks.delete(activeIndex);
+      ytasks.insert(activeIndex, [{...task, columnId: overId}]);
+
+      // setTasks((elements) => {
+      //   const activeIndex = elements.findIndex((el) => el.Id === activeId);
+
+      //   elements[activeIndex].columnId = overId;
+
+      //   return arrayMove(elements, activeIndex, activeIndex);
+      // });
     }
   };
 

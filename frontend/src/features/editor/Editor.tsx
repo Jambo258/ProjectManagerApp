@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Hocuspocus, YJS, Tiptap
 import { HocuspocusProvider, } from "@hocuspocus/provider";
@@ -35,26 +35,12 @@ const getInitialUser = (user: User) => {
 
 interface IProps {
   pageId: string;
+  provider: HocuspocusProvider;
+  isAuthenticated: boolean;
+  yxmlfragment: Y.XmlFragment;
 }
 
-const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
-  .replace(/(http)(s)?:\/\//, "ws$2://") + "collaboration";
-
-const Editor = ({ pageId }: IProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [ydoc] = useState(() => new Y.Doc());
-  // useMemo maybe?
-  const [provider] = useState(
-    () => new HocuspocusProvider({
-      url: BACKEND_WS_URL,
-      name: pageId,
-      document: ydoc,
-      token: "token",
-      onAuthenticated: () => setIsAuthenticated(true),
-      onAuthenticationFailed: () => setIsAuthenticated(false),
-      connect: true,
-    })
-  );
+const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => {
 
   const editor = useEditor({
     editable: false,
@@ -90,7 +76,7 @@ const Editor = ({ pageId }: IProps) => {
         limit: 10000,
       }),
       Collaboration.configure({
-        document: ydoc,
+        fragment: yxmlfragment,
       }),
       CollaborationCursor.configure({
         provider: provider,
