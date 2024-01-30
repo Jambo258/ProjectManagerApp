@@ -1,9 +1,9 @@
 import { UseFormSetValue } from "react-hook-form";
-import { Label } from "./Kanban";
+import { Labels } from "./Kanban";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 
 interface ColorProps {
-  label: Label;
+  label: Labels;
   setValue: UseFormSetValue<CreateLabelFormValues>;
 }
 export const ColorModal = ({ label, setValue }: ColorProps) => {

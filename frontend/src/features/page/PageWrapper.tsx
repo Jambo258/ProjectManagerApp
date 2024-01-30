@@ -4,7 +4,7 @@ import { HocuspocusProvider, } from "@hocuspocus/provider";
 
 import Editor from "../editor/Editor";
 import { nanoid } from "@reduxjs/toolkit";
-import { type Column, Kanban, type Label, type Task } from "../kanban/Kanban";
+import { type Column, Kanban, type Labels, type Task } from "../kanban/Kanban";
 
 interface Component {
   type: "editor" | "kanban";
@@ -32,7 +32,7 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
   );
 
   const yarray = ydoc.getArray<Component>("components");
-  const ymap = ydoc.getMap<Y.XmlFragment | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>>();
+  const ymap = ydoc.getMap<Y.XmlFragment | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>>();
 
   useEffect(() => {
     const yarray = ydoc.getArray<Component>("components");
@@ -48,10 +48,10 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
       ymap.set(uuid, new Y.XmlFragment());
       yarray.push([{type, uuid}]);
     } else if(type === "kanban") {
-      const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Label>>());
+      const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>());
       kanbanMap.set("tasks", new Y.Array<Task>);
       kanbanMap.set("columns", new Y.Array<Column>);
-      kanbanMap.set("labels", new Y.Array<Label>);
+      kanbanMap.set("labels", new Y.Array<Labels>);
       yarray.push([{type, uuid}]);
     }
   };
