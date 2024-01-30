@@ -1,27 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu } from "react-feather";
 import { NavLink } from "react-router-dom";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 export const NavBar = () => {
-  const [width, setWidth]  = useState(window.innerWidth);
-  const [openMenu, setOpenMenu] = useState<boolean>(width > 640 ? true : false);
-  
-  const updateWidth = () => {
-    setWidth(window.innerWidth);
-  };
-  
-  useEffect(() => {
-    setOpenMenu(false);
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
+  const screenDimensions = useScreenDimensions();
+  const [openMenu, setOpenMenu] = useState<boolean>(screenDimensions.width > 640 ? true : false);
 
   return (
-    <header className="grid grid-flow-row md:grid-flow-col min-h-24 w-full-fit md:bg-dark-blue-300 bg-dark-blue-100 drop-shadow-md">
-      <section className="grid grid-flow-col w-full h-24 items-center px-6 py-4 bg-dark-blue-300">
+    <header className="grid grid-flow-row md:grid-flow-col min-h-28 w-full-fit md:bg-dark-blue-300 bg-dark-blue-100 drop-shadow-md">
+      <section className="grid grid-flow-col w-full h-28 items-center px-6 py-4 bg-dark-blue-300">
         <h1 
-          className="heading-sm sm:heading-md md:heading-  text-light-font leading-tight text-left outline-none focus:outline focus:outline-primary-200"
+          className="heading-sm sm:heading-md md:heading-lg text-light-font leading-tight text-left outline-none focus:outline focus:outline-primary-200"
           onClick={() => setOpenMenu(false)}>
           <NavLink to="/">
           Project <br />
@@ -36,8 +26,8 @@ export const NavBar = () => {
         </section>
       </section>     
 
-      {(width > 768 || openMenu) &&
-      <nav className="grid grid-flow-col content-center items-center justify-end text-right gap-4  p-4">
+      {(screenDimensions.width > 768 || openMenu) &&
+      <nav className="grid grid-flow-col content-center items-center justify-end text-right gap-4 p-4">
         <NavLink to="register">
           <button className="btn-text-xs w-full px-4 py-1.5 outline-none focus:outline focus:outline-primary-200" onClick={() => setOpenMenu(false)}>
             Register

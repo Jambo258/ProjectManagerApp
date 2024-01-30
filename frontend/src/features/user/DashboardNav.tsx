@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, Menu, Plus, X } from "react-feather";
 import { ProjectNavItem } from "./ProjectNavItem";
 import CreateProjectModal from "../project/CreateProjectModal";
@@ -12,28 +12,20 @@ import { ProfileModal } from "./ProfileModal";
 import { UserMenu } from "./UserMenu";
 import { userColor } from "./userColor";
 import { useAppSelector } from "../../app/hooks";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 export const DashboardNav = () => {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
 
-  const [width, setWidth]  = useState(window.innerWidth);
-  const [openNav, setOpenNav] = useState<boolean>(width > 640 ? true : false);
+  const screenDimensions = useScreenDimensions();
+  const [openNav, setOpenNav] = useState<boolean>(screenDimensions.width > 640 ? true : false);
 
   const { data: projects = [] } = useGetProjectsQuery();
   const user = useAppSelector((state) => state.auth.user);
 
-  const updateWidth = () => {
-    setWidth(window.innerWidth);
-  };
-  
-  useEffect(() => {
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
   const closeNav = () => {
-    if (width < 640) {
+    if (screenDimensions.width < 640) {
       setOpenNav(false);
     }
   };
@@ -62,8 +54,7 @@ export const DashboardNav = () => {
             className="w-fit sm:px-3 sm:py-4 px-4 py-3 heading-sm text-light-font hover:text-primary-200 bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setOpenNav(!openNav)}
           >
-            
-            {width >= 640 ?
+            {screenDimensions.width >= 640 ?
               openNav ? (
                 <ChevronLeft size={26} />
               ) : (

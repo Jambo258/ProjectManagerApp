@@ -1,5 +1,6 @@
-import { type ReactElement, useState, createContext, useEffect } from "react";
+import { type ReactElement, useState, createContext } from "react";
 import { X } from "react-feather";
+import useScreenDimensions from "../utils/screenDimensions";
 
 interface ModalContextType {
   isModalOpen: boolean;
@@ -23,16 +24,7 @@ export const Modal = ({
   children
 }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [height, setHeight]  = useState(window.innerHeight);
-  
-  const updateHeight = () => {
-    setHeight(window.innerHeight);
-  };
-  
-  useEffect(() => {
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
+  const screenDimensions = useScreenDimensions();
   
   const openModal = () => {
     setIsModalOpen(true);
@@ -59,7 +51,7 @@ export const Modal = ({
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
-          ${height < 400 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
+          ${screenDimensions.height < 500 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
