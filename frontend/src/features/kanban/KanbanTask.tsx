@@ -1,5 +1,11 @@
 // React
-import { useState } from "react";
+import { ReactElement, useState } from "react";
+
+// Redux
+import { type Member, useGetProjectQuery, Project } from "../api/apiSlice";
+
+// React Router
+import { useParams } from "react-router-dom";
 
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
@@ -12,6 +18,7 @@ import { X } from "react-feather";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
+import { UserIcon } from "../user/UserIcon";
 
 import { LabelModal } from "./LabelModal";
 import { SubModal } from "./SubModal";
@@ -56,12 +63,25 @@ export const KanbanTask = ({
     transition,
   };
 
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   console.log(isModalsOpen);
+
+  const projectId = parseInt(useParams().projectId!);
+  console.log(projectId);
+  const { data: project } = useGetProjectQuery(projectId);
+
+  // const getMembers = (users: Member[]): ReactElement | ReactElement[] | void => {
+  //   console.log(users);
+  //   if (users === undefined) return;
+  //   users.map((member: Member) => {
+  //     return <UserIcon key={member.id} id={member.id} name={member.name} />;
+  //   });
+  // };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -120,14 +140,11 @@ export const KanbanTask = ({
           </div>
 
           {/* Task Members */}
-          {/* TO DO:
-        - map through members
-        - if more than 1 move member icons to overlap
-      */}
-          <section className="min-w-max w-fit h-full flex flex-row">
-            <p className="w-max px-4 py-3 self-end h-fit rounded-full bg-yellow-300">
-              M
-            </p>
+          <section className={"min-w-max w-fit h-full flex flex-row flex-wrap items-end"}>
+            {/* Move to Members Modal*/}
+            {project?.users.map((member: Member,) => {
+              return <UserIcon key={member.id} id={member.id} name={member.name} small={true} />;
+            })}
           </section>
         </section>
       </div>
@@ -169,8 +186,11 @@ export const KanbanTask = ({
             <section className="col-span-9 sm:col-span-3 flex flex-col gap-y-3">
               <div className="h-fit flex flex-row justify-between">
                 {/* Task Members */}
-                <div className="">
-                  <p className="w-max px-2 py-1 self-end h-fit rounded-full heading-xs bg-yellow-300">M</p>
+                <div className="fles flex-row inline-flex gap-x-1">
+                  {/* Move to Members Modal*/}
+                  {project?.users.map((member: Member,) => {
+                    return <UserIcon key={member.id} id={member.id} name={member.name} />;
+                  })}
                 </div>
                 {/* Task Deadline */}
                 <div className={`rounded w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
