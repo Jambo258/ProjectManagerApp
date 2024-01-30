@@ -1,8 +1,8 @@
 // React
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 
 // Redux
-import { type Member, useGetProjectQuery, Project } from "../api/apiSlice";
+import { type Member, useGetProjectQuery } from "../api/apiSlice";
 
 // React Router
 import { useParams } from "react-router-dom";
@@ -13,17 +13,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { Task, Labels } from "./Kanban";
 
 // Components
-import { X } from "react-feather";
-
+import { X, Tag } from "react-feather";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
 import { UserIcon } from "../user/UserIcon";
-
 import { LabelModal } from "./LabelModal";
 import { SubModal } from "./SubModal";
-
-import { Tag } from "react-feather";
 
 interface Props {
   task: Task;
