@@ -1,12 +1,20 @@
+// React
+import { useState } from "react";
+
+// DND Kit
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+// React Hook Fomr
+// import { useForm } from "react-hook-form";
+
+// Components
+import { X } from "react-feather";
 import { Task } from "./Kanban";
-import { useState } from "react";
-import { TaskModal } from "./TaskModal";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
-import { X } from "react-feather";
-import { useForm } from "react-hook-form";
+import { DeleteModal } from "../../components/DeleteModal";
+import { TaskModal } from "./TaskModal";
 
 interface Props {
   task: Task;
@@ -39,15 +47,16 @@ export const SortableItemContent = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState(false);
   const [editContent, setEditContent] = useState(false);
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = useForm({
-    defaultValues: {
-      description: task.content
-    }
-  });
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  // const {
+  //   formState: { errors },
+  //   handleSubmit,
+  //   register,
+  // } = useForm({
+  //   defaultValues: {
+  //     description: task.content
+  //   }
+  // });
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -127,7 +136,7 @@ export const SortableItemContent = ({
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
               <X size={20}/>
             </button>
-            {editTitle ?(
+            {editTitle ? (
               <input
                 className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
                 autoFocus
@@ -161,18 +170,27 @@ export const SortableItemContent = ({
                 </div>
               </div>
               <div className="">
-                <form onSubmit={handleSubmit(onHandleSubmit)}>
+                <form
+                // onSubmit={handleSubmit(onHandleSubmit)}
+                >
                   <label
                     className="heading-xs mb-1"
                   >
                   Description
                     <textarea
-                      {...register("description")}
+                      // {...register("description")}
+                      onKeyDown={(e) => {
+                        if (e.key !== "Enter") return;
+                        setEditContent(false);
+                      }}
+                      onBlur={() => setEditContent(false)}
+                      value={task.content}
+                      onChange={(e) => updateTask(task.Id, e.target.value)}
                       rows={4}
                       placeholder="Short item description goes here..."
                       className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                     />
-                    <p className="text-center body-text-xs text-caution-200 mt-1">{errors.description?.message}</p>
+                    {/* <p className="text-center body-text-xs text-caution-200 mt-1">{errors.description?.message}</p> */}
                   </label>
                 </form>
               </div>
@@ -197,31 +215,28 @@ export const SortableItemContent = ({
               <div>
                 <p className="heading-xs mb-2">Actions</p>
                 <div className="flex flex-col gap-2 min-w-max">
-                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={onHandleSubmit}/>
-                  <IconButton iconName="Delete" btnText="Delete task" handleOnClick={() => deleteTask(task.Id)}/>
+                  <IconButton btnType="submit" iconName="Save" btnText="Save changes" handleOnClick={() => ""}/>
+                  <IconButton iconName="Delete" btnText="Delete task" handleOnClick={() => setIsDeleteConfirmOpen(true)}/>
                 </div>
               </div>
             </section>
           </main>
         </dialog>
       </div>
+      }
 
+      {isDeleteConfirmOpen &&
+        <DeleteModal
+          setConfirmDeleteEdit={setIsDeleteConfirmOpen}
+          confirmDeleteEdit={isDeleteConfirmOpen}
+          handleSubmitForModal={() => deleteTask(task.Id)}
+          deleteModalText={"Are you sure you want to delete this task?"} />
       }
 
     </>
 
   );
 };
-
-
-// export interface Task {
-//   Id: string | number;
-//   title: string;
-//   columnId: string | number;
-//   content: string;
-//   done: boolean;
-//   labels?: Label[];
-// }
 
 {/* <div className="heading-sm flex justify-between">
         {!editTitle && (
@@ -272,9 +287,3 @@ export const SortableItemContent = ({
           ></input>
         )}
       </div> */}
-
-
-
-
-
-{/* <button onClick={() => deleteTask(task.Id)}>Delete task</button> */}
