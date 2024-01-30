@@ -86,7 +86,7 @@ export const DashboardNav = () => {
 
             {projects.map((project) => (
               <div key={project.id}>
-                <ProjectNavItem project={project} closeNav={closeNav} />
+                <ProjectNavItem project={project} closeNavigation={closeNav} />
               </div>
             ))}
           </section>

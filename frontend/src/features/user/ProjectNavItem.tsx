@@ -5,10 +5,10 @@ import type { Project } from "../../features/api/apiSlice";
 
 interface ProjectNavItemProps {
   project: Project;
-  closeNav: () => void;
+  closeNavigation: () => void;
 }
 
-export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
+export const ProjectNavItem = ({ project, closeNavigation }: ProjectNavItemProps) => {
   const [showPages, setShowPages] = useState<boolean>(false);
 
   return (
@@ -16,7 +16,7 @@ export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
       <div className="flex bg-dark-blue-200 border-b border-solid border-dark-blue-100 px-6 py-3 overflow-auto justify-between">
         <Link
           to={`/projects/${project.id}`}
-          onClick={() => closeNav()}
+          onClick={() => closeNavigation()}
           className={`overflow-x-hidden *:m-0 p-0 text-left leading-8 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:outline-none focus:ring-0 focus:text-caution-100 
           ${window.location.pathname.includes(`/projects/${project.id}`) ? "text-caution-100" : "text-light-font"} ${!project.name.includes(" ") && "break-all"}`} >
           {project.name}
@@ -37,7 +37,7 @@ export const ProjectNavItem = ({ project, closeNav }: ProjectNavItemProps) => {
           <Link
             key={page.id}
             to={`/projects/${project.id}/${page.id}`}
-            onClick={() => closeNav()}
+            onClick={() => closeNavigation()}
             className={`block overflow-x-hidden w-full px-6 py-3 text-left body-text-sm text-light-fonts border-b border-solid border-dark-blue-100 hover:bg-dark-blue-100 bg-grayscale-0 focus:outline-none focus:bg-dark-blue-100 
             ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"} ${!page.name.includes(" ") && "break-all"}`}
           >
