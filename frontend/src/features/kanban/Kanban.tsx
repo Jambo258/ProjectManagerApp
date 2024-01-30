@@ -10,13 +10,14 @@ import {
 } from "@dnd-kit/core";
 import { SortableItem } from "./SortableItem";
 import { useEffect, useMemo, useState } from "react";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { SortableItemContent } from "./SortableItemContent";
 import { Modal } from "../../components/Modal";
 import { Tag } from "react-feather";
 import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
+import { nanoid } from "@reduxjs/toolkit";
 
 export interface Column {
   Id: string | number;
@@ -90,7 +91,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
 
   const createNewColumn = () => {
     const newCol: Column = {
-      Id: Math.floor(Math.random() * 10001),
+      Id: nanoid(),
       title: `Column ${columns.length + 1}`,
     };
 
@@ -100,7 +101,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
 
   const createTask = (columnId: string | number) => {
     const newTask: Task = {
-      Id: Math.floor(Math.random() * 10001),
+      Id: nanoid(),
       title: `Task ${tasks.length + 1}`,
       columnId,
       content: "Lorem ipsum",
@@ -121,8 +122,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     ycolumns.forEach((element,i) => {
       if (element.Id === id && changed === false) {
         changed = true;
-        ycolumns.delete(i);
-        ycolumns.insert(i,[{...element, title}]);
+        ycolumns.doc?.transact(() => {
+          ycolumns.delete(i);
+          ycolumns.insert(i,[{...element, title}]);
+        });
       }
     });
   };
@@ -133,8 +136,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     ytasks.forEach((element,i) => {
       if (element.Id === id && changed === false) {
         changed = true;
-        ytasks.delete(i);
-        ytasks.insert(i,[{ ...element, content }]);
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i,[{ ...element, content }]);
+        });
       }
     });
   };
@@ -145,8 +150,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     ytasks.forEach((element,i) => {
       if (element.Id === id && changed === false) {
         changed = true;
-        ytasks.delete(i);
-        ytasks.insert(i,[{ ...element, done: true }]);
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i,[{ ...element, done: true }]);
+        });
       }
     });
   };
@@ -165,8 +172,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
 
   const deleteColumn = (id: string | number) => {
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
+    let changed = false;
     ycolumns.forEach((element,i) => {
-      if (element.Id === id) {
+      if (element.Id === id && changed === false) {
+        changed = true;
         ycolumns.delete(i);
       }
     });
@@ -222,11 +231,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     let activeColumnIndex = 0;
     let overColumnIndex = 0;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
-    ycolumns.forEach((element, i) => {
-      if(element.Id === activeColumnId ) {
+    ycolumns.forEach((task, i) => {
+      if(task.Id === activeColumnId ) {
         activeColumnIndex = i;
       }
-      if(element.Id === overColumnId ) {
+      if(task.Id === overColumnId ) {
         overColumnIndex = i;
       }
     });
@@ -235,9 +244,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       return;
     }
 
-    const element = ycolumns.get(activeColumnIndex);
-    ycolumns.delete(activeColumnIndex);
-    ycolumns.insert(overColumnIndex, [element]);
+    ycolumns.doc?.transact(() => {
+      const task = ycolumns.get(activeColumnIndex);
+      ycolumns.delete(activeColumnIndex);
+      ycolumns.insert(overColumnIndex, [task]);
+    });
   };
 
   const onDragOver = (e: DragOverEvent) => {
@@ -265,19 +276,21 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       let overIndex = 0;
 
       const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-      ytasks.forEach((element,i) => {
-        if (element.Id === activeId) {
+      ytasks.forEach((task,i) => {
+        if (task.Id === activeId) {
           activeIndex = i;
         }
-        if (element.Id === overId) {
+        if (task.Id === overId) {
           overIndex = i;
         }
       });
 
       if(activeIndex !==  overIndex) {
-        const task = ytasks.get(activeIndex);
-        ytasks.delete(activeIndex);
-        ytasks.insert(overIndex, [task]);
+        ytasks.doc?.transact(() => {
+          const task = ytasks.get(activeIndex);
+          ytasks.delete(activeIndex);
+          ytasks.insert(overIndex, [task]);
+        });
       }
 
       // setTasks((elements) => {
@@ -295,15 +308,17 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       let activeIndex = 0;
 
       const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-      ytasks.forEach((element,i) => {
-        if (element.Id === activeId) {
+      ytasks.forEach((task,i) => {
+        if (task.Id === activeId) {
           activeIndex = i;
         }
       });
 
-      const task = ytasks.get(activeIndex);
-      ytasks.delete(activeIndex);
-      ytasks.insert(activeIndex, [{...task, columnId: overId}]);
+      ytasks.doc?.transact(()=> {
+        const task = ytasks.get(activeIndex);
+        ytasks.delete(activeIndex);
+        ytasks.insert(activeIndex, [{...task, columnId: overId}]);
+      });
 
       // setTasks((elements) => {
       //   const activeIndex = elements.findIndex((el) => el.Id === activeId);

@@ -53,7 +53,7 @@ export const SortableItem = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="bg bg-grayscale-200 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+      className="bg bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-md flex flex-col overflow-auto"
     >
       <div
         {...attributes}
