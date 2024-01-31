@@ -9,28 +9,63 @@ import { DeleteProjectModal } from "./DeleteProjectModal";
 import AddPage from "../page/AddPage";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
 import { ProjectMembersModal } from "./ProjectMembersModal";
+import { DeletePageModal } from "../page/DeletePageModal";
+import { RenamePage } from "../page/RenamePageModal";
 
 export const ProjectHeader = () => {
   const projectid = parseInt(useParams().projectId!);
+  const pageid = parseInt(useParams().pageId!);
 
   const { data: project } = useGetProjectQuery(projectid);
 
   if (!project) {
     return null;
   }
+
+  const activePage = () => {
+    const activePage = pageid ? project.pages.find(page => page.id === pageid) : null;
+    return (activePage ? activePage.name : null);
+  };
+
   return (
     <header className="flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden">
       <section className="flex flex-auto justify-between">
         <h2 className="heading-xl mb-2 pr-8">{project.name}</h2>
         <Menu>
           <Modal
-            btnText={"Add page"}
+            btnText={"Add new page"}
             btnStyling={
               "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Add new page"}>
             <AddPage projectId={projectid} />
-          </Modal>
+          </Modal> 
+
+          {pageid ?
+            <Modal
+              btnText={"Rename page"}
+              btnStyling={
+                "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              }
+              modalTitle={"Rename page"}
+            >
+              <RenamePage 
+                pageId={pageid} 
+                pageName={activePage()} />
+            </Modal>
+            : ""
+          }
+
+          {pageid ?
+            <DeletePageModal
+              btnText={"Delete page"}
+              btnStyling={
+                "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              }
+            />
+            : ""
+          }
+
           <Modal
             btnText={"Rename project"}
             btnStyling={
@@ -45,7 +80,8 @@ export const ProjectHeader = () => {
           </Modal>
           <Modal
             btnText={"Project members"}
-            btnStyling={"min-w-max w-full p-1.5 heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
+            btnStyling={
+              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"}
             modalTitle={"Project members"}
           >
             <ProjectMembersModal projectId={projectid} />
