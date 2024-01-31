@@ -1,26 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { nanoid } from "@reduxjs/toolkit";
-import {
-  addHours,
-  addMinutes,
-  format,
-  isEqual,
-  isSameMonth,
-  isToday,
-} from "date-fns";
-
+import { add, format, isEqual, isSameMonth, isToday } from "date-fns";
 import { useState } from "react";
 import { Trash2, X } from "react-feather";
+
+interface Event {
+  id: string;
+  projectid: number;
+  pageid: number;
+  day: Date;
+  eventTitle: string;
+  edit: boolean;
+}
 interface Props {
-  events: {
-    id: string;
-    projectid: number;
-    pageid: number;
-    day: Date;
-    eventTitle: string;
-    edit: boolean;
-  }[];
+  events: Event[];
   currentMonth: string;
   projectid: number;
   pageid: number;
@@ -32,7 +24,7 @@ interface Props {
     day: Date;
     eventTitle: string;
     edit: boolean;
-  }[]) => any;
+  }[]) => void;
 }
 
 const CalendarEventModal = ({
@@ -46,8 +38,7 @@ const CalendarEventModal = ({
   const [newEventTitle, setNewEventTitle] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hoursToAdd, sethoursToAdd] = useState(5);
-  const [minutesToAdd, setMinutesToAdd] = useState(23);
+  const [newDate, setNewDate] = useState(new Date());
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -63,7 +54,9 @@ const CalendarEventModal = ({
   };
 
   const checkEventDay = (day: Date) => {
-    const test = events.find((event) => isEqual(event.day, day));
+    const test = events.find((event) =>
+      isEqual(event.day.getDate(), day.getDate())
+    );
 
     if (test) {
       return true;
@@ -95,30 +88,29 @@ const CalendarEventModal = ({
     setEvents(test);
   };
 
-  const createEventTest = (day: Date, eventTitle: string) => {
-    day = setTime(day.toString());
+  const createEventTest = (eventTitle: string) => {
     setEvents([
       ...events,
       {
         id: nanoid(),
         projectid: projectid,
         pageid: pageid,
-        day: day,
+        day: newDate,
         eventTitle: eventTitle,
         edit: false,
       },
     ]);
+    closeModal();
   };
 
-  const setTime = (eventDate: string) => {
-    const testasd = eventDate.split(":");
-    sethoursToAdd(parseInt(testasd[0]));
-    setMinutesToAdd(parseInt(testasd[1]));
-    console.log(hoursToAdd, minutesToAdd);
-    let test = addHours(eventDate, hoursToAdd);
-    test = addMinutes(test, minutesToAdd);
-    console.log(test);
-    return test;
+  const setTime = (date: Date, eventDate: string) => {
+    const tempArr = eventDate.split(":");
+    const timeToBeAdded = {
+      hours: parseInt(tempArr[0]),
+      minutes: parseInt(tempArr[1]),
+    };
+    const updatedDate = add(date, timeToBeAdded);
+    setNewDate(updatedDate);
   };
 
   return (
@@ -138,9 +130,10 @@ const CalendarEventModal = ({
           <li>{format(day, "d")}</li>
           {events.map(
             (event) =>
-              isEqual(event.day, day) && (
+              isEqual(event.day.getDate(), day.getDate()) &&
+              projectid === event.projectid && (
                 <li key={event.id}>
-                  {format(day, "hh:mm ")}
+                  {format(event.day, "HH:mm ")}
                   {event.eventTitle}
                 </li>
               )
@@ -174,7 +167,7 @@ const CalendarEventModal = ({
                 {events.map(
                   (event) =>
                     projectid === event.projectid &&
-                    isEqual(event.day, day) && (
+                    isEqual(event.day.getDate(), day.getDate()) && (
                       <div key={event.id}>
                         <div
                           className=" flex justify-between mb-2 cursor-pointer "
@@ -198,7 +191,7 @@ const CalendarEventModal = ({
                             </div>
                           ) : (
                             <div onClick={() => setEdit(event.id, true)}>
-                              {format(day, "hh:mm ")}
+                              {format(event.day, "HH:mm ")}
                               {event.eventTitle}
                             </div>
                           )}
@@ -215,14 +208,14 @@ const CalendarEventModal = ({
                 <form>
                   <input
                     type="time"
-                    onChange={(e) => setTime(e.target.value)}
+                    onChange={(e) => setTime(day, e.target.value)}
                   />
                   <input
                     onChange={(e) => setEventTitle(e.target.value)}
                     placeholder={"Add new event"}
                   />
                 </form>
-                <button onClick={() => createEventTest(day, eventTitle)}>
+                <button onClick={() => createEventTest(eventTitle)}>
                   Confirm
                 </button>
               </div>
