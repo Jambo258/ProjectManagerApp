@@ -126,8 +126,12 @@ export const KanbanColumn = (props: Props) => {
           ))}
         </SortableContext>
       </div>
-      <button type="button" className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1" onClick={() => createTask(column.Id)}>
-        <Plus size={20}/> <p>Add task</p>
+      <button
+        type="button"
+        className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1"
+        onClick={() => createTask(column.Id)}
+      >
+        <Plus size={20} className="-ms-2.5"/> <p>Add task</p>
       </button>
     </div>
   );
