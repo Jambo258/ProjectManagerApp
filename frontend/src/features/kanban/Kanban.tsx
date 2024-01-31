@@ -427,18 +427,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                 />
               )}
               {activeTask && (
-                <KanbanTask
-                  task={activeTask}
-                  updateTaskTitle={updateTaskTitle}
-                  updateTask={updateTask}
-                  deleteTask={deleteTask}
-                  markTaskDone={markTaskDone}
-                  label={label}
-                  labels={arrayOfColors}
-                  setLabel={setLabel}
-                  setIsModalsOpen={setIsModalsOpen}
-                  isModalsOpen={isModalsOpen}
-                />
+                <div className="opacity-70 rotate-3">
+                  <KanbanTask
+                    task={activeTask}
+                    updateTaskTitle={updateTaskTitle}
+                    updateTask={updateTask}
+                    deleteTask={deleteTask}
+                    markTaskDone={markTaskDone}
+                    label={label}
+                    labels={arrayOfColors}
+                    setLabel={setLabel}
+                    setIsModalsOpen={setIsModalsOpen}
+                    isModalsOpen={isModalsOpen}
+                  />
+                </div>
               )}
             </DragOverlay>,
             document.body
