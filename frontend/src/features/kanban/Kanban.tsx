@@ -165,8 +165,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     ytasks.forEach((element,i) => {
       if (element.Id === id && changed === false) {
         changed = true;
-        ytasks.delete(i);
-        ytasks.insert(i,[{ ...element, title }]);
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i,[{ ...element, title }]);
+        });
       }
     });
   };
