@@ -13,7 +13,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Task, Labels } from "./Kanban";
 
 // Components
-import { X, Tag } from "react-feather";
+import { X } from "react-feather";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -59,7 +59,6 @@ export const KanbanTask = ({
     transition,
   };
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
@@ -68,16 +67,7 @@ export const KanbanTask = ({
   console.log(isModalsOpen);
 
   const projectId = parseInt(useParams().projectId!);
-  console.log(projectId);
   const { data: project } = useGetProjectQuery(projectId);
-
-  // const getMembers = (users: Member[]): ReactElement | ReactElement[] | void => {
-  //   console.log(users);
-  //   if (users === undefined) return;
-  //   users.map((member: Member) => {
-  //     return <UserIcon key={member.id} id={member.id} name={member.name} />;
-  //   });
-  // };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -123,7 +113,6 @@ export const KanbanTask = ({
             </section>
 
             {/* Task Labels */}
-            {/* Grid flow dense? */}
             <section className="w-full h-fit flex flex-wrap gap-[6px]">
               {task.labels?.map((element) => (
                 <Label
@@ -232,13 +221,8 @@ export const KanbanTask = ({
                     handleOnClick={() => ""}
                   />
                   <SubModal
-                    btnText={
-                      <div>
-                        <Tag size={16}></Tag>
-                        <p>Labels</p>
-                      </div>
-                    }
-                    btnStyling={"mb-3 mx-2"}
+                    iconName="Labels"
+                    btnText={"Labels"}
                     modalTitle={"Labels"}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
