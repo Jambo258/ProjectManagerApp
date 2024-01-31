@@ -5,7 +5,7 @@ interface RemoveProjectMemberProps {
   handleRemove: () => void;
 }
 
-export const LeaveProject = ( { handleRemove }: RemoveProjectMemberProps ) => {
+export const LeaveProjectModal = ( { handleRemove }: RemoveProjectMemberProps ) => {
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const deleteModalTitle = "Are you sure you want to leave the project?";
 

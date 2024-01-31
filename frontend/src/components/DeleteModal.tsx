@@ -1,5 +1,6 @@
 import * as React from "react";
 import { X } from "react-feather";
+import useScreenDimensions from "../utils/screenDimensions";
 
 interface propTypes {
   confirmDeleteEdit: boolean;
@@ -16,6 +17,8 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
   deleteModalTitle,
   deleteModalText,
 }) => {
+  const screenDimensions = useScreenDimensions();
+
   return (
     <div
       className={`fixed flex inset-0 justify-center items-center transition-colors rounded ${
@@ -24,9 +27,10 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`sm:min-w-max min-w-full max-w-full h-full sm:h-fit p-2 pb-4 flex flex-col inset-0 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
-          confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"
-        }`}
+        className={`p-2 pb-4 flex flex-col inset-0 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
+          confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"}
+          ${screenDimensions.height < 400 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}
+    }`}
       >
         <div className="w-full flex flex-col place-items-end">
           <button
