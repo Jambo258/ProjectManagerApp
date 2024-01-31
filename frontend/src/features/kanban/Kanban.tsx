@@ -207,11 +207,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   const onDragStart = (e: DragStartEvent) => {
     console.log(e);
     if (e.active.data.current?.type === "Column") {
-      setActiveColumn(e.active.data.current.column);
+      setActiveColumn(e.active.data.current.column as Column);
       return;
     }
     if (e.active.data.current?.type === "Task") {
-      setActiveTask(e.active.data.current.task);
+      setActiveTask(e.active.data.current.task as Task);
       return;
     }
   };
