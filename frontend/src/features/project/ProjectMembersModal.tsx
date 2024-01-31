@@ -137,16 +137,16 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       </section>
       }
 
-      <h2 className="heading-xs mt-4">Current project members</h2>
+      <h4 className="heading-xs mt-4">Current project members</h4>
       { project?.users.map((member: Member) => (
         <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
         <div className="flex-1 items-center">
-          <h3 className="heading-xs">
+          <h5 className="heading-xs">
           Leave project
-          </h3>
+          </h5>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
         <LeaveProject handleRemove={leaveProject} />
