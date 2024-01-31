@@ -6,7 +6,7 @@ export const Page = () => {
 
   return (
     <section className="p-4 sm:p-12 max-h-full">
-      <PageWrapper key={pageId} pageId={pageId} />;
+      <PageWrapper key={pageId} pageId={pageId} />
     </section>
   );
 };

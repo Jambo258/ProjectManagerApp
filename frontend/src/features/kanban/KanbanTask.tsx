@@ -2,10 +2,7 @@
 import { useState } from "react";
 
 // Redux
-import { type Member, useGetProjectQuery } from "../api/apiSlice";
-
-// React Router
-import { useParams } from "react-router-dom";
+import { type Member } from "../api/apiSlice";
 
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
@@ -17,9 +14,10 @@ import { type Task, type Labels } from "./Kanban";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
-import { UserIcon } from "../user/UserIcon";
 import { LabelModal } from "./LabelModal";
 import { SubModal } from "./SubModal";
+import { TaskMembersModal } from "./TaskMembersModal";
+import { UserIcon } from "../user/UserIcon";
 
 interface Props {
   task: Task;
@@ -70,10 +68,8 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [taskMembers, setTaskMembers] = useState<Member[]>([{id: 1, email: "suvi.sulonen@gmail.com", name: "Suvi", role: "manager"}]);
   // console.log(isModalsOpen);
-
-  const projectId = parseInt(useParams().projectId!);
-  const { data: project } = useGetProjectQuery(projectId);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -132,8 +128,7 @@ export const KanbanTask = ({
 
           {/* Task Members */}
           <section className={"min-w-max w-fit h-full flex flex-row flex-wrap items-end"}>
-            {/* Move to Members Modal*/}
-            {project?.users.map((member: Member,) => {
+            {taskMembers.map((member: Member,) => {
               return <UserIcon key={member.id} id={member.id} name={member.name} small={true} />;
             })}
           </section>
@@ -178,8 +173,7 @@ export const KanbanTask = ({
               <div className="h-fit flex flex-row justify-between">
                 {/* Task Members */}
                 <div className="fles flex-row inline-flex gap-x-1">
-                  {/* Move to Members Modal*/}
-                  {project?.users.map((member: Member,) => {
+                  {taskMembers.map((member: Member,) => {
                     return <UserIcon key={member.id} id={member.id} name={member.name} />;
                   })}
                 </div>
@@ -221,11 +215,15 @@ export const KanbanTask = ({
               <div>
                 <h5 className="heading-xxs mb-2">Add to task</h5>
                 <div className="flex flex-col gap-2">
-                  <IconButton
+                  <SubModal
                     iconName="Members"
                     btnText="Members"
-                    handleOnClick={() => ""}
-                  />
+                    modalTitle={"Members"}
+                    setIsModalsOpen={setIsModalsOpen}
+                    isModalsOpen={isModalsOpen}
+                  >
+                    <TaskMembersModal taskMembers={taskMembers} setTaskMembers={setTaskMembers} />
+                  </SubModal>
                   <SubModal
                     iconName="Labels"
                     btnText={"Labels"}
