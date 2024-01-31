@@ -1,6 +1,7 @@
 import { type ReactElement, useState, createContext } from "react";
 import { X } from "react-feather";
 import { ChevronLeft } from "react-feather";
+import { type IconType, IconButton } from "./IconButton";
 
 interface ModalContextType {
   isModalOpen: boolean;
@@ -13,8 +14,8 @@ interface ModalContextType {
 export const SubModalContext = createContext<ModalContextType>(null!);
 
 interface ModalProps {
-  btnStyling: string;
-  btnText: string | ReactElement;
+  iconName: IconType;
+  btnText: string;
   modalTitle: string | null;
   children: ReactElement;
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,10 +23,10 @@ interface ModalProps {
 }
 
 export const SubModal = ({
+  iconName,
   btnText,
   modalTitle,
   children,
-  btnStyling,
   setIsModalsOpen,
   isModalsOpen
 }: ModalProps) => {
@@ -50,9 +51,14 @@ export const SubModal = ({
 
   return (
     <>
-      <button type="button" onClick={() => {openModal(); openAllModals();}} className={btnStyling}>
-        {btnText}
-      </button>
+      <IconButton
+        iconName={iconName}
+        btnText={btnText}
+        handleOnClick={() => {
+          openModal();
+          openAllModals();
+        }}
+      />
       {isModalOpen && isModalsOpen && (
         <div
           onClick={closeModal}
@@ -82,6 +88,7 @@ export const SubModal = ({
                 <X size={20} />
               </button>
             </header>
+
             <main className="w-full mx-auto px-2">
               <SubModalContext.Provider
                 value={{ isModalOpen, openModal, closeModal, closeAllModals, openAllModals }}
