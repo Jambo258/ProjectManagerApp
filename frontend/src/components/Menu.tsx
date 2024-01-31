@@ -38,12 +38,14 @@ export const Menu = ({children}: MenuProps) => {
           <section className="grid grid-cols-1 divide-y divide-grayscale-200">
             {children.map((child, index) => {
               return (
-                <section
-                  key={index}
-                  className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
-                >
-                  {child}
-                </section>
+                child ?
+                  <section
+                    key={index}
+                    className="py-0 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                  >
+                    {child}
+                  </section>
+                  : null
               );
             })}
           </section>

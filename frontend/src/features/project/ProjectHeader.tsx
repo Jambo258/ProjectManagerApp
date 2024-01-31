@@ -36,14 +36,17 @@ export const ProjectHeader = () => {
         <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"}`}>{project.name}</h2>
         }
         <Menu>
-          <button className="min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+          <button className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             onClick={() => setShowHeader(!showHeader)}>
             {showHeader ? "Hide header" : "Show header" } 
           </button> 
+
+          <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
+
           <Modal
             btnText={"Add new page"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Add new page"}>
             <AddPageModal projectId={projectid} />
@@ -53,7 +56,7 @@ export const ProjectHeader = () => {
             <Modal
               btnText={"Rename page"}
               btnStyling={
-                "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
               }
               modalTitle={"Rename page"}
             >
@@ -61,23 +64,25 @@ export const ProjectHeader = () => {
                 pageId={pageid} 
                 pageName={activePage()} />
             </Modal>
-            : ""
+            : null
           }
 
           {pageid ?
             <DeletePageModal
               btnText={"Delete page"}
               btnStyling={
-                "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
               }
             />
-            : ""
+            : null      
           }
+
+          <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
 
           <Modal
             btnText={"Rename project"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Rename project"}
           >
@@ -89,7 +94,7 @@ export const ProjectHeader = () => {
           <Modal
             btnText={"Project members"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Project members"}
           >
@@ -98,7 +103,7 @@ export const ProjectHeader = () => {
           <DeleteProjectModal
             btnText={"Delete project"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
           />
         </Menu>
@@ -112,9 +117,9 @@ export const ProjectHeader = () => {
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
               className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
-              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) || (page.name.length <= 13)
+              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) || (page.name.length <= 18)
                 ? page.name
-                : page.name.slice(0, 10) + ((page.name.length > 10) ? "..." : "")
+                : page.name.slice(0, 15) + ((page.name.length > 15) ? "..." : "")
               }
             </Link>
           ))}
