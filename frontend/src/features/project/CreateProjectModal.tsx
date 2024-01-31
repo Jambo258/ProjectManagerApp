@@ -12,12 +12,15 @@ import { DevTool } from "@hookform/devtools";
 
 // Context
 import { ModalContext } from "../../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 interface CreateProjectFormValues {
   projectName: string;
 }
 
 const CreateProjectModal = () => {
+  const navigate = useNavigate();
+
   const [addNewProject, { isLoading }] = useAddNewProjectMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
@@ -45,6 +48,7 @@ const CreateProjectModal = () => {
         console.log("Project:", project);
         if (project) {
           closeModal();
+          navigate(`projects/${project.id}`, { replace: true });
         }
       } catch (err) {
         onError;

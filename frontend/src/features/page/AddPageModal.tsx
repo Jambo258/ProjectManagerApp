@@ -13,11 +13,16 @@ import { DevTool } from "@hookform/devtools";
 // Context
 import { ModalContext } from "../../components/Modal";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
 interface AddPageFormValues {
   pageName: string;
 }
 
 export const AddPageModal = ({ projectId }: { projectId: number; }) => {
+  const navigate = useNavigate();
+
   const [addNewPage, { isLoading }] = useAddNewPageMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
@@ -49,6 +54,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
         console.log("Page:", page);
         if (page) {
           closeModal();
+          navigate(`projects/${projectId}/${page.id}`, { replace: true });
         }
       } catch (err) {
         onError;
