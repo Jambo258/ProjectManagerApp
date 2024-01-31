@@ -6,7 +6,7 @@ import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { RenameProjectModal } from "./RenameProjectModal";
 import { DeleteProjectModal } from "./DeleteProjectModal";
-import AddPage from "../page/AddPage";
+import { AddPageModal } from "../page/AddPageModal";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
 import { ProjectMembersModal } from "./ProjectMembersModal";
 
@@ -29,7 +29,7 @@ export const ProjectHeader = () => {
               "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Add new page"}>
-            <AddPage projectId={projectid} />
+            <AddPageModal projectId={projectid} />
           </Modal>
           <Modal
             btnText={"Rename project"}
@@ -74,7 +74,7 @@ export const ProjectHeader = () => {
           btnText={<Plus size={16} />}
           btnStyling={"p-1.5 rounded-full heading-md"}
           modalTitle={"Add new page"}>
-          <AddPage projectId={projectid}/>
+          <AddPageModal projectId={projectid}/>
         </Modal>
       </nav>
     </header>

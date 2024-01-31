@@ -8,7 +8,7 @@ import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProje
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
 
-import { LeaveProject } from "./LeaveProject";
+import { LeaveProjectModal } from "./LeaveProjectModal";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
 import { type Member } from "../api/apiSlice";
@@ -149,7 +149,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
           </h3>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <LeaveProject handleRemove={leaveProject} />
+        <LeaveProjectModal handleRemove={leaveProject} />
       </section>
     </>
   );
