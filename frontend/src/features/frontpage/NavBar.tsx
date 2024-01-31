@@ -10,14 +10,11 @@ export const NavBar = () => {
   return (
     <header className="grid grid-flow-row md:grid-flow-col min-h-28 w-full-fit md:bg-dark-blue-300 bg-dark-blue-100 drop-shadow-md">
       <section className="grid grid-flow-col w-full h-28 items-center px-6 py-4 bg-dark-blue-300">
-        <h1 
-          className="heading-sm sm:heading-md md:heading-lg text-light-font leading-tight text-left outline-none focus:outline focus:outline-primary-200"
-          onClick={() => setOpenMenu(false)}>
-          <Link to="/">
-          Project <br />
-          Management App
-          </Link>
-        </h1>
+        <Link to="/" 
+          className="w-fit px-2 rounded heading-sm sm:heading-md md:heading-lg text-light-font leading-tight text-left outline-none focus:ring focus:ring-dark-blue-50" 
+          onClick={() => setOpenMenu(false)}> 
+          <h1>Project <br /> Management App</h1> 
+        </Link>
 
         <section className="flex w-full align-middle justify-end h-full md:hidden">
           <button className="w-fit bg-grayscale-0 p-2 m-0 hover:bg-grayscale-0 text-light-font" onClick={() => setOpenMenu(!openMenu)}>
