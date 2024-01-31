@@ -4,5 +4,9 @@ import { PageWrapper } from "./PageWrapper";
 export const Page = () => {
   const pageId = useParams().pageId!;
 
-  return <PageWrapper key={pageId} pageId={pageId} />;
+  return (
+    <section className="p-4 sm:p-12 max-h-full">
+      <PageWrapper key={pageId} pageId={pageId} />;
+    </section>
+  );
 };

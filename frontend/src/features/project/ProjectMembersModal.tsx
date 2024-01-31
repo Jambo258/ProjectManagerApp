@@ -8,7 +8,7 @@ import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProje
 import { inviteUserSchema } from "../auth/authValidation";
 import { useAppSelector } from "../../app/hooks";
 
-import { LeaveProject } from "./LeaveProject";
+import { LeaveProjectModal } from "./LeaveProjectModal";
 import { ProjectMemberItem } from "./ProjectMemberItem";
 
 import { type Member } from "../api/apiSlice";
@@ -107,18 +107,18 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
     <>
       { (userRole === "manager") &&
       <section>
-        <form className="flex flex-row gap-2 mb-2"
+        <form className="grid grid-flow-rows sm:grid-flow-col sm:grid-col-3 gap-2 mb-2"
           onSubmit={handleSubmit(onHandleSubmit, onError)} noValidate>
           <input
             type="email"
             {...register("email")}
             placeholder="E.g. example@mail.com"
-            className="flex-1 w-1/2 p-2 body-text-sm border border-grayscale-300" />
+            className="col-span-3 sm:col-span-1 p-2 body-text-sm border border-grayscale-300" />
 
           <select value={selectValue}
             {...register("role")}
             onChange={(e) => setSelectValue(e.target.value)}
-            className="p-2 btn-text-xs border border-grayscale-300">
+            className="col-span-3 sm:col-span-1 p-2 btn-text-xs border border-grayscale-300">
             <option value="viewer"
               className="btn-text-xs">Viewer</option>
             <option value="editor"
@@ -127,7 +127,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
               className="btn-text-xs">Manager</option>
           </select>
 
-          <button type="submit" className="p-2 btn-text-xs" disabled={isSubmitting} >
+          <button type="submit" className="col-span-3 sm:col-span-1 p-2 btn-text-xs" disabled={isSubmitting} >
           Invite
           </button>
         </form>
@@ -137,19 +137,19 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       </section>
       }
 
-      <h2 className="heading-xs mt-4">Current project members</h2>
+      <h4 className="heading-xs mt-4">Current project members</h4>
       { project?.users.map((member: Member) => (
         <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
       ))}
 
       <section className="flex flex-row gap-4 items-center pt-4">
         <div className="flex-1 items-center">
-          <h3 className="heading-xs">
+          <h5 className="heading-xs">
           Leave project
-          </h3>
+          </h5>
           <p className="body-text-sm">If you leave project, you can&#39;t return without being invited again by a manager.</p>
         </div>
-        <LeaveProject handleRemove={leaveProject} />
+        <LeaveProjectModal handleRemove={leaveProject} />
       </section>
     </>
   );

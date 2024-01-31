@@ -94,7 +94,7 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
   };
 
   return (
-    <section className="p-12 max-h-full overflow-auto">
+    <>
       <button onClick={() => addComponent("editor")}>New editor</button>
       <button onClick={() => addComponent("kanban")}>New kanban</button>
       {values.map((component) =>
@@ -104,6 +104,6 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
           <button onClick={() => deleteComponent(component.uuid)}>Delete</button>
         </Fragment>
       )}
-    </section>
+    </>
   );
 };
