@@ -62,7 +62,7 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [taskMembers, setTaskMembers] = useState([{id: 1, email: "suvi.sulonen@gmail.com", name: "Suvi", role: "manager"}]);
+  const [taskMembers, setTaskMembers] = useState<Member[]>([{id: 1, email: "suvi.sulonen@gmail.com", name: "Suvi", role: "manager"}]);
   // console.log(isModalsOpen);
 
   const openModal = () => {
@@ -216,7 +216,7 @@ export const KanbanTask = ({
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                   >
-                    <TaskMembersModal />
+                    <TaskMembersModal taskMembers={taskMembers} setTaskMembers={setTaskMembers} />
                   </SubModal>
                   <SubModal
                     iconName="Labels"
