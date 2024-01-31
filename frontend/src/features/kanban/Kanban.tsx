@@ -103,12 +103,9 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       Id: nanoid(),
       title: `Task ${tasks.length + 1}`,
       columnId,
-      content: "Lorem ipsum",
+      content: "Short task description goes here...",
       done: false,
-      labels: [
-        { id: 1, name: "frontend", color: "bg-green-100" },
-        { id: 2, name: "Design", color: "bg-yellow-100" },
-      ],
+      labels: [],
     };
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
