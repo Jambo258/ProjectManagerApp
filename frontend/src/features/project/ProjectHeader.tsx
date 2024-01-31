@@ -16,16 +16,16 @@ import { DeletePageModal } from "../page/DeletePageModal";
 export const ProjectHeader = () => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
 
-  const projectid = parseInt(useParams().projectId!);
-  const pageid = parseInt(useParams().pageId!);
-  const { data: project } = useGetProjectQuery(projectid);
+  const projectId = parseInt(useParams().projectId!);
+  const pageId = parseInt(useParams().pageId!);
+  const { data: project } = useGetProjectQuery(projectId);
 
   if (!project) {
     return null;
   }
 
   const activePage = () => {
-    const activePage = pageid ? project.pages.find(page => page.id === pageid) : null;
+    const activePage = pageId ? project.pages.find(page => page.id === pageId) : null;
     return (activePage ? activePage.name : "");
   };
 
@@ -49,10 +49,10 @@ export const ProjectHeader = () => {
               "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
             }
             modalTitle={"Add new page"}>
-            <AddPageModal projectId={projectid} />
+            <AddPageModal projectId={projectId} />
           </Modal> 
 
-          {pageid ?
+          {pageId ?
             <Modal
               btnText={"Rename page"}
               btnStyling={
@@ -61,13 +61,13 @@ export const ProjectHeader = () => {
               modalTitle={"Rename page"}
             >
               <RenamePageModal 
-                pageId={pageid} 
+                pageId={pageId} 
                 pageName={activePage()} />
             </Modal>
             : null
           }
 
-          {pageid ?
+          {pageId ?
             <DeletePageModal
               btnText={"Delete page"}
               btnStyling={
@@ -87,7 +87,7 @@ export const ProjectHeader = () => {
             modalTitle={"Rename project"}
           >
             <RenameProjectModal
-              projectId={projectid}
+              projectId={projectId}
               projectName={project.name}
             />
           </Modal>
@@ -98,7 +98,7 @@ export const ProjectHeader = () => {
             }
             modalTitle={"Project members"}
           >
-            <ProjectMembersModal projectId={projectid} />
+            <ProjectMembersModal projectId={projectId} />
           </Modal>
           <DeleteProjectModal
             btnText={"Delete project"}
@@ -116,8 +116,8 @@ export const ProjectHeader = () => {
             <Link
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
-              className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
-              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) || (page.name.length <= 18)
+              className={`mr-4 focus:outline-none ${window.location.pathname.endsWith(`/projects/${project.id}/${page.id}`) && "underline"}`}>
+              { window.location.pathname.endsWith(`/projects/${project.id}/${page.id}`) || (page.name.length <= 18)
                 ? page.name
                 : page.name.slice(0, 15) + ((page.name.length > 15) ? "..." : "")
               }
@@ -128,7 +128,7 @@ export const ProjectHeader = () => {
           btnText={<Plus size={16} />}
           btnStyling={"p-1.5 rounded-full heading-md"}
           modalTitle={"Add new page"}>
-          <AddPageModal projectId={projectid}/>
+          <AddPageModal projectId={projectId}/>
         </Modal>
       </nav>
       }

@@ -1,5 +1,5 @@
 // React
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
