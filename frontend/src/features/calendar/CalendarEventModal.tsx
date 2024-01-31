@@ -1,5 +1,13 @@
 import { nanoid } from "@reduxjs/toolkit";
-import { add, format, isEqual, isSameMonth, isToday } from "date-fns";
+import {
+  add,
+  format,
+  isEqual,
+  isSameMonth,
+  isToday,
+  getYear,
+  getMonth,
+} from "date-fns";
 import { useState } from "react";
 import { Trash2, X } from "react-feather";
 
@@ -55,9 +63,10 @@ const CalendarEventModal = ({
 
   const checkEventDay = (day: Date) => {
     const test = events.find((event) =>
-      isEqual(event.day.getDate(), day.getDate())
+      isEqual(format(event.day, "dd MM yyyy"), format(day, "dd MM yyyy"))
     );
 
+    console.log(day);
     if (test) {
       return true;
     } else {
@@ -130,7 +139,10 @@ const CalendarEventModal = ({
           <li>{format(day, "d")}</li>
           {events.map(
             (event) =>
-              isEqual(event.day.getDate(), day.getDate()) &&
+              isEqual(
+                format(event.day, "dd MM yyyy"),
+                format(day, "dd MM yyyy")
+              ) &&
               projectid === event.projectid && (
                 <li key={event.id}>
                   {format(event.day, "HH:mm ")}
@@ -167,7 +179,10 @@ const CalendarEventModal = ({
                 {events.map(
                   (event) =>
                     projectid === event.projectid &&
-                    isEqual(event.day.getDate(), day.getDate()) && (
+                    isEqual(
+                      format(event.day, "dd MM yyyy"),
+                      format(day, "dd MM yyyy")
+                    ) && (
                       <div key={event.id}>
                         <div
                           className=" flex justify-between mb-2 cursor-pointer "
