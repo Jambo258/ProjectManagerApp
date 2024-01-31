@@ -1,5 +1,5 @@
 // React
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 
 // Redux Toolkit
 import { useEditPageMutation } from "../api/apiSlice";
@@ -43,10 +43,10 @@ export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
     console.log("Form field errors:", errors);
   };
 
+  const canSave = isDirty && !isLoading;
+
   const onHandleSubmit = async (formData: RenamePageFormValues) => {
-    if (!isDirty) {
-      closeModal();
-    } else if (!isLoading) {
+    if (canSave) {
       try {
         const page = await editPage({ id: pageId, name: formData.pageName }).unwrap();
         // For development purposes
@@ -55,8 +55,7 @@ export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
         if (page) {
           closeModal();
         }
-      }
-      catch (err) {
+      } catch (err) {
         onError;
         console.error("Failed to save the user", err);
         // TO DO: Refactor this
@@ -97,14 +96,14 @@ export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
-            Save Changes
+            Save
           </button>
           <button
             type="reset"
             onClick={closeModal}
             className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
-            Cancel Changes
+            Cancel
           </button>
         </section>
       </form>
