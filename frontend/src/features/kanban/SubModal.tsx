@@ -71,25 +71,25 @@ export const SubModal = ({
             // The sizing of the modal (w, min-w and max-w) might need to be modified
             className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all"
           >
-            <header className="w-full grid grid-cols-3 mb-2">
+            <header className="w-full flex flex-row justify-between items-center mb-4">
               <button
                 onClick={closeModal}
-                className="mx-2 p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={24} />
               </button>
-              <h3 className="place-self-center heading-md text-dark-font">
+              <h4 className="place-self-center heading-sm text-dark-font">
                 {modalTitle}
-              </h3>
+              </h4>
               <button
                 onClick={() => {closeAllModals();closeModal();}}
-                className="mx-2 place-self-end px-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
-                <X size={20} />
+                <X size={24} />
               </button>
             </header>
 
-            <main className="w-full mx-auto px-2">
+            <main className="w-full mx-auto px-[10px]">
               <SubModalContext.Provider
                 value={{ isModalOpen, openModal, closeModal, closeAllModals, openAllModals }}
               >
