@@ -10,10 +10,10 @@ import { useParams } from "react-router-dom";
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Task, Labels } from "./Kanban";
 
 // Components
 import { X } from "react-feather";
+import { type Task, type Labels } from "./Kanban";
 import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -64,7 +64,7 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  console.log(isModalsOpen);
+  // console.log(isModalsOpen);
 
   const projectId = parseInt(useParams().projectId!);
   const { data: project } = useGetProjectQuery(projectId);
@@ -186,7 +186,7 @@ export const KanbanTask = ({
               </div>
               <div className="">
                 <form>
-                  <label className="heading-xs mb-1">
+                  <label role="h4" className="heading-xs mb-1">
                   Description
                     <textarea
                       value={editContent}
@@ -213,7 +213,7 @@ export const KanbanTask = ({
 
             <section className="grid col-span-2 sm:col-span-1 min-w-max gap-4">
               <div>
-                <p className="heading-xs mb-2">Add to task</p>
+                <h5 className="heading-xxs mb-2">Add to task</h5>
                 <div className="flex flex-col gap-2">
                   <IconButton
                     iconName="Members"
@@ -242,8 +242,8 @@ export const KanbanTask = ({
                   />
                 </div>
               </div>
-              <div>
-                <p className="heading-xs mb-2">Actions</p>
+              <section>
+                <h5 className="heading-xxs mb-2">Actions</h5>
                 <div className="flex flex-col gap-2 min-w-max">
                   <IconButton btnType="submit"
                     iconName="Save"
@@ -256,7 +256,7 @@ export const KanbanTask = ({
                     handleOnClick={() => setIsDeleteConfirmOpen(true)}
                   />
                 </div>
-              </div>
+              </section>
             </section>
           </main>
         </dialog>
@@ -268,17 +268,12 @@ export const KanbanTask = ({
           setConfirmDeleteEdit={setIsDeleteConfirmOpen}
           confirmDeleteEdit={isDeleteConfirmOpen}
           handleSubmitForModal={() => deleteTask(task.Id)}
-          deleteModalText={"Are you sure you want to delete this task?"} />      )}
+          deleteModalText={"Are you sure you want to delete this task?"} />
+      )}
     </>
   );
 };
 
-{/* <div className="heading-sm flex justify-between">
-        {!editTitle && (
-          <>
-            <div onClick={() => setEditTitle(true)} className="">
-              {task.title}
-            </div> */}
 {/* {!task.done && (
               <div className="border relative left-5">
                 <TaskModal>
@@ -287,38 +282,3 @@ export const KanbanTask = ({
                 </TaskModal>
               </div>
             )} */}
-{/* </>
-        )}
-        {editTitle && (
-          <input
-            className="w-36 text-sm bg bg-primary-200 rounded-md"
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key !== "Enter") return;
-              setEditTitle(false);
-            }}
-            onBlur={() => setEditTitle(false)}
-            value={task.title}
-            onChange={(e) => updateTaskTitle(task.Id, e.target.value)}
-          ></input>
-        )}
-      </div> */}
-
-{/* <div onClick={() => setEditContent(true)} className="">
-        {!editContent && ( */}
-{/* <div className="min-h-max line-clamp-2 body-text-xs">{task.content}</div> */}
-{/* )}
-        {editContent && (
-          <input
-            className="w-36 text-sm bg bg-primary-200 rounded-md"
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key !== "Enter") return;
-              setEditContent(false);
-            }}
-            onBlur={() => setEditContent(false)}
-            value={task.content}
-            onChange={(e) => updateTask(task.Id, e.target.value)}
-          ></input>
-        )}
-      </div> */}
