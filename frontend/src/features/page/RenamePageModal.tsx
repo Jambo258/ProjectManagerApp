@@ -19,7 +19,7 @@ interface RenamePageFormValues {
 
 interface RenamePageProps {
   pageId: number;
-  pageName: string | null;
+  pageName: string;
 }
 
 export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {

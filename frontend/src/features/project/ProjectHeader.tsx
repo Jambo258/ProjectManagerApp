@@ -26,7 +26,7 @@ export const ProjectHeader = () => {
 
   const activePage = () => {
     const activePage = pageid ? project.pages.find(page => page.id === pageid) : null;
-    return (activePage ? activePage.name : null);
+    return (activePage ? activePage.name : "");
   };
 
   return (
