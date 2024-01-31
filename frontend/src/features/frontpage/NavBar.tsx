@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu } from "react-feather";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useScreenDimensions from "../../utils/screenDimensions";
 
 export const NavBar = () => {
@@ -13,10 +13,10 @@ export const NavBar = () => {
         <h1 
           className="heading-sm sm:heading-md md:heading-lg text-light-font leading-tight text-left outline-none focus:outline focus:outline-primary-200"
           onClick={() => setOpenMenu(false)}>
-          <NavLink to="/">
+          <Link to="/">
           Project <br />
           Management App
-          </NavLink>
+          </Link>
         </h1>
 
         <section className="flex w-full align-middle justify-end h-full md:hidden">
@@ -28,16 +28,16 @@ export const NavBar = () => {
 
       {(screenDimensions.width > 768 || openMenu) &&
       <nav className="grid grid-flow-col content-center items-center justify-end text-right gap-4 p-4">
-        <NavLink to="register">
-          <button className="btn-text-xs w-full px-4 py-1.5 outline-none focus:outline focus:outline-primary-200" onClick={() => setOpenMenu(false)}>
-            Register
-          </button>
-        </NavLink>
-        <NavLink to="login">
-          <button className="btn-text-xs w-full px-4 py-1.5 outline-none focus:outline focus:outline-primary-200" onClick={() => setOpenMenu(false)}>
-            Login
-          </button>
-        </NavLink>
+        <Link to="register" role="button" 
+          className="btn-text-xs w-full px-4 py-1.5 outline-none bg-primary-100 hover:bg-primary-200 rounded focus:outline focus:outline-primary-200" 
+          onClick={() => setOpenMenu(false)}> 
+          <p>Register</p> 
+        </Link>
+        <Link to="login" role="button" 
+          className="btn-text-xs w-full px-4 py-1.5 outline-none bg-primary-100 hover:bg-primary-200 rounded focus:outline focus:outline-primary-200" 
+          onClick={() => setOpenMenu(false)}> 
+          <p>Login</p> 
+        </Link>
       </nav>
       }
     </header>
