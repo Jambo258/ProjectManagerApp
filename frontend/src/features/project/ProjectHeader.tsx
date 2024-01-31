@@ -52,7 +52,7 @@ export const ProjectHeader = () => {
             <AddPageModal projectId={projectId} />
           </Modal> 
 
-          {pageId ?
+          {activePage() ?
             <Modal
               btnText={"Rename page"}
               btnStyling={
@@ -67,7 +67,7 @@ export const ProjectHeader = () => {
             : null
           }
 
-          {pageId ?
+          {activePage() ?
             <DeletePageModal
               btnText={"Delete page"}
               btnStyling={
