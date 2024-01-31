@@ -13,7 +13,6 @@ import { useEffect, useMemo, useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { KanbanTask } from "./KanbanTask";
-import { Tag } from "react-feather";
 import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
 import { SubModal } from "./SubModal";
@@ -355,15 +354,9 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     <>
       <div className="grid grid-flow-col w-16">
         <SubModal
-          btnText={
-            <div>
-              <Tag size={16}></Tag>
-              <p>Labels</p>
-            </div>
-          }
-          btnStyling={"mb-3 mx-2"}
+          btnText={"Labels"}
           modalTitle={"Labels"}
-          // iconName={"Delete"}
+          iconName={"Labels"}
           setIsModalsOpen={setIsModalsOpen}
           isModalsOpen={isModalsOpen}
         >
