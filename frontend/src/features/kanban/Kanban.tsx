@@ -295,11 +295,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         return;
       }
 
-      if(activeIndex !==  overIndex) {
+      if(activeIndex !== overIndex) {
         ytasks.doc?.transact(() => {
           const task = ytasks.get(activeIndex);
           ytasks.delete(activeIndex);
-          ytasks.insert(overIndex > activeIndex ? overIndex -1 : overIndex, [{...task, columnId: overTask.columnId}]);
+          ytasks.insert(overIndex > activeIndex && task.columnId !== overTask.columnId ? overIndex - 1 : overIndex, [{...task, columnId: overTask.columnId}]);
         });
       }
 
