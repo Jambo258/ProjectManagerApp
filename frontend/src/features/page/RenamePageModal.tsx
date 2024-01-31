@@ -22,7 +22,7 @@ interface RenamePageProps {
   pageName: string | null;
 }
 
-export const RenamePage = ( {pageId, pageName }: RenamePageProps) => {
+export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
   const [editPage, { isLoading }] = useEditPageMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);

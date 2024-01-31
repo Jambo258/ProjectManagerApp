@@ -17,7 +17,7 @@ interface AddPageFormValues {
   pageName: string;
 }
 
-const AddPage = ({ projectId }: { projectId: number; }) => {
+export const AddPageModal = ({ projectId }: { projectId: number; }) => {
   const [addNewPage, { isLoading }] = useAddNewPageMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
@@ -105,4 +105,3 @@ const AddPage = ({ projectId }: { projectId: number; }) => {
     </>
   );
 };
-export default AddPage;
