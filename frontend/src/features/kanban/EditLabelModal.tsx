@@ -13,9 +13,10 @@ interface ColorProps {
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
   element: Labels;
+  editLabel: (id: string | number, name: string, color: string) => void;
 }
 
-export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
+export const EditLabelModal = ({ setLabel, labels, element, editLabel }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
   const {
@@ -43,6 +44,8 @@ export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
     console.log(formData.color);
     if (canSubmit) {
       try {
+        editLabel(element.id, formData.name, formData.color);
+        /*
         setLabel((prev) =>
           prev.map((elements) => {
             if (elements.id === element.id) {
@@ -55,6 +58,7 @@ export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
             return elements;
           })
         );
+        */
         closeModal();
         reset();
         setFormError(null);

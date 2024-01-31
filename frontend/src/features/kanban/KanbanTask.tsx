@@ -30,8 +30,11 @@ interface Props {
   label: Labels[];
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
-   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-   isModalsOpen: boolean;
+  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalsOpen: boolean;
+  createLabel: (name: string, color: string) => void;
+  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
 }
 
 export const KanbanTask = ({
@@ -44,7 +47,10 @@ export const KanbanTask = ({
   setLabel,
   labels,
   setIsModalsOpen,
-  isModalsOpen
+  isModalsOpen,
+  createLabel,
+  updateLabelStatus,
+  editLabel
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -114,13 +120,13 @@ export const KanbanTask = ({
 
             {/* Task Labels */}
             <section className="w-full h-fit flex flex-wrap gap-[6px]">
-              {task.labels?.map((element) => (
+              {label.map((element) => element.active ?(
                 <Label
                   key={element.id}
                   labelColor={element.color}
                   labelText={element.name}
                 />
-              ))}
+              ): null)}
             </section>
           </div>
 
@@ -201,13 +207,13 @@ export const KanbanTask = ({
 
               {/* Task Labels */}
               <section className="w-full h-fit flex flex-wrap gap-[6px]">
-                {task.labels?.map((element) => (
+                {label.map((element) => element.active ?(
                   <Label
                     key={element.id}
                     labelColor={element.color}
                     labelText={element.name}
                   />
-                ))}
+                ): null)}
               </section>
             </section>
 
@@ -233,6 +239,9 @@ export const KanbanTask = ({
                       setLabel={setLabel}
                       setIsModalsOpen={setIsModalsOpen}
                       isModalsOpen={isModalsOpen}
+                      createLabel={createLabel}
+                      updateLabelStatus={updateLabelStatus}
+                      editLabel={editLabel}
                     />
                   </SubModal>
                   <IconButton

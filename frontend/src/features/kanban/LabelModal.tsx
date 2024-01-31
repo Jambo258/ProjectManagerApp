@@ -1,9 +1,10 @@
 import { type Labels } from "./Kanban";
 import { CreateLabelModal } from "./CreateLabelModal";
 // import { Modal } from "../../components/Modal";
-import { Square } from "react-feather";
+import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal } from "./SubModal";
+import { useState } from "react";
 
 interface Props {
   label: Labels[];
@@ -11,10 +12,14 @@ interface Props {
   labels: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
+  createLabel: (name: string, color: string) => void;
+  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
 }
 
-export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen }: Props) => {
+export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen, createLabel, updateLabelStatus, editLabel }: Props) => {
   console.log(isModalsOpen);
+  const [state, setState] = useState(true);
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
@@ -24,7 +29,18 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              <Square size={24}></Square>
+              {elements.active ? (
+                <CheckSquare
+                  onClick={() => {updateLabelStatus(elements.id, state); setState(!state);}}
+                  size={24}
+                ></CheckSquare>
+              ) : (
+                <Square
+                  onClick={() => {updateLabelStatus(elements.id, state);
+                    setState(!state);}}
+                  size={24}
+                ></Square>
+              )}
             </div>
             <div
               className={`col-span-2 text-center rounded-md ${elements.color}`}
@@ -44,6 +60,7 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
                 label={label}
                 labels={labels}
                 setLabel={setLabel}
+                editLabel={editLabel}
               />
             </SubModal>
           </div>
@@ -57,7 +74,12 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
           setIsModalsOpen={setIsModalsOpen}
           isModalsOpen={isModalsOpen}
         >
-          <CreateLabelModal label={label} labels={labels} setLabel={setLabel} />
+          <CreateLabelModal
+            label={label}
+            labels={labels}
+            setLabel={setLabel}
+            createLabel={createLabel}
+          />
         </SubModal>
       </section>
     </>

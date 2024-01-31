@@ -20,6 +20,9 @@ interface Props {
   labels: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
+  createLabel: (name: string, color: string) => void;
+  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -37,7 +40,10 @@ export const KanbanColumn = (props: Props) => {
     setLabel,
     labels,
     setIsModalsOpen,
-    isModalsOpen
+    isModalsOpen,
+    createLabel,
+    updateLabelStatus,
+    editLabel
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -98,6 +104,9 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
+              editLabel={editLabel}
+              updateLabelStatus={updateLabelStatus}
+              createLabel={createLabel}
               task={element}
               key={element.Id}
               deleteTask={deleteTask}

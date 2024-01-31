@@ -11,6 +11,7 @@ interface ColorProps {
   label: Labels[];
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
+  createLabel: (name: string, color: string) => void;
 }
 
 export interface CreateLabelFormValues {
@@ -19,9 +20,10 @@ export interface CreateLabelFormValues {
 }
 
 export const CreateLabelModal = ({
-  label,
-  setLabel,
+  // label,
+  // setLabel,
   labels,
+  createLabel
 }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
@@ -50,12 +52,17 @@ export const CreateLabelModal = ({
     console.log(formData.color);
     if (canSubmit) {
       try {
+        /*
         const newLabel: Labels = {
-          id: Math.floor(Math.random() * 10001),
+          id: nanoid(),
           name: formData.name,
           color: formData.color,
+          active: false,
         };
+
         setLabel([...label, newLabel]);
+        */
+        createLabel(formData.name, formData.color);
         closeModal();
         reset();
         setFormError(null);
