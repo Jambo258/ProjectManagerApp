@@ -99,16 +99,16 @@ export const CreateLabelModal = ({
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {formError}
           </p>
-          <div className="grid grid-cols-3">
-            {labels.map((element) => (
-              <ColorModal
-                key={element.id}
-                setValue={setValue}
-                label={element}
-              ></ColorModal>
-            ))}
-          </div>
         </label>
+        <div className="grid grid-cols-3">
+          {labels.map((element) => (
+            <ColorModal
+              key={element.id}
+              setValue={setValue}
+              label={element}
+            ></ColorModal>
+          ))}
+        </div>
         <section className="grid grid-cols">
           <button
             type="submit"

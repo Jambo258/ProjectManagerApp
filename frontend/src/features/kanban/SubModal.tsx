@@ -15,7 +15,7 @@ export const SubModalContext = createContext<ModalContextType>(null!);
 
 interface ModalProps {
   iconName: IconType;
-  btnText: string;
+  btnText?: string;
   modalTitle: string | null;
   children: ReactElement;
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;

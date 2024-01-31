@@ -105,7 +105,7 @@ export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
           <input
             type="text"
             {...register("name")}
-            placeholder="Title for Label"
+            placeholder={element.name}
             className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
@@ -120,16 +120,16 @@ export const EditLabelModal = ({ setLabel, labels, element }: ColorProps) => {
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {formError}
           </p>
-          <div className="grid grid-cols-3">
-            {labels.map((element) => (
-              <ColorModal
-                key={element.id}
-                setValue={setValue}
-                label={element}
-              ></ColorModal>
-            ))}
-          </div>
         </label>
+        <div className="grid grid-cols-3">
+          {labels.map((element) => (
+            <ColorModal
+              key={element.id}
+              setValue={setValue}
+              label={element}
+            ></ColorModal>
+          ))}
+        </div>
         <section className="grid grid-cols-2">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}

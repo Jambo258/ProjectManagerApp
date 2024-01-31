@@ -33,8 +33,8 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
             </div>
 
             <SubModal
-              btnText="Edit label"
-              iconName="none"
+              // btnText={<Edit2></Edit2>}
+              iconName="Edit"
               modalTitle={"Edit Label"}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
