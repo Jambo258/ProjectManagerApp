@@ -14,9 +14,10 @@ interface ColorProps {
   labels: Labels[];
   element: Labels;
   editLabel: (id: string | number, name: string, color: string) => void;
+  deleteLabel: (id: string | number) => void;
 }
 
-export const EditLabelModal = ({ setLabel, labels, element, editLabel }: ColorProps) => {
+export const EditLabelModal = ({ setLabel, labels, element, editLabel, deleteLabel }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
   const {
@@ -81,7 +82,8 @@ export const EditLabelModal = ({ setLabel, labels, element, editLabel }: ColorPr
 
   const onHandleDelete = () => {
     try {
-      setLabel((prev) => prev.filter((elements) => elements.id !== element.id));
+      deleteLabel(element.id);
+      // setLabel((prev) => prev.filter((elements) => elements.id !== element.id));
       closeModal();
       reset();
       setFormError(null);

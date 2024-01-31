@@ -153,6 +153,15 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     });
   };
 
+  const deleteLabel = (id: string | number) => {
+    const ylabels = ykanban.get("labels") as Y.Array<Labels>;
+    ylabels.forEach((label, i) => {
+      if (label.id === id) {
+        ylabels.delete(i);
+      }
+    });
+  };
+
   const updateColumn = (id: string | number, title: string) => {
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
     let changed = false;
@@ -407,6 +416,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
             createLabel={createLabel}
             updateLabelStatus={updateLabelStatus}
             editLabel={editLabel}
+            deleteLabel={deleteLabel}
           />
         </SubModal>
         <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
@@ -425,6 +435,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
                   <KanbanColumn
+                    deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     updateLabelStatus={updateLabelStatus}
                     createLabel={createLabel}
@@ -456,6 +467,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
+                    deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     updateLabelStatus={updateLabelStatus}
                     createLabel={createLabel}
@@ -478,6 +490,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
+                    deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     updateLabelStatus={updateLabelStatus}
                     createLabel={createLabel}

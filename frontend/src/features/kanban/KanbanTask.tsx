@@ -33,6 +33,7 @@ interface Props {
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
+  deleteLabel: (id: string | number) => void;
 }
 
 export const KanbanTask = ({
@@ -48,7 +49,8 @@ export const KanbanTask = ({
   isModalsOpen,
   createLabel,
   updateLabelStatus,
-  editLabel
+  editLabel,
+  deleteLabel
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -240,6 +242,7 @@ export const KanbanTask = ({
                       createLabel={createLabel}
                       updateLabelStatus={updateLabelStatus}
                       editLabel={editLabel}
+                      deleteLabel={deleteLabel}
                     />
                   </SubModal>
                   <IconButton

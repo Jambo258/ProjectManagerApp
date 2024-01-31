@@ -15,9 +15,10 @@ interface Props {
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
+  deleteLabel: (id: string | number) => void;
 }
 
-export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen, createLabel, updateLabelStatus, editLabel }: Props) => {
+export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen, createLabel, updateLabelStatus, editLabel, deleteLabel }: Props) => {
   console.log(isModalsOpen);
   const [state, setState] = useState(true);
   return (
@@ -61,6 +62,7 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
                 labels={labels}
                 setLabel={setLabel}
                 editLabel={editLabel}
+                deleteLabel={deleteLabel}
               />
             </SubModal>
           </div>

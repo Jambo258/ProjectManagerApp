@@ -23,6 +23,7 @@ interface Props {
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
+  deleteLabel: (id: string | number) => void;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -43,7 +44,8 @@ export const KanbanColumn = (props: Props) => {
     isModalsOpen,
     createLabel,
     updateLabelStatus,
-    editLabel
+    editLabel,
+    deleteLabel
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -104,6 +106,7 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
+              deleteLabel={deleteLabel}
               editLabel={editLabel}
               updateLabelStatus={updateLabelStatus}
               createLabel={createLabel}
