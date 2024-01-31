@@ -54,7 +54,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
         console.log("Page:", page);
         if (page) {
           closeModal();
-          navigate(`projects/${projectId}/${page.id}`, { replace: true });
+          navigate(`projects/${projectId}/${page.id}`);
         }
       } catch (err) {
         onError;

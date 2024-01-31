@@ -40,7 +40,7 @@ export const DeletePageModal = ({btnText, btnStyling}: IProps) => {
         console.log("Page deleted", page);
         if (page) {
           closeModal();
-          navigate(`projects/${projectId}`, { replace: true });
+          navigate(`projects/${projectId}`);
         }
       } catch (err) {
         console.error("Failed to delete the page", err);
