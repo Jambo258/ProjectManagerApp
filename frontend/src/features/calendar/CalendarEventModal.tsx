@@ -2,11 +2,12 @@ import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
   format,
+  getDate,
+  getMonth,
+  getYear,
   isEqual,
   isSameMonth,
   isToday,
-  getYear,
-  getMonth,
 } from "date-fns";
 import { useState } from "react";
 import { Trash2, X } from "react-feather";
@@ -62,11 +63,13 @@ const CalendarEventModal = ({
   };
 
   const checkEventDay = (day: Date) => {
-    const test = events.find((event) =>
-      isEqual(format(event.day, "dd MM yyyy"), format(day, "dd MM yyyy"))
+    const test = events.find(
+      (event) =>
+        isEqual(getMonth(event.day), getMonth(day)) &&
+        isEqual(getDate(event.day), getDate(day)) &&
+        isEqual(getYear(event.day), getYear(day))
     );
 
-    console.log(day);
     if (test) {
       return true;
     } else {
@@ -139,10 +142,9 @@ const CalendarEventModal = ({
           <li>{format(day, "d")}</li>
           {events.map(
             (event) =>
-              isEqual(
-                format(event.day, "dd MM yyyy"),
-                format(day, "dd MM yyyy")
-              ) &&
+              isEqual(getMonth(event.day), getMonth(day)) &&
+              isEqual(getDate(event.day), getDate(day)) &&
+              isEqual(getYear(event.day), getYear(day)) &&
               projectid === event.projectid && (
                 <li key={event.id}>
                   {format(event.day, "HH:mm ")}
@@ -179,10 +181,9 @@ const CalendarEventModal = ({
                 {events.map(
                   (event) =>
                     projectid === event.projectid &&
-                    isEqual(
-                      format(event.day, "dd MM yyyy"),
-                      format(day, "dd MM yyyy")
-                    ) && (
+                    isEqual(getMonth(event.day), getMonth(day)) &&
+                    isEqual(getDate(event.day), getDate(day)) &&
+                    isEqual(getYear(event.day), getYear(day)) && (
                       <div key={event.id}>
                         <div
                           className=" flex justify-between mb-2 cursor-pointer "

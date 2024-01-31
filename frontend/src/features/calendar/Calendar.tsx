@@ -40,9 +40,7 @@ const CalendarModal = () => {
     "col-start-5",
     "col-start-6",
   ];
-  const [currentMonth, setcurrentMonth] = useState(() =>
-    format(today, "MMM-yyyy")
-  );
+  const [currentMonth, setcurrentMonth] = useState(format(today, "MMM-yyyy"));
   const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
@@ -76,7 +74,9 @@ const CalendarModal = () => {
   };
 
   const setNewMonth = (month: Date) => {
-    setcurrentMonth(format(month, "MMM yyyy"));
+    console.log(month);
+    setcurrentMonth(() => format(month, "MMM yyyy"));
+    console.log(currentMonth);
   };
 
   useEffect(() => {
