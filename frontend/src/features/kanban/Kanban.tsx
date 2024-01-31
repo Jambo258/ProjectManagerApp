@@ -71,7 +71,6 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   },[ykanban]);
 
 
-  console.log(label);
   const arrayOfColors = [
     { id: 1, name: "", color: "bg-green-100" },
     { id: 2, name: "", color: "bg-green-200" },
@@ -224,6 +223,11 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     if (!over) {
       return;
     }
+
+    if(active.data.current?.type !== "Column") {
+      return;
+    }
+
     const activeColumnId = active.id;
     const overColumnId = over.id;
 
@@ -231,8 +235,8 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       return;
     }
 
-    let activeColumnIndex = 0;
-    let overColumnIndex = 0;
+    let activeColumnIndex = -1;
+    let overColumnIndex = -1;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
     ycolumns.forEach((task, i) => {
       if(task.Id === activeColumnId ) {
@@ -243,7 +247,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       }
     });
 
-    if(activeColumnIndex === overColumnIndex) {
+    if(activeColumnIndex === -1 || overColumnIndex === -1 || activeColumnIndex === overColumnIndex) {
       return;
     }
 
@@ -268,15 +272,16 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     }
 
     const isActiveTask = active.data.current?.type === "Task";
-    const isOverTask = active.data.current?.type === "Task";
+    const isOverTask = over.data.current?.type === "Task";
 
     if (!isActiveTask) {
       return;
     }
 
-    if (isActiveTask && isOverTask) {
-      let activeIndex = 0;
-      let overIndex = 0;
+    if (isOverTask) {
+      const overTask = over.data.current?.task as Task;
+      let activeIndex = -1;
+      let overIndex = -1;
 
       const ytasks = ykanban.get("tasks") as Y.Array<Task>;
       ytasks.forEach((task,i) => {
@@ -288,11 +293,16 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         }
       });
 
+      if(activeIndex === -1 || overIndex === -1) {
+        return;
+      }
+
       if(activeIndex !==  overIndex) {
         ytasks.doc?.transact(() => {
           const task = ytasks.get(activeIndex);
           ytasks.delete(activeIndex);
-          ytasks.insert(overIndex, [task]);
+          console.log(overTask);
+          ytasks.insert(overIndex > activeIndex ? overIndex -1 : overIndex, [{...task, columnId: overTask.columnId}]);
         });
       }
 
@@ -300,15 +310,15 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       //   activeIndex = elements.findIndex((el) => el.Id === activeId);
       //   overIndex = elements.findIndex((el) => el.Id === overId);
       //   // elements[activeIndex].columnId = elements[overIndex].columnId;
-
       //   return arrayMove(elements, activeIndex, overIndex);
       // });
     }
 
     const isOverColumn = over.data.current?.type === "Column";
 
-    if (isActiveTask && isOverColumn) {
-      let activeIndex = 0;
+    if (isOverColumn) {
+      // TODO drop in right index
+      let activeIndex = -1;
 
       const ytasks = ykanban.get("tasks") as Y.Array<Task>;
       ytasks.forEach((task,i) => {
@@ -316,6 +326,10 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
           activeIndex = i;
         }
       });
+
+      if(activeIndex === -1) {
+        return;
+      }
 
       ytasks.doc?.transact(()=> {
         const task = ytasks.get(activeIndex);
@@ -325,9 +339,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
 
       // setTasks((elements) => {
       //   const activeIndex = elements.findIndex((el) => el.Id === activeId);
-
       //   elements[activeIndex].columnId = overId;
-
       //   return arrayMove(elements, activeIndex, activeIndex);
       // });
     }
@@ -340,9 +352,6 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       },
     })
   );
-
-  console.log(columns);
-  console.log(tasks);
 
   return (
     <>
@@ -407,24 +416,26 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
           {createPortal(
             <DragOverlay>
               {activeColumn && (
-                <KanbanColumn
-                  tasks={tasks.filter(
-                    (ele) => ele.columnId === activeColumn.Id
-                  )}
-                  createTask={createTask}
-                  column={activeColumn}
-                  deleteColumn={deleteColumn}
-                  deleteTask={deleteTask}
-                  updateTask={updateTask}
-                  updateColumn={updateColumn}
-                  updateTaskTitle={updateTaskTitle}
-                  markTaskDone={markTaskDone}
-                  label={label}
-                  labels={arrayOfColors}
-                  setLabel={setLabel}
-                  setIsModalsOpen={setIsModalsOpen}
-                  isModalsOpen={isModalsOpen}
-                />
+                <div className="opacity-70 rotate-1">
+                  <KanbanColumn
+                    tasks={tasks.filter(
+                      (ele) => ele.columnId === activeColumn.Id
+                    )}
+                    createTask={createTask}
+                    column={activeColumn}
+                    deleteColumn={deleteColumn}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask}
+                    updateColumn={updateColumn}
+                    updateTaskTitle={updateTaskTitle}
+                    markTaskDone={markTaskDone}
+                    label={label}
+                    labels={arrayOfColors}
+                    setLabel={setLabel}
+                    setIsModalsOpen={setIsModalsOpen}
+                    isModalsOpen={isModalsOpen}
+                  />
+                </div>
               )}
               {activeTask && (
                 <div className="opacity-70 rotate-3">
