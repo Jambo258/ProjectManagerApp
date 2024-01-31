@@ -204,7 +204,6 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   };
 
   const onDragStart = (e: DragStartEvent) => {
-    console.log(e);
     if (e.active.data.current?.type === "Column") {
       setActiveColumn(e.active.data.current.column as Column);
       return;
@@ -301,7 +300,6 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         ytasks.doc?.transact(() => {
           const task = ytasks.get(activeIndex);
           ytasks.delete(activeIndex);
-          console.log(overTask);
           ytasks.insert(overIndex > activeIndex ? overIndex -1 : overIndex, [{...task, columnId: overTask.columnId}]);
         });
       }
