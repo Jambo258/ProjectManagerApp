@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { KanbanTask } from "./KanbanTask";
 import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
+import { Plus } from "react-feather";
 
 interface Props {
   column: Column;
@@ -125,8 +126,8 @@ export const KanbanColumn = (props: Props) => {
           ))}
         </SortableContext>
       </div>
-      <button className="mt-4" onClick={() => createTask(column.Id)}>
-        Add task
+      <button type="button" className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1" onClick={() => createTask(column.Id)}>
+        <Plus size={20}/> <p>Add task</p>
       </button>
     </div>
   );
