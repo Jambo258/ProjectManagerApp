@@ -50,7 +50,7 @@ const CreateProjectModal = () => {
         console.log("Project:", project);
         if (project) {
           closeModal();
-          navigate(`projects/${project.id}`, { replace: true });
+          navigate(`projects/${project.id}`);
         }
       } catch (err) {
         onError;
@@ -91,7 +91,7 @@ const CreateProjectModal = () => {
           <button
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
-              Add Project
+              Create project
           </button>
           <button
             type="reset"

@@ -96,14 +96,14 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
-            Save Changes
+            Save changes
           </button>
           <button
             type="reset"
             onClick={closeModal}
             className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
-            Cancel Changes
+            Cancel
           </button>
         </section>
       </form>

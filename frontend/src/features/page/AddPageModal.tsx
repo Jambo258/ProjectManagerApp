@@ -95,7 +95,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
           <button
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
-              Save
+              Add page
           </button>
           <button
             type="reset"
