@@ -60,9 +60,33 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     setLabel(ylabels.toArray());
 
     ytasks.observe(() => {
+      const uniqueIds = new Set();
+      const tasksArray = ytasks.toArray();
+      ytasks.doc?.transact(() => {
+        for (let i = tasksArray.length - 1; i >= 0; i--) {
+          const item = tasksArray[i];
+          if (uniqueIds.has(item.Id)) {
+            ytasks.delete(i, 1);
+          } else {
+            uniqueIds.add(item.Id);
+          }
+        }
+      });
       setTasks(ytasks.toArray());
     });
     ycolumns.observe(() => {
+      const uniqueIds = new Set();
+      const columnsArray = ycolumns.toArray();
+      ycolumns.doc?.transact(() => {
+        for (let i = columnsArray.length - 1; i >= 0; i--) {
+          const item = columnsArray[i];
+          if (uniqueIds.has(item.Id)) {
+            ycolumns.delete(i, 1);
+          } else {
+            uniqueIds.add(item.Id);
+          }
+        }
+      });
       setColumns(ycolumns.toArray());
     });
     ylabels.observe(() => {
