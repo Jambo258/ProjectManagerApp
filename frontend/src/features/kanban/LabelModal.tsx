@@ -44,7 +44,7 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
               )}
             </div>
             <div
-              className={`col-span-2 text-center rounded-md ${elements.color}`}
+              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${elements.color}`}
             >
               {elements.name}
             </div>
