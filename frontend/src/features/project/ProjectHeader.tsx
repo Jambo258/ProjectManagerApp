@@ -36,7 +36,7 @@ export const ProjectHeader = () => {
         <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"}`}>{project.name}</h2>
         }
         <Menu>
-          <button className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+          <button className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             onClick={() => setShowHeader(!showHeader)}>
             {showHeader ? "Hide header" : "Show header" } 
           </button> 
@@ -46,7 +46,7 @@ export const ProjectHeader = () => {
           <Modal
             btnText={"Add new page"}
             btnStyling={
-              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Add new page"}>
             <AddPageModal projectId={projectId} />
@@ -56,7 +56,7 @@ export const ProjectHeader = () => {
             <Modal
               btnText={"Rename page"}
               btnStyling={
-                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
               }
               modalTitle={"Rename page"}
             >
@@ -71,7 +71,7 @@ export const ProjectHeader = () => {
             <DeletePageModal
               btnText={"Delete page"}
               btnStyling={
-                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
               }
             />
             : null      
@@ -82,7 +82,7 @@ export const ProjectHeader = () => {
           <Modal
             btnText={"Rename project"}
             btnStyling={
-              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Rename project"}
           >
@@ -94,7 +94,7 @@ export const ProjectHeader = () => {
           <Modal
             btnText={"Project members"}
             btnStyling={
-              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Project members"}
           >
@@ -103,7 +103,7 @@ export const ProjectHeader = () => {
           <DeleteProjectModal
             btnText={"Delete project"}
             btnStyling={
-              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
           />
         </Menu>
