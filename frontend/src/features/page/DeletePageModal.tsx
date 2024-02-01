@@ -33,7 +33,7 @@ export const DeletePageModal = ({btnText, btnStyling}: IProps) => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleDeleteProject = async () => {
+  const handleDeletePage = async () => {
     if (!isLoading && pageId) {
       try {
         const page = await deletePage(pageId).unwrap();
@@ -71,7 +71,7 @@ export const DeletePageModal = ({btnText, btnStyling}: IProps) => {
       <DeleteModal
         setConfirmDeleteEdit={setIsDeleteModalOpen}
         confirmDeleteEdit={isDeleteModalOpen}
-        handleSubmitForModal={handleDeleteProject}
+        handleSubmitForModal={handleDeletePage}
         deleteModalTitle={deleteConfirmationTitle}
         deleteModalText={deleteConfirmationTtext} />
       }
