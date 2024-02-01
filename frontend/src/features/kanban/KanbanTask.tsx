@@ -169,18 +169,18 @@ export const KanbanTask = ({
               </h3>)}
           </header>
 
-          <main className="w-full sm:max-w-full grid grid-cols-11 sm:grid-cols-4 mx-auto px-2 gap-x-6">
+          <main className="w-full sm:max-w-prose grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6">
 
-            <section className="col-span-9 sm:col-span-3 flex flex-col gap-y-3">
-              <div className="h-fit flex flex-row justify-between">
+            <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
+              <div className="h-fit flex flex-row justify-between gap-x-2">
                 {/* Task Members */}
-                <div className="fles flex-row inline-flex gap-x-1">
+                <div className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
                   {taskMembers.map((member: Member,) => {
                     return <UserIcon key={member.id} id={member.id} name={member.name} />;
                   })}
                 </div>
                 {/* Task Deadline */}
-                <div className={`rounded w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
+                <div className={`rounded min-w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
                   <p className="label-text">
                     {task.done ? "Done" : "Not Done"}
                   </p>
@@ -213,7 +213,7 @@ export const KanbanTask = ({
               </section>
             </section>
 
-            <section className="grid col-span-2 sm:col-span-1 min-w-max gap-4">
+            <section className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
               <div>
                 <h5 className="heading-xxs mb-2">Add to task</h5>
                 <div className="flex flex-col gap-2">
