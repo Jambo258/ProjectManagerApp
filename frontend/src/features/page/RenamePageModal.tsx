@@ -57,7 +57,7 @@ export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
         }
       } catch (err) {
         onError;
-        console.error("Failed to save the user", err);
+        console.error("Failed to rename the page", err);
         // TO DO: Refactor this
         if (
           err &&
@@ -86,7 +86,7 @@ export const RenamePageModal = ( {pageId, pageName }: RenamePageProps) => {
             type="text"
             {...register("pageName")}
             placeholder="e.g. To do"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.pageName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
