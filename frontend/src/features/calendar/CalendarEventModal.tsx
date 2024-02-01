@@ -62,21 +62,6 @@ const CalendarEventModal = ({
     setEvents([...events.slice(0, index), ...events.slice(index + 1)]);
   };
 
-  const checkEventDay = (day: Date) => {
-    const test = events.find(
-      (event) =>
-        isEqual(getMonth(event.day), getMonth(day)) &&
-        isEqual(getDate(event.day), getDate(day)) &&
-        isEqual(getYear(event.day), getYear(day))
-    );
-
-    if (test) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const setEdit = (eventid: string, setEdit: boolean) => {
     const test = events.map((event) => {
       if (event.id === eventid) {
@@ -129,24 +114,24 @@ const CalendarEventModal = ({
     <>
       <div
         onClick={() => openModal()}
-        className={`cursor-pointer rounded-none bg-grayscale-200 flex justify-start h-full w-full group border border-collapse ${
+        className={`cursor-pointer rounded-none bg-grayscale-200 flex justify-start h-[220px] w-full group border border-collapse ${
           isSameMonth(day, currentMonth)
             ? "text-dark-font"
             : "text-grayscale-400"
         }
-                    ${checkEventDay(day) && "bg-primary-200 "}
-                    ${!isToday(day) && "hover:bg-primary-200 "}
-                    ${isToday(day) && "border-4 border-primary-200 "}`}
+          ${!isToday(day) && "hover:bg-primary-200 "}
+          ${isToday(day) && "border-4 border-primary-200 "}
+        `}
       >
-        <ul className="overflow-hidden">
-          <li>{format(day, "d")}</li>
+        <ul className="overflow-x-none whitespace-nowrap ">
+          <li className="btn-text-lg p-1">{format(day, "d")}</li>
           {events.map(
             (event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) &&
               projectid === event.projectid && (
-                <li key={event.id}>
+                <li key={event.id} className="ml-1">
                   {format(event.day, "HH:mm ")}
                   {event.eventTitle}
                 </li>
@@ -172,7 +157,7 @@ const CalendarEventModal = ({
               <X size={20} />
             </button>
             <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
-              Events {format(day, "d")}
+              {format(day, "iiii")} {format(day, "dd.M.yyyy")}
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
@@ -192,10 +177,14 @@ const CalendarEventModal = ({
                           {event.edit ? (
                             <div>
                               <input
+                                type="time"
+                                onChange={(e) => setTime(day, e.target.value)}
+                              />
+                              <input
                                 onChange={(e) =>
                                   setNewEventTitle(e.target.value)
                                 }
-                                placeholder={"edit event"}
+                                placeholder={"Event title"}
                               />
                               <button
                                 onClick={() =>
@@ -212,7 +201,7 @@ const CalendarEventModal = ({
                             </div>
                           )}
                           <Trash2
-                            className="grid  cursor-pointer"
+                            className="grid  cursor-pointer text-caution-100"
                             onClick={() => deleteEvent(event.id)}
                           />
                         </div>
