@@ -112,7 +112,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
             type="text"
             {...register("name")}
             placeholder={element.name}
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.name?.message}
