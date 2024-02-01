@@ -14,7 +14,7 @@ export const ColorModal = ({ label, setValue }: ColorProps) => {
   return (
     <button
       onClick={() => handleChange()}
-      className={`h-12 m-1 rounded-md ${label.color}`}
+      className={`h-8 rounded-[2px] ${label.color}`}
       type="button"
     ></button>
   );
