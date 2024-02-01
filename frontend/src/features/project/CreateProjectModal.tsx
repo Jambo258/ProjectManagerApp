@@ -82,7 +82,7 @@ const CreateProjectModal = () => {
             type="text"
             {...register("projectName")}
             placeholder="Give a project name!"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
