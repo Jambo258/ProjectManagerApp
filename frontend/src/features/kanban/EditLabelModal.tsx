@@ -106,19 +106,19 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
   return (
     <>
       <form>
-        <label className="block mb-6 body-text-sm text-left text-dark-font">
+        <label className="block mb-3.5 heading-xs text-left text-dark-font">
           Title
           <input
             type="text"
             {...register("name")}
             placeholder={element.name}
-            className="block w-full py-1.5 px-4 mt-1"
+            className="block w-full body-text-sm py-1 px-2 mt-1.5 border-grayscale-300"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.name?.message}
           </p>
         </label>
-        <label className="block mb-6 body-text-sm text-left text-dark-font">
+        <label className="block heading-xs text-left text-dark-font">
           Select a Color
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.color?.message}
@@ -127,7 +127,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
             {formError}
           </p>
         </label>
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labels.map((element) => (
             <ColorModal
               key={element.id}
@@ -136,18 +136,18 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
             ></ColorModal>
           ))}
         </div>
-        <section className="grid grid-cols-2">
+        <section className="border grid grid-cols-2 gap-6 mt-3.5">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"
-            className="py-2 my-2 mx-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            className="py-2 btn-text-xs bg-success-100 hover:bg-success-200"
           >
             Save
           </button>
           <button
             onClick={onHandleDelete}
             name="delete"
-            className="py-2 my-2 mx-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
+            className="py-2 btn-text-xs bg-caution-100 hover:bg-caution-200"
           >
             Delete
           </button>
