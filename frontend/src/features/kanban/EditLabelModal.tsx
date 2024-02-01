@@ -17,7 +17,7 @@ interface ColorProps {
   deleteLabel: (id: string | number) => void;
 }
 
-export const EditLabelModal = ({ setLabel, labels, element, editLabel, deleteLabel }: ColorProps) => {
+export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
   const {
