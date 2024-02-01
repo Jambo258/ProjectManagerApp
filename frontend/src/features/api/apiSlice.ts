@@ -193,14 +193,14 @@ export const api = createApi({
         method: "PUT",
         body: body,
       }),
-      invalidatesTags: (_result, _error, page) => [{ type: "Pages", id: page.id }],
+      invalidatesTags: (result, _error, page) => [{ type: "Pages", id: page.id }, { type: "Projects", id: result?.projectid }],
     }),
     deletePage: builder.mutation<Page, number>({
       query: (pageId) => ({
         url: `/pages/${pageId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (_result, _error, pageId) => [{ type: "Pages", id: pageId }],
+      invalidatesTags: (result, _error, pageId) => [{ type: "Pages", id: pageId }, { type: "Projects", id: result?.projectid }],
     }),
     addNewProjectUser: builder.mutation<ProjectUser, AddMemberReqeust>({
       query: (addMemberReqeust) => ({

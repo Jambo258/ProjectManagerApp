@@ -53,13 +53,13 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
         className="flex flex-col bg-grayscale-100 fixed w-fit h-fit z-20 sm:left-14 sm:bottom-2 sm:top-auto right-2 top-12 border-2 border-grayscale-200 shadow-md rounded">
         <Modal 
           btnText={"Account settings"} 
-          btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 border-b border-grayscale-200"
+          btnStyling="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 border-b border-grayscale-200 hover:text-dark-font/60"
           modalTitle={"Account settings"} >
           <ProfileModal />
         </Modal>
         <button
           onClick={() => logout()}
-          className="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100">
+          className="min-w-max w-full py-1.5 px-3 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60">
             Logout
         </button>
       </section>

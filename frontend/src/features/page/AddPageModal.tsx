@@ -13,11 +13,16 @@ import { DevTool } from "@hookform/devtools";
 // Context
 import { ModalContext } from "../../components/Modal";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
 interface AddPageFormValues {
   pageName: string;
 }
 
 export const AddPageModal = ({ projectId }: { projectId: number; }) => {
+  const navigate = useNavigate();
+
   const [addNewPage, { isLoading }] = useAddNewPageMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
@@ -49,6 +54,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
         console.log("Page:", page);
         if (page) {
           closeModal();
+          navigate(`projects/${projectId}/${page.id}`);
         }
       } catch (err) {
         onError;
@@ -80,7 +86,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
             type="text"
             {...register("pageName")}
             placeholder="Give a page name!"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.pageName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
@@ -89,7 +95,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
           <button
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
-              Save
+              Add page
           </button>
           <button
             type="reset"
