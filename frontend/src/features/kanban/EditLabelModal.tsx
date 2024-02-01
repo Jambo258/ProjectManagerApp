@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Labels } from "./Kanban";
+import { Labels, Task } from "./Kanban";
 // import { ModalContext } from "../../components/Modal";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 import { ColorModal } from "./ColorModal";
@@ -10,14 +10,20 @@ import { SubModalContext } from "./SubModal";
 
 interface ColorProps {
   label: Labels[];
+  task: Task;
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
   element: Labels;
-  editLabel: (id: string | number, name: string, color: string) => void;
+  editLabel: (
+    taskId: string,
+    id: string | number,
+    name: string,
+    color: string
+  ) => void;
   deleteLabel: (id: string | number) => void;
 }
 
-export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: ColorProps) => {
+export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
   const {
@@ -45,7 +51,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
     console.log(formData.color);
     if (canSubmit) {
       try {
-        editLabel(element.id, formData.name, formData.color);
+        editLabel(task.Id, element.id, formData.name, formData.color);
         /*
         setLabel((prev) =>
           prev.map((elements) => {

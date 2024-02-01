@@ -13,9 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { KanbanTask } from "./KanbanTask";
-import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
-import { SubModal } from "./SubModal";
 import { nanoid } from "@reduxjs/toolkit";
 
 export interface Column {
@@ -26,10 +24,9 @@ export interface Labels {
   id: string | number;
   name: string;
   color: string;
-  active: boolean;
 }
 export interface Task {
-  Id: string | number;
+  Id: string;
   title: string;
   columnId: string | number;
   content: string;
@@ -70,23 +67,25 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     });
   },[ykanban]);
 
+  console.log(tasks);
+  console.log(label);
 
   const arrayOfColors = [
-    { id: 1, name: "", color: "bg-green-100", active: false },
-    { id: 2, name: "", color: "bg-green-200", active: false },
-    { id: 3, name: "", color: "bg-green-300", active: false },
-    { id: 4, name: "", color: "bg-purple-100", active: false },
-    { id: 5, name: "", color: "bg-purple-200", active: false },
-    { id: 6, name: "", color: "bg-purple-300", active: false },
-    { id: 7, name: "", color: "bg-red-100", active: false },
-    { id: 8, name: "", color: "bg-red-200", active: false },
-    { id: 9, name: "", color: "bg-red-300", active: false },
-    { id: 10, name: "", color: "bg-blue-100", active: false },
-    { id: 11, name: "", color: "bg-blue-200", active: false },
-    { id: 12, name: "", color: "bg-blue-300", active: false },
-    { id: 13, name: "", color: "bg-yellow-100", active: false },
-    { id: 14, name: "", color: "bg-yellow-200", active: false },
-    { id: 15, name: "", color: "bg-yellow-300", active: false },
+    { id: 1, name: "", color: "bg-green-100" },
+    { id: 2, name: "", color: "bg-green-200" },
+    { id: 3, name: "", color: "bg-green-300" },
+    { id: 4, name: "", color: "bg-purple-100" },
+    { id: 5, name: "", color: "bg-purple-200"},
+    { id: 6, name: "", color: "bg-purple-300" },
+    { id: 7, name: "", color: "bg-red-100"},
+    { id: 8, name: "", color: "bg-red-200" },
+    { id: 9, name: "", color: "bg-red-300" },
+    { id: 10, name: "", color: "bg-blue-100" },
+    { id: 11, name: "", color: "bg-blue-200" },
+    { id: 12, name: "", color: "bg-blue-300" },
+    { id: 13, name: "", color: "bg-yellow-100" },
+    { id: 14, name: "", color: "bg-yellow-200" },
+    { id: 15, name: "", color: "bg-yellow-300" },
   ];
 
   const createNewColumn = () => {
@@ -118,28 +117,90 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       id: nanoid(),
       name: name,
       color: color,
-      active: false
     };
 
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
     ylabels.push([newLabel]);
   };
 
-  const updateLabelStatus = (id:string | number, activeStatus: boolean) => {
+  const updateLabelStatus = (taskId: string, id:string) => {
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
+
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    console.log(ytasks.toArray());
+    const findLabelIndex = ylabels
+      .toArray()
+      .findIndex((element) => element.id === id);
+    console.log(findLabelIndex);
     let changed = false;
-    ylabels.forEach((label, i) => {
-      if (label.id === id && changed === false) {
+    ytasks.forEach((task, i) => {
+      console.log(taskId);
+      if (task.Id === taskId && changed === false) {
+        console.log(id);
+        const findIndex = task.labels?.findIndex(
+          (element) => element.id === id
+        );
+        console.log(findIndex);
         changed = true;
-        ylabels.doc?.transact(() => {
-          ylabels.delete(i);
-          ylabels.insert(i, [{ ...label, active:activeStatus }]);
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [
+            {
+              ...task,
+              labels:
+                findIndex !== -1
+                  ? task.labels
+                  : [...task.labels!, ylabels.get(findLabelIndex)],
+            },
+          ]);
+        });
+
+      }
+    });
+  };
+
+  const deleteLabelStatus = (taskId: string, id: string) => {
+    console.log("delete status");
+    const ylabels = ykanban.get("labels") as Y.Array<Labels>;
+
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    console.log(ytasks.toArray());
+    const findLabelIndex = ylabels
+      .toArray()
+      .findIndex((element) => element.id === id);
+    console.log(findLabelIndex);
+    let changed = false;
+
+    ytasks.forEach((task, i) => {
+      console.log(taskId);
+      if (task.Id === taskId && changed === false) {
+        console.log(id);
+        const findIndex = task.labels?.findIndex(
+          (element) => element.id === id
+        );
+        console.log(findIndex);
+        changed = true;
+
+        ytasks.doc?.transact(() => {
+          if (findIndex !== -1) {
+            const updatedLabels = task.labels?.filter(
+              (label) => label.id !== id
+            );
+
+            ytasks.delete(i);
+            ytasks.insert(i, [
+              {
+                ...task,
+                labels: updatedLabels,
+              },
+            ]);
+          }
         });
       }
     });
   };
 
-  const editLabel = (id: string | number, name: string, color: string) => {
+  const editLabel = (taskId: string, id: string | number, name: string, color: string) => {
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
     let changed = false;
     ylabels.forEach((label, i) => {
@@ -151,6 +212,27 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         });
       }
     });
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    ytasks.forEach((task, i) => {
+      console.log(taskId);
+      const findIndex = task.labels?.findIndex((element) => element.id === id);
+      console.log(findIndex);
+
+      if (findIndex !== -1) {
+
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [
+            {
+              ...task,
+              labels: task.labels?.map((label) =>
+                label.id === id ? { ...label, name: name, color: color } : label
+              ),
+            },
+          ]);
+        });
+      }
+    });
   };
 
   const deleteLabel = (id: string | number) => {
@@ -159,6 +241,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       if (label.id === id) {
         ylabels.delete(i);
       }
+    });
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    ytasks.forEach((task, i) => {
+      const updatedLabels = task.labels?.filter((element) => element.id !== id);
+
+      ytasks.doc?.transact(() => {
+        ytasks.delete(i);
+        ytasks.insert(i, [
+          {
+            ...task,
+            labels: updatedLabels,
+          },
+        ]);
+      });
     });
   };
 
@@ -400,25 +496,6 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   return (
     <>
       <div className="grid grid-flow-col w-16">
-        <SubModal
-          btnText={"Labels"}
-          modalTitle={"Labels"}
-          iconName={"Labels"}
-          setIsModalsOpen={setIsModalsOpen}
-          isModalsOpen={isModalsOpen}
-        >
-          <LabelModal
-            label={label}
-            labels={arrayOfColors}
-            setLabel={setLabel}
-            setIsModalsOpen={setIsModalsOpen}
-            isModalsOpen={isModalsOpen}
-            createLabel={createLabel}
-            updateLabelStatus={updateLabelStatus}
-            editLabel={editLabel}
-            deleteLabel={deleteLabel}
-          />
-        </SubModal>
         <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
           Add Column
         </button>
@@ -437,6 +514,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                   <KanbanColumn
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
+                    deleteLabelStatus={deleteLabelStatus}
                     updateLabelStatus={updateLabelStatus}
                     createLabel={createLabel}
                     deleteTask={deleteTask}
@@ -467,6 +545,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
+                    deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     updateLabelStatus={updateLabelStatus}
@@ -490,6 +569,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
+                    deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     updateLabelStatus={updateLabelStatus}

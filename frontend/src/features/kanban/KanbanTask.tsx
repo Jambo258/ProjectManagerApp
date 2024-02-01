@@ -31,8 +31,14 @@ interface Props {
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
-  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
-  editLabel: (id: string | number, name: string, color: string) => void;
+  updateLabelStatus: (taskId: string, id: string) => void;
+  deleteLabelStatus: (taskId: string, id: string) => void;
+  editLabel: (
+    taskId: string,
+    id: string | number,
+    name: string,
+    color: string
+  ) => void;
   deleteLabel: (id: string | number) => void;
 }
 
@@ -50,7 +56,8 @@ export const KanbanTask = ({
   createLabel,
   updateLabelStatus,
   editLabel,
-  deleteLabel
+  deleteLabel,
+  deleteLabelStatus
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -118,13 +125,13 @@ export const KanbanTask = ({
 
             {/* Task Labels */}
             <section className="w-full h-fit flex flex-wrap gap-[6px]">
-              {label.map((element) => element.active ?(
+              {task.labels?.map((element) => (
                 <Label
                   key={element.id}
                   labelColor={element.color}
                   labelText={element.name}
                 />
-              ): null)}
+              ))}
             </section>
           </div>
 
@@ -203,13 +210,13 @@ export const KanbanTask = ({
 
               {/* Task Labels */}
               <section className="w-full h-fit flex flex-wrap gap-[6px]">
-                {label.map((element) => element.active ?(
+                {task.labels?.map((element) => (
                   <Label
                     key={element.id}
                     labelColor={element.color}
                     labelText={element.name}
                   />
-                ): null)}
+                ))}
               </section>
             </section>
 
@@ -234,6 +241,7 @@ export const KanbanTask = ({
                     isModalsOpen={isModalsOpen}
                   >
                     <LabelModal
+                      task={task}
                       label={label}
                       labels={labels}
                       setLabel={setLabel}
@@ -241,6 +249,7 @@ export const KanbanTask = ({
                       isModalsOpen={isModalsOpen}
                       createLabel={createLabel}
                       updateLabelStatus={updateLabelStatus}
+                      deleteLabelStatus={deleteLabelStatus}
                       editLabel={editLabel}
                       deleteLabel={deleteLabel}
                     />
