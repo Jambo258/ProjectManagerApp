@@ -213,14 +213,14 @@ export const ProfileModal = () => {
   };
 
   return (
-    <div className="max-w-full"> 
+    <div className="max-w-full">
 
 
       {nameEdit ? (
         <form
           onSubmit={handleName(onHandleSubmitName, onErrorName)}
           className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch">
-          <section className="col-span-4 sm:col-span-3 mt-2">                
+          <section className="col-span-4 sm:col-span-3 mt-2">
             <label className="heading-xs">
             Name
               <input
@@ -245,8 +245,8 @@ export const ProfileModal = () => {
           </section>
         </form>
       ):(
-        <section className="col-span-4 grid sm:grid-rows-1 sm:grid-cols-4 gap-x-3 grid-row-1">     
-          <section className="col-span-4 sm:col-span-3 mt-2"> 
+        <section className="col-span-4 grid sm:grid-rows-1 sm:grid-cols-4 gap-x-3 grid-row-1">
+          <section className="col-span-4 sm:col-span-3 mt-2">
             <p className="heading-xs">
             Name
             </p>
@@ -267,12 +267,12 @@ export const ProfileModal = () => {
           </section>
         </section>
       )}
-      
+
       {emailEdit ? (
         <form
           onSubmit={handleEmail(onHandleSubmitEmail, onErrorEmail)}
           className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch">
-          <section className="col-span-4 sm:col-span-3 mt-2">     
+          <section className="col-span-4 sm:col-span-3 mt-2">
             <label className="heading-xs">
             Email
               <input
@@ -297,9 +297,9 @@ export const ProfileModal = () => {
           </section>
         </form>
       ):(
-        <section 
+        <section
           className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch">
-          <section className="col-span-4 sm:col-span-3 mt-2">     
+          <section className="col-span-4 sm:col-span-3 mt-2">
             <p className="heading-xs">
             Email
             </p>
@@ -325,7 +325,7 @@ export const ProfileModal = () => {
         <form
           onSubmit={handlePassword(onHandleSubmitPassword, onErrorPassword)}
           className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch">
-          <section className="col-span-4 sm:col-span-3">     
+          <section className="col-span-4 sm:col-span-3">
             <label className="heading-xs">
               Password
               <section className="relative">
@@ -359,9 +359,9 @@ export const ProfileModal = () => {
           </section>
         </form>
       ):(
-        <section 
+        <section
           className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch">
-          <section className="col-span-4 sm:col-span-3">     
+          <section className="col-span-4 sm:col-span-3">
             <p className="heading-xs">
             Password
             </p>
@@ -384,9 +384,9 @@ export const ProfileModal = () => {
       )}
 
 
-      <section 
+      <section
         className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch ">
-        <section className="col-span-4 sm:col-span-3">     
+        <section className="col-span-4 sm:col-span-3">
           <p className="heading-xs">Delete Account</p>
           <p className="w-full py-1.5 px-4 body-text-md">
               Permanently delete your account and remove access to all projects.
@@ -413,6 +413,6 @@ export const ProfileModal = () => {
           handleSubmitForModal={handleSubmitForModal}
           deleteModalText={deleteModalText} />}
     </div>
-    
+
   );
 };

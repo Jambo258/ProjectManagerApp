@@ -7,6 +7,7 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubModalContext } from "./SubModal";
+import { DeleteModal } from "../../components/DeleteModal";
 
 interface ColorProps {
   label: Labels[];
@@ -26,6 +27,7 @@ interface ColorProps {
 export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }: ColorProps) => {
   // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
+  const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const {
     formState: { isDirty, errors },
     handleSubmit,
@@ -87,10 +89,11 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
   };
 
   const onHandleDelete = () => {
+    console.log("mm");
     try {
       deleteLabel(element.id);
       // setLabel((prev) => prev.filter((elements) => elements.id !== element.id));
-      closeModal();
+      // closeModal();
       reset();
       setFormError(null);
     } catch (err) {
@@ -151,12 +154,21 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
             Save
           </button>
           <button
-            onClick={onHandleDelete}
+            type="button"
+            onClick={() => setConfirmDeleteEdit(true)}
             name="delete"
             className="py-2 my-2 mx-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
           >
             Delete
           </button>
+          {confirmDeleteEdit && (
+            <DeleteModal
+              setConfirmDeleteEdit={setConfirmDeleteEdit}
+              confirmDeleteEdit={confirmDeleteEdit}
+              handleSubmitForModal={onHandleDelete}
+              deleteModalText={"Are you sure you want to delete this label?"}
+            />
+          )}
         </section>
       </form>
     </>
