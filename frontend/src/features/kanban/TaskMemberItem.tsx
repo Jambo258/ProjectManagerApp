@@ -47,13 +47,8 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
   // If member not selected add to taskMembers when clicked.
   // Save selected members to the task object.
   const handleOnClick = () => {
-    if (isChecked === true) {
-      removeTaskMember();
-      setIsChecked((prev) => !prev);
-    } else {
-      addTaskMember();
-      setIsChecked((prev) => !prev);
-    }
+    isChecked ? removeTaskMember() : addTaskMember();
+    setIsChecked((prev) => !prev);
   };
 
   useEffect(() => {
