@@ -32,7 +32,6 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
 
   const addTaskMember = () => {
     setTaskMembers([...taskMembers, member]);
-    console.log("Members:", taskMembers);
   };
 
   const removeTaskMember = () => {
