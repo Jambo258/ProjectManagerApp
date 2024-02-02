@@ -1,23 +1,23 @@
 // React
 import { useState } from "react";
 
-// Redux
-import { type Member } from "../api/apiSlice";
-
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 // Components
 import { X } from "react-feather";
-import { type Task, type Labels } from "./Kanban";
-import { Label } from "./Label";
 import { IconButton } from "./IconButton";
 import { DeleteModal } from "../../components/DeleteModal";
-import { LabelModal } from "./LabelModal";
 import { SubModal } from "./SubModal";
+import { LabelModal } from "./LabelModal";
+import { Label } from "./Label";
 import { TaskMembersModal } from "./TaskMembersModal";
 import { UserIcon } from "../user/UserIcon";
+
+// Types and Interfaces
+import { type Task, type Labels } from "./Kanban";
+import { type Member } from "../api/apiSlice";
 
 interface Props {
   task: Task;
@@ -70,8 +70,7 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [taskMembers, setTaskMembers] = useState<Member[]>([{id: 1, email: "suvi.sulonen@gmail.com", name: "2 Suvi", role: "manager"}]);
-  // console.log(isModalsOpen);
+  const [taskMembers, setTaskMembers] = useState<Member[]>([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -182,17 +181,17 @@ export const KanbanTask = ({
             <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
               <div className="h-fit flex flex-row justify-between gap-x-2">
                 {/* Task Members */}
-                <div className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
+                <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
                   {displayTaskMembers}
-                </div>
+                </section>
                 {/* Task Deadline */}
-                <div className={`rounded min-w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
+                <section className={`rounded min-w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
                   <p className="label-text">
                     {task.done ? "Done" : "Not Done"}
                   </p>
-                </div>
+                </section>
               </div>
-              <div className="">
+              <section>
                 <form>
                   <label role="h4" className="heading-xs mb-1">
                   Description
@@ -205,7 +204,7 @@ export const KanbanTask = ({
                     />
                   </label>
                 </form>
-              </div>
+              </section>
 
               {/* Task Labels */}
               <section className="w-full h-fit flex flex-wrap gap-[6px]">
@@ -213,10 +212,11 @@ export const KanbanTask = ({
               </section>
             </section>
 
-            <section className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
-              <div>
+            <aside className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
+              <section>
                 <h5 className="heading-xxs mb-2">Add to task</h5>
                 <div className="flex flex-col gap-2">
+
                   <SubModal
                     iconName="Members"
                     btnText="Members"
@@ -226,6 +226,7 @@ export const KanbanTask = ({
                   >
                     <TaskMembersModal taskMembers={taskMembers} setTaskMembers={setTaskMembers} />
                   </SubModal>
+
                   <SubModal
                     iconName="Labels"
                     btnText={"Labels"}
@@ -245,29 +246,34 @@ export const KanbanTask = ({
                       deleteLabel={deleteLabel}
                     />
                   </SubModal>
+
                   <IconButton
                     iconName="Deadline"
                     btnText="Deadline"
                     handleOnClick={() => ""}
                   />
+
                 </div>
-              </div>
+              </section>
               <section>
                 <h5 className="heading-xxs mb-2">Actions</h5>
                 <div className="flex flex-col gap-2 min-w-max">
+
                   <IconButton btnType="submit"
                     iconName="Save"
                     btnText="Save changes"
                     handleOnClick={handleSave}
                   />
+
                   <IconButton
                     iconName="Delete"
                     btnText="Delete task"
                     handleOnClick={() => setIsDeleteConfirmOpen(true)}
                   />
+
                 </div>
               </section>
-            </section>
+            </aside>
           </main>
         </dialog>
       </div>
