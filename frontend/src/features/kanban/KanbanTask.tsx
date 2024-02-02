@@ -52,7 +52,7 @@ export const KanbanTask = ({
   editLabel,
   deleteLabel
 }: Props) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
       id: task.Id,
       data: {
@@ -110,26 +110,27 @@ export const KanbanTask = ({
         style={style}
         {...attributes}
         {...listeners}
-        className="w-full flex flex-col h-fit p-4 rounded bg-grayscale-100"
+        className={`w-full flex flex-col h-fit p-4 rounded ${isDragging ? "bg-grayscale-300 opacity-50" : "bg-grayscale-100 "}`}
         onClick={openModal}
       >
-        <div className="mb-6">
-          <h4 className="heading-xs mb-1">{task.title}</h4>
-          <p className="min-h-max line-clamp-3 body-text-xs">{task.content}</p>
-        </div>
+        <div className={isDragging ? "invisible" : ""}>
+          <div className="mb-6">
+            <h4 className="heading-xs mb-1">{task.title}</h4>
+            <p className="min-h-max line-clamp-3 body-text-xs">{task.content}</p>
+          </div>
 
-        <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
-          <div className="grid col-span-2">
-            {/* Task Deadline */}
-            <section className="w-full mb-[6px]">
-              <div
-                className={`rounded w-fit px-2 py-1 text-center ${
-                  task.done ? "bg-success-100" : "bg-caution-100"
-                }`}
-              >
-                <p className="label-text">{task.done ? "Done" : "Not Done"}</p>
-              </div>
-            </section>
+          <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
+            <div className="grid col-span-2">
+              {/* Task Deadline */}
+              <section className="w-full mb-[6px]">
+                <div
+                  className={`rounded w-fit px-2 py-1 text-center ${
+                    task.done ? "bg-success-100" : "bg-caution-100"
+                  }`}
+                >
+                  <p className="label-text">{task.done ? "Done" : "Not Done"}</p>
+                </div>
+              </section>
 
             {/* Task Labels */}
             <section className="w-full h-fit flex flex-wrap gap-[6px]">
