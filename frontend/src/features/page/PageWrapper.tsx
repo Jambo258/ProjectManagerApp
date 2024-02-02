@@ -99,19 +99,21 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
 
   return (
     <>
-      <section className="h-fit w-full text-right">
-        <Modal modalTitle="Add new component" btnStyling="py-2 btn-text-sm" btnText="Add new component">
-          <AddComponentModal addComponent={addComponent} />
-        </Modal>
-      </section>
+      <section className="flex flex-col gap-6">
+        <section className="h-fit w-full text-right">
+          <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText="Add component">
+            <AddComponentModal addComponent={addComponent} />
+          </Modal>
+        </section>
       
-      {values.map((component) =>
-        <Fragment key={component.uuid}>
-          {getComponent(component)}
-          <button onClick={() => moveComponent(component.uuid)}>Move Up</button>
-          <button onClick={() => deleteComponent(component.uuid)}>Delete</button>
-        </Fragment>
-      )}
+        {values.map((component) =>
+          <Fragment key={component.uuid}>
+            {getComponent(component)}
+            <button className="w-fit btn-text-xs py-2" onClick={() => moveComponent(component.uuid)}>Move Up</button>
+            <button className="w-fit btn-text-xs py-2" onClick={() => deleteComponent(component.uuid)}>Delete</button>
+          </Fragment>
+        )}
+      </section>
     </>
   );
 };
