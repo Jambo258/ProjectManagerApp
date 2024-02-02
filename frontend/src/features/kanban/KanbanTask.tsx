@@ -23,6 +23,7 @@ interface Props {
   task: Task;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
+  updateTaskMembers: (id: number | string, members: Member[]) => void;
   markTaskDone: (id: number | string) => void;
   deleteTask: (id: number | string) => void;
   label: Labels[];
@@ -40,6 +41,7 @@ export const KanbanTask = ({
   task,
   updateTask,
   updateTaskTitle,
+  updateTaskMembers,
   // markTaskDone,
   deleteTask,
   label,
@@ -70,7 +72,8 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [taskMembers, setTaskMembers] = useState<Member[]>([]);
+  // This is for now since there are already tasks with no members array
+  const [taskMembers, setTaskMembers] = useState<Member[]>(task.members ? task.members : []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -101,6 +104,7 @@ export const KanbanTask = ({
     console.log("Task saved");
     updateTask(task.Id, editContent);
     updateTaskTitle(task.Id, editTitle);
+    updateTaskMembers(task.Id, taskMembers);
     closeModal();
   };
 
@@ -222,11 +226,15 @@ export const KanbanTask = ({
                   <SubModal
                     iconName="Members"
                     btnText="Members"
+                    chevronShown={false}
                     modalTitle={"Members"}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                   >
-                    <TaskMembersModal taskMembers={taskMembers} setTaskMembers={setTaskMembers} />
+                    <TaskMembersModal
+                      taskMembers={taskMembers}
+                      setTaskMembers={setTaskMembers}
+                    />
                   </SubModal>
 
                   <SubModal

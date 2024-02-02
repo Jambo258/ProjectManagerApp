@@ -5,48 +5,51 @@ import { KanbanTask } from "./KanbanTask";
 import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 import { Plus } from "react-feather";
+import { type Member } from "../api/apiSlice";
 
 interface Props {
   column: Column;
-  deleteColumn: (id: string | number) => void;
   updateColumn: (id: string | number, title: string) => void;
-  createTask: (columnId: string | number) => void;
+  deleteColumn: (id: string | number) => void;
   tasks: Task[];
-  deleteTask: (id: string | number) => void;
+  createTask: (columnId: string | number) => void;
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
+  updateTaskMembers: (id: number | string, members: Member[]) => void;
   markTaskDone: (id: string | number) => void;
+  deleteTask: (id: string | number) => void;
   label: Labels[];
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
-  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
-  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
+  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  isModalsOpen: boolean;
+  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const KanbanColumn = (props: Props) => {
   const {
     column,
-    deleteColumn,
-    createTask,
-    tasks,
-    deleteTask,
     updateColumn,
+    deleteColumn,
+    tasks,
+    createTask,
     updateTask,
     updateTaskTitle,
+    updateTaskMembers,
     markTaskDone,
+    deleteTask,
     label,
     setLabel,
     labels,
-    setIsModalsOpen,
-    isModalsOpen,
     createLabel,
-    updateLabelStatus,
     editLabel,
-    deleteLabel
+    deleteLabel,
+    updateLabelStatus,
+    isModalsOpen,
+    setIsModalsOpen,
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -117,21 +120,22 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
-              deleteLabel={deleteLabel}
-              editLabel={editLabel}
-              updateLabelStatus={updateLabelStatus}
-              createLabel={createLabel}
-              task={element}
               key={element.Id}
-              deleteTask={deleteTask}
+              task={element}
               updateTask={updateTask}
               updateTaskTitle={updateTaskTitle}
+              updateTaskMembers={updateTaskMembers}
               markTaskDone={markTaskDone}
+              deleteTask={deleteTask}
               label={label}
-              labels={labels}
               setLabel={setLabel}
-              setIsModalsOpen={setIsModalsOpen}
+              labels={labels}
+              createLabel={createLabel}
+              editLabel={editLabel}
+              deleteLabel={deleteLabel}
+              updateLabelStatus={updateLabelStatus}
               isModalsOpen={isModalsOpen}
+              setIsModalsOpen={setIsModalsOpen}
             />
           ))}
         </SortableContext>
