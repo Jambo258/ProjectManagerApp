@@ -64,9 +64,9 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
     <div
       role="button"
       onClick={handleOnClick}
-      className="flex flex-row justify-between items-center"
+      className="flex flex-row justify-between items-center mb-2"
     >
-      <section className="flex flex-row items-center gap-2 mb-2">
+      <section className="inline-flex items-center gap-2.5 ">
         <UserIcon id={member.id} name={member.name} />
         <p className="body-text-sm">
           {member.name}
