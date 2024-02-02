@@ -21,36 +21,36 @@ import { type Member } from "../api/apiSlice";
 
 interface Props {
   task: Task;
-  deleteTask: (id: number | string) => void;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
   markTaskDone: (id: number | string) => void;
+  deleteTask: (id: number | string) => void;
   label: Labels[];
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
-  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
-  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
+  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  isModalsOpen: boolean;
+  setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const KanbanTask = ({
   task,
-  deleteTask,
   updateTask,
   updateTaskTitle,
   // markTaskDone,
+  deleteTask,
   label,
   setLabel,
   labels,
-  setIsModalsOpen,
-  isModalsOpen,
   createLabel,
-  updateLabelStatus,
   editLabel,
-  deleteLabel
+  deleteLabel,
+  updateLabelStatus,
+  isModalsOpen,
+  setIsModalsOpen,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
@@ -95,6 +95,7 @@ export const KanbanTask = ({
       name={member.name}
       small={true}
     />) : null);
+
 
   const handleSave = () => {
     console.log("Task saved");
