@@ -48,7 +48,7 @@ export const AddComponentModal = ({addComponent}: AddComponentModalProps) => {
 
   const componentItem = (index: number, component: Component) => {
     return (
-      <section key={index} className="w-[48%] sm:w-[31%] max-w-[300px] flex flex-col gap-2 items-stretch text-left mb-4">
+      <section key={index} className="w-[48%] sm:w-[31%] max-w-[300px] flex flex-col gap-2 items-stretch text-left my-2">
         <h4 className="heading-xs px-1 flex flex-row gap-2 items-center">
           {component.icon} {component.name}
         </h4>
