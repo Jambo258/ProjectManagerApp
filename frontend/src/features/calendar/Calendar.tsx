@@ -86,7 +86,7 @@ const CalendarModal = () => {
   return (
     <>
       <div className="flex w-screen h-screen ">
-        <div className="w-full h-full m-20 pr-64 pb-64">
+        <div className="w-full h-full my-20 pr-64 pb-64">
           <div className="flex items-start border bg-primary-200 justify-between ">
             <ChevronLeft
               className="cursor-pointer mr-6 "

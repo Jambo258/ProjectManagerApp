@@ -47,7 +47,7 @@ const CalendarEventModal = ({
   const [newEventTitle, setNewEventTitle] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newDate, setNewDate] = useState(new Date());
+  const [newDate, setNewDate] = useState(day);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -73,10 +73,10 @@ const CalendarEventModal = ({
     setEvents(test);
   };
 
-  const editEvent = (eventid: string, testString: string) => {
+  const editEvent = (eventid: string, testString: string, newDay: Date) => {
     const test = events.map((event) => {
       if (event.id === eventid) {
-        return { ...event, eventTitle: testString, edit: false };
+        return { ...event, eventTitle: testString, day: newDay, edit: false };
       } else {
         return event;
       }
@@ -154,7 +154,7 @@ const CalendarEventModal = ({
               onClick={() => closeModal()}
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
             >
-              <X size={20} />
+              <X className="mb-4" size={20} />
             </button>
             <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
               {format(day, "iiii")} {format(day, "dd.M.yyyy")}
@@ -171,13 +171,14 @@ const CalendarEventModal = ({
                     isEqual(getYear(event.day), getYear(day)) && (
                       <div key={event.id}>
                         <div
-                          className=" flex justify-between mb-2 cursor-pointer "
+                          className=" flex justify-between mb-2 cursor-pointer"
                           key={event.id}
                         >
                           {event.edit ? (
                             <div>
                               <input
                                 type="time"
+                                defaultValue={"00:00"}
                                 onChange={(e) => setTime(day, e.target.value)}
                               />
                               <input
@@ -188,7 +189,7 @@ const CalendarEventModal = ({
                               />
                               <button
                                 onClick={() =>
-                                  editEvent(event.id, newEventTitle)
+                                  editEvent(event.id, newEventTitle, newDate)
                                 }
                               >
                                 Update event
@@ -212,10 +213,13 @@ const CalendarEventModal = ({
               <div className="flex justify-center">
                 <form>
                   <input
+                    className="mx-2"
                     type="time"
+                    defaultValue={format(newDate, "hh:mm")}
                     onChange={(e) => setTime(day, e.target.value)}
                   />
                   <input
+                    className="mr-2"
                     onChange={(e) => setEventTitle(e.target.value)}
                     placeholder={"Add new event"}
                   />
