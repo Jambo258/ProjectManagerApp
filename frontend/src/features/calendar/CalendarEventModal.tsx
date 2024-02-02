@@ -97,7 +97,6 @@ const CalendarEventModal = ({
         edit: false,
       },
     ]);
-    closeModal();
   };
 
   const setTime = (date: Date, eventDate: string) => {
@@ -114,13 +113,13 @@ const CalendarEventModal = ({
     <>
       <div
         onClick={() => openModal()}
-        className={`cursor-pointer rounded-none bg-grayscale-200 flex justify-start h-[220px] w-full group border border-collapse ${
+        className={`cursor-pointer rounded-none bg-grayscale-200 flex justify-start h-full w-full  group outline outline-1 outline-grayscale-400 ${
           isSameMonth(day, currentMonth)
             ? "text-dark-font"
             : "text-grayscale-400"
         }
           ${!isToday(day) && "hover:bg-primary-200 "}
-          ${isToday(day) && "border-4 border-primary-200 "}
+          ${isToday(day) && " border-primary-200 "}
         `}
       >
         <ul className="overflow-x-none whitespace-nowrap ">

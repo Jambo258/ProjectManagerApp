@@ -73,12 +73,6 @@ const CalendarModal = () => {
     setMonthSelect(tempMonths);
   };
 
-  const setNewMonth = (month: Date) => {
-    console.log(month);
-    setcurrentMonth(() => format(month, "MMM yyyy"));
-    console.log(currentMonth);
-  };
-
   useEffect(() => {
     getSelectableMonths();
   }, []);
@@ -86,15 +80,15 @@ const CalendarModal = () => {
   return (
     <>
       <div className="flex w-screen h-screen ">
-        <div className="w-full h-full my-20 pr-64 pb-64">
-          <div className="flex items-start border bg-primary-200 justify-between ">
+        <div className="w-full h-full my-20 pr-64 pb-64 ">
+          <div className="flex items-center rounded-t-lg bg-primary-200 justify-center m-[-1px]">
             <ChevronLeft
               className="cursor-pointer mr-6 "
               size={32}
               onClick={() => getPrevMonth()}
             />
             <div
-              className="grid col-span-1 cursor-pointer"
+              className="grid col-span-1 cursor-pointer heading-xl"
               onClick={() => setShowMonthSelect(!showMonthSelect)}
             >
               {format(currentMonth, "MMM yyyy")}
@@ -107,7 +101,9 @@ const CalendarModal = () => {
                           <section
                             key={index}
                             className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
-                            onClick={() => setNewMonth(month)}
+                            onClick={() =>
+                              setcurrentMonth(format(month, "MMM-yyyy"))
+                            }
                           >
                             {format(month, "MMM yyyy")}
                           </section>
@@ -125,13 +121,13 @@ const CalendarModal = () => {
             />
           </div>
 
-          <div className="grid grid-cols-7 border place-items-center ">
+          <div className="grid grid-cols-7 place-items-center m-[-1px] border-t border-x border-grayscale-400 heading-xs">
             {days.map((day, id) => (
               <div key={id}>{day}</div>
             ))}
           </div>
 
-          <div className="grid flex-grow w-full h-full grid-cols-7 border ">
+          <div className="grid flex-grow w-full h-full  max-h-62 grid-cols-7 ">
             {daysInMonth.map((day) => (
               <div
                 key={day.toDateString()}
