@@ -4,7 +4,6 @@ import { CreateLabelModal } from "./CreateLabelModal";
 import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal } from "./SubModal";
-import { useState } from "react";
 
 interface Props {
   task: Task;
@@ -39,9 +38,9 @@ export const LabelModal = ({
   deleteLabelStatus,
 }: Props) => {
   console.log(isModalsOpen);
-  const [state, setState] = useState(false);
   console.log(task);
   console.log(label);
+  console.log(task.labels?.length);
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
@@ -51,32 +50,17 @@ export const LabelModal = ({
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              {task.labels?.map((item) =>
-                item.id === elements.id ? (
-                  <CheckSquare
-                    key={item.id}
-                    onClick={() => {
-                      deleteLabelStatus(task.Id, elements.id.toString());
-                      setState(!state);
-                    }}
-                    size={24}
-                  ></CheckSquare>
-                ) : (
-                  <Square
-                    key={item.id}
-                    onClick={() => {
-                      updateLabelStatus(task.Id, elements.id.toString());
-                      setState(!state);
-                    }}
-                    size={24}
-                  ></Square>
-                )
-              )}
-              {task.labels?.length === 0 && (
+              {task.labels?.includes(elements) ? (
+                <CheckSquare
+                  onClick={() => {
+                    deleteLabelStatus(task.Id, elements.id.toString());
+                  }}
+                  size={24}
+                ></CheckSquare>
+              ) : (
                 <Square
                   onClick={() => {
                     updateLabelStatus(task.Id, elements.id.toString());
-                    setState(!state);
                   }}
                   size={24}
                 ></Square>
