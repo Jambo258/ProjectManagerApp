@@ -42,7 +42,7 @@ export const Modal = ({
         type="button"
         onClick={openModal}
         className={btnStyling}>
-        <div className={"flex flex-row gap-2"}>
+        <div className="flex flex-row gap-2">
           { btnIcon }
           { btnText }
         </div>
