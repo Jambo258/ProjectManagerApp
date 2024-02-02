@@ -25,6 +25,10 @@ export interface Labels {
   name: string;
   color: string;
 }
+export interface Deadline {
+  startDate: number | object | undefined;
+  endDate: number | object | undefined;
+}
 export interface Task {
   Id: string;
   title: string;
@@ -32,6 +36,7 @@ export interface Task {
   content: string;
   done: boolean;
   labels?: Labels[];
+  deadline?: Deadline;
 }
 
 export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
@@ -300,6 +305,31 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     });
   };
 
+  const setTaskDeadline = (
+    id: string | number,
+    deadline: number | object | undefined
+  ) => {
+    const dateNow = new Date();
+    const dateNowInMs = dateNow.getTime();
+    // const startDate = dateNow.toLocaleString().slice(0, 9);
+    // const deadlineDate = deadline;
+    // const b = deadlineDate.getTime();
+    // const endDate = deadlineDate?.toLocaleString().slice(0,9);
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((task, i) => {
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [
+            { ...task, deadline: { startDate: dateNowInMs, endDate: deadline } },
+          ]);
+        });
+      }
+    });
+  };
+
   const updateTaskTitle = (id: string | number, title: string) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
@@ -512,6 +542,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
                   <KanbanColumn
+                    setTaskDeadline={setTaskDeadline}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
                     deleteLabelStatus={deleteLabelStatus}
@@ -545,6 +576,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
+                    setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
@@ -569,6 +601,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
+                    setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
