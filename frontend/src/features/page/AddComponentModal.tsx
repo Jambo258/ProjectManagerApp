@@ -3,15 +3,15 @@ import { ModalContext } from "../../components/Modal";
 import { Columns, FileText, Calendar } from "react-feather";
 
 interface Component {
-  name: string,
+  name: string;
   type: "editor" | "kanban" | "calendar";
-  description: string,
-  btnTxt: string,
-  icon: ReactElement
+  description: string;
+  btnTxt: string;
+  icon: ReactElement;
 }
 
 interface AddComponentModalProps {
-  addComponent: (type: string) => void
+  createComponent: (type: string) => void
 }
 
 const components: Component[] = [
@@ -38,34 +38,31 @@ const components: Component[] = [
   }
 ];
 
-export const AddComponentModal = ({addComponent}: AddComponentModalProps) => {
+export const AddComponentModal = ({createComponent}: AddComponentModalProps) => {
   const {closeModal} = useContext(ModalContext);
 
   const handleClick = (type: string) => {
-    addComponent(type);
+    createComponent(type);
     closeModal();
-  };
-
-  const componentItem = (index: number, component: Component) => {
-    return (
-      <section key={index} className="w-[48%] sm:w-[31%] max-w-[300px] flex flex-col gap-2 items-stretch text-left my-2">
-        <h4 className="heading-xs px-1 flex flex-row gap-2 items-center">
-          {component.icon} {component.name}
-        </h4>
-        <p className="body-text-sm mb-2 px-1 min-h-16">
-          {component.description}
-        </p>
-        <button className="py-2 btn-text-xs"
-          onClick={() => handleClick(component.type)}>
-          {component.btnTxt}
-        </button>
-      </section>
-    );
   };
   
   return (
     <section className="flex flex-row flex-wrap gap-[3%] w-full overflow-auto">
-      {components.map((component, index) => componentItem(index, component))}     
+      {components.map((component) => (
+        <section key={component.type} className="w-[48%] sm:w-[31%] max-w-[300px] flex flex-col gap-2 items-stretch text-left my-2">
+          <h4 className="heading-xs px-1 flex flex-row gap-2 items-center">
+            {component.icon} {component.name}
+          </h4>
+          <p className="body-text-sm mb-2 px-1 min-h-16">
+            {component.description}
+          </p>
+          <button className="py-2 btn-text-xs"
+            onClick={() => handleClick(component.type)}>
+            {component.btnTxt}
+          </button>
+        </section>
+      ))
+      }     
     </section>
   );
 };
