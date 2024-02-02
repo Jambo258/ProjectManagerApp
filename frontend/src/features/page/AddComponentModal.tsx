@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { ModalContext } from "../../components/Modal";
+
 interface Component {
   name: string,
   type: "editor" | "kanban" | "calendar";
@@ -31,14 +34,17 @@ const components: Component[] = [
 ];
 
 export const AddComponentModal = ({addComponent}: AddComponentModalProps) => {
+  const {closeModal} = useContext(ModalContext);
+
   const handleClick = (type: string) => {
     addComponent(type);
+    closeModal();
   };
 
   const componentItem = (index: number, component: Component) => {
     return (
-      <section key={index} className="w-[200px] flex flex-col gap-2 items-stretch text-left">
-        <div className="w-full h-[150px] bg-grayscale-300" />
+      <section key={index} className="w-[48%] sm:w-[31%] max-w-[300px] flex flex-col gap-2 items-stretch text-left mb-4">
+        <div className="w-full aspect-[4/3] bg-grayscale-300" />
         <h4 className="heading-xs px-1">
           {component.name}
         </h4>
@@ -54,7 +60,7 @@ export const AddComponentModal = ({addComponent}: AddComponentModalProps) => {
   };
   
   return (
-    <section className="flex flex-row flex-wrap gap-4 w-fit">
+    <section className="flex flex-row flex-wrap gap-[3%] w-full overflow-auto">
       {components.map((component, index) => componentItem(index, component))}     
     </section>
   );
