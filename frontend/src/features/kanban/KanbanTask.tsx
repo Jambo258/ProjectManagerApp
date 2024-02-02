@@ -72,8 +72,10 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  // This is for now since there are already tasks with no members array
+  // This is used only for development, since there are already tasks with no members array
   const [taskMembers, setTaskMembers] = useState<Member[]>(task.members ? task.members : []);
+  // For production
+  // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
 
   const openModal = () => {
     setIsModalOpen(true);
