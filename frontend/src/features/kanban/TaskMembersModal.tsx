@@ -24,7 +24,13 @@ export const TaskMembersModal = ({ taskMembers, setTaskMembers }: IProps ) => {
       <h5 className="heading-xs mb-2">Project members</h5>
       <section>
         {project!.users.map((member: Member,) => {
-          return <TaskMember key={member.id} member={member} taskMembers={taskMembers} setTaskMembers={setTaskMembers} />;
+          return (
+            <TaskMember
+              key={member.id}
+              member={member}
+              taskMembers={taskMembers}
+              setTaskMembers={setTaskMembers}
+            />);
         })}
       </section>
     </div>
