@@ -36,7 +36,7 @@ export interface Task {
   content: string;
   done: boolean;
   labels?: Labels[];
-  members?: Member[];
+  members: Member[];
 }
 
 export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
@@ -133,6 +133,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       content: "Short task description goes here...",
       done: false,
       labels: [],
+      members: [],
     };
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
