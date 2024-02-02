@@ -17,6 +17,7 @@ import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
 import { SubModal } from "./SubModal";
 import { nanoid } from "@reduxjs/toolkit";
+import { type Member } from "../api/apiSlice";
 
 export interface Column {
   Id: string | number;
@@ -35,6 +36,7 @@ export interface Task {
   content: string;
   done: boolean;
   labels?: Labels[];
+  members?: Member[];
 }
 
 export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
@@ -209,6 +211,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
           ytasks.insert(i,[{ ...task, content }]);
+        });
+      }
+    });
+  };
+
+  const updateTaskMembers = (id: number | string, members: Member[]) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((task,i) => {
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i,[{ ...task, members }]);
         });
       }
     });
@@ -459,25 +475,26 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
                   <KanbanColumn
-                    deleteLabel={deleteLabel}
-                    editLabel={editLabel}
-                    updateLabelStatus={updateLabelStatus}
-                    createLabel={createLabel}
-                    deleteTask={deleteTask}
                     key={column.Id}
                     column={column}
-                    deleteColumn={deleteColumn}
                     updateColumn={updateColumn}
+                    deleteColumn={deleteColumn}
+                    tasks={tasks.filter((ele) => ele.columnId === column.Id)}
                     createTask={createTask}
                     updateTask={updateTask}
                     updateTaskTitle={updateTaskTitle}
+                    updateTaskMembers={updateTaskMembers}
                     markTaskDone={markTaskDone}
-                    tasks={tasks.filter((ele) => ele.columnId === column.Id)}
+                    deleteTask={deleteTask}
                     label={label}
-                    labels={arrayOfColors}
                     setLabel={setLabel}
-                    setIsModalsOpen={setIsModalsOpen}
+                    labels={arrayOfColors}
+                    createLabel={createLabel}
+                    editLabel={editLabel}
+                    deleteLabel={deleteLabel}
+                    updateLabelStatus={updateLabelStatus}
                     isModalsOpen={isModalsOpen}
+                    setIsModalsOpen={setIsModalsOpen}
                   />
                 ))}
               </SortableContext>
@@ -488,46 +505,48 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               {activeColumn && (
                 <div className="opacity-70 rotate-1">
                   <KanbanColumn
+                    column={activeColumn}
+                    updateColumn={updateColumn}
+                    deleteColumn={deleteColumn}
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
-                    deleteLabel={deleteLabel}
-                    editLabel={editLabel}
-                    updateLabelStatus={updateLabelStatus}
-                    createLabel={createLabel}
                     createTask={createTask}
-                    column={activeColumn}
-                    deleteColumn={deleteColumn}
-                    deleteTask={deleteTask}
                     updateTask={updateTask}
-                    updateColumn={updateColumn}
                     updateTaskTitle={updateTaskTitle}
+                    updateTaskMembers={updateTaskMembers}
                     markTaskDone={markTaskDone}
+                    deleteTask={deleteTask}
                     label={label}
-                    labels={arrayOfColors}
                     setLabel={setLabel}
-                    setIsModalsOpen={setIsModalsOpen}
+                    labels={arrayOfColors}
+                    createLabel={createLabel}
+                    editLabel={editLabel}
+                    deleteLabel={deleteLabel}
+                    updateLabelStatus={updateLabelStatus}
                     isModalsOpen={isModalsOpen}
+                    setIsModalsOpen={setIsModalsOpen}
                   />
                 </div>
               )}
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
-                    deleteLabel={deleteLabel}
-                    editLabel={editLabel}
-                    updateLabelStatus={updateLabelStatus}
-                    createLabel={createLabel}
                     task={activeTask}
-                    updateTaskTitle={updateTaskTitle}
                     updateTask={updateTask}
-                    deleteTask={deleteTask}
+                    updateTaskTitle={updateTaskTitle}
+                    updateTaskMembers={updateTaskMembers}
                     markTaskDone={markTaskDone}
+                    deleteTask={deleteTask}
                     label={label}
-                    labels={arrayOfColors}
                     setLabel={setLabel}
-                    setIsModalsOpen={setIsModalsOpen}
+                    labels={arrayOfColors}
+                    createLabel={createLabel}
+                    editLabel={editLabel}
+                    deleteLabel={deleteLabel}
+                    updateLabelStatus={updateLabelStatus}
                     isModalsOpen={isModalsOpen}
+                    setIsModalsOpen={setIsModalsOpen}
                   />
                 </div>
               )}
