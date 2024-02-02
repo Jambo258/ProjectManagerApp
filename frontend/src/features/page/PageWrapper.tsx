@@ -19,7 +19,7 @@ const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
 
 export const PageWrapper = ({pageId}: {pageId: string}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [values, setValues] = useState<Component[]>([]);
+  const [components, setComponents] = useState<Component[]>([]);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
   const [provider] = useState(
@@ -40,7 +40,7 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
   useEffect(() => {
     const yarray = ydoc.getArray<Component>("components");
     yarray.observe(() => {
-      setValues(yarray.toArray());
+      setComponents(yarray.toArray());
     });
   },[ydoc]);
 
@@ -103,11 +103,11 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
       <section className="flex flex-col gap-6">
         <section className="h-fit w-full flex flex-row justify-end">
           <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18}/>}>
-            <AddComponentModal addComponent={addComponent} />
+            <AddComponentModal createComponent={addComponent} />
           </Modal>
         </section>
       
-        {values.map((component) =>
+        {components.map((component) =>
           <Fragment key={component.uuid}>
             {getComponent(component)}
             <button className="w-fit btn-text-xs py-2" onClick={() => moveComponent(component.uuid)}>Move Up</button>
