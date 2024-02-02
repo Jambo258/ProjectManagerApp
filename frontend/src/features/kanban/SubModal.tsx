@@ -1,6 +1,5 @@
 import { type ReactElement, useState, createContext } from "react";
-import { X } from "react-feather";
-import { ChevronLeft } from "react-feather";
+import { ChevronLeft, X } from "react-feather";
 import { type IconType, IconButton } from "./IconButton";
 
 interface ModalContextType {
@@ -17,6 +16,7 @@ interface ModalProps {
   iconName: IconType;
   btnText?: string;
   modalTitle: string | null;
+  chevronShown?: boolean;
   children: ReactElement;
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
@@ -26,6 +26,7 @@ export const SubModal = ({
   iconName,
   btnText,
   modalTitle,
+  chevronShown = true,
   children,
   setIsModalsOpen,
   isModalsOpen
@@ -72,12 +73,12 @@ export const SubModal = ({
             className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all"
           >
             <header className="w-full flex flex-row justify-between items-center mb-4">
-              <button
+              {chevronShown ? <button
                 onClick={closeModal}
                 className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
                 <ChevronLeft size={24} />
-              </button>
+              </button> : <div className="w-6"></div>}
               <h4 className="place-self-center heading-sm text-dark-font">
                 {modalTitle}
               </h4>
