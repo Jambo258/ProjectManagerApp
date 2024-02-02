@@ -55,7 +55,7 @@ export const KanbanColumn = (props: Props) => {
     return tasks.map((element) => element.Id);
   }, [tasks]);
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
       id: column.Id,
       data: {
@@ -67,6 +67,16 @@ export const KanbanColumn = (props: Props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  if(isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-md"
+      ></div>
+    );
+  }
 
   return (
     <div
