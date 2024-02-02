@@ -7,6 +7,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { type Column, Kanban, type Labels, type Task } from "../kanban/Kanban";
 import { AddComponentModal } from "./AddComponentModal";
 import { Modal } from "../../components/Modal";
+import { Plus } from "react-feather";
 
 interface Component {
   type: "editor" | "kanban";
@@ -100,8 +101,8 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <section className="h-fit w-full text-right">
-          <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText="Add component">
+        <section className="h-fit w-full flex flex-row justify-end">
+          <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18}/>}>
             <AddComponentModal addComponent={addComponent} />
           </Modal>
         </section>

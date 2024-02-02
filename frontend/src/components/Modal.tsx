@@ -12,6 +12,7 @@ export const ModalContext = createContext<ModalContextType>(null!);
 
 interface ModalProps {
   btnText: string | ReactElement;
+  btnIcon?: ReactElement;
   btnStyling: string;
   modalTitle: string | null;
   children: ReactElement;
@@ -20,6 +21,7 @@ interface ModalProps {
 export const Modal = ({
   btnText,
   btnStyling,
+  btnIcon,
   modalTitle,
   children
 }: ModalProps) => {
@@ -40,7 +42,10 @@ export const Modal = ({
         type="button"
         onClick={openModal}
         className={btnStyling}>
-        { btnText }
+        <div className={"flex flex-row gap-2"}>
+          { btnIcon }
+          { btnText }
+        </div>
       </button>
 
       {isModalOpen &&
