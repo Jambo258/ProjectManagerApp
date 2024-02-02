@@ -5,6 +5,8 @@ import { HocuspocusProvider, } from "@hocuspocus/provider";
 import Editor from "../editor/Editor";
 import { nanoid } from "@reduxjs/toolkit";
 import { type Column, Kanban, type Labels, type Task } from "../kanban/Kanban";
+import { AddComponentModal } from "./AddComponentModal";
+import { Modal } from "../../components/Modal";
 
 interface Component {
   type: "editor" | "kanban";
@@ -41,18 +43,20 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
     });
   },[ydoc]);
 
-
-  const addComponent = (type = "kanban") => {
+  const addComponent = (type: string) => {
     const uuid = nanoid();
-    if(type === "editor") {
+    if (type === "editor") {
       ymap.set(uuid, new Y.XmlFragment());
       yarray.push([{type, uuid}]);
-    } else if(type === "kanban") {
+    } else if (type === "kanban") {
       const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>());
       kanbanMap.set("tasks", new Y.Array<Task>);
       kanbanMap.set("columns", new Y.Array<Column>);
       kanbanMap.set("labels", new Y.Array<Labels>);
       yarray.push([{type, uuid}]);
+    } else if (type === "calendar") {
+      // Updat this when calendar is done
+      console.log("Calendar");
     }
   };
 
@@ -95,8 +99,12 @@ export const PageWrapper = ({pageId}: {pageId: string}) => {
 
   return (
     <>
-      <button onClick={() => addComponent("editor")}>New editor</button>
-      <button onClick={() => addComponent("kanban")}>New kanban</button>
+      <section className="h-fit w-full text-right">
+        <Modal modalTitle="Add new component" btnStyling="py-2 btn-text-sm" btnText="Add new component">
+          <AddComponentModal addComponent={addComponent} />
+        </Modal>
+      </section>
+      
       {values.map((component) =>
         <Fragment key={component.uuid}>
           {getComponent(component)}
