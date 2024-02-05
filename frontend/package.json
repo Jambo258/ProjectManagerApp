@@ -16,6 +16,7 @@
     "@hocuspocus/provider": "^2.9.0",
     "@hookform/resolvers": "^3.3.4",
     "@reduxjs/toolkit": "^2.0.1",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/extension-character-count": "^2.1.16",
     "@tiptap/extension-collaboration": "^2.1.16",
     "@tiptap/extension-collaboration-cursor": "^2.1.16",

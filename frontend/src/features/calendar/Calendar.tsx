@@ -127,7 +127,7 @@ const CalendarModal = () => {
             ))}
           </div>
 
-          <div className="grid flex-grow w-full h-full  max-h-62 grid-cols-7 ">
+          <div className="grid w-full h-full grid-cols-7 ">
             {daysInMonth.map((day) => (
               <div
                 key={day.toDateString()}
