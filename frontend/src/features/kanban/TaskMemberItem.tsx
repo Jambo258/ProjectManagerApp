@@ -17,19 +17,6 @@ interface IProps {
 export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
-  const getCurrentTaskMembers = (): boolean => {
-    let result = false;
-    taskMembers.find(taskMember => {
-      if (taskMember.id === member.id) {
-        setIsChecked(true);
-        result = true;
-      } else {
-        result = false;
-      }
-    });
-    return result;
-  };
-
   const addTaskMember = () => {
     setTaskMembers([...taskMembers, member]);
   };
@@ -51,8 +38,21 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
   };
 
   useEffect(() => {
+    const getCurrentTaskMembers = (): boolean => {
+      let result = false;
+      taskMembers.find(taskMember => {
+        if (taskMember.id === member.id) {
+          setIsChecked(true);
+          result = true;
+        } else {
+          result = false;
+        }
+      });
+      console.log("Get Current Task Members");
+      return result;
+    };
     getCurrentTaskMembers();
-  }, []);
+  }, [taskMembers, member.id]);
 
   return (
     <div
