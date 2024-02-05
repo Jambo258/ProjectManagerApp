@@ -16,7 +16,7 @@ export const ProjectView = () => {
   };
 
   return (
-    <section className="p-4 pt-14 sm:pt-4 sm:p-8 max-h-full h-screen max-w-full overflow-auto flex flex-col gap-4 sm:justify-center">
+    <section className="flex flex-col gap-4 p-4 pt-14 sm:pt-4 sm:p-8 max-h-full h-screen max-w-full sm:justify-center">
       <p className="mx-auto">{handleText()}</p>
 
       {projects.length > 0 && 
