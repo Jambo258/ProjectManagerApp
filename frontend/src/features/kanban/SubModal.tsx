@@ -1,6 +1,7 @@
 import { type ReactElement, useState, createContext } from "react";
 import { ChevronLeft, X } from "react-feather";
 import { type IconType, IconButton } from "./IconButton";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 interface ModalContextType {
   isModalOpen: boolean;
@@ -32,6 +33,7 @@ export const SubModal = ({
   isModalsOpen
 }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const screenDimensions = useScreenDimensions();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -69,8 +71,8 @@ export const SubModal = ({
         >
           <dialog
             onClick={(e) => e.stopPropagation()}
-            // The sizing of the modal (w, min-w and max-w) might need to be modified
-            className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all"
+            className={`max-h-screen fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
+            ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-4/12 sm:max-w-prose"}`}
           >
             <header className="w-full flex flex-row justify-between items-center mb-4">
               {chevronShown ? <button

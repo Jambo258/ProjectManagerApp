@@ -18,6 +18,7 @@ import { LabelModal } from "./LabelModal";
 import { SubModal } from "./SubModal";
 import { TaskMembersModal } from "./TaskMembersModal";
 import { UserIcon } from "../user/UserIcon";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 interface Props {
   task: Task;
@@ -66,6 +67,7 @@ export const KanbanTask = ({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  const screenDimensions = useScreenDimensions();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
@@ -73,6 +75,7 @@ export const KanbanTask = ({
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   // This is used only for development, since there are already tasks with no members array
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const [taskMembers, setTaskMembers] = useState<Member[]>(task.members ? task.members : []);
   // For production
   // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
@@ -159,8 +162,8 @@ export const KanbanTask = ({
         className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}>
         <dialog
           onClick={(e) => e.stopPropagation()}
-          className="fixed w-full h-full sm:h-fit sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all">
-
+          className={`max-h-screen fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
+          ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-prose"}`}>
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
