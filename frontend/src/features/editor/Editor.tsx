@@ -75,9 +75,7 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
         emptyEditorClass: "first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left",
         placeholder: "Write something...",
       }),
-      Image.configure({
-
-      }),
+      Image,
       CharacterCount.configure({
         limit: 10000,
       }),
