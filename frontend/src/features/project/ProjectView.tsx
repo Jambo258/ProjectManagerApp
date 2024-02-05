@@ -43,7 +43,6 @@ export const ProjectView = () => {
         modalTitle={"Create new page"}>
         <CreateProjectModal />
       </Modal>
-
     </section>
   );
 };
