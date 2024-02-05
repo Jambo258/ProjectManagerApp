@@ -24,10 +24,15 @@ export const ProjectTemplate = () => {
       <>
         <ul className="w-fit mx-auto">
           {project.data.pages.map(page => 
-            <li key={page.id} className="w-full text-center underline body-text-sm my-2"><Link to={`/projects/${projectId}/${page.id}`}>{page.name}</Link></li>)}
+            <li key={page.id} 
+              className="w-full text-center underline body-text-sm my-2">
+              <Link to={`/projects/${projectId}/${page.id}`}>
+                {page.name}
+              </Link>
+            </li>)}
         </ul>
 
-        <p className="mx-auto mb-2">or</p>
+        <p className="mx-auto mb-3">or</p>
       </>
       }
       

@@ -23,10 +23,16 @@ export const ProjectView = () => {
       <>
         <ul className="w-fit mx-auto">
           {projects.map(project => 
-            <li key={project.id} className={"w-full text-center underline body-text-sm my-2 " + ((project.name.length > 15) && "break-all")}><Link to={`/projects/${project.id}`}>{project.name}</Link></li>)}
+            <li key={project.id} 
+              className={"w-full text-center underline body-text-sm my-2 " + ((project.name.length > 15) && "break-all")}>
+              <Link to={`/projects/${project.id}`}>
+                {project.name}
+              </Link>
+            </li>
+          )}
         </ul>
 
-        <p className="mx-auto mb-2">or</p>
+        <p className="mx-auto mb-3">or</p>
       </>
       }
             
