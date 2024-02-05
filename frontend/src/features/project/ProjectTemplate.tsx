@@ -10,22 +10,22 @@ export const ProjectTemplate = () => {
 
   const handleText = () => {
     if (project.data && project.data.pages.length > 0) {
-      return "Check one of your existing pages";
+      return "Continue to work on one of your existing project pages:";
     } else {
-      return "It seems like you don't have any pages yet!";
+      return "It seems like your project doesn't have any pages yet. Let's create one!";
     }
   };
 
   return (
     <section className="flex flex-col gap-4 p-4 sm:p-8 max-h-full h-screen max-w-full overflow-auto sm:justify-center">
-      <p className="mx-auto">{handleText()}</p>
+      <p className="mx-auto text-center">{handleText()}</p>
       
       {(project.data && (project.data?.pages.length > 0)) &&
       <>
         <ul className="w-fit mx-auto">
           {project.data.pages.map(page => 
             <li key={page.id} 
-              className={"w-full text-center underline body-text-sm my-2 " + ((page.name.length > 15) && "break-all")}>
+              className={"w-full text-left underline body-text-sm " + ((page.name.length > 15) && "break-all")}>
               <Link to={`/projects/${projectId}/${page.id}`}
                 className="focus:text-caution-100 focus:outline-none">
                 {page.name}
@@ -33,7 +33,7 @@ export const ProjectTemplate = () => {
             </li>)}
         </ul>
 
-        <p className="mx-auto mb-3">or</p>
+        <p className="mx-auto mb-3">or you can</p>
       </>
       }
       
