@@ -123,13 +123,14 @@ export const KanbanTask = ({
         <div className={isDragging ? "invisible" : ""}>
           <div className="mb-6">
             <h4 className="heading-xs mb-1">{task.title}</h4>
+            {/* Line clamp needs fixing, this removes row changes when displaying content */}
             <p className="min-h-max line-clamp-3 body-text-xs">{task.content}</p>
           </div>
 
           <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
             <div className="grid col-span-2">
               {/* Task Deadline */}
-              <section className="w-full mb-[6px]">
+              <section className="w-full mb-1.5">
                 <div
                   className={`rounded w-fit px-2 py-1 text-center ${
                     task.done ? "bg-success-100" : "bg-caution-100"
@@ -139,17 +140,18 @@ export const KanbanTask = ({
                 </div>
               </section>
 
-            {/* Task Labels */}
-            <section className="w-full h-fit flex flex-wrap gap-[6px]">
-              {displayTaskLabels}
-            </section>
-          </div>
+              {/* Task Labels */}
+              <section className="w-full h-fit flex flex-wrap gap-1.5">
+                {displayTaskLabels}
+              </section>
+            </div>
 
-          {/* Task Members */}
-          <section className={"min-w-max w-fit h-full flex flex-row flex-wrap items-end"}>
-            {displayTaskMembers}
+            {/* Task Members */}
+            <section className={"min-w-max w-fit h-full flex flex-row flex-wrap items-end"}>
+              {displayTaskMembers}
+            </section>
           </section>
-        </section>
+        </div>
       </div>
 
       {isModalOpen &&
@@ -215,7 +217,7 @@ export const KanbanTask = ({
               </section>
 
               {/* Task Labels */}
-              <section className="w-full h-fit flex flex-wrap gap-[6px]">
+              <section className="w-full h-fit flex flex-wrap gap-1.5">
                 {displayTaskLabels}
               </section>
             </section>
