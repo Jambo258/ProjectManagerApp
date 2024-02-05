@@ -26,12 +26,6 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
     setTaskMembers(updatedTaskMembers);
   };
 
-  // TO DO
-  // Check if id is found in the taskMembers array.
-  // If id is found display checkmark after the name.
-  // If member already selected, remove from taskMembers when clicked.
-  // If member not selected add to taskMembers when clicked.
-  // Save selected members to the task object.
   const handleOnClick = () => {
     isChecked ? removeTaskMember() : addTaskMember();
     setIsChecked((prev) => !prev);
@@ -60,7 +54,7 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
       onClick={handleOnClick}
       className="flex flex-row justify-between items-center mb-2"
     >
-      <section className="inline-flex items-center gap-2.5 ">
+      <section className="inline-flex items-center gap-2.5">
         <UserIcon id={member.id} name={member.name} />
         <p className="body-text-sm">
           {member.name}
