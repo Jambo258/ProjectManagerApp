@@ -3,8 +3,10 @@ import MenuItem from "./MenuItem";
 import { type Editor } from "@tiptap/react";
 import OrderedList from "../../icons/OrderedList";
 import CheckList from "../../icons/CheckList";
-import { Bold, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
-
+import Heading1 from "../../icons/Heading1";
+import Heading2 from "../../icons/Heading2";
+import BlockQuote from "../../icons/BlockQuote";
+import { Bold, Code, CornerUpLeft, CornerUpRight, Image, Italic, List, Minus, Underline } from "react-feather";
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
   const items = [
@@ -53,12 +55,14 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "H1",
+      icon: Heading1,
       title: "Heading 1",
       action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
       isActive: () => editor.isActive("heading", { level: 1 }),
     },
     {
       name: "H2",
+      icon: Heading2,
       title: "Heading 2",
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: () => editor.isActive("heading", { level: 2 }),
@@ -102,6 +106,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "\"\"",
+      icon: BlockQuote,
       title: "Blockquote",
       action: () => editor.chain().focus().toggleBlockquote().run(),
       isActive: () => editor.isActive("blockquote"),
@@ -111,6 +116,17 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       icon: Minus,
       title: "Horizontal Rule",
       action: () => editor.chain().focus().setHorizontalRule().run(),
+    },
+    {
+      name: "image",
+      icon: Image,
+      title: "Image",
+      action: () => {
+        const url = window.prompt("URL");
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      }
     },
     {
       type: "divider",
