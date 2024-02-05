@@ -17,6 +17,7 @@ import { LabelModal } from "./LabelModal";
 import * as Y from "yjs";
 import { SubModal } from "./SubModal";
 import { nanoid } from "@reduxjs/toolkit";
+import { type Member } from "../api/apiSlice";
 
 export interface Column {
   Id: string | number;
@@ -35,6 +36,7 @@ export interface Task {
   content: string;
   done: boolean;
   labels?: Labels[];
+  members: Member[];
 }
 
 export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
@@ -131,6 +133,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       content: "Short task description goes here...",
       done: false,
       labels: [],
+      members: [],
     };
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
@@ -209,6 +212,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
           ytasks.insert(i,[{ ...task, content }]);
+        });
+      }
+    });
+  };
+
+  const updateTaskMembers = (id: number | string, members: Member[]) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((task,i) => {
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i,[{ ...task, members }]);
         });
       }
     });
