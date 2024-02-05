@@ -14,6 +14,7 @@ import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
@@ -73,6 +74,9 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
       Placeholder.configure({
         emptyEditorClass: "first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left",
         placeholder: "Write something...",
+      }),
+      Image.configure({
+
       }),
       CharacterCount.configure({
         limit: 10000,
