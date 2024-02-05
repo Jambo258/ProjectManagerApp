@@ -25,7 +25,7 @@ export const ProjectTemplate = () => {
         <ul className="w-fit mx-auto">
           {project.data.pages.map(page => 
             <li key={page.id} 
-              className="w-full text-center underline body-text-sm my-2">
+              className={"w-full text-center underline body-text-sm my-2 " + ((page.name.length > 15) && "break-all")}>
               <Link to={`/projects/${projectId}/${page.id}`}
                 className="focus:text-caution-100 focus:outline-none">
                 {page.name}
