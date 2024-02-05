@@ -21,6 +21,7 @@ import { UserIcon } from "../user/UserIcon";
 import { DeadlineModal } from "./DeadlineModal";
 
 interface Props {
+  removeTaskDeadline: (id: string | number) => void;
   setTaskDeadline: (
     id: string | number,
     deadline: number | object | undefined
@@ -63,7 +64,8 @@ export const KanbanTask = ({
   editLabel,
   deleteLabel,
   deleteLabelStatus,
-  setTaskDeadline
+  setTaskDeadline,
+  removeTaskDeadline,
 }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -83,7 +85,9 @@ export const KanbanTask = ({
   const [editTitle, setEditTitle] = useState(task.title);
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [taskMembers, setTaskMembers] = useState<Member[]>([{id: 1, email: "suvi.sulonen@gmail.com", name: "Suvi", role: "manager"}]);
+  const [taskMembers, setTaskMembers] = useState<Member[]>([
+    { id: 1, email: "suvi.sulonen@gmail.com", name: "Suvi", role: "manager" },
+  ]);
   // console.log(isModalsOpen);
 
   const openModal = () => {
@@ -136,15 +140,20 @@ export const KanbanTask = ({
               >
                 <p className="label-text">{task.done ? "Done" : "Not Done"}</p>
               </div>
-              { task.deadline &&
-              <div
-                className={`rounded w-fit px-2 py-1 text-center ${
-                  dateDifference(task.deadline?.endDate) > 2 ? "bg-success-100" : "bg-caution-100"
-                }`}
-              >
-                <p className="label-text"><Clock size={16}></Clock>{dateDifference(task.deadline?.endDate)} Days left</p>
-              </div>
-              }
+              {task.deadline && (
+                <div
+                  className={`rounded w-fit px-2 py-1 text-center ${
+                    dateDifference(task.deadline?.endDate) > 2
+                      ? "bg-success-100"
+                      : "bg-caution-100"
+                  }`}
+                >
+                  <p className="label-text inline-flex">
+                    <Clock size={16}></Clock>
+                    {dateDifference(task.deadline?.endDate)} Days left
+                  </p>
+                </div>
+              )}
             </section>
 
             {/* Task Labels */}
@@ -244,6 +253,20 @@ export const KanbanTask = ({
                       {task.done ? "Done" : "Not Done"}
                     </p>
                   </div>
+                  {task.deadline && (
+                    <div
+                      className={`rounded w-fit px-2 py-1 text-center ${
+                        dateDifference(task.deadline?.endDate) > 2
+                          ? "bg-success-100"
+                          : "bg-caution-100"
+                      }`}
+                    >
+                      <p className="label-text inline-flex">
+                        <Clock size={16}></Clock>
+                        {dateDifference(task.deadline?.endDate)} Days left
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <div className="">
                   <form>
@@ -319,12 +342,7 @@ export const KanbanTask = ({
                       <DeadlineModal
                         task={task}
                         setTaskDeadline={setTaskDeadline}
-                        // element={elements}
-                        // label={label}
-                        // labels={labels}
-                        // setLabel={setLabel}
-                        // editLabel={editLabel}
-                        // deleteLabel={deleteLabel}
+                        removeTaskDeadline={removeTaskDeadline}
                       />
                     </SubModal>
                   </div>
@@ -363,11 +381,13 @@ export const KanbanTask = ({
   );
 };
 
-{/* {!task.done && (
+{
+  /* {!task.done && (
               <div className="border relative left-5">
                 <TaskModal>
                   <div onClick={() => markTaskDone(task.Id)}>Mark as Done</div>
                   <div></div>
                 </TaskModal>
               </div>
-            )} */}
+            )} */
+}

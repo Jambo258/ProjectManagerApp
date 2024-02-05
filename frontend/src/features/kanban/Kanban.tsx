@@ -311,10 +311,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   ) => {
     const dateNow = new Date();
     const dateNowInMs = dateNow.getTime();
-    // const startDate = dateNow.toLocaleString().slice(0, 9);
-    // const deadlineDate = deadline;
-    // const b = deadlineDate.getTime();
-    // const endDate = deadlineDate?.toLocaleString().slice(0,9);
+    
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
     ytasks.forEach((task, i) => {
@@ -324,6 +321,25 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
           ytasks.delete(i);
           ytasks.insert(i, [
             { ...task, deadline: { startDate: dateNowInMs, endDate: deadline } },
+          ]);
+        });
+      }
+    });
+  };
+
+  const removeTaskDeadline = (id: string | number) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((task, i) => {
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [
+            {
+              ...task,
+              deadline: undefined
+            },
           ]);
         });
       }
@@ -542,6 +558,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
                   <KanbanColumn
+                    removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabel={deleteLabel}
                     editLabel={editLabel}
@@ -576,6 +593,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
+                    removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}
@@ -601,6 +619,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
+                    removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
                     deleteLabel={deleteLabel}

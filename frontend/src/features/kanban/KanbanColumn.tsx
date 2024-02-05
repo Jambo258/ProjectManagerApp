@@ -6,6 +6,7 @@ import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 
 interface Props {
+  removeTaskDeadline: (id: string | number) => void;
   setTaskDeadline: (
     id: string | number,
     deadline: number | object | undefined
@@ -57,7 +58,8 @@ export const KanbanColumn = (props: Props) => {
     editLabel,
     deleteLabel,
     deleteLabelStatus,
-    setTaskDeadline
+    setTaskDeadline,
+    removeTaskDeadline
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -118,6 +120,7 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
+              removeTaskDeadline={removeTaskDeadline}
               setTaskDeadline={setTaskDeadline}
               deleteLabel={deleteLabel}
               editLabel={editLabel}
