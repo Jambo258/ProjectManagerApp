@@ -85,6 +85,22 @@ export const KanbanTask = ({
     setIsModalOpen(false);
   };
 
+  const displayTaskLabels = label.map((element) => element.active ?
+    (<Label
+      key={element.id}
+      labelColor={element.color}
+      labelText={element.name}
+    />
+    ): null);
+
+  const displayTaskMembers = taskMembers.map((member: Member) => member ?
+    (<UserIcon
+      key={member.id}
+      id={member.id}
+      name={member.name}
+      small={true}
+    />) : null);
+
   const handleSave = () => {
     console.log("Task saved");
     updateTask(task.Id, editContent);
@@ -106,13 +122,14 @@ export const KanbanTask = ({
         <div className={isDragging ? "invisible" : ""}>
           <div className="mb-6">
             <h4 className="heading-xs mb-1">{task.title}</h4>
+            {/* Line clamp needs fixing, this removes row changes when displaying content */}
             <p className="min-h-max line-clamp-3 body-text-xs">{task.content}</p>
           </div>
 
           <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
             <div className="grid col-span-2">
               {/* Task Deadline */}
-              <section className="w-full mb-[6px]">
+              <section className="w-full mb-1.5">
                 <div
                   className={`rounded w-fit px-2 py-1 text-center ${
                     task.done ? "bg-success-100" : "bg-caution-100"
@@ -123,22 +140,14 @@ export const KanbanTask = ({
               </section>
 
               {/* Task Labels */}
-              <section className="w-full h-fit flex flex-wrap gap-[6px]">
-                {label.map((element) => element.active ?(
-                  <Label
-                    key={element.id}
-                    labelColor={element.color}
-                    labelText={element.name}
-                  />
-                ): null)}
+              <section className="w-full h-fit flex flex-wrap gap-1.5">
+                {displayTaskLabels}
               </section>
             </div>
 
             {/* Task Members */}
             <section className={"min-w-max w-fit h-full flex flex-row flex-wrap items-end"}>
-              {taskMembers.map((member: Member,) => {
-                return <UserIcon key={member.id} id={member.id} name={member.name} small={true} />;
-              })}
+              {displayTaskMembers}
             </section>
           </section>
         </div>
@@ -181,11 +190,9 @@ export const KanbanTask = ({
             <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
               <div className="h-fit flex flex-row justify-between gap-x-2">
                 {/* Task Members */}
-                <div className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
-                  {taskMembers.map((member: Member,) => {
-                    return <UserIcon key={member.id} id={member.id} name={member.name} />;
-                  })}
-                </div>
+                <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
+                  {displayTaskMembers}
+                </section>
                 {/* Task Deadline */}
                 <div className={`rounded min-w-fit h-fit px-2 py-1 text-center ${task.done ? "bg-success-100" : "bg-caution-100"}`}>
                   <p className="label-text">
@@ -193,7 +200,7 @@ export const KanbanTask = ({
                   </p>
                 </div>
               </div>
-              <div className="">
+              <section>
                 <form>
                   <label role="h4" className="heading-xs mb-1">
                   Description
@@ -206,22 +213,16 @@ export const KanbanTask = ({
                     />
                   </label>
                 </form>
-              </div>
+              </section>
 
               {/* Task Labels */}
-              <section className="w-full h-fit flex flex-wrap gap-[6px]">
-                {label.map((element) => element.active ?(
-                  <Label
-                    key={element.id}
-                    labelColor={element.color}
-                    labelText={element.name}
-                  />
-                ): null)}
+              <section className="w-full h-fit flex flex-wrap gap-1.5">
+                {displayTaskLabels}
               </section>
             </section>
 
-            <section className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
-              <div>
+            <aside className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
+              <section>
                 <h5 className="heading-xxs mb-2">Add to task</h5>
                 <div className="flex flex-col gap-2">
                   <SubModal
@@ -232,8 +233,12 @@ export const KanbanTask = ({
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                   >
-                    <TaskMembersModal taskMembers={taskMembers} setTaskMembers={setTaskMembers} />
+                    <TaskMembersModal
+                      taskMembers={taskMembers}
+                      setTaskMembers={setTaskMembers}
+                    />
                   </SubModal>
+
                   <SubModal
                     iconName="Labels"
                     btnText={"Labels"}
@@ -253,13 +258,14 @@ export const KanbanTask = ({
                       deleteLabel={deleteLabel}
                     />
                   </SubModal>
+
                   <IconButton
                     iconName="Deadline"
                     btnText="Deadline"
                     handleOnClick={() => ""}
                   />
                 </div>
-              </div>
+              </section>
               <section>
                 <h5 className="heading-xxs mb-2">Actions</h5>
                 <div className="flex flex-col gap-2 min-w-max">
@@ -275,7 +281,7 @@ export const KanbanTask = ({
                   />
                 </div>
               </section>
-            </section>
+            </aside>
           </main>
         </dialog>
       </div>
