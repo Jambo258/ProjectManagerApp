@@ -75,7 +75,6 @@ export const KanbanTask = ({
   const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   // This is used only for development, since there are already tasks with no members array
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const [taskMembers, setTaskMembers] = useState<Member[]>(task.members ? task.members : []);
   // For production
   // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
