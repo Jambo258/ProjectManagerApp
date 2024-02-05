@@ -53,7 +53,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
         console.log("Form submitted");
         console.log("Page:", page);
         if (page) {
-          console.log(window.window.location.pathname);
           closeModal();
           navigate(`/projects/${projectId}/${page.id}`);
         }

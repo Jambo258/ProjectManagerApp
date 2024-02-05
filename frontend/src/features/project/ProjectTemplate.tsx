@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetProjectQuery } from "../api/apiSlice";
 
 import { Modal } from "../../components/Modal";
@@ -17,8 +17,19 @@ export const ProjectTemplate = () => {
   };
 
   return (
-    <section className="p-4 sm:p-8 max-h-full h-screen max-w-full overflow-auto flex flex-col gap-6 justify-center">
-      <p className="mx-auto">{handleText()}</p> 
+    <section className="p-4 sm:p-8 max-h-full h-screen max-w-full overflow-auto flex flex-col gap-4 sm:justify-center">
+      <p className="mx-auto body-text">{handleText()}</p>
+      
+      {(project.data && (project.data?.pages.length > 0)) &&
+      <>
+        <ul className="w-fit mx-auto">
+          {project.data.pages.map(page => 
+            <li key={page.id} className="w-full text-center underline body-text-sm my-2"><Link to={`/projects/${projectId}/${page.id}`}>{page.name}</Link></li>)}
+        </ul>
+
+        <p className="mx-auto mb-2">or</p>
+      </>
+      }
       
       <Modal
         btnText={"Add new page"}
