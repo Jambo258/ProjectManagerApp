@@ -14,10 +14,11 @@ import { PrivatePage } from "../features/user/PrivatePage.tsx";
 import { HomeView } from "../features/frontpage/HomeView.tsx";
 import { Page } from "../features/page/Page.tsx";
 import { useAppSelector } from "../app/hooks.ts";
+import { ProjectTemplate } from "../features/project/ProjectTemplate.tsx";
 
 export const AppRouter = () => {
   const user = useAppSelector((state) => state.auth.user);
-  console.log(user);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={user ? <PrivatePage /> : <PublicPage />}>
@@ -26,7 +27,7 @@ export const AppRouter = () => {
         {user && (
           <>
             <Route path="projects/:projectId/:pageId" element={<Page />} />
-            <Route path="projects/:projectId" element={<ProjectView />} />
+            <Route path="projects/:projectId" element={<ProjectTemplate />} />
             <Route path="profile" element={<ProfileModal />} />
           </>
         )}

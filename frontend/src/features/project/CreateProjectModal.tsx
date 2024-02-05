@@ -50,7 +50,7 @@ const CreateProjectModal = () => {
         console.log("Project:", project);
         if (project) {
           closeModal();
-          navigate(`projects/${project.id}`);
+          navigate(`/projects/${project.id}`);
         }
       } catch (err) {
         onError;
