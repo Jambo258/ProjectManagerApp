@@ -25,7 +25,8 @@ export const ProjectView = () => {
           {projects.map(project => 
             <li key={project.id} 
               className={"w-full text-center underline body-text-sm my-2 " + ((project.name.length > 15) && "break-all")}>
-              <Link to={`/projects/${project.id}`}>
+              <Link to={`/projects/${project.id}`}
+                className="focus:text-caution-100 focus:outline-none">
                 {project.name}
               </Link>
             </li>

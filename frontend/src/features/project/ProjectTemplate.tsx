@@ -10,7 +10,7 @@ export const ProjectTemplate = () => {
 
   const handleText = () => {
     if (project.data && project.data.pages.length > 0) {
-      return "Add new page or check one of the existing ones!";
+      return "Check one of your existing pages";
     } else {
       return "It seems like you don't have any pages yet!";
     }
@@ -18,7 +18,7 @@ export const ProjectTemplate = () => {
 
   return (
     <section className="p-4 sm:p-8 max-h-full h-screen max-w-full overflow-auto flex flex-col gap-4 sm:justify-center">
-      <p className="mx-auto body-text">{handleText()}</p>
+      <p className="mx-auto">{handleText()}</p>
       
       {(project.data && (project.data?.pages.length > 0)) &&
       <>
@@ -26,7 +26,8 @@ export const ProjectTemplate = () => {
           {project.data.pages.map(page => 
             <li key={page.id} 
               className="w-full text-center underline body-text-sm my-2">
-              <Link to={`/projects/${projectId}/${page.id}`}>
+              <Link to={`/projects/${projectId}/${page.id}`}
+                className="focus:text-caution-100 focus:outline-none">
                 {page.name}
               </Link>
             </li>)}
