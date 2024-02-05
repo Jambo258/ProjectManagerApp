@@ -5,6 +5,7 @@ import { KanbanTask } from "./KanbanTask";
 import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 import { Plus } from "react-feather";
+import { type Member } from "../api/apiSlice";
 
 interface Props {
   column: Column;
@@ -15,6 +16,7 @@ interface Props {
   deleteTask: (id: string | number) => void;
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
+  updateTaskMembers: (id: number | string, members: Member[]) => void;
   markTaskDone: (id: string | number) => void;
   label: Labels[];
   setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
@@ -37,6 +39,7 @@ export const KanbanColumn = (props: Props) => {
     updateColumn,
     updateTask,
     updateTaskTitle,
+    updateTaskMembers,
     markTaskDone,
     label,
     setLabel,
@@ -132,6 +135,7 @@ export const KanbanColumn = (props: Props) => {
               setLabel={setLabel}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
+              updateTaskMembers={updateTaskMembers}
             />
           ))}
         </SortableContext>

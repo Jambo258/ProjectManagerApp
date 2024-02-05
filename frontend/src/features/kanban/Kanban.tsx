@@ -495,6 +495,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 ))}
               </SortableContext>
@@ -525,6 +526,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 </div>
               )}
@@ -545,6 +547,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 </div>
               )}
