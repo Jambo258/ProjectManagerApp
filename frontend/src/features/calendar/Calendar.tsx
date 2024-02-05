@@ -16,19 +16,19 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { useParams } from "react-router-dom";
 import CalendarEventModal from "./CalendarEventModal";
 
+interface Event {
+  id: string;
+  projectid: number;
+  pageid: number;
+  day: Date;
+  eventTitle: string;
+  edit: boolean;
+}
+
 const CalendarModal = () => {
   const projectid = parseInt(useParams().projectId!);
   const pageid = parseInt(useParams().pageId!);
-  const [events, setEvents] = useState([
-    {
-      id: "",
-      projectid: 0,
-      pageid: 0,
-      day: new Date(),
-      eventTitle: "",
-      edit: false,
-    },
-  ]);
+  const [events, setEvents] = useState<Event[]>([]);
   const today = startOfToday();
   const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
@@ -59,7 +59,7 @@ const CalendarModal = () => {
   const [showMonthSelect, setShowMonthSelect] = useState(false);
   const [monthSelect, setMonthSelect] = useState([new Date()]);
 
-  const getSelectableMonths = () => {
+  useEffect(() => {
     const tempMonths: Date[] = [];
 
     for (let i = 0; i < 12; i++) {
@@ -71,19 +71,15 @@ const CalendarModal = () => {
     }
 
     setMonthSelect(tempMonths);
-  };
-
-  useEffect(() => {
-    getSelectableMonths();
   }, []);
 
   return (
     <>
-      <div className="flex w-screen h-screen ">
-        <div className="w-full h-full my-20 pr-64 pb-64 ">
+      <div className="flex w-screen h-screen">
+        <div className="w-full h-full my-20 pr-64 pb-64">
           <div className="flex items-center rounded-t-lg bg-primary-200 justify-center m-[-1px]">
             <ChevronLeft
-              className="cursor-pointer mr-6 "
+              className="cursor-pointer mr-6"
               size={32}
               onClick={() => getPrevMonth()}
             />
@@ -93,7 +89,7 @@ const CalendarModal = () => {
             >
               {format(currentMonth, "MMM yyyy")}
               {showMonthSelect && (
-                <div className="fixed z-10 flex flex-col ">
+                <div className="fixed z-10 flex flex-col">
                   <dialog className="h-[200px] relative w-fit flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                     <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
                       {monthSelect.map((month, index) => {
@@ -127,7 +123,7 @@ const CalendarModal = () => {
             ))}
           </div>
 
-          <div className="grid w-full h-full grid-cols-7 ">
+          <div className="grid w-full h-full grid-cols-7">
             {daysInMonth.map((day) => (
               <div
                 key={day.toDateString()}

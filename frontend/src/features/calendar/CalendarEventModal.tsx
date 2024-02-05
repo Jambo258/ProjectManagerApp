@@ -119,12 +119,12 @@ const CalendarEventModal = ({
             ? "text-dark-font"
             : "text-grayscale-400"
         }
-          ${!isToday(day) && "hover:bg-primary-200 "}
-          ${isToday(day) && " border-4 border-primary-200 "}
+         ${!isToday(day) && "hover:bg-primary-200"}
+          ${isToday(day) && " border-4 border-primary-200"}
         `}
       >
-        <ul className="overflow-x-none whitespace-nowrap max-h-10 ">
-          <li className="btn-text-lg p-2 ">{format(day, "d")}</li>
+        <ul className="overflow-x-none whitespace-nowrap max-h-10">
+          <li className="btn-text-lg p-2">{format(day, "d")}</li>
           {events.map(
             (event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
@@ -203,7 +203,7 @@ const CalendarEventModal = ({
                           )}
                           <DeleteEventModal
                             deleteEvent={deleteEvent}
-                            eventid={event.id}
+                            eventId={event.id}
                           />
                         </div>
                       </div>

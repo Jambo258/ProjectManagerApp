@@ -6,11 +6,11 @@ import { DeleteModal } from "../../components/DeleteModal";
 import { Trash2 } from "react-feather";
 
 interface Props {
-  deleteEvent: (eventid: string) => void;
-  eventid: string;
+  deleteEvent: (eventId: string) => void;
+  eventId: string;
 }
 
-export const DeleteEventModal = ({ deleteEvent, eventid }: Props) => {
+export const DeleteEventModal = ({ deleteEvent, eventId }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const deleteConfirmationTitle = "Are you sure you want to delete this event?";
   const deleteConfirmationTtext =
@@ -26,7 +26,7 @@ export const DeleteEventModal = ({ deleteEvent, eventid }: Props) => {
 
   const handleDeleteEvent = () => {
     try {
-      deleteEvent(eventid);
+      deleteEvent(eventId);
       closeModal();
     } catch (err) {
       console.error("Failed to delete the event", err);
