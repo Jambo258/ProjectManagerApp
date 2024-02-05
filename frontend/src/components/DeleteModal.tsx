@@ -21,7 +21,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
 
   return (
     <div
-      className={`fixed flex inset-0 justify-center items-center transition-colors rounded ${
+      className={`fixed z-50 flex inset-0 justify-center items-center transition-colors rounded ${
         confirmDeleteEdit ? "visible bg-dark-blue-100/40" : "invisible"}`}
       onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
     >

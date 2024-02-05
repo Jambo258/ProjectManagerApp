@@ -26,6 +26,7 @@
   }
 
   input:focus,
+  textarea:focus,
   select:focus {
     @apply focus:outline-none focus:ring focus:ring-dark-blue-50;
   }

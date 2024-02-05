@@ -9,16 +9,16 @@ export const PrivatePage = () => {
   const updateDimensions = () => {
     setWidth(window.innerWidth);
   };
-  
+
   useEffect(() => {
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
-  
+
   return (
     <>
-      {width > 640 
-        ? 
+      {width > 640
+        ?
         <div className="flex flex-row h-screen w-full bg-grayscale-200">
           <DashboardNav />
           <div className="relative flex flex-col w-full overflow-auto">
