@@ -49,13 +49,16 @@ const CalendarEventModal = ({
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDate, setNewDate] = useState(day);
+  const [activeEdit, setActiveEdit] = useState<string>();
 
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
+    setAllEdits(false);
     setIsModalOpen(false);
+    setNewEventTitle("");
   };
 
   const deleteEvent = (eventid: string) => {
@@ -64,29 +67,39 @@ const CalendarEventModal = ({
   };
 
   const setEdit = (eventid: string, setEdit: boolean) => {
-    const test = events.map((event) => {
+    setActiveEdit(eventid);
+    const editedEvent = events.map((event) => {
       if (event.id === eventid) {
         return { ...event, edit: setEdit };
       } else {
         return event;
       }
     });
-    setEvents(test);
+    setEvents(editedEvent);
   };
 
-  const editEvent = (eventid: string, testString: string, newDay: Date) => {
-    const test = events.map((event) => {
+  const setAllEdits = (newEdit: boolean) => {
+    const editedEvents = events.map((eventTest) => {
+      return { ...eventTest, edit: newEdit };
+    });
+    setEvents(editedEvents);
+  };
+
+  const editEvent = (eventid: string, newTitle: string, newDay: Date) => {
+    const editEvent = events.map((event) => {
       if (event.id === eventid) {
-        return { ...event, eventTitle: testString, day: newDay, edit: false };
+        return { ...event, eventTitle: newTitle, day: newDay, edit: false };
       } else {
         return event;
       }
     });
 
-    setEvents(test);
+    setEvents(editEvent);
+    setNewDate(newDate);
+    setNewEventTitle("");
   };
 
-  const createEventTest = (eventTitle: string) => {
+  const createEvent = (eventTitle: string) => {
     setEvents([
       ...events,
       {
@@ -173,17 +186,20 @@ const CalendarEventModal = ({
                           className=" flex justify-between mb-2 cursor-pointer"
                           key={event.id}
                         >
-                          {event.edit ? (
+                          {event.edit && event.id === activeEdit ? (
                             <div>
                               <input
+                                className="mx-2"
                                 type="time"
                                 defaultValue={"12:00"}
                                 onChange={(e) => setTime(day, e.target.value)}
                               />
                               <input
+                                className="mx-2"
                                 onChange={(e) =>
                                   setNewEventTitle(e.target.value)
                                 }
+                                value={newEventTitle}
                                 placeholder={"Event title"}
                               />
                               <button
@@ -223,9 +239,7 @@ const CalendarEventModal = ({
                     placeholder={"Add new event"}
                   />
                 </form>
-                <button onClick={() => createEventTest(eventTitle)}>
-                  Confirm
-                </button>
+                <button onClick={() => createEvent(eventTitle)}>Confirm</button>
               </div>
             </div>
           </main>
