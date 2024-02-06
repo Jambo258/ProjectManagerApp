@@ -204,7 +204,13 @@ const CalendarEventModal = ({
                               />
                               <button
                                 onClick={() =>
-                                  editEvent(event.id, newEventTitle, newDate)
+                                  editEvent(
+                                    event.id,
+                                    newEventTitle !== ""
+                                      ? newEventTitle
+                                      : event.eventTitle,
+                                    newDate
+                                  )
                                 }
                               >
                                 Update event
