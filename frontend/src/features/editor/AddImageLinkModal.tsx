@@ -8,7 +8,7 @@ interface IProps {
     imageUrl: string;
   }
 
-export const AddImageModal = ({ action }: IProps) => {
+export const AddImageLinkModal = ({ action }: IProps) => {
   const {
     formState: { errors, isSubmitting, },
     handleSubmit,
