@@ -11,7 +11,7 @@ import {
   addMonths,
   subMonths,
 } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { useParams } from "react-router-dom";
 import CalendarEventModal from "./CalendarEventModal";
@@ -57,9 +57,7 @@ const CalendarModal = () => {
   };
 
   const [showMonthSelect, setShowMonthSelect] = useState(false);
-  const [monthSelect, setMonthSelect] = useState([new Date()]);
-
-  useEffect(() => {
+  const [monthSelect] = useState<Date[]>(() => {
     const tempMonths: Date[] = [];
 
     for (let i = 0; i < 12; i++) {
@@ -70,8 +68,8 @@ const CalendarModal = () => {
       tempMonths.unshift(subMonths(new Date(), i));
     }
 
-    setMonthSelect(tempMonths);
-  }, []);
+    return tempMonths;
+  });
 
   return (
     <>
