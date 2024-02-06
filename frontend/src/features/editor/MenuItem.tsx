@@ -6,7 +6,7 @@ interface IProps {
   name?: string;
   icon?: Icon;
   title?: string;
-  action?: () => boolean | void;
+  action?: () => boolean;
   isActive?: () => boolean;
 }
 
