@@ -169,7 +169,7 @@ const CalendarEventModal = ({
                     isEqual(getYear(event.day), getYear(day)) && (
                     <div key={event.id}>
                       <div
-                        className="flex flex-row justify-between cursor-pointer"
+                        className="flex flex-row items-center justify-between cursor-pointer"
                         key={event.id}
                       >
                         {event.edit ? (
@@ -193,7 +193,7 @@ const CalendarEventModal = ({
                               onClick={() =>
                                 editEvent(event.id, newEventTitle, newDate)
                               }
-                              className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 py-0 min-w-fit"
+                              className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 min-w-fit"
                             >
                             Update event
                             </button>
@@ -202,7 +202,7 @@ const CalendarEventModal = ({
                           <div onClick={() => setEdit(event.id, true)}
                             className="w-full body-text-md my-2">
                             {format(event.day, "HH:mm")}
-                            {" " + event.eventTitle}
+                            <p className="body-text-lg">{event.eventTitle}</p>
                           </div>
                         )}
                         {!event.edit &&
