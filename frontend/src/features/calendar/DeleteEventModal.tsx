@@ -47,6 +47,7 @@ export const DeleteEventModal = ({ deleteEvent, eventId }: Props) => {
     <>
       <Trash2
         className="grid cursor-pointer text-caution-100"
+        size={20}
         onClick={() => openModal()}
       />
 

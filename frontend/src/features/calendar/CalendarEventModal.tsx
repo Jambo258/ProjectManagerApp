@@ -122,17 +122,17 @@ const CalendarEventModal = ({
           ${isToday(day) && " border-4 border-primary-200"}
         `}
       >
-        <ul className="overflow-x-none whitespace-nowrap max-h-10">
-          <li className="btn-text-lg p-2">{format(day, "d")}</li>
+        <ul className="flex flex-col items-center md:items-start h-full overflow-x-none whitespace-nowrap">
+          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? " pt-1 pl-1 p-2 " : " p-2" }`}>{format(day, "d")}</li>
           {events.map(
             (event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) &&
               projectid === event.projectid && (
-                <li key={event.id} className="ml-1">
+                <li key={event.id} className="ml-1 hidden md:block body-text-sm">
                   {format(event.day, "HH:mm ")}
-                  {event.eventTitle}
+                  {event.eventTitle.slice(0, 6) + "..."}
                 </li>
               )
           )}
@@ -156,77 +156,81 @@ const CalendarEventModal = ({
               <X className="mb-4" size={20} />
             </button>
             <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
-              {format(day, "iiii")} {format(day, "dd.M.yyyy")}
+              {format(day, "iiii")} {format(day, "d.M.yyyy")}
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
             <div>
-              <div>
-                {events.map(
-                  (event) =>
-                    projectid === event.projectid &&
+              {events.map(
+                (event) =>
+                  projectid === event.projectid &&
                     isEqual(getMonth(event.day), getMonth(day)) &&
                     isEqual(getDate(event.day), getDate(day)) &&
                     isEqual(getYear(event.day), getYear(day)) && (
-                      <div key={event.id}>
-                        <div
-                          className=" flex justify-between mb-2 cursor-pointer"
-                          key={event.id}
-                        >
-                          {event.edit ? (
-                            <div>
-                              <input
-                                type="time"
-                                defaultValue={"12:00"}
-                                onChange={(e) => setTime(day, e.target.value)}
-                              />
-                              <input
-                                onChange={(e) =>
-                                  setNewEventTitle(e.target.value)
-                                }
-                                placeholder={"Event title"}
-                              />
-                              <button
-                                onClick={() =>
-                                  editEvent(event.id, newEventTitle, newDate)
-                                }
-                              >
+                    <div key={event.id}>
+                      <div
+                        className="flex flex-row justify-between cursor-pointer mb-2"
+                        key={event.id}
+                      >
+                        {event.edit ? (
+                          <div>
+                            <input
+                              type="time"
+                              defaultValue={"12:00"}
+                              onChange={(e) => setTime(day, e.target.value)}
+                            />
+                            <input
+                              onChange={(e) =>
+                                setNewEventTitle(e.target.value)
+                              }
+                              placeholder={"Event title"}
+                            />
+                            <button
+                              onClick={() =>
+                                editEvent(event.id, newEventTitle, newDate)
+                              }
+                            >
                                 Update event
-                              </button>
-                            </div>
-                          ) : (
-                            <div onClick={() => setEdit(event.id, true)}>
-                              {format(event.day, "HH:mm")}
-                              {" " + event.eventTitle}
-                            </div>
-                          )}
-                          <DeleteEventModal
-                            deleteEvent={deleteEvent}
-                            eventId={event.id}
-                          />
-                        </div>
+                            </button>
+                          </div>
+                        ) : (
+                          <div onClick={() => setEdit(event.id, true)}
+                            className="w-full body-text-md">
+                            {format(event.day, "HH:mm")}
+                            {" " + event.eventTitle}
+                          </div>
+                        )}
+                        <DeleteEventModal
+                          deleteEvent={deleteEvent}
+                          eventId={event.id}
+                        />
                       </div>
-                    )
-                )}
-              </div>
-              <div className="flex justify-center">
-                <form>
-                  <input
-                    className="mx-2"
-                    type="time"
-                    defaultValue={format(newDate, "hh:mm")}
-                    onChange={(e) => setTime(day, e.target.value)}
-                  />
-                  <input
-                    className="mr-2"
-                    onChange={(e) => setEventTitle(e.target.value)}
-                    placeholder={"Add new event"}
-                  />
-                </form>
-                <button onClick={() => createEventTest(eventTitle)}>
+                    </div>
+                  )
+              )}
+            </div>
+            <div className="justify-center">
+              <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
+              <form className="flex flex-row gap-2">
+                <input
+                  type="time"
+                  defaultValue={format(newDate, "hh:mm")}
+                  onChange={(e) => setTime(day, e.target.value)}
+                  className="px-3 body-text-md"
+                />
+
+                <input
+                  onChange={(e) => setEventTitle(e.target.value)}
+                  placeholder={"Add new event"}
+                  className="px-3 body-text-md"
+                />
+
+                <button onClick={() => createEventTest(eventTitle)}
+                  className="btn-text-sm">
                   Confirm
                 </button>
-              </div>
+              </form>
+              
             </div>
           </main>
         </dialog>
