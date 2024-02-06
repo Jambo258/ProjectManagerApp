@@ -180,7 +180,7 @@ const CalendarEventModal = ({
                             <div className="flex flex-row w-full gap-2">
                               <input
                                 type="time"
-                                defaultValue={"12:00"}
+                                defaultValue={format(event.day, "HH:mm")}
                                 onChange={(e) => setTime(day, e.target.value)}
                                 className="px-3 body-text-md"
                               />
