@@ -50,13 +50,16 @@ const CalendarEventModal = ({
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDate, setNewDate] = useState(day);
+  const [activeEdit, setActiveEdit] = useState<string>();
 
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
+    setAllEdits(false);
     setIsModalOpen(false);
+    setNewEventTitle("");
   };
 
   const deleteEvent = (eventid: string) => {
@@ -65,29 +68,39 @@ const CalendarEventModal = ({
   };
 
   const setEdit = (eventid: string, setEdit: boolean) => {
-    const test = events.map((event) => {
+    setActiveEdit(eventid);
+    const editedEvent = events.map((event) => {
       if (event.id === eventid) {
         return { ...event, edit: setEdit };
       } else {
         return event;
       }
     });
-    setEvents(test);
+    setEvents(editedEvent);
   };
 
-  const editEvent = (eventid: string, testString: string, newDay: Date) => {
-    const test = events.map((event) => {
+  const setAllEdits = (newEdit: boolean) => {
+    const editedEvents = events.map((eventTest) => {
+      return { ...eventTest, edit: newEdit };
+    });
+    setEvents(editedEvents);
+  };
+
+  const editEvent = (eventid: string, newTitle: string, newDay: Date) => {
+    const editEvent = events.map((event) => {
       if (event.id === eventid) {
-        return { ...event, eventTitle: testString, day: newDay, edit: false };
+        return { ...event, eventTitle: newTitle, day: newDay, edit: false };
       } else {
         return event;
       }
     });
 
-    setEvents(test);
+    setEvents(editEvent);
+    setNewDate(newDate);
+    setNewEventTitle("");
   };
 
-  const createEventTest = (eventTitle: string) => {
+  const createEvent = (eventTitle: string) => {
     setEvents([
       ...events,
       {
@@ -175,22 +188,38 @@ const CalendarEventModal = ({
                         className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
                         key={event.id}
                       >
-                        {event.edit ? (
+                          {event.edit && event.id === activeEdit ? (
                           <div className="flex flex-col sm:flex-row w-full my-2">
                             <div className="flex flex-row w-full gap-2">
                               <input
+                                className="mx-2"
                                 type="time"
                                 defaultValue={format(event.day, "HH:mm")}
                                 onChange={(e) => setTime(day, e.target.value)}
                                 className="px-3 body-text-md"
                               />
                               <input
+                                className="mx-2"
                                 onChange={(e) =>
                                   setNewEventTitle(e.target.value)
                                 }
+                                value={newEventTitle}
                                 placeholder={event.eventTitle}
                                 className="flex-1 body-text-md"
                               />
+                              <button
+                                onClick={() =>
+                                  editEvent(
+                                    event.id,
+                                    newEventTitle !== ""
+                                      ? newEventTitle
+                                      : event.eventTitle,
+                                    newDate
+                                  )
+                                }
+                              >
+                                Update event
+                              </button>
                             </div>
                             <button
                               onClick={() =>
@@ -236,11 +265,7 @@ const CalendarEventModal = ({
                     className="px-3 body-text-md flex-1"
                   />
                 </form>
-
-                <button onClick={() => createEventTest(eventTitle)}
-                  className="btn-text-sm">
-                Confirm
-                </button>
+                <button onClick={() => createEvent(eventTitle)} className="btn-text-sm">Confirm</button>
               </div>
               
             </div>
