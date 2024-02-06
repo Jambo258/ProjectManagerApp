@@ -6,7 +6,7 @@ import CheckList from "../../icons/CheckList";
 import Heading1 from "../../icons/Heading1";
 import Heading2 from "../../icons/Heading2";
 import BlockQuote from "../../icons/BlockQuote";
-import { Bold, Code, CornerUpLeft, CornerUpRight, Image, Italic, List, Minus, Underline } from "react-feather";
+import { Bold, Code, Image, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
 import { Modal } from "../../components/Modal";
 import { AddImageModal } from "./AddImageModal";
 
@@ -176,8 +176,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
             : item.name === "image" ? <Modal btnText={<Image />} btnStyling="btn-text-xs p-1 h-7 w-7 flex items-center justify-center" modalTitle={"Add image"}><AddImageModal action={(url: string) => {
               if (url) {
                 editor.chain().focus().setImage({ src: url }).run();
-              }}}/>
-            </Modal>
+              }}}/></Modal>
               : <MenuItem {...item} />}
         </Fragment>
       ))
