@@ -111,7 +111,7 @@ export const KanbanTask = ({
     const endDateInt = parseInt(endDateString!);
     const diffInMs = endDateInt - dateNow;
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    return parseInt(diffInDays.toFixed());
+    return Math.ceil(diffInDays);
   };
 
   return (

@@ -62,9 +62,6 @@ export const DeadlineModal = ({
             ) {
               return "bg-caution-200";
             }
-            else {
-              return "bg-grayscale-100";
-            }
           }
         }}
       />
