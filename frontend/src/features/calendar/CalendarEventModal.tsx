@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { X } from "react-feather";
 import { DeleteEventModal } from "./DeleteEventModal";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 interface Event {
   id: string;
@@ -110,17 +111,19 @@ const CalendarEventModal = ({
     setNewDate(updatedDate);
   };
 
+  const screenDimensions = useScreenDimensions();
+
   return (
     <>
       <div
         onClick={() => openModal()}
-        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start h-full w-full max-h-64 group outline outline-1 outline-grayscale-400 hover:bg-primary-200 ${
+        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start group outline outline-1 outline-grayscale-400 hover:bg-primary-200 ${
           isSameMonth(day, currentMonth)
             ? "text-dark-font"
             : "text-grayscale-400"
         }
           ${isToday(day) && " border-4 border-primary-200"}
-        `}
+          `}
       >
         <ul className="flex flex-col items-center md:items-start h-full overflow-x-none whitespace-nowrap">
           <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? " pt-1 pl-1 p-2 " : " p-2" }`}>{format(day, "d")}</li>
@@ -169,7 +172,7 @@ const CalendarEventModal = ({
                     isEqual(getYear(event.day), getYear(day)) && (
                     <div key={event.id}>
                       <div
-                        className="flex flex-row items-center justify-between cursor-pointer"
+                        className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
                         key={event.id}
                       >
                         {event.edit ? (
