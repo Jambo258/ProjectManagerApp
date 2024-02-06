@@ -103,11 +103,11 @@ export const KanbanTask = ({
     setIsModalOpen(false);
   };
 
-  const displayTaskLabels = task.labels?.map((element) => (
+  const displayTaskLabels = task.labels?.map((label) => (
     <Label
-      key={element.id}
-      labelColor={element.color}
-      labelText={element.name}
+      key={label.id}
+      labelColor={label.color}
+      labelText={label.name}
     />
   ));
 

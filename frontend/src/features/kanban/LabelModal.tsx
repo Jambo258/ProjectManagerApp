@@ -29,40 +29,36 @@ export const LabelModal = ({
   task,
   deleteLabelStatus,
 }: Props) => {
-  console.log(isModalsOpen);
-  console.log(task);
-  console.log(labels);
-  console.log(task.labels?.length);
   const taskLabelIds = task.labels?.map((label) => label.id) ?? [];
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
-        {labels.map((element: Labels) => (
+        {labels.map((label) => (
           <div
-            key={element.id}
+            key={label.id}
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              {taskLabelIds.includes(element.id) ? (
+              {taskLabelIds.includes(label.id) ? (
                 <CheckSquare
                   onClick={() => {
-                    deleteLabelStatus(task.Id, element.id.toString());
+                    deleteLabelStatus(task.Id, label.id.toString());
                   }}
                   size={24}
                 ></CheckSquare>
               ) : (
                 <Square
                   onClick={() => {
-                    updateLabelStatus(task.Id, element.id.toString());
+                    updateLabelStatus(task.Id, label.id.toString());
                   }}
                   size={24}
                 ></Square>
               )}
             </div>
             <div
-              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${element.color}`}
+              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${label.color}`}
             >
-              {element.name}
+              {label.name}
             </div>
 
             <SubModal
@@ -73,9 +69,8 @@ export const LabelModal = ({
             >
               <EditLabelModal
                 task={task}
-                element={element}
-                label={labels}
-                labels={labelColors}
+                label={label}
+                labelColors={labelColors}
                 editLabel={editLabel}
                 deleteLabel={deleteLabel}
               />

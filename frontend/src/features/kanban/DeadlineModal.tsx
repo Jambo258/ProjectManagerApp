@@ -37,7 +37,6 @@ export const DeadlineModal = ({
     closeModal();
   };
 
-  console.log(date);
   return (
     <div className="max-w-xl text-center">
       <Calendar

@@ -9,19 +9,19 @@ import { SubModalContext } from "./SubModal";
 import { DeleteModal } from "../../components/DeleteModal";
 
 interface ColorProps {
-  label: Labels[];
   task: Task;
-  labels: Labels[];
-  element: Labels;
-  editLabel: (
-    id: string | number,
-    name: string,
-    color: string
-  ) => void;
+  labelColors: Labels[];
+  label: Labels;
+  editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
 }
 
-export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: ColorProps) => {
+export const EditLabelModal = ({
+  labelColors,
+  label,
+  editLabel,
+  deleteLabel,
+}: ColorProps) => {
   const { closeModal } = useContext(SubModalContext);
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const {
@@ -46,10 +46,9 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
   const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-
     if (canSubmit) {
       try {
-        editLabel(element.id, formData.name, formData.color);
+        editLabel(label.id, formData.name, formData.color);
         closeModal();
         reset();
         setFormError(null);
@@ -72,7 +71,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
 
   const onHandleDelete = () => {
     try {
-      deleteLabel(element.id);
+      deleteLabel(label.id);
       reset();
       setFormError(null);
     } catch (err) {
@@ -99,7 +98,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
           <input
             type="text"
             {...register("name")}
-            placeholder={element.name}
+            placeholder={label.name}
             className="block w-full body-text-sm py-1 px-2 mt-1.5 border-grayscale-300"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
@@ -116,7 +115,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: Colo
           </p>
         </label>
         <div className="grid grid-cols-3 gap-2 mt-1.5">
-          {labels.map((label) => (
+          {labelColors.map((label) => (
             <ColorModal
               key={label.id}
               setValue={setValue}
