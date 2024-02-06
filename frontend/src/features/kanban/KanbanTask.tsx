@@ -1,4 +1,3 @@
-
 // React
 import { useState } from "react";
 
@@ -34,20 +33,14 @@ interface Props {
   updateTaskTitle: (id: number | string, title: string) => void;
   updateTaskMembers: (id: number | string, members: Member[]) => void;
   markTaskDone: (id: number | string) => void;
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
+  labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (taskId: string, id: string) => void;
   deleteLabelStatus: (taskId: string, id: string) => void;
-  editLabel: (
-    taskId: string,
-    id: string | number,
-    name: string,
-    color: string
-  ) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
 }
 
@@ -58,9 +51,8 @@ export const KanbanTask = ({
   updateTaskTitle,
   updateTaskMembers,
   // markTaskDone,
-  label,
-  setLabel,
   labels,
+  labelColors,
   setIsModalsOpen,
   isModalsOpen,
   createLabel,
@@ -71,14 +63,20 @@ export const KanbanTask = ({
   setTaskDeadline,
   removeTaskDeadline,
 }: Props) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({
-      id: task.Id,
-      data: {
-        type: "Task",
-        task,
-      },
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.Id,
+    data: {
+      type: "Task",
+      task,
+    },
+  });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -105,14 +103,13 @@ export const KanbanTask = ({
     setIsModalOpen(false);
   };
 
-  const displayTaskLabels = task.labels?.map((element) =>
-    (
-      <Label
-        key={element.id}
-        labelColor={element.color}
-        labelText={element.name}
-      />
-    ));
+  const displayTaskLabels = task.labels?.map((element) => (
+    <Label
+      key={element.id}
+      labelColor={element.color}
+      labelText={element.name}
+    />
+  ));
 
   const displayTaskMembers = taskMembers.map((member: Member) =>
     member ? (
@@ -126,7 +123,6 @@ export const KanbanTask = ({
   );
 
   const handleSave = () => {
-    console.log("Task saved");
     updateTask(task.Id, editContent);
     updateTaskTitle(task.Id, editTitle);
     updateTaskMembers(task.Id, taskMembers);
@@ -135,11 +131,13 @@ export const KanbanTask = ({
 
   const dateDifference = (endDate: number | object | undefined) => {
     const dateNow = new Date().getTime();
-    const endDateString = endDate?.toString();
-    const endDateInt = parseInt(endDateString!);
-    const diffInMs = endDateInt - dateNow;
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    return Math.ceil(diffInDays);
+    if (typeof endDate === "number") {
+      const diffInMs = endDate - dateNow;
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      return Math.ceil(diffInDays);
+    } else {
+      return 0;
+    }
   };
 
   return (
@@ -179,14 +177,14 @@ export const KanbanTask = ({
                 {task.deadline && (
                   <div
                     className={`rounded w-fit px-2 py-1 text-center ${
-                      dateDifference(task.deadline?.endDate) > 2
+                      dateDifference(task.deadline) > 2
                         ? "bg-success-100"
                         : "bg-caution-100"
                     }`}
                   >
                     <p className="label-text inline-flex">
                       <Clock size={16}></Clock>
-                      {dateDifference(task.deadline?.endDate)} Days left
+                      {dateDifference(task.deadline)} Days left
                     </p>
                   </div>
                 )}
@@ -275,14 +273,14 @@ export const KanbanTask = ({
                   {task.deadline && (
                     <div
                       className={`rounded w-fit px-2 py-1 text-center ${
-                        dateDifference(task.deadline?.endDate) > 2
+                        dateDifference(task.deadline) > 2
                           ? "bg-success-100"
                           : "bg-caution-100"
                       }`}
                     >
                       <p className="label-text inline-flex">
                         <Clock size={16}></Clock>
-                        {dateDifference(task.deadline?.endDate)} Days left
+                        {dateDifference(task.deadline)} Days left
                       </p>
                     </div>
                   )}
@@ -335,9 +333,8 @@ export const KanbanTask = ({
                     >
                       <LabelModal
                         task={task}
-                        label={label}
                         labels={labels}
-                        setLabel={setLabel}
+                        labelColors={labelColors}
                         setIsModalsOpen={setIsModalsOpen}
                         isModalsOpen={isModalsOpen}
                         createLabel={createLabel}

@@ -1,16 +1,13 @@
 import { useContext, useState } from "react";
 import { ColorModal } from "./ColorModal";
 import { Labels } from "./Kanban";
-// import { ModalContext } from "../../components/Modal";
 import { FieldErrors, useForm } from "react-hook-form";
 import { createLabelSchema } from "./labelValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubModalContext } from "./SubModal";
 
 interface ColorProps {
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
-  labels: Labels[];
+  labelColors: Labels[];
   createLabel: (name: string, color: string) => void;
 }
 
@@ -20,12 +17,9 @@ export interface CreateLabelFormValues {
 }
 
 export const CreateLabelModal = ({
-  // label,
-  // setLabel,
-  labels,
+  labelColors,
   createLabel
 }: ColorProps) => {
-  // const { closeModal } = useContext(ModalContext);
   const { closeModal } = useContext(SubModalContext);
   const {
     formState: { isDirty, errors },
@@ -49,19 +43,8 @@ export const CreateLabelModal = ({
   const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-
     if (canSubmit) {
       try {
-        /*
-        const newLabel: Labels = {
-          id: nanoid(),
-          name: formData.name,
-          color: formData.color,
-          active: false,
-        };
-
-        setLabel([...label, newLabel]);
-        */
         createLabel(formData.name, formData.color);
         closeModal();
         reset();
@@ -108,7 +91,7 @@ export const CreateLabelModal = ({
           </p>
         </label>
         <div className="grid grid-cols-3">
-          {labels.map((label) => (
+          {labelColors.map((label) => (
             <ColorModal
               key={label.id}
               setValue={setValue}

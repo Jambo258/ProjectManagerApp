@@ -22,20 +22,14 @@ interface Props {
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
   markTaskDone: (id: string | number) => void;
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
+  labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (taskId: string, id: string) => void;
   deleteLabelStatus: (taskId: string, id: string) => void;
-  editLabel: (
-    taskId: string,
-    id: string | number,
-    name: string,
-    color: string
-  ) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
   updateTaskMembers: (id: number | string, members: Member[]) => void;
 }
@@ -52,9 +46,8 @@ export const KanbanColumn = (props: Props) => {
     updateTaskTitle,
     updateTaskMembers,
     markTaskDone,
-    label,
-    setLabel,
     labels,
+    labelColors,
     setIsModalsOpen,
     isModalsOpen,
     createLabel,
@@ -72,14 +65,20 @@ export const KanbanColumn = (props: Props) => {
     return tasks.map((element) => element.Id);
   }, [tasks]);
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({
-      id: column.Id,
-      data: {
-        type: "Column",
-        column,
-      },
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: column.Id,
+    data: {
+      type: "Column",
+      column,
+    },
+  });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -147,9 +146,8 @@ export const KanbanColumn = (props: Props) => {
               updateTask={updateTask}
               updateTaskTitle={updateTaskTitle}
               markTaskDone={markTaskDone}
-              label={label}
               labels={labels}
-              setLabel={setLabel}
+              labelColors={labelColors}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
               updateTaskMembers={updateTaskMembers}

@@ -22,18 +22,13 @@ export const DeadlineModal = ({
   removeTaskDeadline,
 }: Props) => {
   const [date, setDate] = useState<Value>(
-    task.deadline ? new Date(Number(task.deadline.endDate)) : new Date()
+    task.deadline ? new Date(Number(task.deadline)) : new Date()
   );
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const { closeModal } = useContext(SubModalContext);
 
-  console.log(task.deadline?.endDate);
-
   const handleDeadlineSave = () => {
-    console.log(date?.valueOf());
-    // setTaskDeadline(task.Id, date?.toLocaleString().slice(0, 9));
     setTaskDeadline(task.Id, date?.valueOf());
-
     closeModal();
   };
 
@@ -52,8 +47,8 @@ export const DeadlineModal = ({
         onChange={setDate}
         value={date}
         tileClassName={({ date, view }) => {
-          if (view === "month" && task.deadline?.endDate) {
-            const markedDate = new Date(Number(task.deadline.endDate));
+          if (view === "month" && task.deadline) {
+            const markedDate = new Date(Number(task.deadline));
 
             if (
               date.getDate() === markedDate.getDate() &&

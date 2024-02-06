@@ -6,27 +6,20 @@ import { SubModal } from "./SubModal";
 
 interface Props {
   task: Task;
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
+  labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
   updateLabelStatus: (taskId: string, id: string) => void;
   deleteLabelStatus: (taskId: string, id: string) => void;
-  editLabel: (
-    taskId: string,
-    id: string | number,
-    name: string,
-    color: string
-  ) => void;
+  editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
 }
 
 export const LabelModal = ({
-  label,
-  setLabel,
   labels,
+  labelColors,
   setIsModalsOpen,
   isModalsOpen,
   createLabel,
@@ -38,19 +31,19 @@ export const LabelModal = ({
 }: Props) => {
   console.log(isModalsOpen);
   console.log(task);
-  console.log(label);
+  console.log(labels);
   console.log(task.labels?.length);
-  const taskLabelIds = task.labels?.map(label => label.id) ?? [];
+  const taskLabelIds = task.labels?.map((label) => label.id) ?? [];
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
-        {label.map((element: Labels) => (
+        {labels.map((element: Labels) => (
           <div
             key={element.id}
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              {taskLabelIds.includes(element.id)  ? (
+              {taskLabelIds.includes(element.id) ? (
                 <CheckSquare
                   onClick={() => {
                     deleteLabelStatus(task.Id, element.id.toString());
@@ -73,7 +66,6 @@ export const LabelModal = ({
             </div>
 
             <SubModal
-              // btnText={<Edit2></Edit2>}
               iconName="Edit"
               modalTitle={"Edit Label"}
               setIsModalsOpen={setIsModalsOpen}
@@ -82,9 +74,8 @@ export const LabelModal = ({
               <EditLabelModal
                 task={task}
                 element={element}
-                label={label}
-                labels={labels}
-                setLabel={setLabel}
+                label={labels}
+                labels={labelColors}
                 editLabel={editLabel}
                 deleteLabel={deleteLabel}
               />
@@ -101,9 +92,7 @@ export const LabelModal = ({
           isModalsOpen={isModalsOpen}
         >
           <CreateLabelModal
-            label={label}
-            labels={labels}
-            setLabel={setLabel}
+            labelColors={labelColors}
             createLabel={createLabel}
           />
         </SubModal>

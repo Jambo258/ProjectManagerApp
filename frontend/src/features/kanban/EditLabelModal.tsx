@@ -1,7 +1,5 @@
-
 import { useContext, useState } from "react";
 import { Labels, Task } from "./Kanban";
-// import { ModalContext } from "../../components/Modal";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 import { ColorModal } from "./ColorModal";
 import { FieldErrors, useForm } from "react-hook-form";
@@ -13,11 +11,9 @@ import { DeleteModal } from "../../components/DeleteModal";
 interface ColorProps {
   label: Labels[];
   task: Task;
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
   element: Labels;
   editLabel: (
-    taskId: string,
     id: string | number,
     name: string,
     color: string
@@ -25,8 +21,7 @@ interface ColorProps {
   deleteLabel: (id: string | number) => void;
 }
 
-export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }: ColorProps) => {
-  // const { closeModal } = useContext(ModalContext);
+export const EditLabelModal = ({ labels, element, editLabel, deleteLabel }: ColorProps) => {
   const { closeModal } = useContext(SubModalContext);
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const {
@@ -54,21 +49,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
 
     if (canSubmit) {
       try {
-        editLabel(task.Id, element.id, formData.name, formData.color);
-        /*
-        setLabel((prev) =>
-          prev.map((elements) => {
-            if (elements.id === element.id) {
-              return {
-                ...elements,
-                name: formData.name,
-                color: formData.color,
-              };
-            }
-            return elements;
-          })
-        );
-        */
+        editLabel(element.id, formData.name, formData.color);
         closeModal();
         reset();
         setFormError(null);
@@ -90,11 +71,8 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
   };
 
   const onHandleDelete = () => {
-
     try {
       deleteLabel(element.id);
-      // setLabel((prev) => prev.filter((elements) => elements.id !== element.id));
-      // closeModal();
       reset();
       setFormError(null);
     } catch (err) {
