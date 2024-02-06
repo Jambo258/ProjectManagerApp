@@ -73,8 +73,8 @@ const CalendarModal = () => {
 
   return (
     <>
-      <div className="flex w-screen h-screen">
-        <div className="w-full h-full my-20 pr-64 pb-64">
+      <div className="flex w-full h-fit border">
+        <div className="w-full h-full">
           <div className="flex items-center rounded-t-lg bg-primary-200 justify-center m-[-1px]">
             <ChevronLeft
               className="cursor-pointer mr-6"
@@ -82,7 +82,7 @@ const CalendarModal = () => {
               onClick={() => getPrevMonth()}
             />
             <div
-              className="grid col-span-1 cursor-pointer heading-xl"
+              className="grid col-span-1 py-2 cursor-pointer heading-xl"
               onClick={() => setShowMonthSelect(!showMonthSelect)}
             >
               {format(currentMonth, "MMM yyyy")}
