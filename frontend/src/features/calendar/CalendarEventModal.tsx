@@ -197,7 +197,7 @@ const CalendarEventModal = ({
                           ) : (
                             <div onClick={() => setEdit(event.id, true)}>
                               {format(event.day, "HH:mm")}
-                              {event.eventTitle}
+                              {" " + event.eventTitle}
                             </div>
                           )}
                           <DeleteEventModal
