@@ -78,11 +78,11 @@ const CalendarModal = () => {
           <div className="flex items-center rounded-t-lg bg-primary-200 justify-center m-[-1px]">
             <ChevronLeft
               className="cursor-pointer mr-6"
-              size={28}
+              size={24}
               onClick={() => getPrevMonth()}
             />
             <div
-              className="grid col-span-1 py-2 cursor-pointer heading-md lg:heading-xl"
+              className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md"
               onClick={() => setShowMonthSelect(!showMonthSelect)}
             >
               {format(currentMonth, "MMM yyyy")}
@@ -110,12 +110,12 @@ const CalendarModal = () => {
             </div>
             <ChevronRight
               className="cursor-pointer ml-6"
-              size={28}
+              size={24}
               onClick={() => getNextMonth()}
             />
           </div>
 
-          <div className="grid grid-cols-7 py-1 place-items-center m-[-1px] border-t border-x border-grayscale-400 heading-xs">
+          <div className="grid grid-cols-7 py-1 place-items-center m-[-1px] border-t border-x border-grayscale-400 body-text-sm md:body-text-md">
             {days.map((day, id) => (
               <div key={id}>{day}</div>
             ))}
