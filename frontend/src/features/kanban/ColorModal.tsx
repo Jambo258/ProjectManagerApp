@@ -7,14 +7,14 @@ interface ColorProps {
   setValue: UseFormSetValue<CreateLabelFormValues>;
 }
 export const ColorModal = ({ label, setValue }: ColorProps) => {
-  const HandleChange = () => {
+  const handleChange = () => {
     setValue("color", label.color, { shouldValidate: true });
   };
 
   return (
     <button
-      onClick={() => HandleChange()}
-      className={`h-12 m-1 rounded-md ${label.color}`}
+      onClick={() => handleChange()}
+      className={`h-8 rounded-sm ${label.color}`}
       type="button"
     ></button>
   );

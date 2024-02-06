@@ -10,16 +10,24 @@ import { AddPageModal } from "../page/AddPageModal";
 import { useGetProjectQuery } from "../../features/api/apiSlice";
 import { ProjectMembersModal } from "./ProjectMembersModal";
 import { useState } from "react";
+import { RenamePageModal } from "../page/RenamePageModal";
+import { DeletePageModal } from "../page/DeletePageModal";
 
 export const ProjectHeader = () => {
   const [showHeader, setShowHeader] = useState<boolean>(true);
 
-  const projectid = parseInt(useParams().projectId!);
-  const { data: project } = useGetProjectQuery(projectid);
+  const projectId = parseInt(useParams().projectId!);
+  const pageId = parseInt(useParams().pageId!);
+  const { data: project } = useGetProjectQuery(projectId);
 
   if (!project) {
     return null;
   }
+
+  const activePage = () => {
+    const activePage = pageId ? project.pages.find(page => page.id === pageId) : null;
+    return (activePage ? activePage.name : "");
+  };
 
   return (
     <header className={`flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden ${showHeader ? "h-fit" : "h-16"}`}>
@@ -28,43 +36,74 @@ export const ProjectHeader = () => {
         <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"}`}>{project.name}</h2>
         }
         <Menu>
-          <button className="min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+          <button className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             onClick={() => setShowHeader(!showHeader)}>
             {showHeader ? "Hide header" : "Show header" } 
           </button> 
+
+          <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
+
           <Modal
-            btnText={"Add page"}
+            btnText={"Add new page"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Add new page"}>
-            <AddPageModal projectId={projectid} />
-          </Modal>
+            <AddPageModal projectId={projectId} />
+          </Modal> 
+
+          {activePage() ?
+            <Modal
+              btnText={"Rename page"}
+              btnStyling={
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+              }
+              modalTitle={"Rename page"}
+            >
+              <RenamePageModal 
+                pageId={pageId} 
+                pageName={activePage()} />
+            </Modal>
+            : null
+          }
+
+          {activePage() ?
+            <DeletePageModal
+              btnText={"Delete page"}
+              btnStyling={
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+              }
+            />
+            : null      
+          }
+
+          <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
+
           <Modal
             btnText={"Rename project"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Rename project"}
           >
             <RenameProjectModal
-              projectId={projectid}
+              projectId={projectId}
               projectName={project.name}
             />
           </Modal>
           <Modal
             btnText={"Project members"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
             modalTitle={"Project members"}
           >
-            <ProjectMembersModal projectId={projectid} />
+            <ProjectMembersModal projectId={projectId} />
           </Modal>
           <DeleteProjectModal
             btnText={"Delete project"}
             btnStyling={
-              "min-w-max w-full p-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100"
+              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
           />
         </Menu>
@@ -77,10 +116,10 @@ export const ProjectHeader = () => {
             <Link
               to={`/projects/${project.id}/${page.id}`}
               key={page.id}
-              className={`mr-4 focus:outline-none ${window.location.pathname.includes(`/projects/${project.id}/${page.id}`) && "underline"}`}>
-              { window.location.pathname.includes(`/projects/${project.id}/${page.id}`) || (page.name.length <= 13)
+              className={`mr-4 focus:outline-none ${window.location.pathname.endsWith(`/projects/${project.id}/${page.id}`) && "underline"}`}>
+              { window.location.pathname.endsWith(`/projects/${project.id}/${page.id}`) || (page.name.length <= 18)
                 ? page.name
-                : page.name.slice(0, 10) + ((page.name.length > 10) ? "..." : "")
+                : page.name.slice(0, 15) + ((page.name.length > 15) ? "..." : "")
               }
             </Link>
           ))}
@@ -89,7 +128,7 @@ export const ProjectHeader = () => {
           btnText={<Plus size={16} />}
           btnStyling={"p-1.5 rounded-full heading-md"}
           modalTitle={"Add new page"}>
-          <AddPageModal projectId={projectid}/>
+          <AddPageModal projectId={projectId}/>
         </Modal>
       </nav>
       }

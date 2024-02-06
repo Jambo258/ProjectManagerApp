@@ -49,7 +49,7 @@ export const CreateLabelModal = ({
   const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-    console.log(formData.color);
+
     if (canSubmit) {
       try {
         /*
@@ -92,7 +92,7 @@ export const CreateLabelModal = ({
             type="text"
             {...register("name")}
             placeholder="Title for Label"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.name?.message}
@@ -108,11 +108,11 @@ export const CreateLabelModal = ({
           </p>
         </label>
         <div className="grid grid-cols-3">
-          {labels.map((element) => (
+          {labels.map((label) => (
             <ColorModal
-              key={element.id}
+              key={label.id}
               setValue={setValue}
-              label={element}
+              label={label}
             ></ColorModal>
           ))}
         </div>

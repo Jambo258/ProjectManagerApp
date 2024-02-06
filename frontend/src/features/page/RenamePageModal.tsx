@@ -2,7 +2,7 @@
 import { useState, useContext } from "react";
 
 // Redux Toolkit
-import { useAddNewPageMutation } from "../api/apiSlice";
+import { useEditPageMutation } from "../api/apiSlice";
 
 // Hook Form and Yup
 import { FieldErrors, useForm } from "react-hook-form";
@@ -13,52 +13,51 @@ import { DevTool } from "@hookform/devtools";
 // Context
 import { ModalContext } from "../../components/Modal";
 
-// React Router
-import { useNavigate } from "react-router-dom";
-
-interface AddPageFormValues {
+interface RenamePageFormValues {
   pageName: string;
 }
 
-export const AddPageModal = ({ projectId }: { projectId: number; }) => {
-  const navigate = useNavigate();
+interface RenamePageProps {
+  pageId: number;
+  pageName: string;
+}
 
-  const [addNewPage, { isLoading }] = useAddNewPageMutation();
+export const RenamePageModal = ({ pageId, pageName }: RenamePageProps) => {
+  const [editPage, { isLoading }] = useEditPageMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
+
   const {
     control,
     register,
     formState: {isDirty, errors},
     handleSubmit,
-  } = useForm<AddPageFormValues>({
+  } = useForm<RenamePageFormValues>({
+    defaultValues: {
+      pageName: pageName,
+    },
     resolver: yupResolver(pageNameSchema)
   });
 
-  const onError = (errors: FieldErrors<AddPageFormValues>) => {
+  const onError = (errors: FieldErrors<RenamePageFormValues>) => {
     console.log("Form field errors:", errors);
   };
 
   const canSave = isDirty && !isLoading;
 
-  const createNewPage = async (formData: AddPageFormValues) => {
+  const onHandleSubmit = async (formData: RenamePageFormValues) => {
     if (canSave) {
       try {
-        // if (!pageName) throw "missing page name";
-        const page = await addNewPage({
-          projectid: projectId,
-          pageName: formData.pageName,
-        }).unwrap();
+        const page = await editPage({ id: pageId, name: formData.pageName }).unwrap();
         // For development purposes
         console.log("Form submitted");
         console.log("Page:", page);
         if (page) {
           closeModal();
-          navigate(`/projects/${projectId}/${page.id}`);
         }
       } catch (err) {
         onError;
-        console.error("failed to create a new page,", err);
+        console.error("Failed to rename the page", err);
         // TO DO: Refactor this
         if (
           err &&
@@ -77,15 +76,16 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
   return (
     <>
       <form
-        onSubmit={handleSubmit(createNewPage, onError)}
-        noValidate>
+        onSubmit={handleSubmit(onHandleSubmit, onError)}
+        noValidate
+      >
         <label
           className="block mb-6 body-text-sm text-left text-dark-font">
-            Page name:
+                Page name:
           <input
             type="text"
             {...register("pageName")}
-            placeholder="Give a page name!"
+            placeholder="e.g. To do"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.pageName?.message}</p>
@@ -94,14 +94,16 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
         <section className="grid grid-cols-2 gap-6">
           <button
             type="submit"
-            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
-              Add page
+            className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
+          >
+            Save changes
           </button>
           <button
             type="reset"
             onClick={closeModal}
-            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200">
-              Cancel
+            className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
+          >
+            Cancel
           </button>
         </section>
       </form>

@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { KanbanTask } from "./KanbanTask";
 import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
+import { Plus } from "react-feather";
+import { type Member } from "../api/apiSlice";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -35,6 +37,7 @@ interface Props {
     color: string
   ) => void;
   deleteLabel: (id: string | number) => void;
+  updateTaskMembers: (id: number | string, members: Member[]) => void;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -47,6 +50,7 @@ export const KanbanColumn = (props: Props) => {
     updateColumn,
     updateTask,
     updateTaskTitle,
+    updateTaskMembers,
     markTaskDone,
     label,
     setLabel,
@@ -59,7 +63,7 @@ export const KanbanColumn = (props: Props) => {
     deleteLabel,
     deleteLabelStatus,
     setTaskDeadline,
-    removeTaskDeadline
+    removeTaskDeadline,
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -68,7 +72,7 @@ export const KanbanColumn = (props: Props) => {
     return tasks.map((element) => element.Id);
   }, [tasks]);
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({
       id: column.Id,
       data: {
@@ -80,6 +84,16 @@ export const KanbanColumn = (props: Props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-md"
+      ></div>
+    );
+  }
 
   return (
     <div
@@ -138,12 +152,17 @@ export const KanbanColumn = (props: Props) => {
               setLabel={setLabel}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
+              updateTaskMembers={updateTaskMembers}
             />
           ))}
         </SortableContext>
       </div>
-      <button className="mt-4" onClick={() => createTask(column.Id)}>
-        Add task
+      <button
+        type="button"
+        className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1"
+        onClick={() => createTask(column.Id)}
+      >
+        <Plus size={20} className="-ms-2.5" /> <p>Add task</p>
       </button>
     </div>
   );

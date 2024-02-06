@@ -37,7 +37,9 @@ usersRouter.post("/register", validate(registerUserSchema), async (req: RequestB
     const newUser = await createUser(email, name, hash);
 
     req.session.regenerate((err) => {
-      if (err) next(err);
+      if (err) {
+        return next(err);
+      }
       req.session.userId = newUser.id;
       return res.status(200).json(newUser);
     });
@@ -57,7 +59,9 @@ usersRouter.post("/login", async (req, res, next) => {
     const findUser = await getUserByEmail(email);
     if (findUser && await argon2.verify(findUser.password, password)) {
       req.session.regenerate((err) => {
-        if (err) next(err);
+        if (err) {
+          return next(err);
+        }
         req.session.userId = findUser.id;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...userDetails } = findUser;
@@ -74,7 +78,9 @@ usersRouter.post("/login", async (req, res, next) => {
 usersRouter.get("/logout", (req, res, next) => {
   req.session.destroy((err) => {
     res.clearCookie("connect.sid", { path: "/" });
-    if (err) next(err);
+    if (err) {
+      return next(err);
+    }
     return res.status(204).end();
   });
 });
@@ -90,7 +96,7 @@ usersRouter.post("/getuserbyemail", authenticate, async (req, res, next) => {
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return res.status(404).json({ error: "Couldnt find user" });
+      return res.status(404).json({ error: "Couldn't find user" });
     }
 
     return res.status(200).json({ id: user.id });
@@ -117,7 +123,7 @@ usersRouter.put("/update", authenticate, validate(updateUserSchema), async (req:
 
     const user = await getUserById(id);
     if (!user) {
-      return res.status(404).json({ error: "Couldnt find user" });
+      return res.status(404).json({ error: "Couldn't find user" });
     }
 
     const updatedUserData: updateUserSchemaType = {};
@@ -152,7 +158,9 @@ usersRouter.delete("/delete", authenticate, async (req, res, next) => {
     const deletedUser = await deleteUser(id);
     req.session.destroy((err) => {
       res.clearCookie("connect.sid", { path: "/" });
-      if (err) next(err);
+      if (err) {
+        return next(err);
+      }
       return res.status(200).json(deletedUser);
     });
   } catch (err) {

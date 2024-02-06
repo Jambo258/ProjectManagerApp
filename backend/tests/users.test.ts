@@ -34,6 +34,14 @@ describe("Server", () => {
       .delete("/users/delete");
   });
 
+  it("Register with same email", async () => {
+    await request
+      .post("/users/register")
+      .send({ email: "pekka@mail.com", name: "pekka", password: "salainen" })
+      .expect(409)
+      .expect("Content-Type", /json/);
+  });
+
   it("Register with invalid email", async () => {
     const res = await request
       .post("/users/register")
@@ -157,6 +165,15 @@ describe("Server", () => {
     expect(res.body.error).toBeDefined();
   });
 
+  it("Login without email", async () => {
+    const res = await request
+      .post("/users/login")
+      .send({ password: "salainen" })
+      .expect(400)
+      .expect("Content-Type", /json/);
+    expect(res.body.error).toBeDefined();
+  });
+
   it("Login without existing user", async () => {
     const res = await request
       .post("/users/login")
@@ -181,7 +198,7 @@ describe("Server", () => {
       .send({ email: "pekka@wrongmail.com" })
       .expect(404)
       .expect("Content-Type", /json/);
-    expect(res.body.error).toEqual("Couldnt find user");
+    expect(res.body.error).toEqual("Couldn't find user");
   });
 
   it("get user id with no email", async () => {
@@ -328,5 +345,20 @@ describe("Server", () => {
       .expect(400)
       .expect("Content-Type", /json/);
     expect(res.body.error).toBeDefined();
+  });
+
+  it("Update email with conflict", async () => {
+    await request
+      .post("/users/register")
+      .send({ email: "pekka2222@mail.com", name: "pekka", password: "salainen" })
+      .expect(200)
+      .expect("Content-Type", /json/);
+    await request
+      .put("/users/update")
+      .send({ email: "pekka@mail.com", name: "pekka", password: "salainen" })
+      .expect(409)
+      .expect("Content-Type", /json/);
+    await request
+      .delete("/users/delete");
   });
 });

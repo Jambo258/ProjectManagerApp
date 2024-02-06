@@ -23,13 +23,6 @@ const createUser = async (email: string, name: string, password: string) => {
   return newUser;
 };
 
-const getAllUsers = async () => {
-  const users = await prisma.users.findMany({
-    select: selectUserFields,
-  });
-  return users;
-};
-
 const getUserById = async (id: number) => {
   const user = await prisma.users.findUnique({
     where: { id },
@@ -74,7 +67,6 @@ const deleteUser = async (id: number) => {
 
 export {
   createUser,
-  getAllUsers,
   getUserById,
   getUserByEmail,
   updateUser,

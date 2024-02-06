@@ -2,7 +2,7 @@ import { PrismaClient, Role } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function createNewProject(name: string, id: number) {
+const createNewProject = async (name: string, id: number) => {
   const newProject = await prisma.projects.create({
     data: {
       name,
@@ -18,9 +18,9 @@ export async function createNewProject(name: string, id: number) {
   });
 
   return newProject;
-}
+};
 
-export async function getAllProjectsAndPagesByUserId(id: number) {
+const getAllProjectsAndPagesByUserId = async (id: number) => {
   const projects = await prisma.projects.findMany({
     where: {
       users: {
@@ -50,17 +50,17 @@ export async function getAllProjectsAndPagesByUserId(id: number) {
     },
   });
   return projects;
-}
+};
 
-export async function getProjectById(id: number) {
+const getProjectById = async (id: number) => {
   const project = await prisma.projects.findUnique({
     where: { id },
   });
 
   return project;
-}
+};
 
-export async function getProjectAllDetailsById(id: number) {
+const getProjectAllDetailsById = async (id: number) => {
   const project = await prisma.projects.findUnique({
     where: {
       id: id,
@@ -104,9 +104,9 @@ export async function getProjectAllDetailsById(id: number) {
 
   const flatProject = { ...projectWithoutUsers, users: flatUsers };
   return flatProject;
-}
+};
 
-export async function updateProject(id: number, name: string) {
+const updateProject = async (id: number, name: string) => {
   const updatedProject = await prisma.projects.update({
     where: { id },
     data: {
@@ -116,21 +116,21 @@ export async function updateProject(id: number, name: string) {
   });
 
   return updatedProject;
-}
+};
 
-export async function deleteProject(id: number) {
+const deleteProject = async (id: number) => {
   const deletedProject = await prisma.projects.delete({
     where: { id },
   });
 
   return deletedProject;
-}
+};
 
-export async function addUserToProject(
+const addUserToProject = async (
   userId: number,
   projectId: number,
   role: Role
-) {
+) => {
   const newProjectUser = await prisma.projectUsers.create({
     data: {
       userid: userId,
@@ -140,13 +140,13 @@ export async function addUserToProject(
   });
 
   return newProjectUser;
-}
+};
 
-export async function changeUserRoleOnProject(
+const changeUserRoleOnProject = async (
   userId: number,
   projectId: number,
   role: Role
-) {
+) => {
   const projectUserRoleChanged = await prisma.projectUsers.update({
     where: { projectid_userid: { userid: userId, projectid: projectId } },
 
@@ -157,9 +157,9 @@ export async function changeUserRoleOnProject(
   });
 
   return projectUserRoleChanged;
-}
+};
 
-export async function removeUserFromProject(userId: number, projectId: number) {
+const removeUserFromProject = async (userId: number, projectId: number) => {
   const deletedUserFromProject = await prisma.projectUsers.delete({
     where: {
       projectid_userid: { userid: userId, projectid: projectId },
@@ -175,14 +175,27 @@ export async function removeUserFromProject(userId: number, projectId: number) {
   }
 
   return deletedUserFromProject;
-}
+};
 
-export async function checkForUserExistingOnProject(
+const checkForUserExistingOnProject = async (
   userId: number,
   projectId: number
-) {
+) => {
   const findExistingUser = await prisma.projectUsers.findUnique({
     where: { projectid_userid: { userid: userId, projectid: projectId } },
   });
   return findExistingUser;
-}
+};
+
+export {
+  createNewProject,
+  getAllProjectsAndPagesByUserId,
+  getProjectById,
+  getProjectAllDetailsById,
+  updateProject,
+  deleteProject,
+  addUserToProject,
+  changeUserRoleOnProject,
+  removeUserFromProject,
+  checkForUserExistingOnProject,
+};

@@ -12,6 +12,7 @@ export const ModalContext = createContext<ModalContextType>(null!);
 
 interface ModalProps {
   btnText: string | ReactElement;
+  btnIcon?: ReactElement;
   btnStyling: string;
   modalTitle: string | null;
   children: ReactElement;
@@ -20,6 +21,7 @@ interface ModalProps {
 export const Modal = ({
   btnText,
   btnStyling,
+  btnIcon,
   modalTitle,
   children
 }: ModalProps) => {
@@ -40,7 +42,10 @@ export const Modal = ({
         type="button"
         onClick={openModal}
         className={btnStyling}>
-        { btnText }
+        <div className="flex flex-row gap-2">
+          { btnIcon }
+          { btnText }
+        </div>
       </button>
 
       {isModalOpen &&
@@ -50,8 +55,8 @@ export const Modal = ({
         <dialog
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
-          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
-          ${screenDimensions.height < 500 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
+          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
+          ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}

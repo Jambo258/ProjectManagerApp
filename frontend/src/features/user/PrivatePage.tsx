@@ -29,7 +29,7 @@ export const PrivatePage = () => {
         :
         <div className="flex flex-col h-screen w-full bg-grayscale-200">
           <DashboardNav />
-          <div className="relative flex flex-col w-full overflow-auto">
+          <div className="relative flex flex-col w-full h-fit min-h-[calc(100%-3.5rem)] overflow-auto">
             <ProjectHeader />
             <Outlet />
           </div>

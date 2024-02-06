@@ -1,5 +1,5 @@
 // React
-import { useContext, useState , } from "react";
+import { useContext, useState } from "react";
 
 // Redux Toolkit
 import { useAddNewProjectMutation } from "../api/apiSlice";
@@ -13,11 +13,16 @@ import { DevTool } from "@hookform/devtools";
 // Context
 import { ModalContext } from "../../components/Modal";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
 interface CreateProjectFormValues {
   projectName: string;
 }
 
 const CreateProjectModal = () => {
+  const navigate = useNavigate();
+
   const [addNewProject, { isLoading }] = useAddNewProjectMutation();
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
@@ -45,6 +50,7 @@ const CreateProjectModal = () => {
         console.log("Project:", project);
         if (project) {
           closeModal();
+          navigate(`/projects/${project.id}`);
         }
       } catch (err) {
         onError;
@@ -76,7 +82,7 @@ const CreateProjectModal = () => {
             type="text"
             {...register("projectName")}
             placeholder="Give a project name!"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
@@ -85,7 +91,7 @@ const CreateProjectModal = () => {
           <button
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200">
-              Add Project
+              Create project
           </button>
           <button
             type="reset"

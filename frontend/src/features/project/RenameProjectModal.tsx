@@ -1,5 +1,5 @@
 // React
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 
 // Redux Toolkit
 import { useEditProjectMutation } from "../api/apiSlice";
@@ -86,7 +86,7 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
             type="text"
             {...register("projectName")}
             placeholder="e.g. To do"
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
           <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
           <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
@@ -96,14 +96,14 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
             type="submit"
             className="w-full py-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
-            Save Changes
+            Save changes
           </button>
           <button
             type="reset"
             onClick={closeModal}
             className="w-full py-2 btn-text-sm bg-primary-100 hover:bg-primary-200"
           >
-            Cancel Changes
+            Cancel
           </button>
         </section>
       </form>

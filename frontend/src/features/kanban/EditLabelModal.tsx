@@ -1,3 +1,4 @@
+
 import { useContext, useState } from "react";
 import { Labels, Task } from "./Kanban";
 // import { ModalContext } from "../../components/Modal";
@@ -50,7 +51,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
   const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-    console.log(formData.color);
+
     if (canSubmit) {
       try {
         editLabel(task.Id, element.id, formData.name, formData.color);
@@ -89,7 +90,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
   };
 
   const onHandleDelete = () => {
-    console.log("mm");
+
     try {
       deleteLabel(element.id);
       // setLabel((prev) => prev.filter((elements) => elements.id !== element.id));
@@ -115,19 +116,19 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
   return (
     <>
       <form>
-        <label className="block mb-6 body-text-sm text-left text-dark-font">
+        <label className="block mb-3.5 heading-xs text-left text-dark-font">
           Title
           <input
             type="text"
             {...register("name")}
             placeholder={element.name}
-            className="block w-full py-1.5 px-4 mt-1 body-text-md focus:outline-none focus:ring focus:ring-dark-blue-50"
+            className="block w-full body-text-sm py-1 px-2 mt-1.5 border-grayscale-300"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.name?.message}
           </p>
         </label>
-        <label className="block mb-6 body-text-sm text-left text-dark-font">
+        <label className="block heading-xs text-left text-dark-font">
           Select a Color
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.color?.message}
@@ -136,20 +137,20 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
             {formError}
           </p>
         </label>
-        <div className="grid grid-cols-3">
-          {labels.map((element) => (
+        <div className="grid grid-cols-3 gap-2 mt-1.5">
+          {labels.map((label) => (
             <ColorModal
-              key={element.id}
+              key={label.id}
               setValue={setValue}
-              label={element}
+              label={label}
             ></ColorModal>
           ))}
         </div>
-        <section className="grid grid-cols-2">
+        <section className="border grid grid-cols-2 gap-6 mt-3.5">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"
-            className="py-2 my-2 mx-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            className="py-2 btn-text-xs bg-success-100 hover:bg-success-200"
           >
             Save
           </button>
@@ -157,7 +158,7 @@ export const EditLabelModal = ({ labels, element, editLabel, deleteLabel, task }
             type="button"
             onClick={() => setConfirmDeleteEdit(true)}
             name="delete"
-            className="py-2 my-2 mx-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
+            className="py-2 btn-text-xs bg-caution-100 hover:bg-caution-200"
           >
             Delete
           </button>

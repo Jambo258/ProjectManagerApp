@@ -58,7 +58,7 @@ export const IconButton = ({iconName, btnText, btnType = "button", handleOnClick
       className={`w-full px-4 pt-2 pb-1 btn-text-xs ${
         iconName === "Save" && "bg-success-100 hover:bg-success-200"
       } ${iconName === "Delete" && "bg-caution-100 hover:bg-caution-200"} ${
-        iconName === "none" ? "sm:text-center" : "sm:text-left"
+        iconName === "none" ? "sm:text-center pb-1.5" : "sm:text-left"
       } ${iconName === "Edit" && "bg-grayscale-0 hover:bg-grayscale-0"}`}
     >
       <span className="inline-flex">

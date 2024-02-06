@@ -1,6 +1,5 @@
 import { Task, type Labels } from "./Kanban";
 import { CreateLabelModal } from "./CreateLabelModal";
-// import { Modal } from "../../components/Modal";
 import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal } from "./SubModal";
@@ -41,35 +40,36 @@ export const LabelModal = ({
   console.log(task);
   console.log(label);
   console.log(task.labels?.length);
+  const taskLabelIds = task.labels?.map(label => label.id) ?? [];
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
-        {label.map((elements: Labels) => (
+        {label.map((element: Labels) => (
           <div
-            key={elements.id}
+            key={element.id}
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              {task.labels?.includes(elements) ? (
+              {taskLabelIds.includes(element.id)  ? (
                 <CheckSquare
                   onClick={() => {
-                    deleteLabelStatus(task.Id, elements.id.toString());
+                    deleteLabelStatus(task.Id, element.id.toString());
                   }}
                   size={24}
                 ></CheckSquare>
               ) : (
                 <Square
                   onClick={() => {
-                    updateLabelStatus(task.Id, elements.id.toString());
+                    updateLabelStatus(task.Id, element.id.toString());
                   }}
                   size={24}
                 ></Square>
               )}
             </div>
             <div
-              className={`col-span-2 text-center rounded-md ${elements.color}`}
+              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${element.color}`}
             >
-              {elements.name}
+              {element.name}
             </div>
 
             <SubModal
@@ -81,7 +81,7 @@ export const LabelModal = ({
             >
               <EditLabelModal
                 task={task}
-                element={elements}
+                element={element}
                 label={label}
                 labels={labels}
                 setLabel={setLabel}

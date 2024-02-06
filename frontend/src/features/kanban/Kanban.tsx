@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 import { KanbanTask } from "./KanbanTask";
 import * as Y from "yjs";
 import { nanoid } from "@reduxjs/toolkit";
+import { type Member } from "../api/apiSlice";
 
 export interface Column {
   Id: string | number;
@@ -37,6 +38,7 @@ export interface Task {
   done: boolean;
   labels?: Labels[];
   deadline?: Deadline;
+  members: Member[];
 }
 
 export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>}) => {
@@ -62,18 +64,42 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     setLabel(ylabels.toArray());
 
     ytasks.observe(() => {
+      const uniqueIds = new Set();
+      const tasksArray = ytasks.toArray();
+      ytasks.doc?.transact(() => {
+        for (let i = tasksArray.length - 1; i >= 0; i--) {
+          const item = tasksArray[i];
+          if (uniqueIds.has(item.Id)) {
+            ytasks.delete(i, 1);
+          } else {
+            uniqueIds.add(item.Id);
+          }
+        }
+      });
       setTasks(ytasks.toArray());
     });
     ycolumns.observe(() => {
+      const uniqueIds = new Set();
+      const columnsArray = ycolumns.toArray();
+      ycolumns.doc?.transact(() => {
+        for (let i = columnsArray.length - 1; i >= 0; i--) {
+          const item = columnsArray[i];
+          if (uniqueIds.has(item.Id)) {
+            ycolumns.delete(i, 1);
+          } else {
+            uniqueIds.add(item.Id);
+          }
+        }
+      });
       setColumns(ycolumns.toArray());
     });
     ylabels.observe(() => {
       setLabel(ylabels.toArray());
     });
-  },[ykanban]);
+  }, [ykanban]);
 
-  console.log(tasks);
-  console.log(label);
+  // console.log(tasks);
+  // console.log(label);
 
   const arrayOfColors = [
     { id: 1, name: "", color: "bg-green-100" },
@@ -111,6 +137,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
       content: "Short task description goes here...",
       done: false,
       labels: [],
+      members: [],
     };
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
@@ -132,20 +159,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    console.log(ytasks.toArray());
+    // console.log(ytasks.toArray());
     const findLabelIndex = ylabels
       .toArray()
-      .findIndex((element) => element.id === id);
-    console.log(findLabelIndex);
+      .findIndex((label) => label.id === id);
+    // console.log(findLabelIndex);
     let changed = false;
     ytasks.forEach((task, i) => {
-      console.log(taskId);
+      // console.log(taskId);
       if (task.Id === taskId && changed === false) {
-        console.log(id);
+        // console.log(id);
         const findIndex = task.labels?.findIndex(
-          (element) => element.id === id
+          (label) => label.id === id
         );
-        console.log(findIndex);
+        // console.log(findIndex);
         changed = true;
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
@@ -165,25 +192,25 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   };
 
   const deleteLabelStatus = (taskId: string, id: string) => {
-    console.log("delete status");
+
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
 
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    console.log(ytasks.toArray());
+    // console.log(ytasks.toArray());
     const findLabelIndex = ylabels
       .toArray()
-      .findIndex((element) => element.id === id);
+      .findIndex((label) => label.id === id);
     console.log(findLabelIndex);
     let changed = false;
 
     ytasks.forEach((task, i) => {
-      console.log(taskId);
+      // console.log(taskId);
       if (task.Id === taskId && changed === false) {
-        console.log(id);
+        // console.log(id);
         const findIndex = task.labels?.findIndex(
-          (element) => element.id === id
+          (label) => label.id === id
         );
-        console.log(findIndex);
+        // console.log(findIndex);
         changed = true;
 
         ytasks.doc?.transact(() => {
@@ -220,7 +247,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     ytasks.forEach((task, i) => {
       console.log(taskId);
-      const findIndex = task.labels?.findIndex((element) => element.id === id);
+      const findIndex = task.labels?.findIndex((label) => label.id === id);
       console.log(findIndex);
 
       if (findIndex !== -1) {
@@ -249,7 +276,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     });
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     ytasks.forEach((task, i) => {
-      const updatedLabels = task.labels?.filter((element) => element.id !== id);
+      const updatedLabels = task.labels?.filter((label) => label.id !== id);
 
       ytasks.doc?.transact(() => {
         ytasks.delete(i);
@@ -291,6 +318,20 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
     });
   };
 
+  const updateTaskMembers = (id: number | string, members: Member[]) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    ytasks.forEach((task, i) => {
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [{ ...task, members }]);
+        });
+      }
+    });
+  };
+
   const markTaskDone = (id: string | number) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
@@ -311,7 +352,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
   ) => {
     const dateNow = new Date();
     const dateNowInMs = dateNow.getTime();
-    
+
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
     ytasks.forEach((task, i) => {
@@ -580,6 +621,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 ))}
               </SortableContext>
@@ -613,6 +655,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 </div>
               )}
@@ -636,6 +679,7 @@ export const Kanban = ({ykanban}: {ykanban: Y.Map<Y.Array<Task> | Y.Array<Column
                     setLabel={setLabel}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
+                    updateTaskMembers={updateTaskMembers}
                   />
                 </div>
               )}
