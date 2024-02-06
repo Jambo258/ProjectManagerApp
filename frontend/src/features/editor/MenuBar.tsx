@@ -7,6 +7,8 @@ import Heading1 from "../../icons/Heading1";
 import Heading2 from "../../icons/Heading2";
 import BlockQuote from "../../icons/BlockQuote";
 import { Bold, Code, CornerUpLeft, CornerUpRight, Image, Italic, List, Minus, Underline } from "react-feather";
+import { Modal } from "../../components/Modal";
+import { AddImageModal } from "./AddImageModal";
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
   const items = [
@@ -119,15 +121,22 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "image",
-      icon: Image,
       title: "Image",
-      action: () => {
-        const url = window.prompt("URL");
-        if (url) {
-          editor.chain().focus().setImage({ src: url }).run();
-        }
-      }
+      // action: (url: string) => {
+      //   if (url) {
+      //     editor.chain().focus().setImage({ src: url }).run();
+      //   }
+      // }
     },
+    // {
+    //   name: "image",
+    //   title: "Image",
+    //   action: (url: string) => {
+    //     if (url) {
+    //       editor.chain().focus().setImage({ src: url }).run();
+    //     }
+    //   }
+    // },
     {
       type: "divider",
     },
@@ -163,7 +172,13 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     <div className="flex flex-wrap gap-x-2 p-2 items-center bg-grayscale-100 border-grayscale-300 border-b rounded-t">
       {items.map((item, index) => (
         <Fragment key={index}>
-          {item.type === "divider" ? <div className="w-px h-8 bg-grayscale-300" /> : <MenuItem {...item} />}
+          {item.type === "divider" ? <div className="w-px h-8 bg-grayscale-300" />
+            : item.name === "image" ? <Modal btnText={<Image />} btnStyling="btn-text-xs p-1 h-7 w-7 flex items-center justify-center" modalTitle={"Add image"}><AddImageModal action={(url: string) => {
+              if (url) {
+                editor.chain().focus().setImage({ src: url }).run();
+              }}}/>
+            </Modal>
+              : <MenuItem {...item} />}
         </Fragment>
       ))
       }

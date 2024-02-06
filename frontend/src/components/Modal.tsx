@@ -27,7 +27,7 @@ export const Modal = ({
 }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const screenDimensions = useScreenDimensions();
-  
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -55,7 +55,7 @@ export const Modal = ({
         <dialog
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
-          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
+          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
           ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
