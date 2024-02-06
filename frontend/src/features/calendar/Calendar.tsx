@@ -88,13 +88,13 @@ const CalendarModal = () => {
               {format(currentMonth, "MMM yyyy")}
               {showMonthSelect && (
                 <div className="fixed z-10 flex flex-col">
-                  <dialog className="h-[200px] relative w-fit flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                  <dialog className="h-[200px] relative mt-10 lg:mt-14 w-fit lg:w-[170px] flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                     <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
                       {monthSelect.map((month, index) => {
                         return (
                           <section
                             key={index}
-                            className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
+                            className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-300"
                             onClick={() =>
                               setcurrentMonth(format(month, "MMM-yyyy"))
                             }

@@ -135,7 +135,7 @@ const CalendarEventModal = ({
               projectid === event.projectid && (
                 <li key={event.id} className="ml-1 hidden md:block body-text-sm">
                   {format(event.day, "HH:mm ")}
-                  {event.eventTitle.slice(0, 6) + "..."}
+                  {event.eventTitle.length > 10 ? event.eventTitle.slice(0, 10) + "..." : event.eventTitle}
                 </li>
               )
           )}
