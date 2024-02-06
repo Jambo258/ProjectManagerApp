@@ -131,9 +131,9 @@ const CalendarEventModal = ({
 
   return (
     <>
-      <div
+      <section
         onClick={() => openModal()}
-        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start group outline outline-1 outline-grayscale-400 hover:bg-primary-200 ${
+        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start outline outline-1 outline-grayscale-400 hover:bg-primary-200 ${
           isSameMonth(day, currentMonth)
             ? "text-dark-font"
             : "text-grayscale-400"
@@ -142,7 +142,7 @@ const CalendarEventModal = ({
           `}
       >
         <ul className="flex flex-col items-center md:items-start h-full overflow-x-none whitespace-nowrap">
-          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? " pt-1 pl-1 p-2 " : " p-2" }`}>{format(day, "d")}</li>
+          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? "pt-1 pl-1 p-2" : "p-2" }`}>{format(day, "d")}</li>
           {events.map(
             (event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
@@ -156,7 +156,7 @@ const CalendarEventModal = ({
               )
           )}
         </ul>
-      </div>
+      </section>
       <div
         onClick={() => closeModal()}
         className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${
@@ -192,7 +192,7 @@ const CalendarEventModal = ({
                         key={event.id}
                       >
                         {event.edit && event.id === activeEdit ? (
-                          <div className="flex flex-col sm:flex-row w-full my-2">
+                          <section className="flex flex-col sm:flex-row w-full my-2">
                             <div className="flex flex-row w-full gap-2">
                               <input
                                 type="time"
@@ -222,13 +222,13 @@ const CalendarEventModal = ({
                                 Update event
                               </button>
                             </div>
-                          </div>
+                          </section>
                         ) : (
-                          <div onClick={() => setEdit(event.id, true)}
+                          <section onClick={() => setEdit(event.id, true)}
                             className="w-full body-text-md my-2">
                             {format(event.day, "HH:mm")}
                             <p className="body-text-lg">{event.eventTitle}</p>
-                          </div>
+                          </section>
                         )}
                         {!event.edit &&
                           <DeleteEventModal
@@ -241,7 +241,7 @@ const CalendarEventModal = ({
                   )
               )}
             </div>
-            <div className="justify-center">
+            <section className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
               <div className="flex flex-col sm:flex-row gap-2 w-full">
                 <form className="flex-1 flex flex-row gap-2">
@@ -260,8 +260,7 @@ const CalendarEventModal = ({
                 </form>
                 <button onClick={() => createEvent(eventTitle)} className="btn-text-sm">Confirm</button>
               </div>
-              
-            </div>
+            </section>
           </main>
         </dialog>
       </div>

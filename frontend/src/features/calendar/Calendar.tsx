@@ -75,7 +75,7 @@ const CalendarModal = () => {
     <>
       <div className="flex w-full h-fit">
         <div className="w-full h-full">
-          <div className="flex items-center rounded-t-lg bg-primary-200 justify-center m-[-1px]">
+          <header className="flex items-center rounded-t bg-primary-200 justify-center -m-px">
             <ChevronLeft
               className="cursor-pointer mr-6"
               size={24}
@@ -110,18 +110,17 @@ const CalendarModal = () => {
             </div>
             <ChevronRight
               className="cursor-pointer ml-6"
-              size={24}
               onClick={() => getNextMonth()}
             />
-          </div>
+          </header>
 
-          <div className="grid grid-cols-7 py-1 place-items-center m-[-1px] border-t border-x border-grayscale-400 body-text-sm md:body-text-md">
+          <section className="grid grid-cols-7 py-1 place-items-center -m-px border-t border-x border-grayscale-400 body-text-sm md:body-text-md">
             {days.map((day, id) => (
               <div key={id}>{day}</div>
             ))}
-          </div>
+          </section>
 
-          <div className="grid w-full h-full grid-cols-7">
+          <section className="grid w-full h-full grid-cols-7">
             {daysInMonth.map((day) => (
               <div
                 key={day.toDateString()}
@@ -138,7 +137,7 @@ const CalendarModal = () => {
                 />
               </div>
             ))}
-          </div>
+          </section>
         </div>
       </div>
     </>
