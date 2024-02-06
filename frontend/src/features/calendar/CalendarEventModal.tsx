@@ -149,8 +149,8 @@ const CalendarEventModal = ({
       >
         <dialog
           onClick={(e) => e.stopPropagation()}
-          className="fixed w-full h-full sm:h-fit sm:w-4/12 sm:min-w-max sm:max-w-prose p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-center items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all"
-        >
+          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
+          ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`} >
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={() => closeModal()}
@@ -182,7 +182,7 @@ const CalendarEventModal = ({
                                 type="time"
                                 defaultValue={"12:00"}
                                 onChange={(e) => setTime(day, e.target.value)}
-                                className="flex-1 body-text-md"
+                                className="px-3 body-text-md"
                               />
                               <input
                                 onChange={(e) =>
