@@ -49,6 +49,7 @@ const CalendarEventModal = ({
   const [newEventTitle, setNewEventTitle] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [newDate, setNewDate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>();
 
@@ -188,23 +189,20 @@ const CalendarEventModal = ({
                         className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
                         key={event.id}
                       >
-                          {event.edit && event.id === activeEdit ? (
+                        {event.edit && event.id === activeEdit ? (
                           <div className="flex flex-col sm:flex-row w-full my-2">
                             <div className="flex flex-row w-full gap-2">
                               <input
-                                className="mx-2"
                                 type="time"
                                 defaultValue={format(event.day, "HH:mm")}
                                 onChange={(e) => setTime(day, e.target.value)}
                                 className="px-3 body-text-md"
                               />
                               <input
-                                className="mx-2"
                                 onChange={(e) =>
                                   setNewEventTitle(e.target.value)
                                 }
-                                value={newEventTitle}
-                                placeholder={event.eventTitle}
+                                defaultValue={event.eventTitle}
                                 className="flex-1 body-text-md"
                               />
                               <button
@@ -217,18 +215,11 @@ const CalendarEventModal = ({
                                     newDate
                                   )
                                 }
+                                className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 min-w-fit"
                               >
                                 Update event
                               </button>
                             </div>
-                            <button
-                              onClick={() =>
-                                editEvent(event.id, newEventTitle, newDate)
-                              }
-                              className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 min-w-fit"
-                            >
-                            Update event
-                            </button>
                           </div>
                         ) : (
                           <div onClick={() => setEdit(event.id, true)}
