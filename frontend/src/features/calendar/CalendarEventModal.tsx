@@ -230,7 +230,7 @@ const CalendarEventModal = ({
                             <p className="body-text-lg">{event.eventTitle}</p>
                           </section>
                         )}
-                        {(event.id !== activeEdit) &&
+                        {(event.id !== activeEdit || !event.edit) &&
                           <DeleteEventModal
                             deleteEvent={deleteEvent}
                             eventId={event.id}
