@@ -196,7 +196,7 @@ const CalendarEventModal = ({
                             </div>
                           ) : (
                             <div onClick={() => setEdit(event.id, true)}>
-                              {format(event.day, "HH:mm ")}
+                              {format(event.day, "HH:mm")}
                               {event.eventTitle}
                             </div>
                           )}
