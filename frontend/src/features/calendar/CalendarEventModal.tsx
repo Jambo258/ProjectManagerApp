@@ -169,41 +169,48 @@ const CalendarEventModal = ({
                     isEqual(getYear(event.day), getYear(day)) && (
                     <div key={event.id}>
                       <div
-                        className="flex flex-row justify-between cursor-pointer mb-2"
+                        className="flex flex-row justify-between cursor-pointer"
                         key={event.id}
                       >
                         {event.edit ? (
-                          <div>
-                            <input
-                              type="time"
-                              defaultValue={"12:00"}
-                              onChange={(e) => setTime(day, e.target.value)}
-                            />
-                            <input
-                              onChange={(e) =>
-                                setNewEventTitle(e.target.value)
-                              }
-                              placeholder={"Event title"}
-                            />
+                          <div className="flex flex-col sm:flex-row w-full my-2">
+                            <div className="flex flex-row w-full gap-2">
+                              <input
+                                type="time"
+                                defaultValue={"12:00"}
+                                onChange={(e) => setTime(day, e.target.value)}
+                                className="flex-1 body-text-md"
+                              />
+                              <input
+                                onChange={(e) =>
+                                  setNewEventTitle(e.target.value)
+                                }
+                                placeholder={event.eventTitle}
+                                className="flex-1 body-text-md"
+                              />
+                            </div>
                             <button
                               onClick={() =>
                                 editEvent(event.id, newEventTitle, newDate)
                               }
+                              className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 py-0 min-w-fit"
                             >
-                                Update event
+                            Update event
                             </button>
                           </div>
                         ) : (
                           <div onClick={() => setEdit(event.id, true)}
-                            className="w-full body-text-md">
+                            className="w-full body-text-md my-2">
                             {format(event.day, "HH:mm")}
                             {" " + event.eventTitle}
                           </div>
                         )}
-                        <DeleteEventModal
-                          deleteEvent={deleteEvent}
-                          eventId={event.id}
-                        />
+                        {!event.edit &&
+                          <DeleteEventModal
+                            deleteEvent={deleteEvent}
+                            eventId={event.id}
+                          />
+                        }
                       </div>
                     </div>
                   )
@@ -211,25 +218,27 @@ const CalendarEventModal = ({
             </div>
             <div className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
-              <form className="flex flex-row gap-2">
-                <input
-                  type="time"
-                  defaultValue={format(newDate, "hh:mm")}
-                  onChange={(e) => setTime(day, e.target.value)}
-                  className="px-3 body-text-md"
-                />
+              <div className="flex flex-col sm:flex-row gap-2 w-full">
+                <form className="flex-1 flex flex-row gap-2">
+                  <input
+                    type="time"
+                    defaultValue={format(newDate, "hh:mm")}
+                    onChange={(e) => setTime(day, e.target.value)}
+                    className="px-3 body-text-md"
+                  />
 
-                <input
-                  onChange={(e) => setEventTitle(e.target.value)}
-                  placeholder={"Add new event"}
-                  className="px-3 body-text-md"
-                />
+                  <input
+                    onChange={(e) => setEventTitle(e.target.value)}
+                    placeholder={"Add new event"}
+                    className="px-3 body-text-md flex-1"
+                  />
+                </form>
 
                 <button onClick={() => createEventTest(eventTitle)}
                   className="btn-text-sm">
-                  Confirm
+                Confirm
                 </button>
-              </form>
+              </div>
               
             </div>
           </main>
