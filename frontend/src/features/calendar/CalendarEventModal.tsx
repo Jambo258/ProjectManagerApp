@@ -70,8 +70,10 @@ const CalendarEventModal = ({
 
   const setEdit = (eventid: string, setEdit: boolean) => {
     setActiveEdit(eventid);
+  
     const editedEvent = events.map((event) => {
       if (event.id === eventid) {
+        setNewDate(event.day);
         return { ...event, edit: setEdit };
       } else {
         return event;
@@ -245,7 +247,7 @@ const CalendarEventModal = ({
                 <form className="flex-1 flex flex-row gap-2">
                   <input
                     type="time"
-                    defaultValue={format(newDate, "hh:mm")}
+                    defaultValue={format(newDate, "HH:mm")}
                     onChange={(e) => setTime(day, e.target.value)}
                     className="px-3 body-text-md"
                   />
