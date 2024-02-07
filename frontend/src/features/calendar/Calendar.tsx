@@ -129,7 +129,7 @@ const CalendarModal = () => {
                 <CalendarEventModal
                   key={day.toDateString()}
                   events={events}
-                  currentMonth={format(currentMonth, "MMM yyyy")}
+                  currentMonth={currentMonth}
                   projectid={projectid}
                   pageid={pageid}
                   day={day}

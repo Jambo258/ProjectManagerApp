@@ -24,7 +24,7 @@ interface Event {
 }
 interface Props {
   events: Event[];
-  currentMonth: string;
+  currentMonth: Date;
   projectid: number;
   pageid: number;
   day: Date;
