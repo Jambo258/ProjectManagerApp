@@ -17,10 +17,15 @@ interface RequestBody<T> extends Request {
   body: T;
 }
 
+//matches tarkistaa että salasanassa väh. 1 pieni ja iso kirjain, numero ja erikois merkki
 const registerUserSchema = yup.object({
   email: yup.string().required().email(),
   name: yup.string().required().trim().min(2).max(50),
-  password: yup.string().required().min(6),
+  password: yup
+    .string()
+    .required()
+    .min(6)
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, "Invalid"),
 });
 type registerUserSchemaType = yup.InferType<typeof registerUserSchema>;
 

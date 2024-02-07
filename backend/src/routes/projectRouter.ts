@@ -29,7 +29,7 @@ const projectNameSchema = yup.object({
     .trim()
     .min(2, "Must be at least 2 characters long")
     .max(50, "Must be less than 50 characters long"),
-  projectid: yup.number().required(),
+  projectid: yup.number().required().min(1),
 });
 type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
 
