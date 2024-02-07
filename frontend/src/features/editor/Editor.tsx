@@ -106,7 +106,7 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
     ],
     editorProps: {
       attributes: {
-        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
+        class: "tiptap ProseMirror-selectednode prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
       },
     },
   });

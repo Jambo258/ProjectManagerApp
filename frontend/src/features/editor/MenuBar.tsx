@@ -6,9 +6,10 @@ import CheckList from "../../icons/CheckList";
 import Heading1 from "../../icons/Heading1";
 import Heading2 from "../../icons/Heading2";
 import BlockQuote from "../../icons/BlockQuote";
-import { Bold, Code, Image, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
-import { Modal } from "../../components/Modal";
-import { AddImageLinkModal } from "./AddImageLinkModal";
+import Paragraph from "../../icons/Paragraph";
+import Strike from "../../icons/Strike";
+import { Bold, Edit3, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
+import { EditorInputModal } from "./EditorInputModal";
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
   const items = [
@@ -28,6 +29,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "A̶B̶",
+      icon: Strike,
       title: "Strike",
       action: () => editor.chain().focus().toggleStrike().run(),
       isActive: () => editor.isActive("strike"),
@@ -39,15 +41,9 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       action: () => editor.chain().focus().toggleUnderline().run(),
       isActive: () => editor.isActive("underline"),
     },
-    // {
-    //   name: "C",
-    //   title: "Code",
-    //   icon: Code,
-    //   action: () => editor.chain().focus().toggleCode().run(),
-    //   isActive: () => editor.isActive("code"),
-    // },
     {
       name: "hi",
+      icon: Edit3,
       title: "Highlight",
       action: () => editor.chain().focus().toggleHighlight().run(),
       isActive: () => editor.isActive("highlight"),
@@ -71,6 +67,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     },
     {
       name: "P",
+      icon: Paragraph,
       title: "Paragraph",
       action: () => editor.chain().focus().setParagraph().run(),
       isActive: () => editor.isActive("paragraph"),
@@ -122,21 +119,7 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     {
       name: "image",
       title: "Image",
-      // action: (url: string) => {
-      //   if (url) {
-      //     editor.chain().focus().setImage({ src: url }).run();
-      //   }
-      // }
     },
-    // {
-    //   name: "image",
-    //   title: "Image",
-    //   action: (url: string) => {
-    //     if (url) {
-    //       editor.chain().focus().setImage({ src: url }).run();
-    //     }
-    //   }
-    // },
     {
       type: "divider",
     },
@@ -173,10 +156,11 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === "divider" ? <div className="w-px h-8 bg-grayscale-300" />
-            : item.name === "image" ? <Modal btnText={<Image />} btnStyling="btn-text-xs p-1 h-7 w-7 flex items-center justify-center bg-grayscale-0" modalTitle={"Add image"}><AddImageLinkModal action={(url: string) => {
+            : item.name === "image" ? <EditorInputModal iconName={"Image"} title={item.title} modalTitle="Add image URL" modalText="To add images to the editor, type or paste the web address where the image is stored online. The address must end in an extension like .png, .gif, or .jpg." action={(url: string) => {
               if (url) {
                 editor.chain().focus().setImage({ src: url }).run();
-              }}}/></Modal>
+              }
+            }} />
               : <MenuItem {...item} />}
         </Fragment>
       ))

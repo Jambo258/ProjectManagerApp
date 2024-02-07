@@ -1,6 +1,6 @@
 import { type Icon, type IconProps } from "./OrderedList";
 
-const Heading1: Icon = ({ color = "currentColor", size = 24, ...rest }: IconProps) => {
+const Paragraph: Icon = ({ color = "currentColor", size = 24, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,13 +14,11 @@ const Heading1: Icon = ({ color = "currentColor", size = 24, ...rest }: IconProp
       strokeLinejoin="round"
       {...rest}
     >
-      <path d="M3 12V4M3 12H14M3 12V20"/>
-      <path d="M14 4.06V12V19.94" strokeWidth="2.1"/>
-      <path d="M19.7474 20.2439V13L17.5 14.25" strokeWidth="1.5"/>
+      <path d="M7 12H14C15.0609 12 16.0783 11.5786 16.8284 10.8284C17.5786 10.0783 18 9.06087 18 8C18 6.93913 17.5786 5.92172 16.8284 5.17157C16.0783 4.42143 15.0609 4 14 4H7V12ZM7 12V20"/>
     </svg>
   );
 };
 
-Heading1.displayName = "Heading1";
+Paragraph.displayName = "Paragraph";
 
-export default Heading1;
+export default Paragraph;
