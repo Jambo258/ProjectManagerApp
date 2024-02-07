@@ -3,7 +3,6 @@ import { type Icon } from "react-feather";
 
 interface IProps {
   type?: string;
-  name?: string;
   icon?: Icon;
   title?: string;
   action?: () => boolean;
@@ -11,7 +10,7 @@ interface IProps {
 }
 
 const MenuItem = ({
-  name, icon, title, action, isActive
+  icon, title, action, isActive
 }: IProps) => (
   <button
     type="button"
@@ -24,7 +23,7 @@ const MenuItem = ({
   >
     {icon
       ? <>{React.createElement(icon, {})}</>
-      : <>{name}</>
+      : <>{title}</>
     }
   </button >
 );
