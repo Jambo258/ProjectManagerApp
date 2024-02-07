@@ -75,7 +75,23 @@
     @apply absolute -top-[1.4em] rounded-[3px] rounded-bl-none -left-[1px] py-[0.1rem] px-[0.3rem] label-text text-[#0d0d0d] leading-normal whitespace-nowrap select-none;
   }
 
-  /* React calendar */
+  .tiptap img {
+    @apply max-w-full h-auto;
+  }
+
+  .tiptap a {
+    @apply underline text-blue-300;
+  }
+
+  .tiptap a:hover {
+    @apply cursor-default;
+  }
+
+  .ProseMirror-selectednode :is(img:active) {
+    @apply outline outline-2 outline-dark-blue-50;
+  }
+  
+   /* React calendar */
   .react-calendar {
     @apply body-text-md max-w-[600px] m-auto;
   }
@@ -86,7 +102,6 @@
 
   .react-calendar button {
     @apply btn-text-md m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
-  }
 }
 
 @layer utilities {

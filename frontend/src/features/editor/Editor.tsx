@@ -14,10 +14,12 @@ import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
-import { type User } from "../api/apiSlice";
+import { type User, useGetProjectPageQuery } from "../api/apiSlice";
 
 // Components
 import MenuBar from "./MenuBar";
@@ -41,6 +43,8 @@ interface IProps {
 }
 
 const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => {
+
+  const { data: page } = useGetProjectPageQuery(Number(pageId));
 
   const editor = useEditor({
     editable: false,
@@ -72,6 +76,10 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
         emptyEditorClass: "first:before:content-[attr(data-placeholder)] text-[#CDCDCD] h-0 pointer-events-none float-left",
         placeholder: "Write something...",
       }),
+      Image,
+      Link.configure({
+        linkOnPaste: true,
+      }),
       CharacterCount.configure({
         limit: 10000,
       }),
@@ -102,7 +110,7 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
     ],
     editorProps: {
       attributes: {
-        class: "tiptap prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
+        class: "tiptap ProseMirror-selectednode prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl p-2 bg-grayscale-100 focus:outline-none min-h-[10rem]",
       },
     },
   });
@@ -120,7 +128,7 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
           <p className={`${provider.isAuthenticated ? "text-green-200" : "text-red-200"} text-xl ms-2 mr-1 mb-1`}>●</p>
           {provider.isAuthenticated
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${pageId}`
+            ? `${editor?.storage.collaborationCursor.users.length} user${editor?.storage.collaborationCursor.users.length === 1 ? "" : "s"} online editing page ${page !== undefined ? page.name : pageId}`
             : "offline"}
         </div>
       </div>
