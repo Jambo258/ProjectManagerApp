@@ -89,12 +89,12 @@ const CalendarEventModal = ({
       <section
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        outline outline-1 outline-grayscale-400 hover:bg-primary-200
+        outline outline-1 outline-grayscale-400 hover:bg-primary-200 overflow-hidden
         ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
-          ${isToday(day) && " border-4 border-primary-200"}`}
+        ${isToday(day) ? "border-4 border-primary-200" : ""}`}
       >
-        <ul className="flex flex-col items-center md:items-start h-full overflow-x-none whitespace-nowrap">
-          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? "pt-1 pl-1 p-2" : "p-2"}`}>
+        <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap">
+          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md p-2 ${isToday(day) ? "pt-1 pl-1" : ""}`}>
             {format(day, "d")}
           </li>
           {events.map(
