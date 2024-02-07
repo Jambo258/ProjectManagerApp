@@ -77,7 +77,7 @@
 
   /* React calendar */
   .react-calendar {
-    @apply body-text-md m-auto;
+    @apply body-text-md max-w-[600px] m-auto;
   }
 
   .react-calendar * {

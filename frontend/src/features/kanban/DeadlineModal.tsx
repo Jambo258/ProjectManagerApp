@@ -62,7 +62,7 @@ export const DeadlineModal = ({
             } else if (deadline.getDate() === date.getDate() && deadline.getMonth() === date.getMonth() && deadline.getFullYear() === date.getFullYear()) {
               return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
             }
-            return "aspect-square"; 
+            return "aspect-square rounded-full"; 
           } 
 
           // Year view
