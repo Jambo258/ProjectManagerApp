@@ -4,6 +4,7 @@ import { Task } from "./Kanban";
 import { SubModalContext } from "./SubModal";
 import { DeleteModal } from "../../components/DeleteModal";
 import { format } from "date-fns";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "react-feather";
 
 interface Props {
   task: Task;
@@ -59,23 +60,32 @@ export const DeadlineModal = ({
           if (view === "month") {
             if (compareDates(date)) {
               return "aspect-square !text-grayscale-300";
-            } else if (deadline.getDate() === date.getDate() && deadline.getMonth() === date.getMonth() && deadline.getFullYear() === date.getFullYear()) {
+            } else if (deadline.getDate() === date.getDate() 
+                      && deadline.getMonth() === date.getMonth() 
+                      && deadline.getFullYear() === date.getFullYear()) {
               return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
             }
             return "aspect-square rounded-full"; 
           } 
 
           // Year view
-          if (view === "year" && date.getMonth() < (new Date().getMonth())) {
+          if (view === "year" 
+              && date.getMonth() < (new Date().getMonth()) 
+              && date.getFullYear() <= (new Date().getFullYear())) {
             return "!text-grayscale-300";
           }
 
           // Decade view
-          if (view === "decade" && date.getFullYear() < (new Date().getFullYear())) {
+          if (view === "decade" 
+              && date.getFullYear() < (new Date().getFullYear())) {
             return "!text-grayscale-300";
-          }
+          } 
         }}
-        onClickDay={(day) => {setDeadline(day);}}   
+        onClickDay={(day) => {setDeadline(day);}}
+        prevLabel={<ChevronLeft className="relative top-1"/>}   
+        nextLabel={<ChevronRight className="relative top-1" />}
+        prev2Label={<ChevronsLeft className="relative top-1"/>}  
+        next2Label={<ChevronsRight className="relative top-1" />}
       />
       
       <div className="border-t mt-4 p-2 heading-xs">Set a deadline</div>
