@@ -15,6 +15,7 @@ import TaskList from "@tiptap/extension-task-list";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
 
 // Redux
 import { useAppSelector } from "../../app/hooks";
@@ -76,6 +77,9 @@ const Editor = ({ pageId, provider, yxmlfragment, isAuthenticated }: IProps) => 
         placeholder: "Write something...",
       }),
       Image,
+      Link.configure({
+        linkOnPaste: true,
+      }),
       CharacterCount.configure({
         limit: 10000,
       }),

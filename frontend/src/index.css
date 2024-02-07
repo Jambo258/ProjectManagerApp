@@ -78,6 +78,14 @@
     @apply max-w-full h-auto;
   }
 
+  .tiptap a {
+    @apply underline text-blue-300;
+  }
+
+  .tiptap a:hover {
+    @apply cursor-default;
+  }
+
   .ProseMirror-selectednode :is(img:active) {
     @apply outline outline-2 outline-dark-blue-50;
   }
