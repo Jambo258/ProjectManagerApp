@@ -7,23 +7,30 @@ import { Check } from "react-feather";
 
 // Types and Interfaces
 import { type Member } from "../api/apiSlice";
+import { Task } from "./Kanban";
 
 interface IProps {
-    member: Member;
-    taskMembers: Member[];
-    setTaskMembers: Dispatch<SetStateAction<Member[]>>;
-  }
+  member: Member;
+  taskMembers: Member[];
+  setTaskMembers: Dispatch<SetStateAction<Member[]>>;
+  updateTaskMembers: (id: number | string, members: Member) => void;
+  removeTaskMembers: (id: number | string, members: Member) => void;
+  task: Task;
+}
 
-export const TaskMember = ({ member, taskMembers, setTaskMembers }: IProps) => {
+export const TaskMember = ({ member, taskMembers, setTaskMembers, updateTaskMembers, task, removeTaskMembers }: IProps) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  console.log(taskMembers, "view?");
+  console.log(member);
   const addTaskMember = () => {
     setTaskMembers([...taskMembers, member]);
+    updateTaskMembers(task.Id, member);
   };
 
   const removeTaskMember = () => {
     const updatedTaskMembers = taskMembers.filter(taskMember => taskMember.id !== member.id);
     setTaskMembers(updatedTaskMembers);
+    removeTaskMembers(task.Id, member);
   };
 
   const handleOnClick = () => {

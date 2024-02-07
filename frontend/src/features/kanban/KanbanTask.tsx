@@ -21,6 +21,10 @@ import { UserIcon } from "../user/UserIcon";
 import { DeadlineModal } from "./DeadlineModal";
 import useScreenDimensions from "../../utils/screenDimensions";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { taskTitleSchema, taskContentSchema } from "./taskAndColumnValidation";
+
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
   setTaskDeadline: (
@@ -31,7 +35,8 @@ interface Props {
   deleteTask: (id: number | string) => void;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
-  updateTaskMembers: (id: number | string, members: Member[]) => void;
+  updateTaskMembers: (id: number | string, members: Member) => void;
+  removeTaskMembers: (id: number | string, members: Member) => void;
   markTaskDone: (id: number | string) => void;
   labels: Labels[];
   labelColors: Labels[];
@@ -44,12 +49,21 @@ interface Props {
   deleteLabel: (id: string | number) => void;
 }
 
+export interface taskTitleFormValues {
+  title: string;
+}
+
+export interface taskContentFormValues {
+  content?: string;
+}
+
 export const KanbanTask = ({
   task,
   deleteTask,
   updateTask,
   updateTaskTitle,
   updateTaskMembers,
+  removeTaskMembers,
   // markTaskDone,
   labels,
   labelColors,
@@ -85,8 +99,8 @@ export const KanbanTask = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
-  const [editTitle, setEditTitle] = useState(task.title);
-  const [editContent, setEditContent] = useState(task.content);
+  // const [editTitle, setEditTitle] = useState("");
+  // const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   // This is used only for development, since there are already tasks with no members array
   const [taskMembers, setTaskMembers] = useState<Member[]>(
@@ -94,6 +108,32 @@ export const KanbanTask = ({
   );
   // For production
   // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
+
+  console.log(taskMembers);
+  const {
+    formState: { errors: errorsTitle },
+    handleSubmit,
+    register,
+  } = useForm<taskTitleFormValues>({
+    // mode: "onChange",
+    defaultValues: {
+      title: task.title,
+    },
+    resolver: yupResolver(taskTitleSchema),
+  });
+
+  const {
+    formState: { errors: errorsContent },
+    handleSubmit: contentSubmit,
+    register: contentRegister,
+  } = useForm<taskContentFormValues>({
+    defaultValues: {
+      content: task.content,
+    },
+    resolver: yupResolver(taskContentSchema),
+  });
+  console.log(errorsTitle);
+  console.log(task.title);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -104,11 +144,7 @@ export const KanbanTask = ({
   };
 
   const displayTaskLabels = task.labels?.map((label) => (
-    <Label
-      key={label.id}
-      labelColor={label.color}
-      labelText={label.name}
-    />
+    <Label key={label.id} labelColor={label.color} labelText={label.name} />
   ));
 
   const displayTaskMembers = taskMembers.map((member: Member) =>
@@ -123,10 +159,18 @@ export const KanbanTask = ({
   );
 
   const handleSave = () => {
-    updateTask(task.Id, editContent);
-    updateTaskTitle(task.Id, editTitle);
-    updateTaskMembers(task.Id, taskMembers);
+    // updateTask(task.Id, editContent);
+    // updateTaskTitle(task.Id, editTitle );
+    // updateTaskMembers(task.Id, taskMembers);
     closeModal();
+  };
+
+  const titleHandler = (formData: taskTitleFormValues) => {
+    updateTaskTitle(task.Id, formData.title);
+  };
+
+  const contentHandler = (formData: taskContentFormValues) => {
+    updateTask(task.Id, formData.content!);
   };
 
   const dateDifference = (endDate: number | object | undefined) => {
@@ -232,17 +276,33 @@ export const KanbanTask = ({
                 <X size={20} />
               </button>
               {isEditTitleSelected ? (
-                <input
-                  className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
-                  autoFocus
-                  onKeyDown={(e) => {
-                    if (e.key !== "Enter") return;
-                    else setIsEditTitleSelected(false);
-                  }}
-                  onBlur={() => setIsEditTitleSelected(false)}
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                ></input>
+                <>
+                  <input
+                    className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
+                    autoFocus
+                    required={true}
+                    onKeyDown={(e) => {
+                      if (e.key !== "Enter") return;
+                      else {
+                        setIsEditTitleSelected(false);
+                      }
+                    }}
+                    value={task.title}
+                    {...register("title", {
+                      onChange: async () => {
+                        await handleSubmit(titleHandler)();
+                      },
+                      onBlur: () => {
+                        setIsEditTitleSelected(false);
+                      },
+                    })}
+                  ></input>
+                  {errorsTitle.title && (
+                    <p className="place-self-start mt-1 text-center body-text-xs text-caution-200">
+                      {errorsTitle.title.message}
+                    </p>
+                  )}
+                </>
               ) : (
                 <h3
                   onClick={() => setIsEditTitleSelected(true)}
@@ -290,12 +350,26 @@ export const KanbanTask = ({
                     <label role="h4" className="heading-xs mb-1">
                       Description
                       <textarea
-                        value={editContent}
-                        onChange={(e) => setEditContent(e.target.value)}
+                        value={task.content}
+                        {...contentRegister("content", {
+                          onChange: async () => {
+                            await contentSubmit(contentHandler)();
+                          },
+                          // onBlur: () => {
+                          //   setIsEditTitleSelected(false);
+                          // },
+                        })}
+                        // value={editContent}
+                        // onChange={(e) => setEditContent(e.target.value)}
                         rows={4}
                         placeholder="Short item description goes here..."
                         className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                       />
+                      {errorsContent.content && (
+                        <p className="mt-1 text-center body-text-xs text-caution-200">
+                          {errorsContent.content.message}
+                        </p>
+                      )}
                     </label>
                   </form>
                 </section>
@@ -321,6 +395,9 @@ export const KanbanTask = ({
                       <TaskMembersModal
                         taskMembers={taskMembers}
                         setTaskMembers={setTaskMembers}
+                        updateTaskMembers={updateTaskMembers}
+                        removeTaskMembers={removeTaskMembers}
+                        task={task}
                       />
                     </SubModal>
 

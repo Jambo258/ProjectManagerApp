@@ -9,13 +9,17 @@ import { useParams } from "react-router-dom";
 
 // Components
 import { TaskMember } from "./TaskMemberItem";
+import { Task } from "./Kanban";
 
 interface IProps {
   taskMembers: Member[];
   setTaskMembers: Dispatch<SetStateAction<Member[]>>;
+  task: Task;
+  updateTaskMembers: (id: number | string, members: Member) => void;
+  removeTaskMembers: (id: number | string, members: Member) => void;
 }
 
-export const TaskMembersModal = ({ taskMembers, setTaskMembers }: IProps ) => {
+export const TaskMembersModal = ({ taskMembers, setTaskMembers, task, updateTaskMembers, removeTaskMembers }: IProps ) => {
 
   const projectId = parseInt(useParams().projectId!);
   const { data: project } = useGetProjectQuery(projectId);
@@ -32,7 +36,11 @@ export const TaskMembersModal = ({ taskMembers, setTaskMembers }: IProps ) => {
               member={member}
               taskMembers={taskMembers}
               setTaskMembers={setTaskMembers}
-            />);
+              updateTaskMembers={updateTaskMembers}
+              removeTaskMembers={removeTaskMembers}
+              task={task}
+            />
+          );
         })}
       </section>
     </div>

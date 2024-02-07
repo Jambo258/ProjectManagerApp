@@ -55,6 +55,8 @@ export const Kanban = ({
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [labels, setLabels] = useState<Labels[]>([]);
 
+  console.log(tasks);
+
   useEffect(() => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
@@ -293,15 +295,33 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMembers = (id: number | string, members: Member[]) => {
+  const updateTaskMembers = (id: number | string, members: Member) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
+    console.log(members);
     ytasks.forEach((task, i) => {
       if (task.Id === id && changed === false) {
         changed = true;
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
-          ytasks.insert(i, [{ ...task, members }]);
+          ytasks.insert(i, [{ ...task, members: [...task.members, members] }]);
+        });
+      }
+    });
+  };
+
+  const removeTaskMembers = (id: number | string, members: Member) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    let changed = false;
+    console.log(members);
+    ytasks.forEach((task, i) => {
+      const updatedMembers = task.members.filter((member) => member.id !== members.id);
+      console.log(updatedMembers);
+      if (task.Id === id && changed === false) {
+        changed = true;
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [{ ...task, members: updatedMembers}]);
         });
       }
     });
@@ -600,6 +620,7 @@ export const Kanban = ({
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                     updateTaskMembers={updateTaskMembers}
+                    removeTaskMembers={removeTaskMembers}
                   />
                 ))}
               </SortableContext>
@@ -633,6 +654,7 @@ export const Kanban = ({
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                     updateTaskMembers={updateTaskMembers}
+                    removeTaskMembers={removeTaskMembers}
                   />
                 </div>
               )}
@@ -656,6 +678,7 @@ export const Kanban = ({
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
                     updateTaskMembers={updateTaskMembers}
+                    removeTaskMembers={removeTaskMembers}
                   />
                 </div>
               )}
