@@ -11,110 +11,65 @@ import {
 } from "date-fns";
 import { useState } from "react";
 import { X } from "react-feather";
+import * as Y from "yjs";
 import { DeleteEventModal } from "./DeleteEventModal";
 import useScreenDimensions from "../../utils/screenDimensions";
+import type { Event } from "./Calendar";
 
-interface Event {
-  id: string;
-  projectid: number;
-  pageid: number;
-  day: Date;
-  eventTitle: string;
-  edit: boolean;
-}
 interface Props {
   events: Event[];
   currentMonth: Date;
-  projectid: number;
-  pageid: number;
   day: Date;
-  setEvents: ([{ id, projectid, pageid, day, eventTitle, edit }]: {
-    id: string;
-    projectid: number;
-    pageid: number;
-    day: Date;
-    eventTitle: string;
-    edit: boolean;
-  }[]) => void;
+  yevents: Y.Array<Event>;
 }
 
 const CalendarEventModal = ({
   events,
   currentMonth,
-  projectid,
-  pageid,
   day,
-  setEvents,
+  yevents,
 }: Props) => {
   const [newEventTitle, setNewEventTitle] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const [newDate, setNewDate] = useState(day);
-  const [activeEdit, setActiveEdit] = useState<string>();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const [newDate, setNewDate] = useState(day);
+  const [activeEdit, setActiveEdit] = useState<string>("");
 
   const closeModal = () => {
-    setAllEdits(false);
     setIsModalOpen(false);
     setNewEventTitle("");
+    setActiveEdit("");
   };
 
-  const deleteEvent = (eventid: string) => {
-    const index = events.findIndex((event) => event.id === eventid);
-    setEvents([...events.slice(0, index), ...events.slice(index + 1)]);
+  const deleteEvent = (eventId: string) => {
+    const currEvents = yevents.toArray();
+    const index = currEvents.findIndex((event) => event.id === eventId);
+    if (index !== -1) {
+      yevents.delete(index);
+    }
   };
 
-  const setEdit = (eventid: string, setEdit: boolean) => {
-    setActiveEdit(eventid);
-  
-    const editedEvent = events.map((event) => {
-      if (event.id === eventid) {
-        setNewDate(event.day);
-        return { ...event, edit: setEdit };
-      } else {
-        return event;
-      }
-    });
-    setEvents(editedEvent);
-  };
+  const editEvent = (eventId: string, newTitle: string, newDay: Date) => {
+    const currEvents = yevents.toArray();
+    const index = currEvents.findIndex((event) => event.id === eventId);
+    if (index !== -1) {
+      yevents.doc?.transact(() => {
+        yevents.delete(index);
+        yevents.insert(index, [{ ...currEvents[index], eventTitle: newTitle, day: newDay.toISOString() }]);
+      });
+    }
 
-  const setAllEdits = (newEdit: boolean) => {
-    const editedEvents = events.map((eventTest) => {
-      return { ...eventTest, edit: newEdit };
-    });
-    setEvents(editedEvents);
-  };
-
-  const editEvent = (eventid: string, newTitle: string, newDay: Date) => {
-    const editEvent = events.map((event) => {
-      if (event.id === eventid) {
-        return { ...event, eventTitle: newTitle, day: newDay, edit: false };
-      } else {
-        return event;
-      }
-    });
-
-    setEvents(editEvent);
-    setNewDate(newDate);
     setNewEventTitle("");
+    setActiveEdit("");
   };
 
   const createEvent = (eventTitle: string) => {
-    setEvents([
-      ...events,
-      {
-        id: nanoid(),
-        projectid: projectid,
-        pageid: pageid,
-        day: newDate,
-        eventTitle: eventTitle,
-        edit: false,
-      },
-    ]);
+    yevents.push([{
+      id: nanoid(),
+      day: newDate.toISOString(),
+      eventTitle,
+    }]);
   };
 
   const setTime = (date: Date, eventDate: string) => {
@@ -132,23 +87,22 @@ const CalendarEventModal = ({
   return (
     <>
       <section
-        onClick={() => openModal()}
-        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start outline outline-1 outline-grayscale-400 hover:bg-primary-200 ${
-          isSameMonth(day, currentMonth)
-            ? "text-dark-font"
-            : "text-grayscale-400"
-        }
-          ${isToday(day) && " border-4 border-primary-200"}
-          `}
+        onClick={() => setIsModalOpen(true)}
+        className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
+        outline outline-1 outline-grayscale-400 hover:bg-primary-200
+        ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
+          ${isToday(day) && " border-4 border-primary-200"}`}
       >
         <ul className="flex flex-col items-center md:items-start h-full overflow-x-none whitespace-nowrap">
-          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? "pt-1 pl-1 p-2" : "p-2" }`}>{format(day, "d")}</li>
+          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md ${isToday(day) ? "pt-1 pl-1 p-2" : "p-2"}`}>
+            {format(day, "d")}
+          </li>
           {events.map(
             (event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) &&
-              projectid === event.projectid && (
+              (
                 <li key={event.id} className="ml-1 hidden md:block body-text-sm">
                   {format(event.day, "HH:mm ")}
                   {event.eventTitle.length > 10 ? event.eventTitle.slice(0, 10) + "..." : event.eventTitle}
@@ -159,13 +113,13 @@ const CalendarEventModal = ({
       </section>
       <div
         onClick={() => closeModal()}
-        className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${
-          isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"
-        }`}
+        className={`fixed flex justify-center inset-0 z-30 items-center transition-colors
+         ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}
       >
         <dialog
           onClick={(e) => e.stopPropagation()}
-          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all 
+          className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto
+           outline-none sm:rounded focus:outline-none shadow transition-all
           ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`} >
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
@@ -182,16 +136,15 @@ const CalendarEventModal = ({
             <div>
               {events.map(
                 (event) =>
-                  projectid === event.projectid &&
-                    isEqual(getMonth(event.day), getMonth(day)) &&
-                    isEqual(getDate(event.day), getDate(day)) &&
-                    isEqual(getYear(event.day), getYear(day)) && (
+                  isEqual(getMonth(event.day), getMonth(day)) &&
+                  isEqual(getDate(event.day), getDate(day)) &&
+                  isEqual(getYear(event.day), getYear(day)) && (
                     <div key={event.id}>
                       <div
                         className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
                         key={event.id}
                       >
-                        {event.edit && event.id === activeEdit ? (
+                        {event.id === activeEdit ? (
                           <section className="flex flex-col sm:flex-row w-full my-2">
                             <div className="flex flex-row w-full gap-2">
                               <input
@@ -224,13 +177,13 @@ const CalendarEventModal = ({
                             </div>
                           </section>
                         ) : (
-                          <section onClick={() => setEdit(event.id, true)}
+                          <section onClick={() => setActiveEdit(event.id)}
                             className="w-full body-text-md my-2">
                             {format(event.day, "HH:mm")}
                             <p className="body-text-lg">{event.eventTitle}</p>
                           </section>
                         )}
-                        {(event.id !== activeEdit || !event.edit) &&
+                        {event.id !== activeEdit &&
                           <DeleteEventModal
                             deleteEvent={deleteEvent}
                             eventId={event.id}

@@ -11,51 +11,20 @@ import {
   addMonths,
   subMonths,
 } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
-import { useParams } from "react-router-dom";
+import * as Y from "yjs";
 import CalendarEventModal from "./CalendarEventModal";
 
-interface Event {
+export interface Event {
   id: string;
-  projectid: number;
-  pageid: number;
-  day: Date;
+  day: string;
   eventTitle: string;
-  edit: boolean;
 }
 
-const CalendarModal = () => {
-  const projectid = parseInt(useParams().projectId!);
-  const pageid = parseInt(useParams().pageId!);
+const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
   const [events, setEvents] = useState<Event[]>([]);
-  const today = startOfToday();
-  const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-  const colStartClasses = [
-    "",
-    "col-start-1",
-    "col-start-2",
-    "col-start-3",
-    "col-start-4",
-    "col-start-5",
-    "col-start-6",
-  ];
-  const [currentMonth, setcurrentMonth] = useState(today);
-  const firstDayOfMonth = parse(format(currentMonth, "MMM-yyyy"), "MMM-yyyy", new Date());
-  const daysInMonth = eachDayOfInterval({
-    start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(firstDayOfMonth), { weekStartsOn: 1 }),
-  });
-  const getNextMonth = () => {
-    const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
-    setcurrentMonth(firstDayOfNextMonth);
-  };
-
-  const getPrevMonth = () => {
-    const firstDayOfPrevMonth = add(firstDayOfMonth, { months: -1 });
-    setcurrentMonth(firstDayOfPrevMonth);
-  };
-
+  const [currentMonth, setcurrentMonth] = useState(startOfToday());
   const [showMonthSelect, setShowMonthSelect] = useState(false);
   const [monthSelect] = useState<Date[]>(() => {
     const tempMonths: Date[] = [];
@@ -70,6 +39,38 @@ const CalendarModal = () => {
 
     return tempMonths;
   });
+
+  useEffect(() => {
+    setEvents(yevents.toArray());
+    yevents.observe(() => {
+      setEvents(yevents.toArray());
+    });
+  },[yevents]);
+
+  const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  const colStartClasses = [
+    "",
+    "col-start-1",
+    "col-start-2",
+    "col-start-3",
+    "col-start-4",
+    "col-start-5",
+    "col-start-6",
+  ];
+  const firstDayOfMonth = parse(format(currentMonth, "MMM-yyyy"), "MMM-yyyy", new Date());
+  const daysInMonth = eachDayOfInterval({
+    start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
+    end: endOfWeek(endOfMonth(firstDayOfMonth), { weekStartsOn: 1 }),
+  });
+  const getNextMonth = () => {
+    const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
+    setcurrentMonth(firstDayOfNextMonth);
+  };
+
+  const getPrevMonth = () => {
+    const firstDayOfPrevMonth = add(firstDayOfMonth, { months: -1 });
+    setcurrentMonth(firstDayOfPrevMonth);
+  };
 
   return (
     <>
@@ -127,13 +128,10 @@ const CalendarModal = () => {
                 className={colStartClasses[getDay(day)]}
               >
                 <CalendarEventModal
-                  key={day.toDateString()}
                   events={events}
                   currentMonth={currentMonth}
-                  projectid={projectid}
-                  pageid={pageid}
                   day={day}
-                  setEvents={setEvents}
+                  yevents={yevents}
                 />
               </div>
             ))}
@@ -144,4 +142,4 @@ const CalendarModal = () => {
   );
 };
 
-export default CalendarModal;
+export default Calendar;
