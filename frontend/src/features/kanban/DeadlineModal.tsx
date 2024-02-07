@@ -3,10 +3,7 @@ import Calendar from "react-calendar";
 import { Task } from "./Kanban";
 import { SubModalContext } from "./SubModal";
 import { DeleteModal } from "../../components/DeleteModal";
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import { format, getMonth } from "date-fns";
 
 interface Props {
   task: Task;
@@ -21,14 +18,14 @@ export const DeadlineModal = ({
   task,
   removeTaskDeadline,
 }: Props) => {
-  const [date, setDate] = useState<Value>(
+  const [deadline, setDeadline] = useState<Date>(
     task.deadline ? new Date(Number(task.deadline)) : new Date()
   );
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const { closeModal } = useContext(SubModalContext);
 
   const handleDeadlineSave = () => {
-    setTaskDeadline(task.Id, date?.valueOf());
+    setTaskDeadline(task.Id, deadline?.valueOf());
     closeModal();
   };
 
@@ -37,53 +34,81 @@ export const DeadlineModal = ({
     closeModal();
   };
 
+  const wasDayAlready = (date: Date) => {
+    const today = new Date();
+    date.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+
+    if (today > date) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div className="max-w-xl text-center">
+    <div className="text-center">
       <Calendar
         locale="en-GB"
-        className=""
+        className="calendar"
         minDate={new Date()}
-        onChange={setDate}
-        value={date}
+        value={deadline}
+        selectRange={false}
         tileClassName={({ date, view }) => {
-          if (view === "month" && task.deadline) {
-            const markedDate = new Date(Number(task.deadline));
-
-            if (
-              date.getDate() === markedDate.getDate() &&
-              date.getMonth() === markedDate.getMonth() &&
-              date.getFullYear() === markedDate.getFullYear()
-            ) {
-              return "bg-caution-200";
-            }
+          if (view === "month"  && wasDayAlready(date)) {
+            return "aspect-square !text-grayscale-300";
           }
+
+          if (view === "year" && date.getMonth() < (new Date().getMonth())) {
+            return "!text-grayscale-300";
+          }
+
+          if (view === "decade" && date.getFullYear() < (new Date().getFullYear())) {
+            console.log(date.getFullYear(), new Date().getFullYear());
+            return "!text-grayscale-300";
+          }
+          
+          if (deadline.getDate() === date.getDate() && deadline.getMonth() === date.getMonth() && deadline.getFullYear() === date.getFullYear())
+            if (view === "month" && task.deadline) {
+              {
+                return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";
+              } 
+            }
         }}
+        onClickDay={(day) => {setDeadline(day);}}   
       />
-      <div className="border-t-2 mt-4 p-2">Set a Deadline</div>
+      
+      <div className="border-t mt-4 p-2 heading-xs">Set a deadline</div>
+      
       <div className="grid grid-flow-row">
         <input
           readOnly={true}
-          value={date?.toLocaleString().slice(0, 9)}
-        ></input>
-        <div className="grid grid-cols-2">
+          value={format(deadline , "dd/MM/yyyy")} />
+
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={handleDeadlineSave}
             name="save"
-            className="py-2 my-2 mx-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            className="py-2 my-2 btn-text-sm bg-success-100 hover:bg-success-200"
           >
             Save
           </button>
-          {task.deadline && (
+          {task.deadline ? 
             <button
               type="button"
               onClick={() => setConfirmDeleteEdit(true)}
               name="remove"
-              className="py-2 my-2 mx-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
+              className="py-2 my-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
             >
               Remove
             </button>
-          )}
+            : <button 
+              type="button"
+              onClick={() => closeModal()}
+              className="py-2 my-2 btn-text-sm">Cancel</button>  
+          }
+
           {confirmDeleteEdit && (
             <DeleteModal
               setConfirmDeleteEdit={setConfirmDeleteEdit}

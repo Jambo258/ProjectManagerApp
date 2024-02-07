@@ -28,12 +28,13 @@
   input:focus,
   textarea:focus,
   select:focus {
-    @apply focus:outline-none focus:ring focus:ring-dark-blue-50;
+    @apply outline-none ring ring-dark-blue-50;
   }
 }
 
 @layer components {
 
+  /* Tiptap */
   .tiptap p {
     @apply font-serif text-base;
   }
@@ -72,6 +73,21 @@
 
   .tiptap-collaboration-cursor-label {
     @apply absolute -top-[1.4em] rounded-[3px] rounded-bl-none -left-[1px] py-[0.1rem] px-[0.3rem] label-text text-[#0d0d0d] leading-normal whitespace-nowrap select-none;
+  }
+
+  /* React calendar */
+  .react-calendar {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .react-calendar * {
+    text-decoration: none;
+  }
+
+  .react-calendar button {
+    @apply bg-grayscale-100 hover:underline rounded-none btn-text-md;
   }
 }
 
