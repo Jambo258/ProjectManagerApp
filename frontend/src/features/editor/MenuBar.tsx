@@ -8,7 +8,17 @@ import Heading2 from "../../icons/Heading2";
 import BlockQuote from "../../icons/BlockQuote";
 import Paragraph from "../../icons/Paragraph";
 import Strike from "../../icons/Strike";
-import { Bold, Edit3, Code, CornerUpLeft, CornerUpRight, Italic, List, Minus, Underline } from "react-feather";
+import {
+  Bold,
+  Code,
+  CornerUpLeft,
+  CornerUpRight,
+  Edit3,
+  Italic,
+  List,
+  Minus,
+  Underline
+} from "react-feather";
 import { EditorInputModal } from "./EditorInputModal";
 
 const MenuBar = ({ editor }: { editor: Editor; }) => {
