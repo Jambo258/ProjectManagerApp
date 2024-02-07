@@ -80,7 +80,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             <ChevronLeft
               className="cursor-pointer mr-6"
               size={24}
-              onClick={() => getPrevMonth()}
+              onClick={getPrevMonth}
             />
             <div
               className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md"
@@ -91,14 +91,12 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                 <div className="fixed z-10 flex flex-col">
                   <dialog className="h-[200px] relative mt-10 lg:mt-14 w-fit lg:w-[170px] flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                     <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
-                      {monthSelect.map((month, index) => {
+                      {monthSelect.map(month => {
                         return (
                           <section
-                            key={index}
+                            key={month.toISOString()}
                             className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-300"
-                            onClick={() =>
-                              setcurrentMonth(month)
-                            }
+                            onClick={() => setcurrentMonth(month)}
                           >
                             {format(month, "MMM yyyy")}
                           </section>
@@ -111,20 +109,20 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             </div>
             <ChevronRight
               className="cursor-pointer ml-6"
-              onClick={() => getNextMonth()}
+              onClick={getNextMonth}
             />
           </header>
 
           <section className="grid grid-cols-7 py-1 place-items-center -m-px border-t border-x border-grayscale-400 body-text-sm md:body-text-md">
-            {days.map((day, id) => (
-              <div key={id}>{day}</div>
+            {days.map(day => (
+              <div key={day}>{day}</div>
             ))}
           </section>
 
           <section className="grid w-full h-full grid-cols-7">
-            {daysInMonth.map((day) => (
+            {daysInMonth.map(day => (
               <div
-                key={day.toDateString()}
+                key={day.toISOString()}
                 className={colStartClasses[getDay(day)]}
               >
                 <CalendarEventModal
