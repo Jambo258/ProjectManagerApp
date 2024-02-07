@@ -28,10 +28,6 @@ export const EditorInputModal = ({ iconName, title, modalTitle, modalText, actio
   const [isModalOpen, setIsModalOpen] = useState(false);
   const screenDimensions = useScreenDimensions();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -55,7 +51,7 @@ export const EditorInputModal = ({ iconName, title, modalTitle, modalText, actio
     <>
       <button
         title={title}
-        onClick={openModal}
+        onClick={() => setIsModalOpen(true)}
         className="p-1 bg-grayscale-0"
       >
         {getIconFromName(iconName)}
@@ -71,13 +67,11 @@ export const EditorInputModal = ({ iconName, title, modalTitle, modalText, actio
           ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-sm"}`}>
 
           <header className="w-full flex flex-row justify-between items-center mb-4">
-            {/* Fix this in the css */}
-            <div className="w-6"></div>
-            <h4 className="place-self-center heading-sm text-dark-font">
+            <h4 className="m-auto pl-3 sm:pl-2.5 place-self-center heading-sm text-dark-font">
               {modalTitle}
             </h4>
             <button
-              onClick={closeModal}
+              onClick={(closeModal)}
               className="p-1 mb-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
             >
               <X />
