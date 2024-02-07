@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import { Task } from "./Kanban";
 import { SubModalContext } from "./SubModal";
 import { DeleteModal } from "../../components/DeleteModal";
-import { format, getMonth } from "date-fns";
+import { format } from "date-fns";
 
 interface Props {
   task: Task;
@@ -34,7 +34,7 @@ export const DeadlineModal = ({
     closeModal();
   };
 
-  const wasDayAlready = (date: Date) => {
+  const compareDates = (date: Date) => {
     const today = new Date();
     date.setHours(0,0,0,0);
     today.setHours(0,0,0,0);
@@ -55,25 +55,25 @@ export const DeadlineModal = ({
         value={deadline}
         selectRange={false}
         tileClassName={({ date, view }) => {
-          if (view === "month"  && wasDayAlready(date)) {
-            return "aspect-square !text-grayscale-300";
-          }
+          // Month view
+          if (view === "month") {
+            if (compareDates(date)) {
+              return "aspect-square !text-grayscale-300";
+            } else if (deadline.getDate() === date.getDate() && deadline.getMonth() === date.getMonth() && deadline.getFullYear() === date.getFullYear()) {
+              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
+            }
+            return "aspect-square"; 
+          } 
 
+          // Year view
           if (view === "year" && date.getMonth() < (new Date().getMonth())) {
             return "!text-grayscale-300";
           }
 
+          // Decade view
           if (view === "decade" && date.getFullYear() < (new Date().getFullYear())) {
-            console.log(date.getFullYear(), new Date().getFullYear());
             return "!text-grayscale-300";
           }
-          
-          if (deadline.getDate() === date.getDate() && deadline.getMonth() === date.getMonth() && deadline.getFullYear() === date.getFullYear())
-            if (view === "month" && task.deadline) {
-              {
-                return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";
-              } 
-            }
         }}
         onClickDay={(day) => {setDeadline(day);}}   
       />
@@ -83,7 +83,7 @@ export const DeadlineModal = ({
       <div className="grid grid-flow-row">
         <input
           readOnly={true}
-          value={format(deadline , "dd/MM/yyyy")} />
+          value={format(deadline, "dd/MM/yyyy")} />
 
         <div className="grid grid-cols-2 gap-2">
           <button
