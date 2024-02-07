@@ -77,17 +77,15 @@
 
   /* React calendar */
   .react-calendar {
-    width: 100%;
-    max-width: 500px;
-    margin: auto;
+    @apply body-text-md m-auto;
   }
 
   .react-calendar * {
-    text-decoration: none;
+    @apply no-underline;
   }
 
   .react-calendar button {
-    @apply bg-grayscale-100 hover:underline rounded-none btn-text-md;
+    @apply btn-text-md m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
   }
 }
 
