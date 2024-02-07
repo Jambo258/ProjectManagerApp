@@ -118,18 +118,6 @@ const MenuBar = ({ editor }: { editor: Editor; }) => {
     {
       type: "divider",
     },
-    // {
-    //   title: "Hard Break",
-    //   action: () => editor.chain().focus().setHardBreak().run(),
-    // },
-    // {
-    //   title: "Clear Format",
-    //   action: () => editor.chain().focus().clearNodes().unsetAllMarks()
-    //     .run(),
-    // },
-    // {
-    //   type: "divider",
-    // },
     {
       icon: CornerUpLeft,
       title: "Undo",
