@@ -71,7 +71,7 @@ export const EditorInputModal = ({ iconName, title, modalTitle, modalText, actio
               {modalTitle}
             </h4>
             <button
-              onClick={(closeModal)}
+              onClick={closeModal}
               className="p-1 mb-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
             >
               <X />
