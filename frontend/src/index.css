@@ -90,8 +90,8 @@
   .ProseMirror-selectednode :is(img:active) {
     @apply outline outline-2 outline-dark-blue-50;
   }
-  
-   /* React calendar */
+
+  /* React calendar */
   .react-calendar {
     @apply body-text-md max-w-[600px] m-auto;
   }
@@ -102,6 +102,7 @@
 
   .react-calendar button {
     @apply btn-text-md m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
+  }
 }
 
 @layer utilities {
