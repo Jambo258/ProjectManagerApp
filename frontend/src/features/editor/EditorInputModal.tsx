@@ -92,10 +92,10 @@ export const EditorInputModal = ({ iconName, title, modalTitle, modalText, actio
                 {...register("url", { required: true })}
                 placeholder={`Paste the ${title.toLowerCase()}'s url...`}
                 aria-label="URL"
-                className="body-text-md py-1.5 px-4 mt-1 mb-8 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"
+                className="body-text-md py-1.5 px-4 mt-1 w-full block focus:outline-none focus:ring focus:ring-dark-blue-50"
               />
               {errors.url && <p className="text-center body-text-xs text-caution-200 mt-1">This field is required</p>}
-              <button type="submit" disabled={isSubmitting} className="w-full btn-text-sm focus:outline-none focus:ring focus:ring-dark-blue-50">
+              <button type="submit" disabled={isSubmitting} className="w-full mt-4 btn-text-sm focus:outline-none focus:ring focus:ring-dark-blue-50">
                 {`Add ${title.toLowerCase()}`}
               </button>
             </form>
