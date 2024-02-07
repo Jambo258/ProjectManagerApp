@@ -40,20 +40,20 @@ const CalendarModal = () => {
     "col-start-5",
     "col-start-6",
   ];
-  const [currentMonth, setcurrentMonth] = useState(today);
-  const firstDayOfMonth = parse(format(currentMonth, "MMM-yyyy"), "MMM-yyyy", new Date());
+  const [currentMonth, setcurrentMonth] = useState(format(today, "MMM-yyyy"));
+  const firstDayOfMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayOfMonth), { weekStartsOn: 1 }),
   });
   const getNextMonth = () => {
     const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
-    setcurrentMonth(firstDayOfNextMonth);
+    setcurrentMonth(format(firstDayOfNextMonth, "MMM-yyyy"));
   };
 
   const getPrevMonth = () => {
     const firstDayOfPrevMonth = add(firstDayOfMonth, { months: -1 });
-    setcurrentMonth(firstDayOfPrevMonth);
+    setcurrentMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
   };
 
   const [showMonthSelect, setShowMonthSelect] = useState(false);
@@ -96,7 +96,7 @@ const CalendarModal = () => {
                             key={index}
                             className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-300"
                             onClick={() =>
-                              setcurrentMonth(month)
+                              setcurrentMonth(format(month, "MMM-yyyy"))
                             }
                           >
                             {format(month, "MMM yyyy")}
@@ -129,7 +129,7 @@ const CalendarModal = () => {
                 <CalendarEventModal
                   key={day.toDateString()}
                   events={events}
-                  currentMonth={format(currentMonth, "MMM yyyy")}
+                  currentMonth={currentMonth}
                   projectid={projectid}
                   pageid={pageid}
                   day={day}
