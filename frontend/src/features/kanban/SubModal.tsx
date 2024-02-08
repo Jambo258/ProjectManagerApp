@@ -48,7 +48,6 @@ export const SubModal = ({
   };
 
   const openAllModals = () => {
-    console.log(isModalsOpen);
     setIsModalsOpen(true);
   };
 
