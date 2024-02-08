@@ -293,7 +293,7 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMembers = (id: number | string, member: Member) => {
+  const updateTaskMembers = (id: number | string, newMember: Member) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
     ytasks.forEach((task, i) => {
@@ -301,7 +301,7 @@ export const Kanban = ({
         changed = true;
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
-          ytasks.insert(i, [{ ...task, members: [...task.members, member] }]);
+          ytasks.insert(i, [{ ...task, members: [...task.members, newMember] }]);
         });
       }
     });
