@@ -48,13 +48,14 @@ export const DeadlineModal = ({
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center w-fit m-auto">
       <Calendar
         locale="en-GB"
         className="calendar"
         minDate={new Date()}
         value={deadline}
         selectRange={false}
+        minDetail="decade"
         tileClassName={({ date, view }) => {
           // Month view
           if (view === "month") {
@@ -87,47 +88,39 @@ export const DeadlineModal = ({
         prev2Label={<ChevronsLeft className="relative top-1"/>}  
         next2Label={<ChevronsRight className="relative top-1" />}
       />
-      
-      <div className="border-t mt-4 p-2 heading-xs">Set a deadline</div>
-      
-      <div className="grid grid-flow-row">
-        <input
-          readOnly={true}
-          value={format(deadline, "dd/MM/yyyy")} />
 
-        <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={handleDeadlineSave}
+          name="save"
+          className="py-2 my-2 btn-text-sm bg-success-100 hover:bg-success-200"
+        >
+            Save
+        </button>
+        {task.deadline ? 
           <button
             type="button"
-            onClick={handleDeadlineSave}
-            name="save"
-            className="py-2 my-2 btn-text-sm bg-success-100 hover:bg-success-200"
+            onClick={() => setConfirmDeleteEdit(true)}
+            name="remove"
+            className="py-2 my-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
           >
-            Save
-          </button>
-          {task.deadline ? 
-            <button
-              type="button"
-              onClick={() => setConfirmDeleteEdit(true)}
-              name="remove"
-              className="py-2 my-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
-            >
               Remove
-            </button>
-            : <button 
-              type="button"
-              onClick={() => closeModal()}
-              className="py-2 my-2 btn-text-sm">Cancel</button>  
-          }
+          </button>
+          : <button 
+            type="button"
+            onClick={() => closeModal()}
+            className="py-2 my-2 btn-text-sm">Cancel</button>  
+        }
 
-          {confirmDeleteEdit && (
-            <DeleteModal
-              setConfirmDeleteEdit={setConfirmDeleteEdit}
-              confirmDeleteEdit={confirmDeleteEdit}
-              handleSubmitForModal={handleDeadlineRemove}
-              deleteModalText={"Are you sure you want to delete this Deadline?"}
-            />
-          )}
-        </div>
+        {confirmDeleteEdit && (
+          <DeleteModal
+            setConfirmDeleteEdit={setConfirmDeleteEdit}
+            confirmDeleteEdit={confirmDeleteEdit}
+            handleSubmitForModal={handleDeadlineRemove}
+            deleteModalText={"Are you sure you want to delete this Deadline?"}
+          />
+        )}
       </div>
     </div>
   );
