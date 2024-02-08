@@ -51,22 +51,20 @@ export const DeadlineModal = ({
         value={deadline}
         selectRange={false}
         minDetail="decade"
-        tileClassName={({ date, view }) => {
+        tileClassName={({ date, view }) => { 
+
           // Month view
           if (view === "month") {
-            if (compareDates(date)) {
-              if (deadline.getDate() === date.getDate() 
-                      && deadline.getMonth() === date.getMonth() 
-                      && deadline.getFullYear() === date.getFullYear()) {
-                return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
-              }
-              return "aspect-square rounded-full"; 
-            }  
             if (deadline.getDate() === date.getDate() 
-            && deadline.getMonth() === date.getMonth() 
-            && deadline.getFullYear() === date.getFullYear()) {
+                && deadline.getMonth() === date.getMonth() 
+                && deadline.getFullYear() === date.getFullYear()) {
               return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
             }
+
+            if (compareDates(date)) {
+              return "aspect-square rounded-full"; 
+            }  
+            
             return "aspect-square !text-grayscale-300"; 
           }
 
