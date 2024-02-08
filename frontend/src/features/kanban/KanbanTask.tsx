@@ -128,13 +128,6 @@ export const KanbanTask = ({
     ) : null
   );
 
-  const handleSave = () => {
-    // updateTask(task.Id, editContent);
-    // updateTaskTitle(task.Id, editTitle );
-    // updateTaskMembers(task.Id, taskMembers);
-    closeModal();
-  };
-
   const dateDifference = (endDate: number | object | undefined) => {
     const dateNow = new Date().getTime();
     if (typeof endDate === "number") {
@@ -397,17 +390,6 @@ export const KanbanTask = ({
                         removeTaskDeadline={removeTaskDeadline}
                       />
                     </SubModal>
-                  </div>
-                </section>
-                <section>
-                  <h5 className="heading-xxs mb-2">Actions</h5>
-                  <div className="flex flex-col gap-2 min-w-max">
-                    <IconButton
-                      btnType="submit"
-                      iconName="Save"
-                      btnText="Save changes"
-                      handleOnClick={handleSave}
-                    />
                     <IconButton
                       iconName="Delete"
                       btnText="Delete task"
