@@ -1,4 +1,4 @@
-import { Router, Request } from "express";
+import { Router } from "express";
 import * as yup from "yup";
 import validate from "../middlewares/validate.js";
 import {
@@ -15,12 +15,9 @@ import {
 } from "../services/projectService.js";
 import { getUserByEmail, getUserById } from "../services/userService.js";
 import { Role } from "@prisma/client";
+import { RequestBody } from "../types/types.js";
 
 const projectsRouter = Router();
-
-interface RequestBody<T> extends Request {
-  body: T;
-}
 
 const projectNameSchema = yup.object({
   name: yup

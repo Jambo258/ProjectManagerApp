@@ -1,4 +1,4 @@
-import { Router, type Request } from "express";
+import { Router} from "express";
 import { Role } from "@prisma/client";
 import * as yup from "yup";
 import validate from "../middlewares/validate.js";
@@ -9,12 +9,11 @@ import {
   deletePage,
 } from "../services/pageService.js";
 import { checkForUserExistingOnProject } from "../services/projectService.js";
+import { RequestBody } from "../types/types.js";
 
 const pagesRouter = Router();
 
-interface RequestBody<T> extends Request {
-  body: T;
-}
+
 
 pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {

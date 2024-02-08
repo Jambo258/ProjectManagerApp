@@ -1,4 +1,4 @@
-import { Router, type Request } from "express";
+import { Router } from "express";
 import argon2 from "argon2";
 import * as yup from "yup";
 import authenticate from "../middlewares/authenticate.js";
@@ -10,12 +10,10 @@ import {
   updateUser,
   deleteUser,
 } from "../services/userService.js";
+import { RequestBody } from "../types/types.js";
 
 const usersRouter = Router();
 
-interface RequestBody<T> extends Request {
-  body: T;
-}
 
 
 const registerUserSchema = yup.object({
