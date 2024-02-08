@@ -31,8 +31,8 @@ interface Props {
   deleteTask: (id: number | string) => void;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
-  updateTaskMembers: (id: number | string, newMember: Member) => void;
-  removeTaskMembers: (id: number | string, newMember: Member) => void;
+  addTaskMember: (id: number | string, newMember: Member) => void;
+  removeTaskMember: (id: number | string, newMember: Member) => void;
   markTaskDone: (id: number | string) => void;
   labels: Labels[];
   labelColors: Labels[];
@@ -45,21 +45,13 @@ interface Props {
   deleteLabel: (id: string | number) => void;
 }
 
-export interface taskTitleFormValues {
-  title: string;
-}
-
-export interface taskContentFormValues {
-  content?: string;
-}
-
 export const KanbanTask = ({
   task,
   deleteTask,
   updateTask,
   updateTaskTitle,
-  updateTaskMembers,
-  removeTaskMembers,
+  addTaskMember,
+  removeTaskMember,
   // markTaskDone,
   labels,
   labelColors,
@@ -223,26 +215,22 @@ export const KanbanTask = ({
                 <X size={20} />
               </button>
               {isEditTitleSelected ? (
-                <>
-                  <input
-                    className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
-                    autoFocus
-                    required={true}
-                    onKeyDown={(e) => {
-                      if (e.key !== "Enter") return;
-
-                      setIsEditTitleSelected(false);
-                    }}
-                    onBlur={() => setIsEditTitleSelected(false)}
-                    value={task.title}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length >= 1) {
-                        updateTaskTitle(task.Id, inputValue);
-                      }
-                    }}
-                  ></input>
-                </>
+                <input
+                  className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
+                  autoFocus
+                  required={true}
+                  onKeyDown={(e) => {
+                    if (e.key !== "Enter") return;
+                    setIsEditTitleSelected(false);
+                  }}
+                  onBlur={() => setIsEditTitleSelected(false)}
+                  value={task.title}
+                  onChange={(e) => {
+                    if (e.target.value.length >= 1) {
+                      updateTaskTitle(task.Id, e.target.value);
+                    }
+                  }}
+                />
               ) : (
                 <h3
                   onClick={() => setIsEditTitleSelected(true)}
@@ -319,8 +307,8 @@ export const KanbanTask = ({
                       isModalsOpen={isModalsOpen}
                     >
                       <TaskMembersModal
-                        updateTaskMembers={updateTaskMembers}
-                        removeTaskMembers={removeTaskMembers}
+                        addTaskMember={addTaskMember}
+                        removeTaskMember={removeTaskMember}
                         task={task}
                       />
                     </SubModal>

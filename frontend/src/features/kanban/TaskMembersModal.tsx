@@ -8,15 +8,15 @@ import { useParams } from "react-router-dom";
 
 // Components
 import { TaskMember } from "./TaskMemberItem";
-import { Task } from "./Kanban";
+import { type Task } from "./Kanban";
 
 interface IProps {
   task: Task;
-  updateTaskMembers: (id: number | string, newMember: Member) => void;
-  removeTaskMembers: (id: number | string, newMember: Member) => void;
+  addTaskMember: (id: number | string, newMember: Member) => void;
+  removeTaskMember: (id: number | string, newMember: Member) => void;
 }
 
-export const TaskMembersModal = ({ task, updateTaskMembers, removeTaskMembers }: IProps ) => {
+export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember }: IProps ) => {
 
   const projectId = parseInt(useParams().projectId!);
   const { data: project } = useGetProjectQuery(projectId);
@@ -31,8 +31,8 @@ export const TaskMembersModal = ({ task, updateTaskMembers, removeTaskMembers }:
             <TaskMember
               key={member.id}
               member={member}
-              updateTaskMembers={updateTaskMembers}
-              removeTaskMembers={removeTaskMembers}
+              addTaskMember={addTaskMember}
+              removeTaskMember={removeTaskMember}
               task={task}
             />
           );

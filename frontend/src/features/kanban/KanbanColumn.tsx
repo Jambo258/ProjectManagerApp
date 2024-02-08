@@ -31,8 +31,8 @@ interface Props {
   deleteLabelStatus: (taskId: string, id: string) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
-  updateTaskMembers: (id: number | string, newMember: Member) => void;
-  removeTaskMembers: (id: number | string, newMember: Member) => void;
+  addTaskMember: (id: number | string, newMember: Member) => void;
+  removeTaskMember: (id: number | string, newMember: Member) => void;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -45,8 +45,8 @@ export const KanbanColumn = (props: Props) => {
     updateColumn,
     updateTask,
     updateTaskTitle,
-    updateTaskMembers,
-    removeTaskMembers,
+    addTaskMember,
+    removeTaskMember,
     markTaskDone,
     labels,
     labelColors,
@@ -124,9 +124,8 @@ export const KanbanColumn = (props: Props) => {
             onBlur={() => setEdit(false)}
             value={column.title}
             onChange={(e) => {
-              const inputValue = e.target.value;
-              if (inputValue.length >= 1) {
-                updateColumn(column.Id, inputValue);
+              if (e.target.value.length >= 1) {
+                updateColumn(column.Id, e.target.value);
               }
             }}
           ></input>
@@ -157,8 +156,8 @@ export const KanbanColumn = (props: Props) => {
               labelColors={labelColors}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
-              updateTaskMembers={updateTaskMembers}
-              removeTaskMembers={removeTaskMembers}
+              addTaskMember={addTaskMember}
+              removeTaskMember={removeTaskMember}
             />
           ))}
         </SortableContext>

@@ -293,7 +293,7 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMembers = (id: number | string, newMember: Member) => {
+  const addTaskMember = (id: number | string, newMember: Member) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
     ytasks.forEach((task, i) => {
@@ -307,7 +307,7 @@ export const Kanban = ({
     });
   };
 
-  const removeTaskMembers = (id: number | string, newMember: Member) => {
+  const removeTaskMember = (id: number | string, newMember: Member) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
     ytasks.forEach((task, i) => {
@@ -614,8 +614,8 @@ export const Kanban = ({
                     labelColors={arrayOfColors}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
-                    updateTaskMembers={updateTaskMembers}
-                    removeTaskMembers={removeTaskMembers}
+                    addTaskMember={addTaskMember}
+                    removeTaskMember={removeTaskMember}
                   />
                 ))}
               </SortableContext>
@@ -648,8 +648,8 @@ export const Kanban = ({
                     labelColors={arrayOfColors}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
-                    updateTaskMembers={updateTaskMembers}
-                    removeTaskMembers={removeTaskMembers}
+                    addTaskMember={addTaskMember}
+                    removeTaskMember={removeTaskMember}
                   />
                 </div>
               )}
@@ -672,8 +672,8 @@ export const Kanban = ({
                     labelColors={arrayOfColors}
                     setIsModalsOpen={setIsModalsOpen}
                     isModalsOpen={isModalsOpen}
-                    updateTaskMembers={updateTaskMembers}
-                    removeTaskMembers={removeTaskMembers}
+                    addTaskMember={addTaskMember}
+                    removeTaskMember={removeTaskMember}
                   />
                 </div>
               )}

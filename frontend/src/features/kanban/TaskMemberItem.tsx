@@ -7,46 +7,42 @@ import { Check } from "react-feather";
 
 // Types and Interfaces
 import { type Member } from "../api/apiSlice";
-import { Task } from "./Kanban";
+import { type Task } from "./Kanban";
 
 interface IProps {
   member: Member;
-  updateTaskMembers: (id: number | string, newMember: Member) => void;
-  removeTaskMembers: (id: number | string, newMember: Member) => void;
+  addTaskMember: (id: number | string, newMember: Member) => void;
+  removeTaskMember: (id: number | string, newMember: Member) => void;
   task: Task;
 }
 
-export const TaskMember = ({ member, updateTaskMembers, task, removeTaskMembers }: IProps) => {
+export const TaskMember = ({
+  member,
+  addTaskMember,
+  task,
+  removeTaskMember,
+}: IProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
-  const addTaskMember = () => {
-    updateTaskMembers(task.Id, member);
+  const addMemberToTask = () => {
+    addTaskMember(task.Id, member);
   };
 
-  const removeTaskMember = () => {
-    removeTaskMembers(task.Id, member);
+  const removeMemberFromTask = () => {
+    removeTaskMember(task.Id, member);
   };
 
   const handleOnClick = () => {
-    isChecked ? removeTaskMember() : addTaskMember();
+    isChecked ? removeMemberFromTask() : addMemberToTask();
     setIsChecked((prev) => !prev);
   };
 
   useEffect(() => {
-    const getCurrentTaskMembers = (): boolean => {
-      let result = false;
-      task.members.find(taskMember => {
-        if (taskMember.id === member.id) {
-          setIsChecked(true);
-          result = true;
-        } else {
-          result = false;
-        }
-      });
-      console.log("Get Current Task Members");
-      return result;
-    };
-    getCurrentTaskMembers();
+    task.members.forEach((taskMember) => {
+      if (taskMember.id === member.id) {
+        setIsChecked(true);
+      }
+    });
   }, [task.members, member.id]);
 
   return (
@@ -57,11 +53,9 @@ export const TaskMember = ({ member, updateTaskMembers, task, removeTaskMembers 
     >
       <section className="inline-flex items-center gap-2.5">
         <UserIcon id={member.id} name={member.name} />
-        <p className="body-text-sm">
-          {member.name}
-        </p>
+        <p className="body-text-sm">{member.name}</p>
       </section>
-      <p>{isChecked ? <Check className="text-grayscale-400"/> : null}</p>
+      <p>{isChecked ? <Check className="text-grayscale-400" /> : null}</p>
     </div>
   );
 };
