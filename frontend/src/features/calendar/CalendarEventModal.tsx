@@ -94,7 +94,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
         outline outline-1 outline-grayscale-400 hover:bg-primary-200 overflow-hidden
-        ${isSameMonth(day, currentMonth)  ? "text-dark-font" : "text-grayscale-400"}
+        ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
         ${isToday(day) ? "border-4 border-primary-200" : ""}`}
       >
         <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap">
@@ -105,8 +105,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           >
             {format(day, "d")}
           </li>
-          {events.map(
-            (event) =>
+          {events.map((event) =>
               isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) && (
