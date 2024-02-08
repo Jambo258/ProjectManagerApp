@@ -9,6 +9,7 @@ import { AddComponentModal } from "./AddComponentModal";
 import { Modal } from "../../components/Modal";
 import { Plus } from "react-feather";
 import Calendar, { type Event } from "../calendar/Calendar";
+import { DeleteModal } from "../../components/DeleteModal";
 
 interface Component {
   type: "editor" | "kanban" | "calendar";
