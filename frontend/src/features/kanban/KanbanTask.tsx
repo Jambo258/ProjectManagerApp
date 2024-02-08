@@ -148,15 +148,7 @@ export const KanbanTask = ({
             <div className="grid col-span-2">
               {/* Task Deadline */}
               <section className="w-full mb-1.5">
-                <div
-                  className={`rounded w-fit px-2 py-1 text-center ${
-                    task.done ? "bg-success-100" : "bg-caution-100"
-                  }`}
-                >
-                  <p className="label-text">
-                    {task.done ? "Done" : "Not Done"}
-                  </p>
-                </div>
+               
                 {task.deadline && (
                   <div
                     className={`rounded w-fit px-2 py-1 text-center ${
@@ -165,9 +157,8 @@ export const KanbanTask = ({
                         : "bg-caution-100"
                     }`}
                   >
-                    <p className="label-text inline-flex">
-                      <Clock size={16}></Clock>
-                      {dateDifference(task.deadline)} Days left
+                    <p className="label-text inline-flex pt-1">
+                      <Clock size={16} /> &nbsp; {dateDifference(task.deadline)} days left
                     </p>
                   </div>
                 )}
@@ -249,15 +240,6 @@ export const KanbanTask = ({
                     {displayTaskMembers}
                   </section>
                   {/* Task Deadline */}
-                  <div
-                    className={`rounded min-w-fit h-fit px-2 py-1 text-center ${
-                      task.done ? "bg-success-100" : "bg-caution-100"
-                    }`}
-                  >
-                    <p className="label-text">
-                      {task.done ? "Done" : "Not Done"}
-                    </p>
-                  </div>
                   {task.deadline && (
                     <div
                       className={`rounded w-fit px-2 py-1 text-center ${
@@ -266,9 +248,8 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <p className="label-text inline-flex">
-                        <Clock size={16}></Clock>
-                        {dateDifference(task.deadline)} Days left
+                      <p className="label-text inline-flex pt-1">
+                        <Clock size={16} /> &nbsp; {dateDifference(task.deadline)} days left
                       </p>
                     </div>
                   )}
