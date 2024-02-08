@@ -8,7 +8,7 @@ export const PrivatePage = () => {
 
   return (
     <>
-      {screenDimensions.width > 640
+      {screenDimensions.width >= 640
         ?
         <div className="flex flex-row h-screen w-full bg-grayscale-200">
           <DashboardNav />
