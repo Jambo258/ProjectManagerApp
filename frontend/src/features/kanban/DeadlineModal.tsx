@@ -9,7 +9,7 @@ interface Props {
   task: Task;
   setTaskDeadline: (
     id: string | number,
-    deadline: number | object | undefined
+    deadline: number | undefined
   ) => void;
   removeTaskDeadline: (id: string | number) => void;
 }
