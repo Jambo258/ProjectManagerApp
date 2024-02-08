@@ -3,7 +3,6 @@ import Calendar from "react-calendar";
 import { Task } from "./Kanban";
 import { SubModalContext } from "./SubModal";
 import { DeleteModal } from "../../components/DeleteModal";
-import { format } from "date-fns";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "react-feather";
 
 interface Props {
@@ -37,10 +36,11 @@ export const DeadlineModal = ({
 
   const compareDates = (date: Date) => {
     const today = new Date();
+
     date.setHours(0,0,0,0);
     today.setHours(0,0,0,0);
 
-    if (today > date) {
+    if (today <= date) {
       return true;
     } else {
       return false;
@@ -60,14 +60,20 @@ export const DeadlineModal = ({
           // Month view
           if (view === "month") {
             if (compareDates(date)) {
-              return "aspect-square !text-grayscale-300";
-            } else if (deadline.getDate() === date.getDate() 
+              if (deadline.getDate() === date.getDate() 
                       && deadline.getMonth() === date.getMonth() 
                       && deadline.getFullYear() === date.getFullYear()) {
+                return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
+              }
+              return "aspect-square rounded-full"; 
+            }  
+            if (deadline.getDate() === date.getDate() 
+            && deadline.getMonth() === date.getMonth() 
+            && deadline.getFullYear() === date.getFullYear()) {
               return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
             }
-            return "aspect-square rounded-full"; 
-          } 
+            return "aspect-square !text-grayscale-300"; 
+          }
 
           // Year view
           if (view === "year" 
