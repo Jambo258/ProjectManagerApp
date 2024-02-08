@@ -157,9 +157,10 @@ export const KanbanTask = ({
                         : "bg-caution-100"
                     }`}
                   >
-                    <p className="label-text inline-flex gap-1">
-                      <Clock size={16} /> {dateDifference(task.deadline)} days left
-                    </p>
+                    <div className="label-text inline-flex gap-1">
+                      <Clock size={16} /> 
+                      {dateDifference(task.deadline)} days left
+                    </div>
                   </div>
                 )}
               </section>
@@ -248,9 +249,10 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <p className="label-text inline-flex gap-1">
-                        <Clock size={16} /> {dateDifference(task.deadline)} days left
-                      </p>
+                      <div className="label-text inline-flex gap-1">
+                        <Clock size={16} /> 
+                        {dateDifference(task.deadline)} days left
+                      </div>
                     </div>
                   )}
                 </div>
