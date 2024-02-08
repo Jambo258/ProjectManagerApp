@@ -33,7 +33,7 @@ export const DeadlineModal = ({
     removeTaskDeadline(task.Id);
     closeModal();
   };
-  
+
   return (
     <div className="text-center w-fit m-auto">
       <Calendar
@@ -73,7 +73,7 @@ export const DeadlineModal = ({
             return "!text-grayscale-300";
           } 
         }}
-        onClickDay={(day) => {setDeadline(day);}}
+        onClickDay={(day) => setDeadline(day)}
         prevLabel={<ChevronLeft className="relative top-1"/>}   
         nextLabel={<ChevronRight className="relative top-1" />}
         prev2Label={<ChevronsLeft className="relative top-1"/>}  
