@@ -48,7 +48,6 @@ export const SubModal = ({
   };
 
   const openAllModals = () => {
-    console.log(isModalsOpen);
     setIsModalsOpen(true);
   };
 
@@ -71,7 +70,7 @@ export const SubModal = ({
         >
           <dialog
             onClick={(e) => e.stopPropagation()}
-            className={`max-h-screen fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
+            className={`max-h-screen min-w-[400px] fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
             ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-4/12 sm:max-w-prose"}`}
           >
             <header className="w-full flex flex-row justify-between items-center mb-4">

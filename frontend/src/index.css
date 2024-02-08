@@ -28,12 +28,13 @@
   input:focus,
   textarea:focus,
   select:focus {
-    @apply focus:outline-none focus:ring focus:ring-dark-blue-50;
+    @apply outline-none ring ring-dark-blue-50;
   }
 }
 
 @layer components {
 
+  /* Tiptap */
   .tiptap p {
     @apply font-serif text-base;
   }
@@ -88,6 +89,19 @@
 
   .ProseMirror-selectednode :is(img:active) {
     @apply outline outline-2 outline-dark-blue-50;
+  }
+
+  /* React calendar */
+  .react-calendar {
+    @apply body-text-md m-auto;
+  }
+
+  .react-calendar * {
+    @apply no-underline;
+  }
+
+  .react-calendar button {
+    @apply btn-text-md m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
   }
 }
 

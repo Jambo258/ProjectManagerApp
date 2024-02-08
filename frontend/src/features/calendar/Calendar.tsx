@@ -76,7 +76,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
     <>
       <div className="flex w-full h-fit">
         <div className="w-full h-full">
-          <header className="flex items-center rounded-t bg-primary-200 justify-center -m-px">
+          <header className="relative flex items-center rounded-t bg-primary-200 justify-center -m-px">
             <ChevronLeft
               className="cursor-pointer mr-6"
               size={24}
@@ -86,10 +86,10 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
               className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md"
               onClick={() => setShowMonthSelect(!showMonthSelect)}
             >
-              {format(currentMonth, "MMM yyyy")}
+              <div className="min-w-24 text-center">{format(currentMonth, "MMM yyyy")}</div>
               {showMonthSelect && (
-                <div className="fixed z-10 flex flex-col">
-                  <dialog className="h-[200px] relative mt-10 lg:mt-14 w-fit lg:w-[170px] flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                <div className="absolute z-10 flex flex-col">
+                  <dialog className="h-[200px] relative w-fit mt-8 md:mt-10 lg:mt-11 flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                     <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
                       {monthSelect.map(month => {
                         return (
