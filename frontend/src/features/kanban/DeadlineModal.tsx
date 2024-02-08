@@ -109,7 +109,7 @@ export const DeadlineModal = ({
             setConfirmDeleteEdit={setConfirmDeleteEdit}
             confirmDeleteEdit={confirmDeleteEdit}
             handleSubmitForModal={handleDeadlineRemove}
-            deleteModalText={"Are you sure you want to delete this Deadline?"}
+            deleteModalText={"Are you sure you want to remove this deadline?"}
           />
         )}
       </div>
