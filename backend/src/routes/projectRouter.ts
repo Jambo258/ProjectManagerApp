@@ -25,26 +25,14 @@ interface RequestBody<T> extends Request {
 const projectNameSchema = yup.object({
   name: yup
     .string()
-    .required()
+    .required("Project name is required")
     .trim()
     .min(2, "Must be at least 2 characters long")
     .max(50, "Must be less than 50 characters long"),
-  projectid: yup.number().required().min(1),
+
 });
 type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
 
-const addUserToProjectSchema = yup.object({
-  role: yup.string().required().trim(),
-  email: yup.string().required().trim().email(),
-});
-
-type addUserToProjectSchemaType = yup.InferType<typeof addUserToProjectSchema>;
-
-const addRoleToUserSchema = yup.object({
-  role: yup.string().required().trim(),
-});
-
-type addRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
 
 projectsRouter.post(
   "/",
@@ -165,6 +153,14 @@ projectsRouter.get("/:pid(\\d+)", async (req, res, next) => {
   }
 });
 
+
+const addUserToProjectSchema = yup.object({
+  role: yup.string().required("Role is required").trim(),
+  email: yup.string().required("Email is required").trim().email("Must be a valid email"),
+});
+
+type addUserToProjectSchemaType = yup.InferType<typeof addUserToProjectSchema>;
+
 projectsRouter.post(
   "/:pid(\\d+)/users/",
   validate(addUserToProjectSchema),
@@ -234,6 +230,12 @@ projectsRouter.post(
     }
   }
 );
+
+const addRoleToUserSchema = yup.object({
+  role: yup.string().required("Role is required").trim(),
+});
+
+type addRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
 
 projectsRouter.put(
   "/:pid(\\d+)/users/:uid(\\d+)",

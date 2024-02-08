@@ -16,30 +16,6 @@ interface RequestBody<T> extends Request {
   body: T;
 }
 
-const createPageSchema = yup.object({
-  name: yup
-    .string()
-    .required()
-    .trim()
-    .min(2, "Must be at least 2 characters long")
-    .max(50, "Must be less than 50 characters long"),
-  projectid: yup
-    .number()
-    .required(),
-});
-type createPageSchemaType = yup.InferType<typeof createPageSchema>;
-
-export const pageNameSchema = yup.object().shape({
-  name: yup
-    .string()
-    .trim()
-    .min(2, "Must be at least 2 characters long")
-    .max(50, "Must be less than 50 characters long")
-    .required("Project name is required"),
-});
-
-export type pageNameSchemaType = yup.InferType<typeof pageNameSchema>;
-
 pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {
     const userid = req.session.userId!;
@@ -60,6 +36,19 @@ pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
     next(error);
   }
 });
+
+const createPageSchema = yup.object({
+  name: yup
+    .string()
+    .trim()
+    .required("Page name is required")
+    .min(2, "Must be at least 2 characters long")
+    .max(50, "Must be less than 50 characters long"),
+  projectid: yup
+    .number()
+    .required("Project id is required"),
+});
+type createPageSchemaType = yup.InferType<typeof createPageSchema>;
 
 pagesRouter.post("/", validate(createPageSchema), async (req: RequestBody<createPageSchemaType>, res, next) => {
   try {
@@ -117,6 +106,17 @@ pagesRouter.delete("/:id(\\d+)", async (req, res, next) => {
     next(error);
   }
 });
+
+export const pageNameSchema = yup.object().shape({
+  name: yup
+    .string()
+    .trim()
+    .required("Page name is required")
+    .min(2, "Must be at least 2 characters long")
+    .max(50, "Must be less than 50 characters long")
+});
+
+export type pageNameSchemaType = yup.InferType<typeof pageNameSchema>;
 
 pagesRouter.put("/:id(\\d+)", validate(pageNameSchema), async (req: RequestBody<pageNameSchemaType>, res, next) => {
   try {
