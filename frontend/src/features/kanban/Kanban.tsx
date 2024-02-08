@@ -16,6 +16,7 @@ import { KanbanTask } from "./KanbanTask";
 import * as Y from "yjs";
 import { nanoid } from "@reduxjs/toolkit";
 import { type Member } from "../api/apiSlice";
+import { Plus } from "react-feather";
 
 export interface Column {
   Id: string | number;
@@ -576,19 +577,14 @@ export const Kanban = ({
 
   return (
     <>
-      <div className="grid grid-flow-col w-16">
-        <button className="mb-3 mx-2" onClick={() => createNewColumn()}>
-          Add Column
-        </button>
-      </div>
-      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2">
+      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2 me-2">
         <DndContext
           sensors={sensors}
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
           onDragOver={onDragOver}
         >
-          <div className="m-auto flex gap-2">
+          <div className="m-auto flex gap-2 min-w-full">
             <div className="flex gap-4">
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
@@ -619,6 +615,10 @@ export const Kanban = ({
                   />
                 ))}
               </SortableContext>
+              <button className="btn-text-xs w-fit min-w-fit h-[60px] pt-[20px] inline-flex gap-2 px-4 py-2" onClick={() => createNewColumn()}>
+                <Plus size={18} /> 
+                Add column
+              </button>
             </div>
           </div>
           {createPortal(
