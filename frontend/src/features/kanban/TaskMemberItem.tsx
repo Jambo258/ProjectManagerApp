@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 
 // Components
 import { UserIcon } from "../user/UserIcon";
@@ -11,24 +11,19 @@ import { Task } from "./Kanban";
 
 interface IProps {
   member: Member;
-  taskMembers: Member[];
-  setTaskMembers: Dispatch<SetStateAction<Member[]>>;
-  updateTaskMembers: (id: number | string, members: Member) => void;
-  removeTaskMembers: (id: number | string, members: Member) => void;
+  updateTaskMembers: (id: number | string, newMember: Member) => void;
+  removeTaskMembers: (id: number | string, newMember: Member) => void;
   task: Task;
 }
 
-export const TaskMember = ({ member, taskMembers, setTaskMembers, updateTaskMembers, task, removeTaskMembers }: IProps) => {
+export const TaskMember = ({ member, updateTaskMembers, task, removeTaskMembers }: IProps) => {
   const [isChecked, setIsChecked] = useState(false);
-  
+
   const addTaskMember = () => {
-    setTaskMembers([...taskMembers, member]);
     updateTaskMembers(task.Id, member);
   };
 
   const removeTaskMember = () => {
-    const updatedTaskMembers = taskMembers.filter(taskMember => taskMember.id !== member.id);
-    setTaskMembers(updatedTaskMembers);
     removeTaskMembers(task.Id, member);
   };
 
@@ -40,7 +35,7 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers, updateTaskMemb
   useEffect(() => {
     const getCurrentTaskMembers = (): boolean => {
       let result = false;
-      taskMembers.find(taskMember => {
+      task.members.find(taskMember => {
         if (taskMember.id === member.id) {
           setIsChecked(true);
           result = true;
@@ -52,7 +47,7 @@ export const TaskMember = ({ member, taskMembers, setTaskMembers, updateTaskMemb
       return result;
     };
     getCurrentTaskMembers();
-  }, [taskMembers, member.id]);
+  }, [task.members, member.id]);
 
   return (
     <div

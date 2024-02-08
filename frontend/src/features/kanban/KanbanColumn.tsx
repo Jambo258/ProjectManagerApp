@@ -31,8 +31,8 @@ interface Props {
   deleteLabelStatus: (taskId: string, id: string) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
-  updateTaskMembers: (id: number | string, members: Member) => void;
-  removeTaskMembers: (id: number | string, members: Member) => void;
+  updateTaskMembers: (id: number | string, newMember: Member) => void;
+  removeTaskMembers: (id: number | string, newMember: Member) => void;
 }
 
 export const KanbanColumn = (props: Props) => {

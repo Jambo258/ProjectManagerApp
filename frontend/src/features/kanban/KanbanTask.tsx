@@ -31,8 +31,8 @@ interface Props {
   deleteTask: (id: number | string) => void;
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
-  updateTaskMembers: (id: number | string, members: Member) => void;
-  removeTaskMembers: (id: number | string, members: Member) => void;
+  updateTaskMembers: (id: number | string, newMember: Member) => void;
+  removeTaskMembers: (id: number | string, newMember: Member) => void;
   markTaskDone: (id: number | string) => void;
   labels: Labels[];
   labelColors: Labels[];
@@ -95,15 +95,7 @@ export const KanbanTask = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
-  // const [editTitle, setEditTitle] = useState("");
-  // const [editContent, setEditContent] = useState(task.content);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  // This is used only for development, since there are already tasks with no members array
-  const [taskMembers, setTaskMembers] = useState<Member[]>(
-    task.members ? task.members : []
-  );
-  // For production
-  // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -117,7 +109,7 @@ export const KanbanTask = ({
     <Label key={label.id} labelColor={label.color} labelText={label.name} />
   ));
 
-  const displayTaskMembers = taskMembers.map((member: Member) =>
+  const displayTaskMembers = task.members.map((member: Member) =>
     member ? (
       <UserIcon
         key={member.id}
@@ -249,16 +241,6 @@ export const KanbanTask = ({
                         updateTaskTitle(task.Id, inputValue);
                       }
                     }}
-                    /*
-                    {...register("title", {
-                      onChange: async () => {
-                        await handleSubmit(titleHandler)();
-                      },
-                      onBlur: () => {
-                        setIsEditTitleSelected(false);
-                      },
-                    })}
-                    */
                   ></input>
                 </>
               ) : (
@@ -309,17 +291,6 @@ export const KanbanTask = ({
                       Description
                       <textarea
                         value={task.content}
-                        /*
-                        {...contentRegister("content", {
-                          onChange: async () => {
-                            await contentSubmit(contentHandler)();
-                          },
-                          // onBlur: () => {
-                          //   setIsEditTitleSelected(false);
-                          // },
-                        })}
-                        */
-                        // value={editContent}
                         onChange={(e) => updateTask(task.Id, e.target.value)}
                         rows={4}
                         placeholder="Short item description goes here..."
@@ -348,8 +319,6 @@ export const KanbanTask = ({
                       isModalsOpen={isModalsOpen}
                     >
                       <TaskMembersModal
-                        taskMembers={taskMembers}
-                        setTaskMembers={setTaskMembers}
                         updateTaskMembers={updateTaskMembers}
                         removeTaskMembers={removeTaskMembers}
                         task={task}
