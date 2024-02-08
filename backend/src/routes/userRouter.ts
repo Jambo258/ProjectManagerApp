@@ -10,15 +10,13 @@ import {
   updateUser,
   deleteUser,
 } from "../services/userService.js";
-import { RequestBody } from "../types/types.js";
+import { type RequestBody } from "../types/types.js";
 
 const usersRouter = Router();
 
-
-
 const registerUserSchema = yup.object({
-  email: yup.string().required("email is required").email("Must be a valid email"),
-  name: yup.string().required("Name is required").trim().min(2, "Name too short, minimum length is 2").max(50, "name too long, max length is 50"),
+  email: yup.string().trim().required("email is required").email("Must be a valid email"),
+  name: yup.string().trim().required("Name is required").min(2, "Name too short, minimum length is 2").max(50, "name too long, max length is 50"),
   password: yup
     .string()
     .required("Password is required")
@@ -61,7 +59,7 @@ usersRouter.post(
 );
 
 const loginUserSchema = yup.object({
-  email: yup.string().required("Email is required").email("Must be a valid email"),
+  email: yup.string().trim().required("Email is required").email("Must be a valid email"),
   password: yup.string().required("Password is required").min(6, "Must be at least 6 characters long"),
 });
 type loginUserSchemaType = yup.InferType<typeof loginUserSchema>;
@@ -115,7 +113,7 @@ usersRouter.get("/logout", (req, res, next) => {
 });
 
 const getUserByEmailSchema = yup.object({
-  email: yup.string().required("Email is required").email("Must be a valid email"),
+  email: yup.string().trim().required("Email is required").email("Must be a valid email"),
 });
 type getUserByEmailSchemaType = yup.InferType<typeof getUserByEmailSchema>;
 
@@ -145,8 +143,8 @@ usersRouter.post(
 );
 
 const updateUserSchema = yup.object({
-  email: yup.string().optional().email("Must be a valid email"),
-  name: yup.string().optional().trim().min(2, "Must be at least 2 characters long").max(50, "Must be shorter than 50 characters"),
+  email: yup.string().trim().optional().email("Must be a valid email"),
+  name: yup.string().trim().optional().min(2, "Must be at least 2 characters long").max(50, "Must be shorter than 50 characters"),
   password: yup.string().optional().min(6, "Must be at least 6 characters long"),
 });
 type updateUserSchemaType = yup.InferType<typeof updateUserSchema>;

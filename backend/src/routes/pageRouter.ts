@@ -1,4 +1,4 @@
-import { Router} from "express";
+import { Router } from "express";
 import { Role } from "@prisma/client";
 import * as yup from "yup";
 import validate from "../middlewares/validate.js";
@@ -9,11 +9,9 @@ import {
   deletePage,
 } from "../services/pageService.js";
 import { checkForUserExistingOnProject } from "../services/projectService.js";
-import { RequestBody } from "../types/types.js";
+import { type RequestBody } from "../types/types.js";
 
 const pagesRouter = Router();
-
-
 
 pagesRouter.get("/:id(\\d+)", async (req, res, next) => {
   try {
@@ -45,6 +43,8 @@ const createPageSchema = yup.object({
     .max(50, "Must be less than 50 characters long"),
   projectid: yup
     .number()
+    .positive()
+    .integer()
     .required("Project id is required"),
 });
 type createPageSchemaType = yup.InferType<typeof createPageSchema>;

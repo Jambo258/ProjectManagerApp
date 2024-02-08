@@ -15,21 +15,20 @@ import {
 } from "../services/projectService.js";
 import { getUserByEmail, getUserById } from "../services/userService.js";
 import { Role } from "@prisma/client";
-import { RequestBody } from "../types/types.js";
+import { type RequestBody } from "../types/types.js";
 
 const projectsRouter = Router();
 
 const projectNameSchema = yup.object({
   name: yup
     .string()
-    .required("Project name is required")
     .trim()
+    .required("Project name is required")
     .min(2, "Must be at least 2 characters long")
     .max(50, "Must be less than 50 characters long"),
 
 });
 type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
-
 
 projectsRouter.post(
   "/",
@@ -150,10 +149,9 @@ projectsRouter.get("/:pid(\\d+)", async (req, res, next) => {
   }
 });
 
-
 const addUserToProjectSchema = yup.object({
-  role: yup.string().required("Role is required").trim(),
-  email: yup.string().required("Email is required").trim().email("Must be a valid email"),
+  role: yup.string().trim().required("Role is required"),
+  email: yup.string().trim().required("Email is required").email("Must be a valid email"),
 });
 
 type addUserToProjectSchemaType = yup.InferType<typeof addUserToProjectSchema>;
@@ -229,7 +227,7 @@ projectsRouter.post(
 );
 
 const addRoleToUserSchema = yup.object({
-  role: yup.string().required("Role is required").trim(),
+  role: yup.string().trim().required("Role is required"),
 });
 
 type addRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
