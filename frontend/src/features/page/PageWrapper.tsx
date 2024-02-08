@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as Y from "yjs";
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 
@@ -7,7 +7,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { type Column, Kanban, type Labels, type Task } from "../kanban/Kanban";
 import { AddComponentModal } from "./AddComponentModal";
 import { Modal } from "../../components/Modal";
-import { Plus } from "react-feather";
+import { Plus, ChevronDown, ChevronUp, Trash2 } from "react-feather";
 import Calendar, { type Event } from "../calendar/Calendar";
 
 interface Component {
@@ -71,20 +71,29 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     });
   };
 
-  const moveComponent = (uuid: string) => {
+  const moveComponentUp = (uuid: string) => {
     yarray.forEach((component, i) => {
       if (i === 0) {
         return;
       }
       if (component.uuid === uuid) {
-        console.log("moiving up", uuid);
         yarray.delete(i, 1);
         yarray.insert(i - 1, [component]);
       }
     });
   };
 
-  // yarray.delete(0, yarray.length);
+  const moveComponentDown = (uuid: string) => {
+    yarray.forEach((component, i) => {
+      if (i === yarray.length - 1) {
+        return;
+      }
+      if (component.uuid === uuid) {
+        yarray.delete(i, 1);
+        yarray.insert(i + 1, [component]);
+      }
+    });
+  };
 
   const getComponent = (component: Component) => {
     const yContent = ymap.get(component.uuid);
@@ -103,7 +112,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-6">
+      <section className="flex flex-col gap-1">
         <section className="h-fit w-full flex flex-row justify-end">
           <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18} />}>
             <AddComponentModal createComponent={addComponent} />
@@ -111,11 +120,36 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         </section>
 
         {components.map((component) =>
-          <Fragment key={component.uuid}>
+          <article
+            key={component.uuid}
+            // className="group"
+          >
+            {/* invisible group-active:visible <- use this when we find solution for mobile devices */}
+            <section className={"w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0"}>
+              <button
+                title="Move Up"
+                onClick={() => moveComponentUp(component.uuid)}
+                className="px-2"
+              >
+                <ChevronUp size={22} />
+              </button>
+              <button
+                title="Move Down"
+                onClick={() => moveComponentDown(component.uuid)}
+                className="me-auto px-2"
+              >
+                <ChevronDown size={22} />
+              </button>
+              <button
+                title="Delete Component"
+                onClick={() => deleteComponent(component.uuid)}
+                className="px-3"
+              >
+                <Trash2 size={18} />
+              </button>
+            </section>
             {getComponent(component)}
-            <button className="w-fit btn-text-xs py-2" onClick={() => moveComponent(component.uuid)}>Move Up</button>
-            <button className="w-fit btn-text-xs py-2" onClick={() => deleteComponent(component.uuid)}>Delete</button>
-          </Fragment>
+          </article>
         )}
       </section>
     </>
