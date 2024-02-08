@@ -1,66 +1,76 @@
-import { type Labels } from "./Kanban";
+import { Task, type Labels } from "./Kanban";
 import { CreateLabelModal } from "./CreateLabelModal";
-// import { Modal } from "../../components/Modal";
 import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal } from "./SubModal";
-import { useState } from "react";
 
 interface Props {
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
+  task: Task;
   labels: Labels[];
+  labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
-  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  updateLabelStatus: (taskId: string, id: string) => void;
+  deleteLabelStatus: (taskId: string, id: string) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
 }
 
-export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsOpen, createLabel, updateLabelStatus, editLabel, deleteLabel }: Props) => {
-  console.log(isModalsOpen);
-  const [state, setState] = useState(true);
+export const LabelModal = ({
+  labels,
+  labelColors,
+  setIsModalsOpen,
+  isModalsOpen,
+  createLabel,
+  updateLabelStatus,
+  editLabel,
+  deleteLabel,
+  task,
+  deleteLabelStatus,
+}: Props) => {
+  const taskLabelIds = task.labels?.map((label) => label.id) ?? [];
   return (
     <>
       <div className="grid grid-flow-row gap-2 ">
-        {label.map((elements: Labels) => (
+        {labels.map((label) => (
           <div
-            key={elements.id}
+            key={label.id}
             className="grid grid-cols-4 justify-center items-center"
           >
             <div className="ml-16">
-              {elements.active ? (
+              {taskLabelIds.includes(label.id) ? (
                 <CheckSquare
-                  onClick={() => {updateLabelStatus(elements.id, state); setState(!state);}}
+                  onClick={() => {
+                    deleteLabelStatus(task.Id, label.id.toString());
+                  }}
                   size={24}
                 ></CheckSquare>
               ) : (
                 <Square
-                  onClick={() => {updateLabelStatus(elements.id, state);
-                    setState(!state);}}
+                  onClick={() => {
+                    updateLabelStatus(task.Id, label.id.toString());
+                  }}
                   size={24}
                 ></Square>
               )}
             </div>
             <div
-              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${elements.color}`}
+              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${label.color}`}
             >
-              {elements.name}
+              {label.name}
             </div>
 
             <SubModal
-              // btnText={<Edit2></Edit2>}
               iconName="Edit"
               modalTitle={"Edit Label"}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
             >
               <EditLabelModal
-                element={elements}
+                task={task}
                 label={label}
-                labels={labels}
-                setLabel={setLabel}
+                labelColors={labelColors}
                 editLabel={editLabel}
                 deleteLabel={deleteLabel}
               />
@@ -77,9 +87,7 @@ export const LabelModal = ({ label, setLabel, labels, setIsModalsOpen, isModalsO
           isModalsOpen={isModalsOpen}
         >
           <CreateLabelModal
-            label={label}
-            labels={labels}
-            setLabel={setLabel}
+            labelColors={labelColors}
             createLabel={createLabel}
           />
         </SubModal>

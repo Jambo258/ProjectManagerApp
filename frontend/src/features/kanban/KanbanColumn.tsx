@@ -8,6 +8,11 @@ import { Plus } from "react-feather";
 import { type Member } from "../api/apiSlice";
 
 interface Props {
+  removeTaskDeadline: (id: string | number) => void;
+  setTaskDeadline: (
+    id: string | number,
+    deadline: number | object | undefined
+  ) => void;
   column: Column;
   deleteColumn: (id: string | number) => void;
   updateColumn: (id: string | number, title: string) => void;
@@ -16,17 +21,17 @@ interface Props {
   deleteTask: (id: string | number) => void;
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
-  updateTaskMembers: (id: number | string, members: Member[]) => void;
   markTaskDone: (id: string | number) => void;
-  label: Labels[];
-  setLabel: React.Dispatch<React.SetStateAction<Labels[]>>;
   labels: Labels[];
+  labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalsOpen: boolean;
   createLabel: (name: string, color: string) => void;
-  updateLabelStatus: (id: string | number, activeStatus: boolean) => void;
+  updateLabelStatus: (taskId: string, id: string) => void;
+  deleteLabelStatus: (taskId: string, id: string) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
+  updateTaskMembers: (id: number | string, members: Member[]) => void;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -41,15 +46,17 @@ export const KanbanColumn = (props: Props) => {
     updateTaskTitle,
     updateTaskMembers,
     markTaskDone,
-    label,
-    setLabel,
     labels,
+    labelColors,
     setIsModalsOpen,
     isModalsOpen,
     createLabel,
     updateLabelStatus,
     editLabel,
-    deleteLabel
+    deleteLabel,
+    deleteLabelStatus,
+    setTaskDeadline,
+    removeTaskDeadline,
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -58,20 +65,26 @@ export const KanbanColumn = (props: Props) => {
     return tasks.map((element) => element.Id);
   }, [tasks]);
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({
-      id: column.Id,
-      data: {
-        type: "Column",
-        column,
-      },
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: column.Id,
+    data: {
+      type: "Column",
+      column,
+    },
+  });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  if(isDragging) {
+  if (isDragging) {
     return (
       <div
         ref={setNodeRef}
@@ -120,8 +133,11 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
+              removeTaskDeadline={removeTaskDeadline}
+              setTaskDeadline={setTaskDeadline}
               deleteLabel={deleteLabel}
               editLabel={editLabel}
+              deleteLabelStatus={deleteLabelStatus}
               updateLabelStatus={updateLabelStatus}
               createLabel={createLabel}
               task={element}
@@ -130,9 +146,8 @@ export const KanbanColumn = (props: Props) => {
               updateTask={updateTask}
               updateTaskTitle={updateTaskTitle}
               markTaskDone={markTaskDone}
-              label={label}
               labels={labels}
-              setLabel={setLabel}
+              labelColors={labelColors}
               setIsModalsOpen={setIsModalsOpen}
               isModalsOpen={isModalsOpen}
               updateTaskMembers={updateTaskMembers}
@@ -145,7 +160,7 @@ export const KanbanColumn = (props: Props) => {
         className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1"
         onClick={() => createTask(column.Id)}
       >
-        <Plus size={20} className="-ms-2.5"/> <p>Add task</p>
+        <Plus size={20} className="-ms-2.5" /> <p>Add task</p>
       </button>
     </div>
   );
