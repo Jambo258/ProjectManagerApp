@@ -64,7 +64,8 @@ const CalendarEventModal = ({
     setActiveEdit("");
   };
 
-  const createEvent = (eventTitle: string) => {
+  const createEvent = (e: React.FormEvent, eventTitle: string) => {
+    e.preventDefault();
     yevents.push([{
       id: nanoid(),
       day: newDate.toISOString(),
@@ -90,23 +91,36 @@ const CalendarEventModal = ({
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
         outline outline-1 outline-grayscale-400 hover:bg-primary-200 overflow-hidden
-        ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
+        ${
+    isSameMonth(day, currentMonth)
+      ? "text-dark-font"
+      : "text-grayscale-400"
+    }
         ${isToday(day) ? "border-4 border-primary-200" : ""}`}
       >
         <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap">
-          <li className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md p-2 ${isToday(day) ? "pt-1 pl-1" : ""}`}>
+          <li
+            className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md p-2 ${
+              isToday(day) ? "pt-1 pl-1" : ""
+            }`}
+          >
             {format(day, "d")}
           </li>
-          {events.map(event =>
-            isEqual(getMonth(event.day), getMonth(day)) &&
-            isEqual(getDate(event.day), getDate(day)) &&
-            isEqual(getYear(event.day), getYear(day)) &&
-            (
-              <li key={event.id} className="ml-1 hidden md:block body-text-sm">
-                {format(event.day, "HH:mm ")}
-                {event.eventTitle.length > 10 ? event.eventTitle.slice(0, 10) + "..." : event.eventTitle}
-              </li>
-            )
+          {events.map(
+            (event) =>
+              isEqual(getMonth(event.day), getMonth(day)) &&
+              isEqual(getDate(event.day), getDate(day)) &&
+              isEqual(getYear(event.day), getYear(day)) && (
+                <li
+                  key={event.id}
+                  className="ml-1 hidden md:block body-text-sm"
+                >
+                  {format(event.day, "HH:mm ")}
+                  {event.eventTitle.length > 10
+                    ? event.eventTitle.slice(0, 10) + "..."
+                    : event.eventTitle}
+                </li>
+              )
           )}
         </ul>
       </section>
@@ -119,7 +133,12 @@ const CalendarEventModal = ({
           onClick={(e) => e.stopPropagation()}
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto
            outline-none sm:rounded focus:outline-none shadow transition-all
-          ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`} >
+          ${
+    screenDimensions.height < 500
+      ? "min-h-screen w-full"
+      : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"
+    }`}
+        >
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
@@ -133,79 +152,91 @@ const CalendarEventModal = ({
           </header>
           <main className="w-full mx-auto px-2">
             <div>
-              {events.map(event =>
-                isEqual(getMonth(event.day), getMonth(day)) &&
-                isEqual(getDate(event.day), getDate(day)) &&
-                isEqual(getYear(event.day), getYear(day)) && (
-                  <div
-                    className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
-                    key={event.id}
-                  >
-                    {event.id === activeEdit ? (
-                      <section className="flex flex-col sm:flex-row w-full my-2">
-                        <div className="flex flex-row w-full gap-2">
-                          <input
-                            type="time"
-                            defaultValue={format(event.day, "HH:mm")}
-                            onChange={e => setTime(day, e.target.value)}
-                            className="px-3 body-text-md"
-                          />
-                          <input
-                            onChange={e => setNewEventTitle(e.target.value)}
-                            defaultValue={event.eventTitle}
-                            className="flex-1 body-text-md"
-                          />
-                          <button
-                            onClick={() =>
-                              editEvent(
-                                event.id,
-                                newEventTitle !== ""
-                                  ? newEventTitle
-                                  : event.eventTitle,
-                                newDate
-                              )
-                            }
-                            className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 min-w-fit"
-                          >
-                            Update event
-                          </button>
-                        </div>
-                      </section>
-                    ) : (
-                      <section onClick={() => setActiveEdit(event.id)}
-                        className="w-full body-text-md my-2">
-                        {format(event.day, "HH:mm")}
-                        <p className="body-text-lg">{event.eventTitle}</p>
-                      </section>
-                    )}
-                    {event.id !== activeEdit &&
-                      <DeleteEventModal
-                        deleteEvent={deleteEvent}
-                        eventId={event.id}
-                      />
-                    }
-                  </div>
-                )
+              {events.map(
+                (event) =>
+                  isEqual(getMonth(event.day), getMonth(day)) &&
+                  isEqual(getDate(event.day), getDate(day)) &&
+                  isEqual(getYear(event.day), getYear(day)) && (
+                    <div
+                      className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
+                      key={event.id}
+                    >
+                      {event.id === activeEdit ? (
+                        <section className="flex flex-col sm:flex-row w-full my-2">
+                          <div className="flex flex-row w-full gap-2">
+                            <input
+                              type="time"
+                              defaultValue={format(event.day, "HH:mm")}
+                              onChange={(e) => setTime(day, e.target.value)}
+                              className="px-3 body-text-md"
+                            />
+                            <input
+                              onChange={(e) => setNewEventTitle(e.target.value)}
+                              defaultValue={event.eventTitle}
+                              className="flex-1 body-text-md"
+                            />
+                            <button
+                              onClick={() =>
+                                editEvent(
+                                  event.id,
+                                  newEventTitle !== ""
+                                    ? newEventTitle
+                                    : event.eventTitle,
+                                  newDate
+                                )
+                              }
+                              className="btn-text-sm mt-2 sm:mt-0 sm:ml-2 min-w-fit"
+                            >
+                              Update event
+                            </button>
+                          </div>
+                        </section>
+                      ) : (
+                        <section
+                          onClick={() => setActiveEdit(event.id)}
+                          className="w-full body-text-md my-2"
+                        >
+                          {format(event.day, "HH:mm")}
+                          <p className="body-text-lg">{event.eventTitle}</p>
+                        </section>
+                      )}
+                      {event.id !== activeEdit && (
+                        <DeleteEventModal
+                          deleteEvent={deleteEvent}
+                          eventId={event.id}
+                        />
+                      )}
+                    </div>
+                  )
               )}
             </div>
             <section className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
               <div className="flex flex-col sm:flex-row gap-2 w-full">
-                <form className="flex-1 flex flex-row gap-2">
+                <form
+                  onSubmit={(e) => createEvent(e, eventTitle)}
+                  className="flex-1 flex flex-row gap-2"
+                >
                   <input
                     type="time"
                     defaultValue={format(newDate, "HH:mm")}
-                    onChange={e => setTime(day, e.target.value)}
+                    onChange={(e) => setTime(day, e.target.value)}
                     className="px-3 body-text-md"
                   />
 
                   <input
-                    onChange={e => setEventTitle(e.target.value)}
+                    required
+                    onChange={(e) => setEventTitle(e.target.value)}
                     placeholder={"Add new event"}
                     className="px-3 body-text-md flex-1"
                   />
+                  <button
+                    type="submit"
+                    className="btn-text-sm"
+                  >
+                    Confirm
+                  </button>
                 </form>
-                <button onClick={() => createEvent(eventTitle)} className="btn-text-sm">Confirm</button>
               </div>
             </section>
           </main>
