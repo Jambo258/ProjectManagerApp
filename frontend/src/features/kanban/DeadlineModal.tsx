@@ -35,12 +35,7 @@ export const DeadlineModal = ({
   };
 
   const compareDates = (date: Date) => {
-    const today = new Date();
-
-    date.setHours(0,0,0,0);
-    today.setHours(0,0,0,0);
-
-    if (today <= date) {
+    if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
       return true;
     } else {
       return false;
