@@ -106,19 +106,19 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             {format(day, "d")}
           </li>
           {events.map((event) =>
-              isEqual(getMonth(event.day), getMonth(day)) &&
+            isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) && (
-                <li
-                  key={event.id}
-                  className="ml-1 hidden md:block body-text-sm"
-                >
-                  {format(event.day, "HH:mm ")}
-                  {event.eventTitle.length > 10
-                    ? event.eventTitle.slice(0, 10) + "..."
-                    : event.eventTitle}
-                </li>
-              )
+              <li
+                key={event.id}
+                className="ml-1 hidden md:block body-text-sm"
+              >
+                {format(event.day, "HH:mm ")}
+                {event.eventTitle.length > 10
+                  ? event.eventTitle.slice(0, 10) + "..."
+                  : event.eventTitle}
+              </li>
+            )
           )}
         </ul>
       </section>
