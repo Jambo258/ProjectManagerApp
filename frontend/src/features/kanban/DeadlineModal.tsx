@@ -33,15 +33,7 @@ export const DeadlineModal = ({
     removeTaskDeadline(task.Id);
     closeModal();
   };
-
-  const compareDates = (date: Date) => {
-    if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
+  
   return (
     <div className="text-center w-fit m-auto">
       <Calendar
@@ -61,7 +53,7 @@ export const DeadlineModal = ({
               return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
             }
 
-            if (compareDates(date)) {
+            if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
               return "aspect-square rounded-full"; 
             }  
             
