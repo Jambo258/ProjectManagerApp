@@ -106,7 +106,7 @@ export const EditLabelModal = ({
           </p>
         </label>
         <label className="block heading-xs text-left text-dark-font">
-          Select a Color
+          Select a color
           <p className="mt-1 text-center body-text-xs text-caution-200">
             {errors.color?.message}
           </p>
@@ -123,7 +123,7 @@ export const EditLabelModal = ({
             ></ColorModal>
           ))}
         </div>
-        <section className="border grid grid-cols-2 gap-6 mt-3.5">
+        <section className="grid grid-cols-2 gap-2 mt-2">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"
