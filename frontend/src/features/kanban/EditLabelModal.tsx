@@ -123,7 +123,7 @@ export const EditLabelModal = ({
             ></ColorModal>
           ))}
         </div>
-        <section className="grid grid-cols-2 gap-2 mt-2">
+        <section className="grid grid-cols-2 gap-2 mt-6">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"

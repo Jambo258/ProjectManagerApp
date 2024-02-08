@@ -102,7 +102,7 @@ export const CreateLabelModal = ({
         <section className="grid grid-cols">
           <button
             type="submit"
-            className="py-2 my-2 btn-text-xs bg-greyscale-100 hover:bg-greyscale-200"
+            className="py-2 my-2 btn-text-xs bg-greyscale-100 hover:bg-greyscale-200 mt-6"
           >
             Create label
           </button>
