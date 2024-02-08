@@ -9,6 +9,7 @@ import { AddComponentModal } from "./AddComponentModal";
 import { Modal } from "../../components/Modal";
 import { Plus, ChevronDown, ChevronUp, Trash2 } from "react-feather";
 import Calendar, { type Event } from "../calendar/Calendar";
+import { DeleteModal } from "../../components/DeleteModal";
 
 interface Component {
   type: "editor" | "kanban" | "calendar";
@@ -20,6 +21,7 @@ const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
 
 export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [components, setComponents] = useState<Component[]>([]);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
@@ -112,43 +114,55 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-1">
+      <section className="flex flex-col gap-4 last:[&>article]:mb-4 sm:last:[&>article]:mb-6">
         <section className="h-fit w-full flex flex-row justify-end">
           <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18} />}>
             <AddComponentModal createComponent={addComponent} />
           </Modal>
         </section>
 
-        {components.map((component) =>
+        {components.map((component, index) =>
           <article
             key={component.uuid}
+            // use this when we find solution for mobile devices
             // className="group"
           >
             {/* invisible group-active:visible <- use this when we find solution for mobile devices */}
-            <section className={"w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0"}>
+            <section className={"w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"}>
               <button
-                title="Move Up"
+                title="Move Component Up"
+                disabled={index === 0}
                 onClick={() => moveComponentUp(component.uuid)}
-                className="px-2"
+                className="px-2 disabled:opacity-30 disabled:hover:bg-grayscale-0"
               >
                 <ChevronUp size={22} />
               </button>
               <button
-                title="Move Down"
+                title="Move Component Down"
+                disabled={index === components.length - 1}
                 onClick={() => moveComponentDown(component.uuid)}
-                className="me-auto px-2"
+                className="px-2 disabled:opacity-30 disabled:hover:bg-grayscale-0"
               >
                 <ChevronDown size={22} />
               </button>
               <button
                 title="Delete Component"
-                onClick={() => deleteComponent(component.uuid)}
-                className="px-3"
+                onClick={() => setIsConfirmDeleteOpen(true)}
+                className="ms-auto px-3"
               >
                 <Trash2 size={18} />
               </button>
             </section>
             {getComponent(component)}
+
+            {isConfirmDeleteOpen && (
+              <DeleteModal
+                setConfirmDeleteEdit={setIsConfirmDeleteOpen}
+                confirmDeleteEdit={isConfirmDeleteOpen}
+                handleSubmitForModal={() => deleteComponent(component.uuid)}
+                deleteModalText={`Are you sure you want to delete this ${component.type} component?`}
+              />
+            )}
           </article>
         )}
       </section>
