@@ -32,8 +32,7 @@ interface Props {
   updateTask: (id: number | string, content: string) => void;
   updateTaskTitle: (id: number | string, title: string) => void;
   addTaskMember: (id: number | string, newMember: Member) => void;
-  removeTaskMember: (id: number | string, newMember: Member) => void;
-  markTaskDone: (id: number | string) => void;
+  removeTaskMember: (id: number | string, newMember: Member) => void
   labels: Labels[];
   labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,7 +51,6 @@ export const KanbanTask = ({
   updateTaskTitle,
   addTaskMember,
   removeTaskMember,
-  // markTaskDone,
   labels,
   labelColors,
   setIsModalsOpen,
@@ -354,14 +352,3 @@ export const KanbanTask = ({
     </>
   );
 };
-
-{
-  /* {!task.done && (
-              <div className="border relative left-5">
-                <TaskModal>
-                  <div onClick={() => markTaskDone(task.Id)}>Mark as Done</div>
-                  <div></div>
-                </TaskModal>
-              </div>
-            )} */
-}

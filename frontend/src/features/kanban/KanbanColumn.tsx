@@ -21,7 +21,6 @@ interface Props {
   deleteTask: (id: string | number) => void;
   updateTask: (id: string | number, content: string) => void;
   updateTaskTitle: (id: string | number, title: string) => void;
-  markTaskDone: (id: string | number) => void;
   labels: Labels[];
   labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,7 +46,6 @@ export const KanbanColumn = (props: Props) => {
     updateTaskTitle,
     addTaskMember,
     removeTaskMember,
-    markTaskDone,
     labels,
     labelColors,
     setIsModalsOpen,
@@ -151,7 +149,6 @@ export const KanbanColumn = (props: Props) => {
               deleteTask={deleteTask}
               updateTask={updateTask}
               updateTaskTitle={updateTaskTitle}
-              markTaskDone={markTaskDone}
               labels={labels}
               labelColors={labelColors}
               setIsModalsOpen={setIsModalsOpen}

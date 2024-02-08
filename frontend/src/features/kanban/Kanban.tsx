@@ -34,7 +34,6 @@ export interface Task {
   title: string;
   columnId: string | number;
   content: string;
-  done: boolean;
   labels?: Labels[];
   deadline?: number | undefined;
   members: Member[];
@@ -134,7 +133,6 @@ export const Kanban = ({
       title: `Task ${tasks.length + 1}`,
       columnId,
       content: "Short task description goes here...",
-      done: false,
       labels: [],
       members: [],
     };
@@ -318,20 +316,6 @@ export const Kanban = ({
         ytasks.doc?.transact(() => {
           ytasks.delete(i);
           ytasks.insert(i, [{ ...task, members: updatedMembers}]);
-        });
-      }
-    });
-  };
-
-  const markTaskDone = (id: string | number) => {
-    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    let changed = false;
-    ytasks.forEach((task, i) => {
-      if (task.Id === id && changed === false) {
-        changed = true;
-        ytasks.doc?.transact(() => {
-          ytasks.delete(i);
-          ytasks.insert(i, [{ ...task, done: true }]);
         });
       }
     });
@@ -604,7 +588,6 @@ export const Kanban = ({
                     createTask={createTask}
                     updateTask={updateTask}
                     updateTaskTitle={updateTaskTitle}
-                    markTaskDone={markTaskDone}
                     tasks={tasks.filter((ele) => ele.columnId === column.Id)}
                     labels={labels}
                     labelColors={arrayOfColors}
@@ -643,7 +626,6 @@ export const Kanban = ({
                     updateTask={updateTask}
                     updateColumn={updateColumn}
                     updateTaskTitle={updateTaskTitle}
-                    markTaskDone={markTaskDone}
                     labels={labels}
                     labelColors={arrayOfColors}
                     setIsModalsOpen={setIsModalsOpen}
@@ -667,7 +649,6 @@ export const Kanban = ({
                     updateTaskTitle={updateTaskTitle}
                     updateTask={updateTask}
                     deleteTask={deleteTask}
-                    markTaskDone={markTaskDone}
                     labels={labels}
                     labelColors={arrayOfColors}
                     setIsModalsOpen={setIsModalsOpen}
