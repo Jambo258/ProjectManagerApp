@@ -23,12 +23,7 @@ interface Props {
   yevents: Y.Array<Event>;
 }
 
-const CalendarEventModal = ({
-  events,
-  currentMonth,
-  day,
-  yevents,
-}: Props) => {
+const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newEventTitle, setNewEventTitle] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +51,13 @@ const CalendarEventModal = ({
     if (index !== -1) {
       yevents.doc?.transact(() => {
         yevents.delete(index);
-        yevents.insert(index, [{ ...currEvents[index], eventTitle: newTitle, day: newDay.toISOString() }]);
+        yevents.insert(index, [
+          {
+            ...currEvents[index],
+            eventTitle: newTitle,
+            day: newDay.toISOString(),
+          },
+        ]);
       });
     }
 
@@ -66,11 +67,13 @@ const CalendarEventModal = ({
 
   const createEvent = (e: React.FormEvent, eventTitle: string) => {
     e.preventDefault();
-    yevents.push([{
-      id: nanoid(),
-      day: newDate.toISOString(),
-      eventTitle,
-    }]);
+    yevents.push([
+      {
+        id: nanoid(),
+        day: newDate.toISOString(),
+        eventTitle,
+      },
+    ]);
   };
 
   const setTime = (date: Date, eventDate: string) => {
@@ -91,11 +94,7 @@ const CalendarEventModal = ({
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
         outline outline-1 outline-grayscale-400 hover:bg-primary-200 overflow-hidden
-        ${
-    isSameMonth(day, currentMonth)
-      ? "text-dark-font"
-      : "text-grayscale-400"
-    }
+        ${isSameMonth(day, currentMonth)  ? "text-dark-font" : "text-grayscale-400"}
         ${isToday(day) ? "border-4 border-primary-200" : ""}`}
       >
         <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap">
@@ -133,11 +132,7 @@ const CalendarEventModal = ({
           onClick={(e) => e.stopPropagation()}
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto
            outline-none sm:rounded focus:outline-none shadow transition-all
-          ${
-    screenDimensions.height < 500
-      ? "min-h-screen w-full"
-      : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"
-    }`}
+          ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}
         >
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
@@ -230,10 +225,7 @@ const CalendarEventModal = ({
                     placeholder={"Add new event"}
                     className="px-3 body-text-md flex-1"
                   />
-                  <button
-                    type="submit"
-                    className="btn-text-sm"
-                  >
+                  <button type="submit" className="btn-text-sm">
                     Confirm
                   </button>
                 </form>
