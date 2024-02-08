@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as Y from "yjs";
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 
@@ -7,7 +7,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { type Column, Kanban, type Labels, type Task } from "../kanban/Kanban";
 import { AddComponentModal } from "./AddComponentModal";
 import { Modal } from "../../components/Modal";
-import { Plus } from "react-feather";
+import { Plus, ChevronDown, ChevronUp, Trash2 } from "react-feather";
 import Calendar, { type Event } from "../calendar/Calendar";
 import { DeleteModal } from "../../components/DeleteModal";
 
@@ -21,6 +21,9 @@ const BACKEND_WS_URL = (import.meta.env.VITE_BACKEND_URL as string)
 
 export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [componentId, setComponentId] = useState("");
+  const [componentType, setComponentType] = useState("");
   const [components, setComponents] = useState<Component[]>([]);
   const [ydoc] = useState(() => new Y.Doc());
   // useMemo maybe?
@@ -72,7 +75,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     });
   };
 
-  const moveComponent = (uuid: string) => {
+  const moveComponentUp = (uuid: string) => {
     yarray.forEach((component, i) => {
       if (i === 0) {
         return;
@@ -81,6 +84,18 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         console.log("moiving up", uuid);
         yarray.delete(i, 1);
         yarray.insert(i - 1, [component]);
+      }
+    });
+  };
+
+  const moveComponentDown = (uuid: string) => {
+    yarray.forEach((component, i) => {
+      if (i === yarray.length - 1) {
+        return;
+      }
+      if (component.uuid === uuid) {
+        yarray.delete(i, 1);
+        yarray.insert(i + 1, [component]);
       }
     });
   };
@@ -111,14 +126,59 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
           </Modal>
         </section>
 
-        {components.map((component) =>
-          <Fragment key={component.uuid}>
+        {components.map((component, index) =>
+          <article
+            key={component.uuid}
+            // use this when we find solution for mobile devices
+            // className="group"
+          >
+            <section
+            // invisible group-active:visible <- use this when we find solution for mobile devices
+              className="w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
+            >
+              <button
+                title="Move Component Up"
+                disabled={index === 0}
+                onClick={() => moveComponentUp(component.uuid)}
+                className="px-2 disabled:opacity-30 disabled:hover:bg-grayscale-0"
+              >
+                <ChevronUp size={22} />
+              </button>
+              <button
+                title="Move Component Down"
+                disabled={index === components.length - 1}
+                onClick={() => moveComponentDown(component.uuid)}
+                className="px-2 disabled:opacity-30 disabled:hover:bg-grayscale-0"
+              >
+                <ChevronDown size={22} />
+              </button>
+              <button
+                title="Delete Component"
+                onClick={() => {
+                  setComponentId(component.uuid);
+                  setComponentType(component.type);
+                  setIsConfirmDeleteOpen(true);
+                }}
+                className="ms-auto px-3"
+              >
+                <Trash2 size={18} />
+              </button>
+            </section>
             {getComponent(component)}
-            <button className="w-fit btn-text-xs py-2" onClick={() => moveComponent(component.uuid)}>Move Up</button>
-            <button className="w-fit btn-text-xs py-2" onClick={() => deleteComponent(component.uuid)}>Delete</button>
-          </Fragment>
+          </article>
         )}
       </section>
+
+      {isConfirmDeleteOpen && (
+        <DeleteModal
+          setConfirmDeleteEdit={setIsConfirmDeleteOpen}
+          confirmDeleteEdit={isConfirmDeleteOpen}
+          handleSubmitForModal={() => {
+            if (componentId !== "" ) return deleteComponent(componentId);
+          }}
+          deleteModalText={`Are you sure you want to delete this ${componentType} component?`}
+        />
+      )}
     </>
   );
 };
