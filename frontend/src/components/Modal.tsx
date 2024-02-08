@@ -51,7 +51,8 @@ export const Modal = ({
       {isModalOpen &&
       <div
         onClick={closeModal}
-        className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"}`}>
+        className="fixed flex justify-center inset-0 z-30 items-center transition-colors bg-dark-blue-100/40"
+      >
         <dialog
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
