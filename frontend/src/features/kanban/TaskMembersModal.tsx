@@ -1,5 +1,3 @@
-// React
-
 // Redux
 import { type Member, useGetProjectQuery } from "../api/apiSlice";
 
