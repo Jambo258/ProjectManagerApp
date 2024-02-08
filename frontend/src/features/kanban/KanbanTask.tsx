@@ -21,10 +21,6 @@ import { UserIcon } from "../user/UserIcon";
 import { DeadlineModal } from "./DeadlineModal";
 import useScreenDimensions from "../../utils/screenDimensions";
 
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { taskTitleSchema, taskContentSchema } from "./taskAndColumnValidation";
-
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
   setTaskDeadline: (
@@ -109,32 +105,6 @@ export const KanbanTask = ({
   // For production
   // const [taskMembers, setTaskMembers] = useState<Member[]>(task.members);
 
-  console.log(taskMembers);
-  const {
-    formState: { errors: errorsTitle },
-    handleSubmit,
-    register,
-  } = useForm<taskTitleFormValues>({
-    // mode: "onChange",
-    defaultValues: {
-      title: task.title,
-    },
-    resolver: yupResolver(taskTitleSchema),
-  });
-
-  const {
-    formState: { errors: errorsContent },
-    handleSubmit: contentSubmit,
-    register: contentRegister,
-  } = useForm<taskContentFormValues>({
-    defaultValues: {
-      content: task.content,
-    },
-    resolver: yupResolver(taskContentSchema),
-  });
-  console.log(errorsTitle);
-  console.log(task.title);
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -163,14 +133,6 @@ export const KanbanTask = ({
     // updateTaskTitle(task.Id, editTitle );
     // updateTaskMembers(task.Id, taskMembers);
     closeModal();
-  };
-
-  const titleHandler = (formData: taskTitleFormValues) => {
-    updateTaskTitle(task.Id, formData.title);
-  };
-
-  const contentHandler = (formData: taskContentFormValues) => {
-    updateTask(task.Id, formData.content!);
   };
 
   const dateDifference = (endDate: number | object | undefined) => {
@@ -283,11 +245,18 @@ export const KanbanTask = ({
                     required={true}
                     onKeyDown={(e) => {
                       if (e.key !== "Enter") return;
-                      else {
-                        setIsEditTitleSelected(false);
+
+                      setIsEditTitleSelected(false);
+                    }}
+                    onBlur={() => setIsEditTitleSelected(false)}
+                    value={task.title}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length >= 1) {
+                        updateTaskTitle(task.Id, inputValue);
                       }
                     }}
-                    value={task.title}
+                    /*
                     {...register("title", {
                       onChange: async () => {
                         await handleSubmit(titleHandler)();
@@ -296,12 +265,8 @@ export const KanbanTask = ({
                         setIsEditTitleSelected(false);
                       },
                     })}
+                    */
                   ></input>
-                  {errorsTitle.title && (
-                    <p className="place-self-start mt-1 text-center body-text-xs text-caution-200">
-                      {errorsTitle.title.message}
-                    </p>
-                  )}
                 </>
               ) : (
                 <h3
@@ -351,6 +316,7 @@ export const KanbanTask = ({
                       Description
                       <textarea
                         value={task.content}
+                        /*
                         {...contentRegister("content", {
                           onChange: async () => {
                             await contentSubmit(contentHandler)();
@@ -359,17 +325,13 @@ export const KanbanTask = ({
                           //   setIsEditTitleSelected(false);
                           // },
                         })}
+                        */
                         // value={editContent}
-                        // onChange={(e) => setEditContent(e.target.value)}
+                        onChange={(e) => updateTask(task.Id, e.target.value)}
                         rows={4}
                         placeholder="Short item description goes here..."
                         className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                       />
-                      {errorsContent.content && (
-                        <p className="mt-1 text-center body-text-xs text-caution-200">
-                          {errorsContent.content.message}
-                        </p>
-                      )}
                     </label>
                   </form>
                 </section>

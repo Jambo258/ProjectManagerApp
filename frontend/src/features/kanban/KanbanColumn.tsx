@@ -123,11 +123,9 @@ export const KanbanColumn = (props: Props) => {
             }}
             onBlur={() => setEdit(false)}
             value={column.title}
-            // onChange={(e) => updateColumn(column.Id, e.target.value)}
             onChange={(e) => {
               const inputValue = e.target.value;
-              console.log(inputValue.length);
-              if (inputValue.length > 1) {
+              if (inputValue.length >= 1) {
                 updateColumn(column.Id, inputValue);
               }
             }}

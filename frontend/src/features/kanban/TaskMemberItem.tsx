@@ -20,8 +20,7 @@ interface IProps {
 
 export const TaskMember = ({ member, taskMembers, setTaskMembers, updateTaskMembers, task, removeTaskMembers }: IProps) => {
   const [isChecked, setIsChecked] = useState(false);
-  console.log(taskMembers, "view?");
-  console.log(member);
+  
   const addTaskMember = () => {
     setTaskMembers([...taskMembers, member]);
     updateTaskMembers(task.Id, member);
