@@ -511,13 +511,6 @@ export const Kanban = ({
           );
         });
       }
-
-      // setTasks((elements) => {
-      //   activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   overIndex = elements.findIndex((el) => el.Id === overId);
-      //   // elements[activeIndex].columnId = elements[overIndex].columnId;
-      //   return arrayMove(elements, activeIndex, overIndex);
-      // });
     }
 
     const isOverColumn = over.data.current?.type === "Column";
@@ -542,12 +535,6 @@ export const Kanban = ({
         ytasks.delete(activeIndex);
         ytasks.insert(activeIndex, [{ ...task, columnId: overId }]);
       });
-
-      // setTasks((elements) => {
-      //   const activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   elements[activeIndex].columnId = overId;
-      //   return arrayMove(elements, activeIndex, activeIndex);
-      // });
     }
   };
 
