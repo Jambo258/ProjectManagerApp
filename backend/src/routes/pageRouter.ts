@@ -47,9 +47,9 @@ const createPageSchema = yup.object({
     .integer()
     .required("Project id is required"),
 });
-type createPageSchemaType = yup.InferType<typeof createPageSchema>;
+type CreatePageSchemaType = yup.InferType<typeof createPageSchema>;
 
-pagesRouter.post("/", validate(createPageSchema), async (req: RequestBody<createPageSchemaType>, res, next) => {
+pagesRouter.post("/", validate(createPageSchema), async (req: RequestBody<CreatePageSchemaType>, res, next) => {
   try {
     const { name, projectid } = req.body;
     const userid = req.session.userId!;
@@ -115,9 +115,9 @@ export const pageNameSchema = yup.object().shape({
     .max(50, "Must be less than 50 characters long")
 });
 
-export type pageNameSchemaType = yup.InferType<typeof pageNameSchema>;
+export type PageNameSchemaType = yup.InferType<typeof pageNameSchema>;
 
-pagesRouter.put("/:id(\\d+)", validate(pageNameSchema), async (req: RequestBody<pageNameSchemaType>, res, next) => {
+pagesRouter.put("/:id(\\d+)", validate(pageNameSchema), async (req: RequestBody<PageNameSchemaType>, res, next) => {
   try {
     const { name } = req.body;
     const pageId = Number(req.params.id);

@@ -26,12 +26,12 @@ const registerUserSchema = yup.object({
     .matches(/^(?=.*[0-9])/,"Password requires atleast 1 number")
     .matches(/^(?=.*[!@#$%^&*])/,"Password requires atleast 1 special character"),
 });
-type registerUserSchemaType = yup.InferType<typeof registerUserSchema>;
+type RegisterUserSchemaType = yup.InferType<typeof registerUserSchema>;
 
 usersRouter.post(
   "/register",
   validate(registerUserSchema),
-  async (req: RequestBody<registerUserSchemaType>, res, next) => {
+  async (req: RequestBody<RegisterUserSchemaType>, res, next) => {
     try {
       const { email, name, password } = req.body;
 
@@ -62,12 +62,12 @@ const loginUserSchema = yup.object({
   email: yup.string().trim().required("Email is required").email("Must be a valid email"),
   password: yup.string().required("Password is required").min(6, "Must be at least 6 characters long"),
 });
-type loginUserSchemaType = yup.InferType<typeof loginUserSchema>;
+type LoginUserSchemaType = yup.InferType<typeof loginUserSchema>;
 
 usersRouter.post(
   "/login",
   validate(loginUserSchema),
-  async (req: RequestBody<loginUserSchemaType>, res, next) => {
+  async (req: RequestBody<LoginUserSchemaType>, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -115,13 +115,13 @@ usersRouter.get("/logout", (req, res, next) => {
 const getUserByEmailSchema = yup.object({
   email: yup.string().trim().required("Email is required").email("Must be a valid email"),
 });
-type getUserByEmailSchemaType = yup.InferType<typeof getUserByEmailSchema>;
+type GetUserByEmailSchemaType = yup.InferType<typeof getUserByEmailSchema>;
 
 usersRouter.post(
   "/getuserbyemail",
   authenticate,
   validate(getUserByEmailSchema),
-  async (req: RequestBody<getUserByEmailSchemaType>, res, next) => {
+  async (req: RequestBody<GetUserByEmailSchemaType>, res, next) => {
     try {
       const { email } = req.body;
 
@@ -147,13 +147,13 @@ const updateUserSchema = yup.object({
   name: yup.string().trim().optional().min(2, "Must be at least 2 characters long").max(50, "Must be shorter than 50 characters"),
   password: yup.string().optional().min(6, "Must be at least 6 characters long"),
 });
-type updateUserSchemaType = yup.InferType<typeof updateUserSchema>;
+type UpdateUserSchemaType = yup.InferType<typeof updateUserSchema>;
 
 usersRouter.put(
   "/update",
   authenticate,
   validate(updateUserSchema),
-  async (req: RequestBody<updateUserSchemaType>, res, next) => {
+  async (req: RequestBody<UpdateUserSchemaType>, res, next) => {
     try {
       const id = req.session.userId!;
       const { email, name, password } = req.body;
@@ -169,7 +169,7 @@ usersRouter.put(
         return res.status(404).json({ error: "Couldn't find user" });
       }
 
-      const updatedUserData: updateUserSchemaType = {};
+      const updatedUserData: UpdateUserSchemaType = {};
 
       if (email) {
         const findEmail = await getUserByEmail(email);

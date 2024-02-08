@@ -28,12 +28,12 @@ const projectNameSchema = yup.object({
     .max(50, "Must be less than 50 characters long"),
 
 });
-type projectNameSchemaType = yup.InferType<typeof projectNameSchema>;
+type ProjectNameSchemaType = yup.InferType<typeof projectNameSchema>;
 
 projectsRouter.post(
   "/",
   validate(projectNameSchema),
-  async (req: RequestBody<projectNameSchemaType>, res, next) => {
+  async (req: RequestBody<ProjectNameSchemaType>, res, next) => {
     try {
       const { name } = req.body;
       if (!name || typeof name !== "string") {
@@ -90,7 +90,7 @@ projectsRouter.delete("/:pid(\\d+)", async (req, res, next) => {
 projectsRouter.put(
   "/:pid(\\d+)",
   validate(projectNameSchema),
-  async (req: RequestBody<projectNameSchemaType>, res, next) => {
+  async (req: RequestBody<ProjectNameSchemaType>, res, next) => {
     try {
       const projectId = parseInt(req.params.pid);
       const userId = req.session.userId!;
@@ -154,12 +154,12 @@ const addUserToProjectSchema = yup.object({
   email: yup.string().trim().required("Email is required").email("Must be a valid email"),
 });
 
-type addUserToProjectSchemaType = yup.InferType<typeof addUserToProjectSchema>;
+type AddUserToProjectSchemaType = yup.InferType<typeof addUserToProjectSchema>;
 
 projectsRouter.post(
   "/:pid(\\d+)/users/",
   validate(addUserToProjectSchema),
-  async (req: RequestBody<addUserToProjectSchemaType>, res, next) => {
+  async (req: RequestBody<AddUserToProjectSchemaType>, res, next) => {
     try {
       const projectId = parseInt(req.params.pid);
       const sessionUserId = req.session.userId!;
@@ -230,12 +230,12 @@ const addRoleToUserSchema = yup.object({
   role: yup.string().trim().required("Role is required"),
 });
 
-type addRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
+type AddRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
 
 projectsRouter.put(
   "/:pid(\\d+)/users/:uid(\\d+)",
   validate(addRoleToUserSchema),
-  async (req: RequestBody<addRoleToUserSchemaType>, res, next) => {
+  async (req: RequestBody<AddRoleToUserSchemaType>, res, next) => {
     try {
       const projectId = parseInt(req.params.pid);
       const userId = parseInt(req.params.uid);

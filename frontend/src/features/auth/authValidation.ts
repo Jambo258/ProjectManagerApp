@@ -67,9 +67,9 @@ export const inviteUserSchema = yup.object().shape({
   role: yup.string().required("Role is required"),
 });
 
-export type registerUserSchemaType = yup.InferType<typeof registerUserSchema>;
-export type changeNameSchemaType = yup.InferType<typeof changeNameSchema>;
-export type changeEmailSchemaType = yup.InferType<typeof changeEmailSchema>;
-export type changePasswordSchemaType = yup.InferType<
+export type RegisterUserSchemaType = yup.InferType<typeof registerUserSchema>;
+export type ChangeNameSchemaType = yup.InferType<typeof changeNameSchema>;
+export type ChangeEmailSchemaType = yup.InferType<typeof changeEmailSchema>;
+export type ChangePasswordSchemaType = yup.InferType<
   typeof changePasswordSchema
 >;
