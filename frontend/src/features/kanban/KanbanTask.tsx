@@ -139,9 +139,9 @@ export const KanbanTask = ({
           <div className="mb-6">
             <h4 className="heading-xs mb-1">{task.title}</h4>
             {/* Line clamp needs fixing, this removes row changes when displaying content */}
-            <pre className="min-h-max line-clamp-3 body-text-xs">
+            <p className="min-h-max line-clamp-3 body-text-xs whitespace-pre-wrap">
               {task.content}
-            </pre>
+            </p>
           </div>
 
           <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
