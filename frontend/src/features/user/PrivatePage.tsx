@@ -1,23 +1,14 @@
 import { Outlet } from "react-router-dom";
 import { DashboardNav } from "./DashboardNav";
 import { ProjectHeader } from "../project/ProjectHeader";
-import { useEffect, useState } from "react";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 export const PrivatePage = () => {
-  const [width, setWidth]  = useState(window.innerWidth);
-
-  const updateDimensions = () => {
-    setWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
+  const screenDimensions = useScreenDimensions();
 
   return (
     <>
-      {width > 640
+      {screenDimensions.width > 640
         ?
         <div className="flex flex-row h-screen w-full bg-grayscale-200">
           <DashboardNav />
@@ -27,7 +18,7 @@ export const PrivatePage = () => {
           </div>
         </div>
         :
-        <div className="flex flex-col h-screen w-full bg-grayscale-200">
+        <div className="flex flex-col w-full bg-grayscale-200 min-h-screen max-h-screen">
           <DashboardNav />
           <div className="relative flex flex-col w-full h-fit min-h-[calc(100%-3.5rem)] overflow-auto">
             <ProjectHeader />
