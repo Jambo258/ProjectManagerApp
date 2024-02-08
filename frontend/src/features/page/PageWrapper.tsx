@@ -119,7 +119,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
 
   return (
     <>
-      <section className="flex flex-col gap-6">
+      <section className="flex flex-col gap-6 pb-4 sm:pb-6">
         <section className="h-fit w-full flex flex-row justify-end">
           <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18} />}>
             <AddComponentModal createComponent={addComponent} />
@@ -134,7 +134,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
           >
             <section
             // invisible group-active:visible <- use this when we find solution for mobile devices
-              className="w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
+              className="w-full mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
             >
               <button
                 title="Move Component Up"
