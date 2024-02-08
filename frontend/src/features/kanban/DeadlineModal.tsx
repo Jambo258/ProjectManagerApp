@@ -74,9 +74,9 @@ export const DeadlineModal = ({
           } 
         }}
         onClickDay={(day) => setDeadline(day)}
-        prevLabel={<ChevronLeft className="relative top-1"/>}   
+        prevLabel={<ChevronLeft className="relative top-1" />}   
         nextLabel={<ChevronRight className="relative top-1" />}
-        prev2Label={<ChevronsLeft className="relative top-1"/>}  
+        prev2Label={<ChevronsLeft className="relative top-1" />}  
         next2Label={<ChevronsRight className="relative top-1" />}
       />
 
@@ -100,7 +100,7 @@ export const DeadlineModal = ({
           </button>
           : <button 
             type="button"
-            onClick={() => closeModal()}
+            onClick={closeModal}
             className="py-2 my-2 btn-text-sm">Cancel</button>  
         }
 
@@ -109,7 +109,7 @@ export const DeadlineModal = ({
             setConfirmDeleteEdit={setConfirmDeleteEdit}
             confirmDeleteEdit={confirmDeleteEdit}
             handleSubmitForModal={handleDeadlineRemove}
-            deleteModalText={"Are you sure you want to remove this deadline?"}
+            deleteModalText="Are you sure you want to remove this deadline?"
           />
         )}
       </div>
