@@ -584,7 +584,7 @@ export const Kanban = ({
           onDragStart={onDragStart}
           onDragOver={onDragOver}
         >
-          <div className="m-auto flex gap-2 min-w-full">
+          <div className="flex gap-2 w-fit">
             <div className="flex gap-4">
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
@@ -615,7 +615,7 @@ export const Kanban = ({
                   />
                 ))}
               </SortableContext>
-              <button className="btn-text-xs w-fit min-w-fit h-[59px] pt-[20px] inline-flex gap-2 px-4 py-2" onClick={() => createNewColumn()}>
+              <button className="btn-text-xs w-fit min-w-fit h-[59px] pt-[20px] inline-flex gap-2 px-6 py-2" onClick={() => createNewColumn()}>
                 <Plus size={18} /> 
                 Add column
               </button>
