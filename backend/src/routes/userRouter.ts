@@ -34,7 +34,6 @@ usersRouter.post(
   async (req: RequestBody<RegisterUserSchemaType>, res, next) => {
     try {
       const { email, name, password } = req.body;
-
       const findUser = await getUserByEmail(email);
       if (findUser) {
         return res.status(409).json({
