@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 // Components
 import { UserIcon } from "../user/UserIcon";
-import { Check } from "react-feather";
+import { Check, CheckSquare, Square } from "react-feather";
 
 // Types and Interfaces
 import { type Member } from "../api/apiSlice";
@@ -55,7 +55,7 @@ export const TaskMember = ({
         <UserIcon id={member.id} name={member.name} />
         <p className="body-text-sm">{member.name}</p>
       </section>
-      <p>{isChecked ? <Check className="text-grayscale-400" /> : null}</p>
+      <p>{isChecked ? <CheckSquare /> : <Square />}</p>
     </div>
   );
 };
