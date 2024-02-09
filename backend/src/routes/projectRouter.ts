@@ -206,7 +206,7 @@ projectsRouter.post(
 );
 
 const addRoleToUserSchema = yup.object({
-  role: yup.string().trim().required("Role is required"),
+  role: yup.mixed<Role>().oneOf(Object.values(Role)).required("Role is required"),
 });
 
 type AddRoleToUserSchemaType = yup.InferType<typeof addRoleToUserSchema>;
@@ -220,14 +220,6 @@ projectsRouter.put(
       const userId = parseInt(req.params.uid);
       const sessionUserId = req.session.userId!;
       const { role } = req.body;
-
-      if (
-        role !== Role.manager &&
-        role !== Role.editor &&
-        role !== Role.viewer
-      ) {
-        return res.status(400).json({ error: "Wrong role" });
-      }
 
       const findProject = await getProjectById(projectId);
       if (!findProject) {

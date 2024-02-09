@@ -165,7 +165,7 @@ describe("Project endpoint tests", () => {
       .send({ role: "supersuperadmin" })
       .expect(400)
       .expect("Content-Type", /json/);
-    expect(res.body.error).toEqual("Wrong role");
+    expect(res.body.error).toBeDefined();
   });
 
   it("Change user role in nonexistent project", async () => {
