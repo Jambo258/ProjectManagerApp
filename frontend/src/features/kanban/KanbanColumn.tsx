@@ -3,7 +3,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { KanbanTask } from "./KanbanTask";
 import { Column, Labels, Task } from "./Kanban";
-import { TaskModal } from "./TaskModal";
 import { Plus } from "react-feather";
 import { type Member } from "../api/apiSlice";
 import { Menu } from "../../components/Menu";
@@ -116,8 +115,9 @@ export const KanbanColumn = (props: Props) => {
           </div>
         )}
         {edit && (
-          // Input field only shows one line
-          // Trello has h2 with role as textbox
+          // TO DO:
+          // Input field only shows one line, can this be changed to show multiple lines
+          // Trello has h2 with role of textbox
           <input
             className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
@@ -151,10 +151,6 @@ export const KanbanColumn = (props: Props) => {
             Delete column
           </button>
         </Menu>
-        {/* <TaskModal>
-          <div onClick={() => deleteColumn(column.Id)}>Delete</div>
-          <div></div>
-        </TaskModal> */}
       </div>
       <div className="flex flex-grow flex-col gap-3 mb-3">
         <SortableContext items={taskIds}>
