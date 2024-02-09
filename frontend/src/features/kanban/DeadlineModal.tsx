@@ -85,7 +85,7 @@ export const DeadlineModal = ({
           type="button"
           onClick={handleDeadlineSave}
           name="save"
-          className="py-2 my-2 btn-text-sm bg-success-100 hover:bg-success-200"
+          className="py-2 my-2 btn-text-xs bg-success-100 hover:bg-success-200"
         >
             Save
         </button>
@@ -94,14 +94,14 @@ export const DeadlineModal = ({
             type="button"
             onClick={() => setConfirmDeleteEdit(true)}
             name="remove"
-            className="py-2 my-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
+            className="py-2 my-2 btn-text-xs bg-caution-100 hover:bg-caution-200"
           >
               Remove
           </button>
           : <button 
             type="button"
             onClick={closeModal}
-            className="py-2 my-2 btn-text-sm">Cancel</button>  
+            className="py-2 my-2 btn-text-xs">Cancel</button>  
         }
 
         {confirmDeleteEdit && (

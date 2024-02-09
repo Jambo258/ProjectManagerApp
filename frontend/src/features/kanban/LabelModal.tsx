@@ -32,57 +32,58 @@ export const LabelModal = ({
   const taskLabelIds = task.labels?.map((label) => label.id) ?? [];
   return (
     <>
-      <div className="grid grid-flow-row gap-2 ">
+      <div className="grid grid-flow-row gap-1">
         {labels.map((label) => (
           <div
             key={label.id}
-            className="grid grid-cols-4 justify-center items-center"
+            className="inline-flex place-items-center justify-center gap-2 m-auto"
           >
-            <div className="ml-16">
+            <div className="mx-4">
               {taskLabelIds.includes(label.id) ? (
                 <CheckSquare
                   onClick={() => {
                     deleteLabelStatus(task.Id, label.id.toString());
                   }}
-                  size={24}
-                ></CheckSquare>
+                />
               ) : (
                 <Square
                   onClick={() => {
                     updateLabelStatus(task.Id, label.id.toString());
                   }}
-                  size={24}
-                ></Square>
+                />
               )}
             </div>
             <div
-              className={`col-span-2 py-1.5 text-center body-text-sm rounded-sm ${label.color}`}
+              className={`py-1.5 text-center label-text rounded w-60 ${label.color}`}
             >
               {label.name}
             </div>
 
-            <SubModal
-              iconName="Edit"
-              modalTitle={"Edit Label"}
-              setIsModalsOpen={setIsModalsOpen}
-              isModalsOpen={isModalsOpen}
-            >
-              <EditLabelModal
-                task={task}
-                label={label}
-                labelColors={labelColors}
-                editLabel={editLabel}
-                deleteLabel={deleteLabel}
-              />
-            </SubModal>
+            <div>
+              <SubModal
+                iconName="Edit"
+                modalTitle={"Edit label"}
+                setIsModalsOpen={setIsModalsOpen}
+                isModalsOpen={isModalsOpen}
+              >
+                <EditLabelModal
+                  task={task}
+                  label={label}
+                  labelColors={labelColors}
+                  editLabel={editLabel}
+                  deleteLabel={deleteLabel}
+                />
+              </SubModal>
+            </div>
           </div>
         ))}
       </div>
-      <section className="grid grid-cols mt-4">
+
+      <section className="mt-4 w-full">
         <SubModal
           iconName="none"
-          btnText={"Create new Label"}
-          modalTitle={"Create Label"}
+          btnText={"Create new label"}
+          modalTitle={"Create label"}
           setIsModalsOpen={setIsModalsOpen}
           isModalsOpen={isModalsOpen}
         >
