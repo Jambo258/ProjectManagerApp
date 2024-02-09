@@ -2,11 +2,12 @@ import { type ReactNode, useState, useRef, useEffect } from "react";
 import { MoreVertical } from "react-feather";
 
 interface MenuProps {
-    menuPosition?: string;
-    children: ReactNode[];
+  btnPosition: string;
+  menuPosition: string;
+  children: ReactNode[];
 }
 
-export const Menu = ({menuPosition = "", children}: MenuProps) => {
+export const Menu = ({ btnPosition, menuPosition, children }: MenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -29,7 +30,8 @@ export const Menu = ({menuPosition = "", children}: MenuProps) => {
   return (
     <section
       ref={menuRef}
-      className={`${menuPosition} flex flex-col`}
+      // Make this a prop so that it can be used elsewhere
+      className={`${btnPosition} z-10 flex flex-col place-items-end`}
     >
 
       <button className="max-w-fit h-fit p-0 bg-grayscale-0 hover:bg-grayscale-0"
@@ -38,7 +40,7 @@ export const Menu = ({menuPosition = "", children}: MenuProps) => {
       </button>
 
       {isMenuOpen &&
-        <dialog className="relative w-fit mt-1 flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+        <dialog className={`${menuPosition} mt-1 w-fit flex flex-col z-30 border-2 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none`}>
           <section className="grid grid-cols-1 divide-y divide-grayscale-200">
             {children.map((child, index) => {
               return (
