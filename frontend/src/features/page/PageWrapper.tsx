@@ -43,9 +43,23 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   const ymap = ydoc.getMap<Y.XmlFragment | Y.Array<Event> | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>>();
 
   useEffect(() => {
-    const yarray = ydoc.getArray<Component>("components");
-    yarray.observe(() => {
-      setComponents(yarray.toArray());
+    const ycomponents = ydoc.getArray<Component>("components");
+    setComponents(ycomponents.toArray());
+
+    ycomponents.observe(() => {
+      const uniqueIds = new Set();
+      const componentsArray = ycomponents.toArray();
+      ycomponents.doc?.transact(() => {
+        for (let i = componentsArray.length - 1; i >= 0; i--) {
+          const item = componentsArray[i];
+          if (uniqueIds.has(item.uuid)) {
+            ycomponents.delete(i);
+          } else {
+            uniqueIds.add(item.uuid);
+          }
+        }
+      });
+      setComponents(ycomponents.toArray());
     });
   }, [ydoc]);
 
@@ -174,7 +188,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
           setConfirmDeleteEdit={setIsConfirmDeleteOpen}
           confirmDeleteEdit={isConfirmDeleteOpen}
           handleSubmitForModal={() => {
-            if (componentId !== "" ) return deleteComponent(componentId);
+            if (componentId !== "") return deleteComponent(componentId);
           }}
           deleteModalText={`Are you sure you want to delete this ${componentType} component?`}
         />
