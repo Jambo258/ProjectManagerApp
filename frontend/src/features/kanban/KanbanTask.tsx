@@ -86,6 +86,7 @@ export const KanbanTask = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [title, setTitle] = useState(task.title);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -146,7 +147,7 @@ export const KanbanTask = ({
             <div className="grid col-span-2">
               {/* Task Deadline */}
               <section className="w-full mb-1.5">
-               
+
                 {task.deadline && (
                   <div
                     className={`rounded w-fit px-2 py-1 text-center ${
@@ -156,7 +157,7 @@ export const KanbanTask = ({
                     }`}
                   >
                     <div className="label-text inline-flex gap-1">
-                      <Clock size={16} /> 
+                      <Clock size={16} />
                       {dateDifference(task.deadline)} days left
                     </div>
                   </div>
@@ -208,18 +209,17 @@ export const KanbanTask = ({
                 <input
                   className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
                   autoFocus
-                  required={true}
                   onKeyDown={(e) => {
                     if (e.key !== "Enter") return;
                     setIsEditTitleSelected(false);
-                  }}
-                  onBlur={() => setIsEditTitleSelected(false)}
-                  value={task.title}
-                  onChange={(e) => {
-                    if (e.target.value.length >= 1) {
-                      updateTaskTitle(task.Id, e.target.value);
+                    if(title){updateTaskTitle(task.Id, title);}
+                    else if(!title){
+                      setTitle(task.title);
                     }
                   }}
+                  onBlur={() => {setIsEditTitleSelected(false);if(title){updateTaskTitle(task.Id, title);}else if(!title){setTitle(task.title);}}}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               ) : (
                 <h3
@@ -248,7 +248,7 @@ export const KanbanTask = ({
                       }`}
                     >
                       <div className="label-text inline-flex gap-1">
-                        <Clock size={16} /> 
+                        <Clock size={16} />
                         {dateDifference(task.deadline)} days left
                       </div>
                     </div>

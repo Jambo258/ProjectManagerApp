@@ -60,6 +60,7 @@ export const KanbanColumn = (props: Props) => {
   } = props;
 
   const [edit, setEdit] = useState(false);
+  const [title, setTitle] = useState(column.title);
 
   const taskIds = useMemo(() => {
     return tasks.map((element) => element.Id);
@@ -112,21 +113,24 @@ export const KanbanColumn = (props: Props) => {
           </div>
         )}
         {edit && (
-          <input
-            className="w-36 text-sm bg bg-primary-200 rounded-md"
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key !== "Enter") return;
-              setEdit(false);
-            }}
-            onBlur={() => setEdit(false)}
-            value={column.title}
-            onChange={(e) => {
-              if (e.target.value.length >= 1) {
-                updateColumn(column.Id, e.target.value);
-              }
-            }}
-          ></input>
+          <form>
+            <input
+              type="text"
+              className="w-36 text-sm bg bg-primary-200 rounded-md"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                setEdit(false);
+                if(title){updateColumn(column.Id, title);}
+                else if(!title){
+                  setTitle(column.title);
+                }
+              }}
+              onBlur={() => {setEdit(false);if(title){updateColumn(column.Id, title);}else if(!title){setTitle(column.title);}}}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            ></input>
+          </form>
         )}
         <TaskModal>
           <div onClick={() => deleteColumn(column.Id)}>Delete</div>
