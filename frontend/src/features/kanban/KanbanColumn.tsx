@@ -6,6 +6,7 @@ import { Column, Labels, Task } from "./Kanban";
 import { TaskModal } from "./TaskModal";
 import { Plus } from "react-feather";
 import { type Member } from "../api/apiSlice";
+import { Menu } from "../../components/Menu";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -89,7 +90,7 @@ export const KanbanColumn = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-md"
+        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-sm"
       ></div>
     );
   }
@@ -98,22 +99,27 @@ export const KanbanColumn = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="bg bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-md flex flex-col overflow-auto"
+      className="flex flex-col bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-sm overflow-auto text-dark-font"
     >
       <div
         {...attributes}
         {...listeners}
-        className=" bg bg-primary-100 text-md h-[60px] max-h-[60px] min-h-[60px] rounded-md flex justify-between items-center text-center mb-4"
+        className="min-h-max pl-3 py-3 pr-5 mb-3 relative inline-flex justify-between items-center rounded-sm bg-primary-100"
         // onClick={() => setEdit(true)}
       >
         {!edit && (
-          <div onClick={() => setEdit(true)} className="ml-4">
+          <div
+            onClick={() => setEdit(true)}
+            className="heading-xs mt-px pb-px ml-px mr-5"
+          >
             {column.title}
           </div>
         )}
         {edit && (
+          // Input field only shows one line
+          // Trello has h2 with role as textbox
           <input
-            className="w-36 text-sm bg bg-primary-200 rounded-md"
+            className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
             onKeyDown={(e) => {
               if (e.key !== "Enter") return;
@@ -128,12 +134,29 @@ export const KanbanColumn = (props: Props) => {
             }}
           ></input>
         )}
-        <TaskModal>
+        <Menu
+          btnPosition="absolute right-2.5 top-3.5"
+          menuPosition="relative mt-1"
+        >
+          <button
+            className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+            onClick={() => createTask(column.Id)}
+          >
+            Add task
+          </button>
+          <button
+            className="min-w-max w-full px-2 py-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+            onClick={() => deleteColumn(column.Id)}
+          >
+            Delete column
+          </button>
+        </Menu>
+        {/* <TaskModal>
           <div onClick={() => deleteColumn(column.Id)}>Delete</div>
           <div></div>
-        </TaskModal>
+        </TaskModal> */}
       </div>
-      <div className="flex flex-grow flex-col gap-4">
+      <div className="flex flex-grow flex-col gap-3 mb-3">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
@@ -161,10 +184,13 @@ export const KanbanColumn = (props: Props) => {
       </div>
       <button
         type="button"
-        className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1"
+        // TO DO:
+        // Fix focus, get's cut off
+        className="py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
         onClick={() => createTask(column.Id)}
       >
-        <Plus size={20} className="-ms-2.5" /> <p>Add task</p>
+        <Plus size={18} className="-ms-2.5" />
+        <p>Add task</p>
       </button>
     </div>
   );
