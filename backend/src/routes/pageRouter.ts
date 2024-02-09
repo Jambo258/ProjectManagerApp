@@ -54,15 +54,6 @@ pagesRouter.post("/", validate(createPageSchema), async (req: RequestBody<Create
     const { name, projectid } = req.body;
     const userid = req.session.userId!;
 
-    if (
-      !name ||
-      !projectid ||
-      typeof name !== "string" ||
-      typeof projectid !== "number"
-    ) {
-      return res.status(400).json({ error: "Missing name or projectid" });
-    }
-
     const findUser = await checkForUserExistingOnProject(userid, projectid);
 
     if (!findUser) {
@@ -122,10 +113,6 @@ pagesRouter.put("/:id(\\d+)", validate(pageNameSchema), async (req: RequestBody<
     const { name } = req.body;
     const pageId = Number(req.params.id);
     const userid = req.session.userId!;
-
-    if (!name || typeof name !== "string") {
-      return res.status(400).json({ error: "Missing name" });
-    }
 
     const foundPage = await getpageById(pageId);
     if (!foundPage) {

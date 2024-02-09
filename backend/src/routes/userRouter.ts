@@ -34,7 +34,6 @@ usersRouter.post(
   async (req: RequestBody<RegisterUserSchemaType>, res, next) => {
     try {
       const { email, name, password } = req.body;
-
       const findUser = await getUserByEmail(email);
       if (findUser) {
         return res.status(409).json({
@@ -70,16 +69,6 @@ usersRouter.post(
   async (req: RequestBody<LoginUserSchemaType>, res, next) => {
     try {
       const { email, password } = req.body;
-
-      if (
-        !email ||
-        !password ||
-        typeof email !== "string" ||
-        typeof password !== "string"
-      ) {
-        return res.status(400).json({ error: "Missing email or password" });
-      }
-
       const findUser = await getUserByEmail(email);
       if (findUser && (await argon2.verify(findUser.password, password))) {
         req.session.regenerate((err) => {
@@ -124,11 +113,6 @@ usersRouter.post(
   async (req: RequestBody<GetUserByEmailSchemaType>, res, next) => {
     try {
       const { email } = req.body;
-
-      if (!email || typeof email !== "string") {
-        return res.status(400).json({ error: "Missing email" });
-      }
-
       const user = await getUserByEmail(email);
 
       if (!user) {
