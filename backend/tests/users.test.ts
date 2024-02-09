@@ -27,7 +27,7 @@ describe("Server", () => {
   it("Register with valid data", async () => {
     await request
       .post("/users/register")
-      .send({ email: "pekka222@mail.com", name: "pekka", password: "Salasana1!" })
+      .send({ email: "pekka223@mail.com", name: "pekka", password: "Salasana1!" })
       .expect(200)
       .expect("Content-Type", /json/);
     await request

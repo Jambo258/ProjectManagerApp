@@ -36,9 +36,7 @@ projectsRouter.post(
   async (req: RequestBody<ProjectNameSchemaType>, res, next) => {
     try {
       const { name } = req.body;
-      if (!name || typeof name !== "string") {
-        return res.status(400).json({ error: "Missing project name" });
-      }
+
       const userId = req.session.userId!;
       const newProject = await createNewProject(name, userId);
       return res.status(200).json(newProject);
@@ -96,10 +94,6 @@ projectsRouter.put(
       const userId = req.session.userId!;
       const { name } = req.body;
 
-      if (!name || typeof name !== "string") {
-        return res.status(400).json({ error: "Missing project name" });
-      }
-
       const project = await getProjectById(projectId);
       if (!project) {
         return res.status(404).json({ error: "Couldn't find project" });
@@ -150,7 +144,7 @@ projectsRouter.get("/:pid(\\d+)", async (req, res, next) => {
 });
 
 const addUserToProjectSchema = yup.object({
-  role: yup.string().trim().required("Role is required"),
+  role: yup.mixed<Role>().oneOf(Object.values(Role)).required("Role is required"),
   email: yup.string().trim().required("Email is required").email("Must be a valid email"),
 });
 
@@ -164,21 +158,6 @@ projectsRouter.post(
       const projectId = parseInt(req.params.pid);
       const sessionUserId = req.session.userId!;
       const { role, email } = req.body;
-      if (
-        !role ||
-        typeof role !== "string" ||
-        !email ||
-        typeof email !== "string"
-      ) {
-        return res.status(400).json({ error: "Missing role or email" });
-      }
-      if (
-        role !== Role.manager &&
-        role !== Role.editor &&
-        role !== Role.viewer
-      ) {
-        return res.status(400).json({ error: "Wrong role" });
-      }
 
       const findUser = await getUserByEmail(email);
       if (!findUser) {
@@ -241,9 +220,6 @@ projectsRouter.put(
       const userId = parseInt(req.params.uid);
       const sessionUserId = req.session.userId!;
       const { role } = req.body;
-      if (!role || typeof role !== "string") {
-        return res.status(400).json({ error: "Missing role" });
-      }
 
       if (
         role !== Role.manager &&
