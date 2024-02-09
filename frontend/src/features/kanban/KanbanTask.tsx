@@ -149,13 +149,13 @@ export const KanbanTask = ({
                
                 {task.deadline && (
                   <div
-                    className={`rounded w-fit px-2 pt-1 text-center ${
+                    className={`rounded w-fit px-2 py-1 text-center ${
                       dateDifference(task.deadline) > 2
                         ? "bg-success-100"
                         : "bg-caution-100"
                     }`}
                   >
-                    <div className="label-text inline-flex gap-1 pt-1">
+                    <div className="label-text inline-flex gap-1">
                       <Clock size={16} /> 
                       {dateDifference(task.deadline)} days left
                     </div>
@@ -241,7 +241,7 @@ export const KanbanTask = ({
                   {/* Task Deadline */}
                   {task.deadline && (
                     <div
-                      className={`rounded w-fit px-2 pt-1 text-center ${
+                      className={`rounded w-fit px-2 py-1 text-center ${
                         dateDifference(task.deadline) > 2
                           ? "bg-success-100"
                           : "bg-caution-100"
