@@ -7,6 +7,9 @@ const createNewProject = async (name: string, id: number) => {
     data: {
       name,
     },
+    select: {
+      id: true,
+    }
   });
 
   await prisma.projectUsers.create({
@@ -32,15 +35,6 @@ const getAllProjectsAndPagesByUserId = async (id: number) => {
     select: {
       id: true,
       name: true,
-      updated_at: true,
-      created_at: true,
-      // TODO Is users needed here?
-      users: {
-        select: {
-          userid: true,
-          role: true,
-        },
-      },
       pages: {
         select: {
           id: true,
@@ -55,6 +49,10 @@ const getAllProjectsAndPagesByUserId = async (id: number) => {
 const getProjectById = async (id: number) => {
   const project = await prisma.projects.findUnique({
     where: { id },
+    select: {
+      id: true,
+      name: true,
+    }
   });
 
   return project;
@@ -68,8 +66,6 @@ const getProjectAllDetailsById = async (id: number) => {
     select: {
       id: true,
       name: true,
-      updated_at: true,
-      created_at: true,
       users: {
         select: {
           role: true,
@@ -113,6 +109,10 @@ const updateProject = async (id: number, name: string) => {
       name,
       updated_at: new Date(),
     },
+    select: {
+      id: true,
+      name: true
+    }
   });
 
   return updatedProject;
@@ -121,6 +121,9 @@ const updateProject = async (id: number, name: string) => {
 const deleteProject = async (id: number) => {
   const deletedProject = await prisma.projects.delete({
     where: { id },
+    select: {
+      id: true
+    }
   });
 
   return deletedProject;
@@ -137,6 +140,11 @@ const addUserToProject = async (
       projectid: projectId,
       role: role,
     },
+    select: {
+      userid: true,
+      projectid: true,
+      role: true
+    }
   });
 
   return newProjectUser;
@@ -149,11 +157,15 @@ const changeUserRoleOnProject = async (
 ) => {
   const projectUserRoleChanged = await prisma.projectUsers.update({
     where: { projectid_userid: { userid: userId, projectid: projectId } },
-
     data: {
       role: role,
       updated_at: new Date(),
     },
+    select: {
+      userid: true,
+      projectid: true,
+      role: true
+    }
   });
 
   return projectUserRoleChanged;
@@ -164,6 +176,7 @@ const removeUserFromProject = async (userId: number, projectId: number) => {
     where: {
       projectid_userid: { userid: userId, projectid: projectId },
     },
+    select: { userid: true }
   });
 
   const remainingUsers = await getProjectAllDetailsById(projectId);
@@ -183,6 +196,7 @@ const checkForUserExistingOnProject = async (
 ) => {
   const findExistingUser = await prisma.projectUsers.findUnique({
     where: { projectid_userid: { userid: userId, projectid: projectId } },
+    select: { userid: true, projectid: true, role: true }
   });
   return findExistingUser;
 };

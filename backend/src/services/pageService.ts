@@ -5,12 +5,24 @@ const prisma = new PrismaClient();
 const getpageById = async (id: number) => {
   return await prisma.pages.findUnique({
     where: { id: id },
+    select: {
+      id: true,
+      name: true,
+      projectid: true,
+      content: true,
+    }
   });
 };
 
 const createPage = async (name: string, projectid: number) => {
   return await prisma.pages.create({
     data: { name: name, projectid: projectid },
+    select: {
+      id: true,
+      name: true,
+      projectid: true,
+      content: true,
+    }
   });
 };
 
@@ -18,6 +30,7 @@ const updatePageName = async (id: number, name: string) => {
   return await prisma.pages.update({
     where: { id: id },
     data: { name: name },
+    select: { id: true, name: true }
   });
 };
 
@@ -25,12 +38,21 @@ const updatePageContent = async (id: number, content: Buffer) => {
   return await prisma.pages.update({
     where: { id: id },
     data: { content: content },
+    select: {
+      id: true,
+      name: true,
+      projectid: true,
+      content: true,
+    }
   });
 };
 
 const deletePage = async (id: number) => {
   return await prisma.pages.delete({
     where: { id },
+    select: {
+      id: true,
+    }
   });
 };
 
