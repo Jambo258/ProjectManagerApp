@@ -35,7 +35,6 @@ export const ProfileModal = () => {
   const [deleteUser]  = useDeleteUserMutation();
   const navigate = useNavigate();
   const canSave = !isLoading;
-  console.log(user);
 
   // Change Name
   const [nameEdit, setNameEdit] = useState(false);
@@ -60,8 +59,6 @@ export const ProfileModal = () => {
         const user = await updateUser({
           name: formData.name,
         }).unwrap();
-        // For development only
-        console.log("User:", user);
         if (user) {
           resetName({ name: user.name });
           setNameFormError(null);
@@ -107,8 +104,6 @@ export const ProfileModal = () => {
         const user = await updateUser({
           email: formData.email,
         }).unwrap();
-        // For development only
-        console.log("User:", user);
         if (user) {
           resetEmail({ email: user.email });
           setEmailFormError(null);
@@ -153,8 +148,6 @@ export const ProfileModal = () => {
         const user = await updateUser({
           password: formData.password,
         }).unwrap();
-        // For development only
-        console.log("User:", user);
         if (user) {
           resetPassword();
           setPasswordFormError(null);
@@ -183,9 +176,7 @@ export const ProfileModal = () => {
 
   const handleSubmitForModal = async () => {
     try {
-      const user = await deleteUser().unwrap();
-      // For development only
-      console.log("User deleted:", user);
+      await deleteUser().unwrap();
       navigate("/");
 
     } catch (err) {
@@ -194,13 +185,13 @@ export const ProfileModal = () => {
   };
 
   const onErrorName = (errors: FieldErrors<changeNameFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
   const onErrorEmail = (errors: FieldErrors<changeEmailFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
   const onErrorPassword = (errors: FieldErrors<changePasswordFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const resetFields = () => {
@@ -215,7 +206,6 @@ export const ProfileModal = () => {
   return (
     <div className="max-w-full">
 
-
       {nameEdit ? (
         <form
           onSubmit={handleName(onHandleSubmitName, onErrorName)}
@@ -226,7 +216,8 @@ export const ProfileModal = () => {
               <input
                 type="text"
                 {...registerName("name")}
-                className="block w-full py-1.5 px-4 body-text-md"
+                autoComplete="name"
+                className="block w-full py-1.5 px-2 body-text-md"
               />
               <p className="mt-1 body-text-xs text-caution-200">
                 {errorsName.name?.message}
@@ -250,7 +241,9 @@ export const ProfileModal = () => {
             <p className="heading-xs">
             Name
             </p>
-            <p className="block w-full py-1.5 px-4 body-text-md break-words">{user?.name}</p>
+            <p className="block w-full py-1.5 px-2 body-text-md break-words">
+              {user?.name}
+            </p>
           </section>
           <section className="col-span-4 sm:col-span-1 flex items-center">
             <button
@@ -278,7 +271,8 @@ export const ProfileModal = () => {
               <input
                 type="email"
                 {...registerEmail("email")}
-                className="block w-full py-1.5 px-4 body-text-md"
+                autoComplete="email"
+                className="block w-full py-1.5 px-2 body-text-md"
               />
               <p className="mt-1 body-text-xs text-caution-200">
                 {errorsEmail.email?.message}
@@ -303,7 +297,9 @@ export const ProfileModal = () => {
             <p className="heading-xs">
             Email
             </p>
-            <p className="block w-full py-1.5 px-4 body-text-md break-words">{user?.email}</p>
+            <p className="block w-full py-1.5 px-2 body-text-md break-words">
+              {user?.email}
+            </p>
           </section>
           <section className="col-span-4 sm:col-span-1 flex items-center">
             <button
@@ -333,7 +329,7 @@ export const ProfileModal = () => {
                   type={showPassword ? "text" : "password"}
                   {...registerPassword("password")}
                   autoComplete="new-password"
-                  className="block w-full py-1.5 px-4 body-text-md"
+                  className="block w-full py-1.5 px-2 body-text-md"
                 />
                 <button
                   type="button"
@@ -365,7 +361,9 @@ export const ProfileModal = () => {
             <p className="heading-xs">
             Password
             </p>
-            <p className="w-full py-1.5 px-4 body-text-md">Set a new password to login to your account.</p>
+            <p className="w-full py-1.5 px-4 body-text-md">
+              Set a new password to login to your account.
+            </p>
           </section>
           <section className="col-span-4 sm:col-span-1 flex items-center">
             <button
@@ -383,13 +381,14 @@ export const ProfileModal = () => {
         </section>
       )}
 
-
       <section
         className="col-span-4 grid grid-rows-1 grid-cols-4 sm:grid-rows-1 gap-x-4 grid-row-1 place-items-stretch ">
         <section className="col-span-4 sm:col-span-3">
-          <p className="heading-xs">Delete Account</p>
+          <p className="heading-xs">
+            Delete Account
+          </p>
           <p className="w-full py-1.5 px-4 body-text-md">
-              Permanently delete your account and remove access to all projects.
+            Permanently delete your account and remove access to all projects.
           </p>
         </section>
         <section className="col-span-4 sm:col-span-1 flex items-center">
@@ -406,13 +405,15 @@ export const ProfileModal = () => {
           </button>
         </section>
       </section>
+
       {confirmDeleteEdit &&
         <DeleteModal
           setConfirmDeleteEdit={setConfirmDeleteEdit}
           confirmDeleteEdit={confirmDeleteEdit}
           handleSubmitForModal={handleSubmitForModal}
-          deleteModalText={deleteModalText} />}
-    </div>
+          deleteModalText={deleteModalText}
+        />}
 
+    </div>
   );
 };
