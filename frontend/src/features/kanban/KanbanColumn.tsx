@@ -1,12 +1,19 @@
+//  React
+import { useMemo, useState } from "react";
+
+// DND-Kit
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
-import { KanbanTask } from "./KanbanTask";
-import { Column, Labels, Task } from "./Kanban";
+
+// Components
 import { Plus } from "react-feather";
-import { type Member } from "../api/apiSlice";
+import { KanbanTask } from "./KanbanTask";
 import { Menu } from "../../components/Menu";
 import { DeleteModal } from "../../components/DeleteModal";
+
+// Types and Interfaces
+import type { Column, Labels, Task } from "./Kanban";
+import { type Member } from "../api/apiSlice";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
