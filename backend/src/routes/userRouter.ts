@@ -9,6 +9,7 @@ import {
   getUserByEmail,
   updateUser,
   deleteUser,
+  getUserByEmailLogin,
 } from "../services/userService.js";
 import { type RequestBody } from "../types/types.js";
 
@@ -69,7 +70,7 @@ usersRouter.post(
   async (req: RequestBody<LoginUserSchemaType>, res, next) => {
     try {
       const { email, password } = req.body;
-      const findUser = await getUserByEmail(email);
+      const findUser = await getUserByEmailLogin(email);
       if (findUser && (await argon2.verify(findUser.password, password))) {
         req.session.regenerate((err) => {
           if (err) {
