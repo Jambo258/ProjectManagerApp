@@ -30,7 +30,7 @@ export const Menu = ({ btnPosition, menuPosition, children }: MenuProps) => {
   return (
     <section
       ref={menuRef}
-      className={`${btnPosition} z-10 flex flex-col place-items-end`}
+      className={`${btnPosition} flex flex-col place-items-end`}
     >
 
       <button className="max-w-fit h-fit p-0 bg-grayscale-0 hover:bg-grayscale-0"
