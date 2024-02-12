@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 // Components
 import { UserIcon } from "../user/UserIcon";
-import { Check, CheckSquare, Square } from "react-feather";
+import { CheckSquare, Square } from "react-feather";
 
 // Types and Interfaces
 import { type Member } from "../api/apiSlice";
