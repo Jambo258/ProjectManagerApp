@@ -37,7 +37,6 @@ export const DeletePageModal = ({btnText, btnStyling}: IProps) => {
     if (!isLoading && pageId) {
       try {
         const page = await deletePage(pageId).unwrap();
-        console.log("Page deleted", page);
         if (page) {
           closeModal();
           navigate(`projects/${projectId}`);
