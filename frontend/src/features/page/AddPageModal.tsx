@@ -8,7 +8,6 @@ import { useAddNewPageMutation } from "../api/apiSlice";
 import { FieldErrors, useForm } from "react-hook-form";
 import { pageNameSchema } from "./pageValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DevTool } from "@hookform/devtools";
 
 // Context
 import { ModalContext } from "../../components/Modal";
@@ -27,7 +26,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
-    control,
     register,
     formState: {isDirty, errors},
     handleSubmit,
@@ -36,7 +34,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
   });
 
   const onError = (errors: FieldErrors<AddPageFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const canSave = isDirty && !isLoading;
@@ -49,9 +47,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
           projectid: projectId,
           pageName: formData.pageName,
         }).unwrap();
-        // For development purposes
-        console.log("Form submitted");
-        console.log("Page:", page);
         if (page) {
           closeModal();
           navigate(`/projects/${projectId}/${page.id}`);
@@ -88,8 +83,12 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
             placeholder="Give a page name!"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
-          <p className="mt-1 body-text-xs text-center text-caution-200">{errors.pageName?.message}</p>
-          <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">
+            {errors.pageName?.message}
+          </p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">
+            {formError}
+          </p>
         </label>
         <section className="grid grid-cols-2 gap-6">
           <button
@@ -105,9 +104,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
           </button>
         </section>
       </form>
-
-      {/* For development only */}
-      <DevTool control={control}/>
     </>
   );
 };
