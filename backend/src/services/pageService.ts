@@ -21,7 +21,6 @@ const createPage = async (name: string, projectid: number) => {
       id: true,
       name: true,
       projectid: true,
-      content: true,
     }
   });
 };
@@ -42,7 +41,7 @@ const updatePageContent = async (id: number, content: Buffer) => {
       id: true,
       name: true,
       projectid: true,
-      content: true,
+      content: true
     }
   });
 };
