@@ -124,24 +124,22 @@ export const KanbanColumn = (props: Props) => {
           </div>
         )}
         {edit && (
-          <form>
-            <input
-              type="text"
-              className="w-36 text-sm bg bg-primary-200 rounded-md"
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                setEdit(false);
-                if(title){updateColumn(column.Id, title);}
-                else if(!title){
-                  setTitle(column.title);
-                }
-              }}
-              onBlur={() => {setEdit(false);if(title){updateColumn(column.Id, title);}else if(!title){setTitle(column.title);}}}
-              value={title}
-              onChange={(e) => handleChange(e)}
-            ></input>
-          </form>
+          <input
+            type="text"
+            className="w-36 text-sm bg bg-primary-200 rounded-md"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key !== "Enter") return;
+              setEdit(false);
+              if(title){updateColumn(column.Id, title);}
+              else if(!title){
+                setTitle(column.title);
+              }
+            }}
+            onBlur={() => {setEdit(false);if(title){updateColumn(column.Id, title);}else if(!title){setTitle(column.title);}}}
+            value={title}
+            onChange={(e) => handleChange(e)}
+          ></input>
         )}
         <TaskModal>
           <div onClick={() => deleteColumn(column.Id)}>Delete</div>
