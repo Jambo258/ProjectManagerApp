@@ -122,6 +122,16 @@ export const KanbanTask = ({
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value.trim() !== ""){
+      setTitle(e.target.value);
+    }
+    else {
+      setTitle("");
+    }
+
+  };
+
   return (
     <>
       <div
@@ -219,7 +229,7 @@ export const KanbanTask = ({
                   }}
                   onBlur={() => {setIsEditTitleSelected(false);if(title){updateTaskTitle(task.Id, title);}else if(!title){setTitle(task.title);}}}
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => handleChange(e)}
                 />
               ) : (
                 <h3

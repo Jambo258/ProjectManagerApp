@@ -95,6 +95,17 @@ export const KanbanColumn = (props: Props) => {
     );
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value.trim() !== ""){
+      setTitle(e.target.value);
+    }
+    else {
+      setTitle("");
+    }
+
+  };
+
+
   return (
     <div
       ref={setNodeRef}
@@ -128,7 +139,7 @@ export const KanbanColumn = (props: Props) => {
               }}
               onBlur={() => {setEdit(false);if(title){updateColumn(column.Id, title);}else if(!title){setTitle(column.title);}}}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => handleChange(e)}
             ></input>
           </form>
         )}
