@@ -43,40 +43,40 @@ export const DeadlineModal = ({
         value={deadline}
         selectRange={false}
         minDetail="decade"
-        tileClassName={({ date, view }) => { 
+        tileClassName={({ date, view }) => {
 
           // Month view
           if (view === "month") {
-            if (deadline.getDate() === date.getDate() 
-                && deadline.getMonth() === date.getMonth() 
+            if (deadline.getDate() === date.getDate()
+                && deadline.getMonth() === date.getMonth()
                 && deadline.getFullYear() === date.getFullYear()) {
-              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
+              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";
             }
 
             if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
-              return "aspect-square rounded-full"; 
-            }  
-            
-            return "aspect-square !text-grayscale-300"; 
+              return "aspect-square rounded-full";
+            }
+
+            return "aspect-square !text-grayscale-300";
           }
 
           // Year view
-          if (view === "year" 
-              && date.getMonth() < (new Date().getMonth()) 
+          if (view === "year"
+              && date.getMonth() < (new Date().getMonth())
               && date.getFullYear() <= (new Date().getFullYear())) {
             return "!text-grayscale-300";
           }
 
           // Decade view
-          if (view === "decade" 
+          if (view === "decade"
               && date.getFullYear() < (new Date().getFullYear())) {
             return "!text-grayscale-300";
-          } 
+          }
         }}
         onClickDay={(day) => setDeadline(day)}
-        prevLabel={<ChevronLeft className="relative top-1" />}   
+        prevLabel={<ChevronLeft className="relative top-1" />}
         nextLabel={<ChevronRight className="relative top-1" />}
-        prev2Label={<ChevronsLeft className="relative top-1" />}  
+        prev2Label={<ChevronsLeft className="relative top-1" />}
         next2Label={<ChevronsRight className="relative top-1" />}
       />
 
@@ -89,7 +89,7 @@ export const DeadlineModal = ({
         >
             Save
         </button>
-        {task.deadline ? 
+        {task.deadline ?
           <button
             type="button"
             onClick={() => setConfirmDeleteEdit(true)}
@@ -98,10 +98,10 @@ export const DeadlineModal = ({
           >
               Remove
           </button>
-          : <button 
+          : <button
             type="button"
             onClick={closeModal}
-            className="py-2 my-2 btn-text-sm">Cancel</button>  
+            className="py-2 my-2 btn-text-sm">Cancel</button>
         }
 
         {confirmDeleteEdit && (
