@@ -8,7 +8,6 @@ import { useEditProjectMutation } from "../api/apiSlice";
 import { FieldErrors, useForm } from "react-hook-form";
 import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DevTool } from "@hookform/devtools";
 
 // Context
 import { ModalContext } from "../../components/Modal";
@@ -27,7 +26,6 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
-    control,
     register,
     formState: {isDirty, errors},
     handleSubmit,
@@ -48,9 +46,6 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
     } else if (!isLoading) {
       try {
         const project = await editProject({ id: projectId, name: formData.projectName }).unwrap();
-        // For development purposes
-        console.log("Form submitted");
-        console.log("Project:", project);
         if (project) {
           closeModal();
         }
@@ -107,9 +102,6 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
           </button>
         </section>
       </form>
-
-      {/* For development only */}
-      <DevTool control={control}/>
     </>
   );
 };
