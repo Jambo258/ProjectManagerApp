@@ -148,7 +148,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
           >
             <section
             // invisible group-active:visible <- use this when we find solution for mobile devices
-              className="w-full mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
+              className="w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
             >
               <button
                 title="Move Component Up"

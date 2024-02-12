@@ -110,7 +110,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
       <section
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        outline outline-1 outline-grayscale-400 hover:bg-primary-200 overflow-hidden
+        outline outline-1 outline-grayscale-300 hover:bg-primary-200 overflow-hidden
         ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
         ${isToday(day) ? "border-4 border-primary-200" : ""}`}
       >
