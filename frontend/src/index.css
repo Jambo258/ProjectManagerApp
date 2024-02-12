@@ -93,7 +93,7 @@
 
   /* React calendar */
   .react-calendar {
-    @apply body-text-sm m-auto;
+    @apply body-text-md m-auto;
   }
 
   .react-calendar * {
@@ -101,7 +101,7 @@
   }
 
   .react-calendar button {
-    @apply btn-text-sm m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
+    @apply btn-text-lg m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
   }
 }
 

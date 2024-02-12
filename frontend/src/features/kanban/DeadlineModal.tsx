@@ -50,28 +50,30 @@ export const DeadlineModal = ({
             if (deadline.getDate() === date.getDate() 
                 && deadline.getMonth() === date.getMonth() 
                 && deadline.getFullYear() === date.getFullYear()) {
-              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full border-8 border-grayscale-100";   
+              return "aspect-square !btn-text-md !bg-primary-100 !hover:bg-primary-200 rounded-full border-8 border-grayscale-100";   
             }
 
             if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
-              return "aspect-square rounded-full"; 
+              return "aspect-square !btn-text-md rounded-full"; 
             }  
             
-            return "aspect-square !text-grayscale-300"; 
+            return "aspect-square !btn-text-md !text-grayscale-300"; 
           }
 
           // Year view
           if (view === "year" 
               && date.getMonth() < (new Date().getMonth()) 
               && date.getFullYear() <= (new Date().getFullYear())) {
-            return "!text-grayscale-300";
+            return "!text-grayscale-300 !btn-text-md";
           }
 
           // Decade view
           if (view === "decade" 
               && date.getFullYear() < (new Date().getFullYear())) {
-            return "!text-grayscale-300";
+            return "!btn-text-md !text-grayscale-300";
           } 
+
+          return "!btn-text-md";
         }}
         onClickDay={(day) => setDeadline(day)}
         prevLabel={<ChevronLeft className="relative top-1" />}   
