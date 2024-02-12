@@ -6,6 +6,7 @@ import { Column, Labels, Task } from "./Kanban";
 import { Plus } from "react-feather";
 import { type Member } from "../api/apiSlice";
 import { Menu } from "../../components/Menu";
+import { DeleteModal } from "../../components/DeleteModal";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -83,6 +84,7 @@ export const KanbanColumn = (props: Props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   if (isDragging) {
     return (
@@ -146,7 +148,7 @@ export const KanbanColumn = (props: Props) => {
           </button>
           <button
             className="min-w-max w-full px-2 py-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
-            onClick={() => deleteColumn(column.Id)}
+            onClick={() => setIsDeleteConfirmOpen(true)}
           >
             Delete column
           </button>
@@ -178,16 +180,24 @@ export const KanbanColumn = (props: Props) => {
           ))}
         </SortableContext>
       </div>
+
       <button
         type="button"
-        // TO DO:
-        // Fix focus, get's cut off
         className="py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
         onClick={() => createTask(column.Id)}
       >
         <Plus size={18} className="-ms-2.5" />
         <p>Add task</p>
       </button>
+
+      {isDeleteConfirmOpen && (
+        <DeleteModal
+          setConfirmDeleteEdit={setIsDeleteConfirmOpen}
+          confirmDeleteEdit={isDeleteConfirmOpen}
+          handleSubmitForModal={() => deleteColumn(column.Id)}
+          deleteModalText={`Are you sure you want to delete the column ${column.title} and its tasks?`}
+        />
+      )}
     </div>
   );
 };
