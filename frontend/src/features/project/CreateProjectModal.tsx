@@ -8,7 +8,6 @@ import { useAddNewProjectMutation } from "../api/apiSlice";
 import { FieldErrors, useForm } from "react-hook-form";
 import { projectNameSchema } from "./projectValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DevTool } from "@hookform/devtools";
 
 // Context
 import { ModalContext } from "../../components/Modal";
@@ -27,7 +26,6 @@ const CreateProjectModal = () => {
   const {closeModal} = useContext(ModalContext);
   const [formError, setFormError] = useState<null | string>(null);
   const {
-    control,
     register,
     formState: {isDirty, errors},
     handleSubmit,
@@ -36,7 +34,7 @@ const CreateProjectModal = () => {
   });
 
   const onError = (errors: FieldErrors<CreateProjectFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const canSave = isDirty && !isLoading;
@@ -45,9 +43,6 @@ const CreateProjectModal = () => {
     if (canSave) {
       try {
         const project = await addNewProject(formData.projectName).unwrap();
-        // For development purposes
-        console.log("Form submitted");
-        console.log("Project:", project);
         if (project) {
           closeModal();
           navigate(`/projects/${project.id}`);
@@ -84,8 +79,12 @@ const CreateProjectModal = () => {
             placeholder="Give a project name!"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
-          <p className="mt-1 body-text-xs text-center text-caution-200">{errors.projectName?.message}</p>
-          <p className="mt-1 body-text-xs text-center text-caution-200">{formError}</p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">
+            {errors.projectName?.message}
+          </p>
+          <p className="mt-1 body-text-xs text-center text-caution-200">
+            {formError}
+          </p>
         </label>
         <section className="grid grid-cols-2 gap-6">
           <button
@@ -101,9 +100,6 @@ const CreateProjectModal = () => {
           </button>
         </section>
       </form>
-
-      {/* For development only */}
-      <DevTool control={control}/>
     </>
   );
 };
