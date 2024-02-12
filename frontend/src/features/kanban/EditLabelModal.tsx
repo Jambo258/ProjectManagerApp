@@ -25,30 +25,29 @@ export const EditLabelModal = ({
   const { closeModal } = useContext(SubModalContext);
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const {
-    formState: { isDirty, errors },
+    formState: { errors },
     handleSubmit,
     register,
     reset,
     setValue,
   } = useForm<CreateLabelFormValues>({
     defaultValues: {
-      name: "",
-      color: "",
+      name: label.name,
+      color: label.color,
     },
     resolver: yupResolver(createLabelSchema),
   });
 
   const [formError, setFormError] = useState<null | string>(null);
 
-  const [selectedColor, setSelectedColor] = useState<string>();
+  const [selectedColor, setSelectedColor] = useState<string>(label.color);
 
   const onError = (errors: FieldErrors<CreateLabelFormValues>) => {
     console.log("Form field errors:", errors);
   };
-  const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-    if (canSubmit) {
+    if (formData.name !== label.name || formData.color !== label.color)
       try {
         editLabel(label.id, formData.name, formData.color);
         closeModal();
@@ -68,7 +67,6 @@ export const EditLabelModal = ({
           setFormError(errorMessage.toString());
         }
       }
-    }
   };
 
   const onHandleDelete = () => {
