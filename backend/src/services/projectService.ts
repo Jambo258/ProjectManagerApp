@@ -9,6 +9,7 @@ const createNewProject = async (name: string, id: number) => {
     },
     select: {
       id: true,
+      name: true
     }
   });
 
