@@ -30,7 +30,6 @@ export const Menu = ({ btnPosition, menuPosition, children }: MenuProps) => {
   return (
     <section
       ref={menuRef}
-      // Make this a prop so that it can be used elsewhere
       className={`${btnPosition} z-10 flex flex-col place-items-end`}
     >
 
