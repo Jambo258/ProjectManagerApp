@@ -119,7 +119,7 @@ export const EditLabelModal = ({
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
             <div key={label.id} 
-              className={label.color === selectedColor ? "outline outline-success-200 rounded" : ""} 
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
               onClick={() => setSelectedColor(label.color)}>
               <ColorModal
                 setValue={setValue}
@@ -128,7 +128,7 @@ export const EditLabelModal = ({
             </div>
           ))}
         </div>
-        <section className="grid grid-cols-2 gap-2 mt-6">
+        <section className="grid grid-cols-2 gap-4 mt-6">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"

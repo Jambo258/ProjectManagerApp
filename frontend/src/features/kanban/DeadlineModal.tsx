@@ -50,7 +50,7 @@ export const DeadlineModal = ({
             if (deadline.getDate() === date.getDate() 
                 && deadline.getMonth() === date.getMonth() 
                 && deadline.getFullYear() === date.getFullYear()) {
-              return "aspect-square !btn-text-sm !bg-primary-100 !hover:bg-primary-200 rounded-full border-8 border-grayscale-100";   
+              return "aspect-square !btn-text-sm !bg-primary-100 !hover:bg-primary-200 rounded-full border-4 border-grayscale-100";   
             }
 
             if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
@@ -82,7 +82,7 @@ export const DeadlineModal = ({
         next2Label={<ChevronsRight className="relative top-1" />}
       />
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-4">
         <button
           type="button"
           onClick={handleDeadlineSave}

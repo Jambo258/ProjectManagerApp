@@ -95,7 +95,7 @@ export const CreateLabelModal = ({
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
             <div key={label.id} 
-              className={label.color === selectedColor ? "outline outline-success-200 rounded" : ""} 
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
               onClick={() => setSelectedColor(label.color)}>
               <ColorModal
                 setValue={setValue}
