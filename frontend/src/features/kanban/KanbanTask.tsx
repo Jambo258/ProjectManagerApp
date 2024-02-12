@@ -129,7 +129,6 @@ export const KanbanTask = ({
     else {
       setTitle("");
     }
-
   };
 
   return (

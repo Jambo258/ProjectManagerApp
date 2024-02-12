@@ -102,7 +102,6 @@ export const KanbanColumn = (props: Props) => {
     else {
       setTitle("");
     }
-
   };
 
 
