@@ -511,13 +511,6 @@ export const Kanban = ({
           );
         });
       }
-
-      // setTasks((elements) => {
-      //   activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   overIndex = elements.findIndex((el) => el.Id === overId);
-      //   // elements[activeIndex].columnId = elements[overIndex].columnId;
-      //   return arrayMove(elements, activeIndex, overIndex);
-      // });
     }
 
     const isOverColumn = over.data.current?.type === "Column";
@@ -542,12 +535,6 @@ export const Kanban = ({
         ytasks.delete(activeIndex);
         ytasks.insert(activeIndex, [{ ...task, columnId: overId }]);
       });
-
-      // setTasks((elements) => {
-      //   const activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   elements[activeIndex].columnId = overId;
-      //   return arrayMove(elements, activeIndex, activeIndex);
-      // });
     }
   };
 
@@ -561,7 +548,7 @@ export const Kanban = ({
 
   return (
     <>
-      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2 me-2">
+      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border rounded border-grayscale-300 p-2 me-2">
         <DndContext
           sensors={sensors}
           onDragEnd={onDragEnd}
@@ -598,8 +585,11 @@ export const Kanban = ({
                   />
                 ))}
               </SortableContext>
-              <button className="btn-text-xs w-fit min-w-fit h-[59px] pt-[20px] inline-flex gap-2 px-6 py-2" onClick={() => createNewColumn()}>
-                <Plus size={18} /> 
+              <button
+                className="w-fit min-w-fit h-[50px] px-6 py-2 inline-flex items-center gap-2 rounded-sm btn-text-xs"
+                onClick={() => createNewColumn()}
+              >
+                <Plus size={18} />
                 Add column
               </button>
             </div>
