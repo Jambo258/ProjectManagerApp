@@ -49,13 +49,11 @@ export const RegisterForm = () => {
   const onHandleSubmit = async (formData: RegisterFormValues) => {
     if (canSave) {
       try {
-        const user = await registerUser({
+        await registerUser({
           email: formData.email,
           name: formData.name,
           password: formData.password,
         }).unwrap();
-        console.log("Register form submitted");
-        console.log("User:", user);
         reset();
         setFormError(null);
         navigate("/");
@@ -78,7 +76,7 @@ export const RegisterForm = () => {
   };
 
   const onError = (errors: FieldErrors<RegisterFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   return (
