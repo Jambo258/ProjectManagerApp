@@ -113,7 +113,6 @@ export const KanbanColumn = (props: Props) => {
         {...attributes}
         {...listeners}
         className="min-h-max pl-3 py-3 pr-5 mb-3 relative inline-flex justify-between items-center rounded-sm bg-primary-100"
-        // onClick={() => setEdit(true)}
       >
         {!edit && (
           <div
