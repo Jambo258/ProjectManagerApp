@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Labels, Task } from "./Kanban";
+import type { Labels, Task } from "./Kanban";
 import { CreateLabelFormValues } from "./CreateLabelModal";
 import { ColorModal } from "./ColorModal";
 import { FieldErrors, useForm } from "react-hook-form";
@@ -116,8 +116,8 @@ export const EditLabelModal = ({
         </label>
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
-            <div key={label.id} 
-              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
+            <div key={label.id}
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""}
               onClick={() => setSelectedColor(label.color)}>
               <ColorModal
                 setValue={setValue}
