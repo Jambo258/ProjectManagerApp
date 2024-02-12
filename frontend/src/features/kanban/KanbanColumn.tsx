@@ -1,10 +1,18 @@
+//  React
+import { useMemo, useState } from "react";
+
+// DND-Kit
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
-import { KanbanTask } from "./KanbanTask";
-import { Column, Labels, Task } from "./Kanban";
-import { TaskModal } from "./TaskModal";
+
+// Components
 import { Plus } from "react-feather";
+import { KanbanTask } from "./KanbanTask";
+import { Menu } from "../../components/Menu";
+import { DeleteModal } from "../../components/DeleteModal";
+
+// Types and Interfaces
+import type { Column, Labels, Task } from "./Kanban";
 import { type Member } from "../api/apiSlice";
 
 interface Props {
@@ -84,13 +92,14 @@ export const KanbanColumn = (props: Props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   if (isDragging) {
     return (
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-md"
+        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-sm"
       ></div>
     );
   }
@@ -109,23 +118,28 @@ export const KanbanColumn = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="bg bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-md flex flex-col overflow-auto"
+      className="flex flex-col bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-sm overflow-auto text-dark-font"
     >
       <div
         {...attributes}
         {...listeners}
-        className=" bg bg-primary-100 text-md h-[60px] max-h-[60px] min-h-[60px] rounded-md flex justify-between items-center text-center mb-4"
-        // onClick={() => setEdit(true)}
+        className="min-h-max pl-3 py-3 pr-5 mb-3 relative inline-flex justify-between items-center rounded-sm bg-primary-100"
       >
         {!edit && (
-          <div onClick={() => setEdit(true)} className="ml-4">
+          <div
+            onClick={() => setEdit(true)}
+            className="heading-xs mt-px pb-px ml-px mr-5"
+          >
             {column.title}
           </div>
         )}
         {edit && (
+          // TO DO:
+          // Input field only shows one line, can this be changed to show multiple lines
+          // Trello has h2 with role of textbox
           <input
             type="text"
-            className="w-36 text-sm bg bg-primary-200 rounded-md"
+            className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
             onKeyDown={(e) => {
               if (e.key === "Enter"){
@@ -150,12 +164,25 @@ export const KanbanColumn = (props: Props) => {
             onChange={(e) => handleChange(e)}
           />
         )}
-        <TaskModal>
-          <div onClick={() => deleteColumn(column.Id)}>Delete</div>
-          <div></div>
-        </TaskModal>
+        <Menu
+          btnPosition="absolute right-2.5 top-3.5"
+          menuPosition="relative mt-1"
+        >
+          <button
+            className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+            onClick={() => createTask(column.Id)}
+          >
+            Add task
+          </button>
+          <button
+            className="min-w-max w-full px-2 py-1.5 pe-4 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+            onClick={() => setIsDeleteConfirmOpen(true)}
+          >
+            Delete column
+          </button>
+        </Menu>
       </div>
-      <div className="flex flex-grow flex-col gap-4">
+      <div className="flex flex-grow flex-col gap-3 mb-3">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
@@ -181,13 +208,24 @@ export const KanbanColumn = (props: Props) => {
           ))}
         </SortableContext>
       </div>
+
       <button
         type="button"
-        className="mt-4 py-2 heading-xs inline-flex items-center justify-center gap-1"
+        className="py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
         onClick={() => createTask(column.Id)}
       >
-        <Plus size={20} className="-ms-2.5" /> <p>Add task</p>
+        <Plus size={18} className="-ms-2.5" />
+        <p>Add task</p>
       </button>
+
+      {isDeleteConfirmOpen && (
+        <DeleteModal
+          setConfirmDeleteEdit={setIsDeleteConfirmOpen}
+          confirmDeleteEdit={isDeleteConfirmOpen}
+          handleSubmitForModal={() => deleteColumn(column.Id)}
+          deleteModalText={`Are you sure you want to delete the column ${column.title} and its tasks?`}
+        />
+      )}
     </div>
   );
 };
