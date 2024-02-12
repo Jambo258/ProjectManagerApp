@@ -50,7 +50,7 @@ export const DeadlineModal = ({
             if (deadline.getDate() === date.getDate() 
                 && deadline.getMonth() === date.getMonth() 
                 && deadline.getFullYear() === date.getFullYear()) {
-              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
+              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full border-8 border-grayscale-100";   
             }
 
             if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {

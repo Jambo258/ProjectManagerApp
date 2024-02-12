@@ -83,7 +83,7 @@ export const LabelModal = ({
         <SubModal
           iconName="none"
           btnText={"Create new label"}
-          modalTitle={"Create label"}
+          modalTitle={"Create new label"}
           setIsModalsOpen={setIsModalsOpen}
           isModalsOpen={isModalsOpen}
         >

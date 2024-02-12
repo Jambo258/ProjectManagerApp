@@ -20,6 +20,7 @@ import { TaskMembersModal } from "./TaskMembersModal";
 import { UserIcon } from "../user/UserIcon";
 import { DeadlineModal } from "./DeadlineModal";
 import useScreenDimensions from "../../utils/screenDimensions";
+import { format } from "date-fns";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -149,15 +150,17 @@ export const KanbanTask = ({
                
                 {task.deadline && (
                   <div
-                    className={`rounded w-fit px-2 py-1 text-center ${
+                    className={`rounded w-fit pt-0.5 px-2 text-center ${
                       dateDifference(task.deadline) > 2
                         ? "bg-success-100"
                         : "bg-caution-100"
                     }`}
                   >
                     <div className="label-text inline-flex gap-1">
-                      <Clock size={16} /> 
-                      {dateDifference(task.deadline)} days left
+                      <Clock size={14} className="mt-px"/> 
+                      {task.deadline > new Date().getTime() 
+                        ? dateDifference(task.deadline) + " days left" 
+                        : format(new Date(task.deadline), "d.M.yyyy")}
                     </div>
                   </div>
                 )}
@@ -241,15 +244,17 @@ export const KanbanTask = ({
                   {/* Task Deadline */}
                   {task.deadline && (
                     <div
-                      className={`rounded w-fit px-2 py-1 text-center ${
+                      className={`rounded w-fit pt-0.5 px-2 text-center ${
                         dateDifference(task.deadline) > 2
                           ? "bg-success-100"
                           : "bg-caution-100"
                       }`}
                     >
                       <div className="label-text inline-flex gap-1">
-                        <Clock size={16} /> 
-                        {dateDifference(task.deadline)} days left
+                        <Clock size={14} className="mt-px"/> 
+                        {task.deadline > new Date().getTime() 
+                          ? dateDifference(task.deadline) + " days left" 
+                          : format(new Date(task.deadline), "d.M.yyyy")}
                       </div>
                     </div>
                   )}
