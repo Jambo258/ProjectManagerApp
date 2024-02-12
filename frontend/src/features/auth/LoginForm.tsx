@@ -43,9 +43,7 @@ export const LoginForm = () => {
   const onHandleSubmit = async (formData: LoginFormValues) => {
     if (canSubmit) {
       try {
-        const user = await loginUser({ ...formData }).unwrap();
-        console.log("Login form submitted");
-        console.log("User:", user);
+        await loginUser({ ...formData }).unwrap();
         reset();
         setFormError(null);
         navigate("/");
@@ -68,7 +66,7 @@ export const LoginForm = () => {
   };
 
   const onError = (errors: FieldErrors<LoginFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   return (
