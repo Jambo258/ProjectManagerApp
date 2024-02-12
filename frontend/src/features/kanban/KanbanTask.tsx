@@ -220,14 +220,25 @@ export const KanbanTask = ({
                   className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
                   autoFocus
                   onKeyDown={(e) => {
-                    if (e.key !== "Enter") return;
+                    if (e.key === "Enter"){
+                      setIsEditTitleSelected(false);
+                      if(title){
+                        updateTaskTitle(task.Id, title);
+                      }
+                      else{
+                        setTitle(task.title);
+                      }
+                    }
+                  }}
+                  onBlur={() => {
                     setIsEditTitleSelected(false);
-                    if(title){updateTaskTitle(task.Id, title);}
-                    else if(!title){
+                    if(title){
+                      updateTaskTitle(task.Id, title);
+                    }
+                    else{
                       setTitle(task.title);
                     }
                   }}
-                  onBlur={() => {setIsEditTitleSelected(false);if(title){updateTaskTitle(task.Id, title);}else if(!title){setTitle(task.title);}}}
                   value={title}
                   onChange={(e) => handleChange(e)}
                 />
