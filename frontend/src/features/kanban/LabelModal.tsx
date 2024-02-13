@@ -1,9 +1,9 @@
+import { type Dispatch, type SetStateAction, useContext } from "react";
 import { Task, type Labels } from "./Kanban";
 import { CreateLabelModal } from "./CreateLabelModal";
 import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal, SubModalContext } from "./SubModal";
-import { Dispatch, SetStateAction, useContext } from "react";
 
 interface Props {
   task: Task;
