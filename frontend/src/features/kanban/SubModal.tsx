@@ -85,7 +85,7 @@ export const SubModal = ({
                 {modalTitle}
               </h4>
               <button
-                onClick={() => {closeAllModals();}}
+                onClick={closeAllModals}
                 className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
                 <X size={24} />
