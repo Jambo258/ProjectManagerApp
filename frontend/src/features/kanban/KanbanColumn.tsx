@@ -123,12 +123,18 @@ export const KanbanColumn = (props: Props) => {
       <div
         {...attributes}
         {...listeners}
-        className="min-h-max pl-3 py-3 pr-5 mb-3 relative inline-flex justify-between items-center rounded-sm bg-primary-100"
+        className="min-h-max pl-3 py-3 pr-5 mb-3 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100"
       >
         {!edit && (
           <div
+            aria-label="Column title"
             onClick={() => setEdit(true)}
-            className="heading-xs mt-px pb-px ml-px mr-5"
+            className="heading-xs w-full mt-px px-1 -ml-1 pb-px mr-5 rounded-sm focus:outline-none focus:ring focus:ring-dark-blue-50"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter") return;
+              setEdit(true);
+            }}
           >
             {column.title}
           </div>
@@ -141,6 +147,7 @@ export const KanbanColumn = (props: Props) => {
             type="text"
             className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
+            aria-label="Column title"
             onKeyDown={(e) => {
               if (e.key === "Enter"){
                 setEdit(false);
@@ -182,7 +189,7 @@ export const KanbanColumn = (props: Props) => {
           </button>
         </Menu>
       </div>
-      <div className="flex flex-grow flex-col gap-3 mb-3">
+      <div className="flex flex-grow flex-col gap-3 mb-3 items-center">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
@@ -211,7 +218,7 @@ export const KanbanColumn = (props: Props) => {
 
       <button
         type="button"
-        className="py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
+        className="m-[3px] -mt-[3px] py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
         onClick={() => createTask(column.Id)}
       >
         <Plus size={18} className="-ms-2.5" />
