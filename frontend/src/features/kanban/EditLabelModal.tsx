@@ -98,7 +98,6 @@ export const EditLabelModal = ({
           <input
             type="text"
             {...register("name")}
-            autoFocus
             placeholder={label.name}
             className="block w-full body-text-sm py-1 px-2 mt-1.5 border-grayscale-300"
           />
