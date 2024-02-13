@@ -76,6 +76,7 @@ const CreateProjectModal = () => {
           <input
             type="text"
             {...register("projectName")}
+            autoFocus
             placeholder="Give a project name!"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
