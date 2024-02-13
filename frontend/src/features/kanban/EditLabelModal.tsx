@@ -25,28 +25,29 @@ export const EditLabelModal = ({
   const { closeModal } = useContext(SubModalContext);
   const [confirmDeleteEdit, setConfirmDeleteEdit] = useState(false);
   const {
-    formState: { isDirty, errors },
+    formState: { errors },
     handleSubmit,
     register,
     reset,
     setValue,
   } = useForm<CreateLabelFormValues>({
     defaultValues: {
-      name: "",
-      color: "",
+      name: label.name,
+      color: label.color,
     },
     resolver: yupResolver(createLabelSchema),
   });
 
   const [formError, setFormError] = useState<null | string>(null);
 
+  const [selectedColor, setSelectedColor] = useState<string>(label.color);
+
   const onError = (errors: FieldErrors<CreateLabelFormValues>) => {
     console.log("Form field errors:", errors);
   };
-  const canSubmit = isDirty;
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {
-    if (canSubmit) {
+    if (formData.name !== label.name || formData.color !== label.color)
       try {
         editLabel(label.id, formData.name, formData.color);
         closeModal();
@@ -66,7 +67,6 @@ export const EditLabelModal = ({
           setFormError(errorMessage.toString());
         }
       }
-    }
   };
 
   const onHandleDelete = () => {
@@ -116,14 +116,17 @@ export const EditLabelModal = ({
         </label>
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
-            <ColorModal
-              key={label.id}
-              setValue={setValue}
-              label={label}
-            ></ColorModal>
+            <div key={label.id} 
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
+              onClick={() => setSelectedColor(label.color)}>
+              <ColorModal
+                setValue={setValue}
+                label={label}
+              />
+            </div>
           ))}
         </div>
-        <section className="grid grid-cols-2 gap-2 mt-6">
+        <section className="grid grid-cols-2 gap-4 mt-6">
           <button
             onClick={handleSubmit(onHandleSubmit, onError)}
             name="save"

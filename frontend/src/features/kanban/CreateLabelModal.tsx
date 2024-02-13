@@ -37,6 +37,8 @@ export const CreateLabelModal = ({
 
   const [formError, setFormError] = useState<null | string>(null);
 
+  const [selectedColor, setSelectedColor] = useState<string>("");
+
   const onError = (errors: FieldErrors<CreateLabelFormValues>) => {
     console.log("Form field errors:", errors);
   };
@@ -92,11 +94,14 @@ export const CreateLabelModal = ({
         </label>
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
-            <ColorModal
-              key={label.id}
-              setValue={setValue}
-              label={label}
-            ></ColorModal>
+            <div key={label.id} 
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
+              onClick={() => setSelectedColor(label.color)}>
+              <ColorModal
+                setValue={setValue}
+                label={label}
+              />
+            </div>
           ))}
         </div>
         <section className="grid grid-cols">
