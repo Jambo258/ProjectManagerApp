@@ -56,7 +56,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
   const [formError, setFormError] = useState<null | string>(null);
 
   const onError = (errors: FieldErrors<InviteProjectMemberValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const [addProjectMember, { isLoading }] = useAddNewProjectUserMutation();
@@ -112,12 +112,15 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
           <input
             type="email"
             {...register("email")}
+            aria-label="Email"
+            autoFocus
             placeholder="E.g. example@mail.com"
             className="col-span-3 sm:col-span-1 p-2 body-text-sm border border-grayscale-300" />
 
           <select value={selectValue}
             {...register("role")}
             onChange={(e) => setSelectValue(e.target.value)}
+            aria-label="Select user role"
             className="col-span-3 sm:col-span-1 p-2 btn-text-xs border border-grayscale-300">
             <option value="viewer"
               className="btn-text-xs">Viewer</option>
