@@ -68,6 +68,7 @@ export const KanbanColumn = (props: Props) => {
   } = props;
 
   const [edit, setEdit] = useState(false);
+  const [title, setTitle] = useState(column.title);
 
   const taskIds = useMemo(() => {
     return tasks.map((element) => element.Id);
@@ -103,6 +104,16 @@ export const KanbanColumn = (props: Props) => {
     );
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value.trim() !== ""){
+      setTitle(e.target.value);
+    }
+    else {
+      setTitle("");
+    }
+  };
+
+
   return (
     <div
       ref={setNodeRef}
@@ -127,20 +138,31 @@ export const KanbanColumn = (props: Props) => {
           // Input field only shows one line, can this be changed to show multiple lines
           // Trello has h2 with role of textbox
           <input
+            type="text"
             className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
             onKeyDown={(e) => {
-              if (e.key !== "Enter") return;
-              setEdit(false);
-            }}
-            onBlur={() => setEdit(false)}
-            value={column.title}
-            onChange={(e) => {
-              if (e.target.value.length >= 1) {
-                updateColumn(column.Id, e.target.value);
+              if (e.key === "Enter"){
+                setEdit(false);
+                if(title){
+                  updateColumn(column.Id, title);
+                }
+                else{
+                  setTitle(column.title);
+                }
               }
             }}
-          ></input>
+            onBlur={() => {
+              setEdit(false);
+              if(title){
+                updateColumn(column.Id, title);
+              }
+              else{
+                setTitle(column.title);
+              }}}
+            value={title}
+            onChange={(e) => handleChange(e)}
+          />
         )}
         <Menu
           btnPosition="absolute right-2.5 top-3.5"

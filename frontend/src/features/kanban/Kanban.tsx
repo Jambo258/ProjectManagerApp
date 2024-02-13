@@ -27,6 +27,7 @@ export interface Labels {
   id: string | number;
   name: string;
   color: string;
+  hover?: string;
 }
 
 export interface Task {
@@ -100,21 +101,21 @@ export const Kanban = ({
   }, [ykanban]);
 
   const arrayOfColors = [
-    { id: 1, name: "", color: "bg-green-100" },
-    { id: 2, name: "", color: "bg-green-200" },
-    { id: 3, name: "", color: "bg-green-300" },
-    { id: 4, name: "", color: "bg-purple-100" },
-    { id: 5, name: "", color: "bg-purple-200" },
-    { id: 6, name: "", color: "bg-purple-300" },
-    { id: 7, name: "", color: "bg-red-100" },
-    { id: 8, name: "", color: "bg-red-200" },
-    { id: 9, name: "", color: "bg-red-300" },
-    { id: 10, name: "", color: "bg-blue-100" },
-    { id: 11, name: "", color: "bg-blue-200" },
-    { id: 12, name: "", color: "bg-blue-300" },
-    { id: 13, name: "", color: "bg-yellow-100" },
-    { id: 14, name: "", color: "bg-yellow-200" },
-    { id: 15, name: "", color: "bg-yellow-300" },
+    { id: 1, name: "", color: "bg-green-100", hover: "hover:bg-green-100" },
+    { id: 2, name: "", color: "bg-green-200", hover: "hover:bg-green-200" },
+    { id: 3, name: "", color: "bg-green-300", hover: "hover:bg-green-300" },
+    { id: 4, name: "", color: "bg-purple-100", hover: "hover:bg-purple-100" },
+    { id: 5, name: "", color: "bg-purple-200", hover: "hover:bg-purple-200" },
+    { id: 6, name: "", color: "bg-purple-300", hover: "hover:bg-purple-300" },
+    { id: 7, name: "", color: "bg-red-100", hover: "hover:bg-red-100" },
+    { id: 8, name: "", color: "bg-red-200", hover: "hover:bg-red-200" },
+    { id: 9, name: "", color: "bg-red-300", hover: "hover:bg-red-300" },
+    { id: 10, name: "", color: "bg-blue-100", hover: "hover:bg-blue-100" },
+    { id: 11, name: "", color: "bg-blue-200", hover: "hover:bg-blue-200" },
+    { id: 12, name: "", color: "bg-blue-300", hover: "hover:bg-blue-300" },
+    { id: 13, name: "", color: "bg-yellow-100", hover: "hover:bg-yellow-100" },
+    { id: 14, name: "", color: "bg-yellow-200", hover: "hover:bg-yellow-200" },
+    { id: 15, name: "", color: "bg-yellow-300", hover: "hover:bg-yellow-300" },
   ];
 
   const createNewColumn = () => {
@@ -145,7 +146,7 @@ export const Kanban = ({
     const newLabel: Labels = {
       id: nanoid(),
       name: name,
-      color: color,
+      color: color
     };
 
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;

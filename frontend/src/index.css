@@ -101,7 +101,7 @@
   }
 
   .react-calendar button {
-    @apply btn-text-md m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
+    @apply btn-text-lg m-0 py-2 px-3 bg-grayscale-0 hover:bg-grayscale-0;
   }
 }
 

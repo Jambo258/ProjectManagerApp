@@ -1,4 +1,9 @@
 services:
+  redis:
+    image: redis:alpine3.19
+    restart: always
+    volumes:
+      - redisData:/data
   db:
     image: postgres:16
     restart: always
@@ -19,11 +24,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
     build: ./backend
     restart: always
     ports:
       - $BACKEND_PORT:$BACKEND_PORT
     environment:
+      REDIS_URL: $REDIS_URL
+      REDIS_PASSWORD: $REDIS_PASSWORD
       DATABASE_URL: "postgresql://${PG_USERNAME}:${PG_PASSWORD}@db:${PG_PORT}/${PG_DATABASE}?schema=public"
       BACKEND_PORT: $BACKEND_PORT
       BACKEND_SESSION_SECRET: $BACKEND_SESSION_SECRET
@@ -35,3 +44,4 @@ services:
 
 volumes:
   postgresData:
+  redisData:
