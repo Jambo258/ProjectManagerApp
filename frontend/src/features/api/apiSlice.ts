@@ -45,7 +45,6 @@ export interface EditProjectRequest {
 export interface Page {
   id: number;
   name: string;
-  content: Uint8Array | null;
   projectid: number;
 }
 
