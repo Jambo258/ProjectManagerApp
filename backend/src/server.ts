@@ -1,10 +1,14 @@
 import express, { type Request } from "express";
 import session from "express-session";
-import cors from "cors";
 import expressWebsockets from "express-ws";
+import cors from "cors";
+import RedisStore from "connect-redis";
+import { createClient } from "redis";
+
 import { Server, type onAuthenticatePayload } from "@hocuspocus/server";
 import { Logger } from "@hocuspocus/extension-logger";
 import { Database } from "@hocuspocus/extension-database";
+
 import authenticate from "./middlewares/authenticate.js";
 import requestLog from "./middlewares/requestLog.js";
 import unknownEndpoint from "./middlewares/unknownEndpoint.js";
@@ -56,9 +60,25 @@ const { app } = expressWebsockets(express());
 
 const isProduction = process.env.NODE_ENV === "production";
 
+let redisStore = undefined;
+if (process.env.REDIS_URL) {
+  const redisClient = createClient({
+    url: process.env.REDIS_URL,
+    password: process.env.REDIS_PASSWORD,
+  });
+  console.log("Connection to", process.env.REDIS_URL);
+  redisClient.connect().catch(console.error);
+
+  redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "projectmanagementapp:",
+  });
+}
+
 app.set("trust proxy", 1);
 app.use(
   session({
+    store: redisStore,
     secret: sessionSecret,
     resave: true,
     saveUninitialized: false,

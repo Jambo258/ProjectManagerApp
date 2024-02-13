@@ -35,11 +35,14 @@ export const ProjectHeader = () => {
         {showHeader &&
         <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"}`}>{project.name}</h2>
         }
-        <Menu>
+        <Menu
+          btnPosition="absolute right-6"
+          menuPosition="relative mt-1"
+        >
           <button className="min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             onClick={() => setShowHeader(!showHeader)}>
-            {showHeader ? "Hide header" : "Show header" } 
-          </button> 
+            {showHeader ? "Hide header" : "Show header" }
+          </button>
 
           <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
 
@@ -50,7 +53,7 @@ export const ProjectHeader = () => {
             }
             modalTitle={"Add new page"}>
             <AddPageModal projectId={projectId} />
-          </Modal> 
+          </Modal>
 
           {activePage() ?
             <Modal
@@ -60,8 +63,8 @@ export const ProjectHeader = () => {
               }
               modalTitle={"Rename page"}
             >
-              <RenamePageModal 
-                pageId={pageId} 
+              <RenamePageModal
+                pageId={pageId}
                 pageName={activePage()} />
             </Modal>
             : null
@@ -74,7 +77,7 @@ export const ProjectHeader = () => {
                 "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
               }
             />
-            : null      
+            : null
           }
 
           <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />

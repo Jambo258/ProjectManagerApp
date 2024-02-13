@@ -98,7 +98,7 @@ export const DashboardNav = () => {
         <section className="grid grid-flow-col h-16 py-2 px-4 items-center bg-dark-blue-100 w-full">
           <Modal
             btnText={user.name[0].toUpperCase()}
-            btnStyling={`aspect-square p-0 my-0 max-w-8 flex justify-center leading-8 rounded-full heading-xs ${userColor(user.id).textColor} ${userColor(user.id).bg} cursor-pointer`}
+            btnStyling={`aspect-square p-0 my-0 max-w-8 flex justify-center leading-8 rounded-full heading-xs ${userColor(user.id).textColor} ${userColor(user.id).bg} ${userColor(user.id).hover} cursor-pointer`}
             modalTitle={"Account settings"} >
             <ProfileModal />
           </Modal>
@@ -112,7 +112,9 @@ export const DashboardNav = () => {
           </div>
         </section>
         :
-        <section className="absolute top-0 right-0 -mt-1 sm:block sm:mt-0 sm:top-auto sm:right-auto"><UserMenu name={user.name} id={user.id} /></section>
+        <section className="absolute top-0 right-0 -mt-1 sm:block sm:mt-0 sm:top-auto sm:right-auto">
+          <UserMenu name={user.name} id={user.id} />
+        </section>
       }
     </nav>
   );

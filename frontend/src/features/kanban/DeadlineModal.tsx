@@ -50,28 +50,30 @@ export const DeadlineModal = ({
             if (deadline.getDate() === date.getDate() 
                 && deadline.getMonth() === date.getMonth() 
                 && deadline.getFullYear() === date.getFullYear()) {
-              return "aspect-square !bg-primary-100 !hover:bg-primary-200 rounded-full";   
+              return "aspect-square !btn-text-sm !bg-primary-100 !hover:bg-primary-200 rounded-full border-4 border-grayscale-100";   
             }
 
             if (new Date().setHours(0,0,0,0) <= date.setHours(0,0,0,0)) {
-              return "aspect-square rounded-full"; 
+              return "aspect-square !btn-text-sm rounded-full"; 
             }  
             
-            return "aspect-square !text-grayscale-300"; 
+            return "aspect-square !btn-text-sm !text-grayscale-300"; 
           }
 
           // Year view
           if (view === "year" 
               && date.getMonth() < (new Date().getMonth()) 
               && date.getFullYear() <= (new Date().getFullYear())) {
-            return "!text-grayscale-300";
+            return "!text-grayscale-300 !btn-text-sm";
           }
 
           // Decade view
           if (view === "decade" 
               && date.getFullYear() < (new Date().getFullYear())) {
-            return "!text-grayscale-300";
+            return "!btn-text-sm !text-grayscale-300";
           } 
+
+          return "!btn-text-sm";
         }}
         onClickDay={(day) => setDeadline(day)}
         prevLabel={<ChevronLeft className="relative top-1" />}   
@@ -80,12 +82,12 @@ export const DeadlineModal = ({
         next2Label={<ChevronsRight className="relative top-1" />}
       />
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-4">
         <button
           type="button"
           onClick={handleDeadlineSave}
           name="save"
-          className="py-2 my-2 btn-text-sm bg-success-100 hover:bg-success-200"
+          className="py-2 my-2 btn-text-xs bg-success-100 hover:bg-success-200"
         >
             Save
         </button>
@@ -94,14 +96,14 @@ export const DeadlineModal = ({
             type="button"
             onClick={() => setConfirmDeleteEdit(true)}
             name="remove"
-            className="py-2 my-2 btn-text-sm bg-caution-100 hover:bg-caution-200"
+            className="py-2 my-2 btn-text-xs bg-caution-100 hover:bg-caution-200"
           >
               Remove
           </button>
           : <button 
             type="button"
             onClick={closeModal}
-            className="py-2 my-2 btn-text-sm">Cancel</button>  
+            className="py-2 my-2 btn-text-xs">Cancel</button>  
         }
 
         {confirmDeleteEdit && (

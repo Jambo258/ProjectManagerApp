@@ -24,7 +24,7 @@ export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember }: IPro
     <div className="mx-2">
       <h5 className="heading-xs mb-2">Project members</h5>
       <section>
-        {project!.users.map((member: Member,) => {
+        {project!.users.map((member: Member) => {
           return (
             <TaskMember
               key={member.id}

@@ -37,14 +37,12 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
     };
   }, []);
 
-  const bgColor: string = userColor(id).bg + " hover:" + userColor(id).bg;
-
   return (        
     <section ref={menuRef} className="w-full px-4 sm:px-2 py-3.5 sm:py-4 sm:bg-dark-blue-100">
 
       <button
         onClick={() => setOpenMenu(!openMenu)} 
-        className={`rounded-full m-0 p-0 w-8 h-8 ${userColor(id).textColor} text-center heading-xs leading-8 ${bgColor} cursor-pointer`}>
+        className={`rounded-full m-0 p-0 w-8 h-8 ${userColor(id).textColor} text-center heading-xs leading-8 ${userColor(id).bg} ${userColor(id).hover} cursor-pointer`}>
         {name[0].toUpperCase()}
       </button>
 

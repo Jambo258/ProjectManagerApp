@@ -27,6 +27,7 @@ export interface Labels {
   id: string | number;
   name: string;
   color: string;
+  hover?: string;
 }
 
 export interface Task {
@@ -100,21 +101,21 @@ export const Kanban = ({
   }, [ykanban]);
 
   const arrayOfColors = [
-    { id: 1, name: "", color: "bg-green-100" },
-    { id: 2, name: "", color: "bg-green-200" },
-    { id: 3, name: "", color: "bg-green-300" },
-    { id: 4, name: "", color: "bg-purple-100" },
-    { id: 5, name: "", color: "bg-purple-200" },
-    { id: 6, name: "", color: "bg-purple-300" },
-    { id: 7, name: "", color: "bg-red-100" },
-    { id: 8, name: "", color: "bg-red-200" },
-    { id: 9, name: "", color: "bg-red-300" },
-    { id: 10, name: "", color: "bg-blue-100" },
-    { id: 11, name: "", color: "bg-blue-200" },
-    { id: 12, name: "", color: "bg-blue-300" },
-    { id: 13, name: "", color: "bg-yellow-100" },
-    { id: 14, name: "", color: "bg-yellow-200" },
-    { id: 15, name: "", color: "bg-yellow-300" },
+    { id: 1, name: "", color: "bg-green-100", hover: "hover:bg-green-100" },
+    { id: 2, name: "", color: "bg-green-200", hover: "hover:bg-green-200" },
+    { id: 3, name: "", color: "bg-green-300", hover: "hover:bg-green-300" },
+    { id: 4, name: "", color: "bg-purple-100", hover: "hover:bg-purple-100" },
+    { id: 5, name: "", color: "bg-purple-200", hover: "hover:bg-purple-200" },
+    { id: 6, name: "", color: "bg-purple-300", hover: "hover:bg-purple-300" },
+    { id: 7, name: "", color: "bg-red-100", hover: "hover:bg-red-100" },
+    { id: 8, name: "", color: "bg-red-200", hover: "hover:bg-red-200" },
+    { id: 9, name: "", color: "bg-red-300", hover: "hover:bg-red-300" },
+    { id: 10, name: "", color: "bg-blue-100", hover: "hover:bg-blue-100" },
+    { id: 11, name: "", color: "bg-blue-200", hover: "hover:bg-blue-200" },
+    { id: 12, name: "", color: "bg-blue-300", hover: "hover:bg-blue-300" },
+    { id: 13, name: "", color: "bg-yellow-100", hover: "hover:bg-yellow-100" },
+    { id: 14, name: "", color: "bg-yellow-200", hover: "hover:bg-yellow-200" },
+    { id: 15, name: "", color: "bg-yellow-300", hover: "hover:bg-yellow-300" },
   ];
 
   const createNewColumn = () => {
@@ -145,7 +146,7 @@ export const Kanban = ({
     const newLabel: Labels = {
       id: nanoid(),
       name: name,
-      color: color,
+      color: color
     };
 
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
@@ -511,13 +512,6 @@ export const Kanban = ({
           );
         });
       }
-
-      // setTasks((elements) => {
-      //   activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   overIndex = elements.findIndex((el) => el.Id === overId);
-      //   // elements[activeIndex].columnId = elements[overIndex].columnId;
-      //   return arrayMove(elements, activeIndex, overIndex);
-      // });
     }
 
     const isOverColumn = over.data.current?.type === "Column";
@@ -542,12 +536,6 @@ export const Kanban = ({
         ytasks.delete(activeIndex);
         ytasks.insert(activeIndex, [{ ...task, columnId: overId }]);
       });
-
-      // setTasks((elements) => {
-      //   const activeIndex = elements.findIndex((el) => el.Id === activeId);
-      //   elements[activeIndex].columnId = overId;
-      //   return arrayMove(elements, activeIndex, activeIndex);
-      // });
     }
   };
 
@@ -561,7 +549,7 @@ export const Kanban = ({
 
   return (
     <>
-      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border border-grayscale-400 p-2 me-2">
+      <div className="m-auto flex w-full overflow-x-auto overflow-y-auto border rounded border-grayscale-300 p-2 me-2">
         <DndContext
           sensors={sensors}
           onDragEnd={onDragEnd}
@@ -598,8 +586,11 @@ export const Kanban = ({
                   />
                 ))}
               </SortableContext>
-              <button className="btn-text-xs w-fit min-w-fit h-[59px] pt-[20px] inline-flex gap-2 px-6 py-2" onClick={() => createNewColumn()}>
-                <Plus size={18} /> 
+              <button
+                className="w-fit min-w-fit h-[50px] px-6 py-2 inline-flex items-center gap-2 rounded-sm btn-text-xs"
+                onClick={() => createNewColumn()}
+              >
+                <Plus size={18} />
                 Add column
               </button>
             </div>
