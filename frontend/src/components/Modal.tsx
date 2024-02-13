@@ -42,9 +42,9 @@ export const Modal = ({
         closeModal();
       }
     };
-    window.addEventListener("keydown", closeOnEscapePressed);
+    document.addEventListener("keydown", closeOnEscapePressed);
     return () =>
-      window.removeEventListener("keydown", closeOnEscapePressed);
+      document.removeEventListener("keydown", closeOnEscapePressed);
   }, []);
 
   return (

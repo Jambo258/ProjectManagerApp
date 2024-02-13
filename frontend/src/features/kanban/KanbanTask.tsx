@@ -138,9 +138,9 @@ export const KanbanTask = ({
         closeModal();
       }
     };
-    window.addEventListener("keydown", closeOnEscapePressed);
+    document.addEventListener("keydown", closeOnEscapePressed);
     return () =>
-      window.removeEventListener("keydown", closeOnEscapePressed);
+      document.removeEventListener("keydown", closeOnEscapePressed);
   }, []);
 
   return (
@@ -150,8 +150,8 @@ export const KanbanTask = ({
         style={style}
         {...attributes}
         {...listeners}
-        className={`w-full flex flex-col h-fit p-4 rounded ${
-          isDragging ? "bg-grayscale-300 opacity-50" : "bg-grayscale-100 "
+        className={`w-[calc(100%-6px)] flex flex-col h-fit p-4 rounded-sm focus:outline-none focus:ring-[3px] focus:ring-dark-blue-50 ${
+          isDragging ? "bg-grayscale-300 opacity-50" : "bg-grayscale-100"
         }`}
         onClick={openModal}
       >
