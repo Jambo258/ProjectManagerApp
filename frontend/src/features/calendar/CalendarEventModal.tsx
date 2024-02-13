@@ -75,7 +75,9 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
         eventTitle,
       },
     ]);
-    newDateOnCreate.setHours(0,0,0,0);
+    const newDate = new Date();
+    newDate.setHours(0,0,0,0);
+    setNewDateOnCreate(newDate);
     setEventTitle("");
   };
 
@@ -102,7 +104,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const screenDimensions = useScreenDimensions();
 
   const sortByDate = (events: Event[]) => {
-    return events.sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
+    return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
   };
 
   return (
@@ -122,7 +124,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           >
             {format(day, "d")}
           </li>
-          {events.map((event) =>
+          {sortByDate(events).map((event) =>
             isEqual(getMonth(event.day), getMonth(day)) &&
               isEqual(getDate(event.day), getDate(day)) &&
               isEqual(getYear(event.day), getYear(day)) && (
