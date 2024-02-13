@@ -216,7 +216,9 @@ export const ProfileModal = () => {
               <input
                 type="text"
                 {...registerName("name")}
+                autoFocus
                 autoComplete="name"
+                placeholder="Give your name..."
                 className="block w-full py-1.5 px-2 body-text-md"
               />
               <p className="mt-1 body-text-xs text-caution-200">
@@ -271,7 +273,9 @@ export const ProfileModal = () => {
               <input
                 type="email"
                 {...registerEmail("email")}
+                autoFocus
                 autoComplete="email"
+                placeholder="Give your email..."
                 className="block w-full py-1.5 px-2 body-text-md"
               />
               <p className="mt-1 body-text-xs text-caution-200">
@@ -328,7 +332,9 @@ export const ProfileModal = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...registerPassword("password")}
+                  autoFocus
                   autoComplete="new-password"
+                  placeholder="Give your new password..."
                   className="block w-full py-1.5 px-2 body-text-md"
                 />
                 <button
