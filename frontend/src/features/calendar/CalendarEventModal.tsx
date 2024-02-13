@@ -32,7 +32,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newDateOnCreate, setNewDateOnCreate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>("");
 
-  const [test,setTest] = useState<boolean>();
+  const [isEvents,setIsEvents] = useState<boolean>();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -104,8 +104,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   };
 
   useEffect(() => {
-    if(events.find((event) => isEqual(event.day, day))) setTest(true);
-    else setTest(false);
+    if(events.find((event) => isEqual(event.day, day))) setIsEvents(true);
+    else setIsEvents(false);
   },[events, day]);
 
   const screenDimensions = useScreenDimensions();
@@ -171,7 +171,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            {test
+            {isEvents
               ? <div>
                 {sortByDate(events).map(
                   (event) =>
