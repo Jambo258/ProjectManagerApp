@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Redux
 import { type Member } from "../api/apiSlice";
@@ -132,6 +132,17 @@ export const KanbanTask = ({
     }
   };
 
+  useEffect(() => {
+    const closeOnEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscapePressed);
+    return () =>
+      window.removeEventListener("keydown", closeOnEscapePressed);
+  }, []);
+
   return (
     <>
       <div
@@ -147,7 +158,6 @@ export const KanbanTask = ({
         <div className={isDragging ? "invisible" : ""}>
           <div className="mb-6">
             <h4 className="heading-xs mb-1">{task.title}</h4>
-            {/* Line clamp needs fixing, this removes row changes when displaying content */}
             <p className="min-h-max line-clamp-3 body-text-xs whitespace-pre-wrap">
               {task.content}
             </p>
@@ -287,6 +297,7 @@ export const KanbanTask = ({
                         value={task.content}
                         onChange={(e) => updateTask(task.Id, e.target.value)}
                         rows={4}
+                        autoFocus
                         placeholder="Short item description goes here..."
                         className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                       />
