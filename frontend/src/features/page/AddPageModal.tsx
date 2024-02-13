@@ -80,6 +80,7 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
           <input
             type="text"
             {...register("pageName")}
+            autoFocus
             placeholder="Give a page name!"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
