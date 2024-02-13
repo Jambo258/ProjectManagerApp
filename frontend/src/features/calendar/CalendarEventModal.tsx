@@ -2,7 +2,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
   format,
-  isEqual,
+  isSameDay,
   isSameMonth,
   isToday,
 } from "date-fns";
@@ -121,7 +121,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           >
             {format(day, "d")}
           </li>
-          {sortByDate(events).map((event) => isEqual(event.day, day) && (
+          {sortByDate(events).map((event) => isSameDay(event.day, day) && (
             <li
               key={event.id}
               className="ml-1 hidden md:block body-text-sm"
@@ -158,9 +158,9 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            {events.find((event) => isEqual(event.day, day))
+            {events.find((event) => isSameDay(event.day, day))
               ? <div>
-                {sortByDate(events).map((event) => isEqual(event.day, day) && (
+                {sortByDate(events).map((event) => isSameDay(event.day, day) && (
                   <div
                     className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200"
                     key={event.id}
