@@ -80,6 +80,7 @@ export const RenamePageModal = ({ pageId, pageName }: RenamePageProps) => {
           <input
             type="text"
             {...register("pageName")}
+            autoFocus
             placeholder="e.g. To do"
             className="block w-full py-1.5 px-4 mt-1 body-text-md"
           />
