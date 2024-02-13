@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
@@ -6,7 +7,6 @@ import {
   isSameMonth,
   isToday,
 } from "date-fns";
-import { useState } from "react";
 import { X } from "react-feather";
 import * as Y from "yjs";
 import { DeleteEventModal } from "./DeleteEventModal";
@@ -104,10 +104,25 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
     return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
   };
 
+  useEffect(() => {
+    const closeOnEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    document.addEventListener("keydown", closeOnEscapePressed);
+    return () =>
+      document.removeEventListener("keydown", closeOnEscapePressed);
+  }, []);
+
   return (
     <>
       <section
         onClick={() => setIsModalOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          setIsModalOpen(true);
+        }}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
         outline outline-1 outline-grayscale-300 hover:bg-primary-200 overflow-hidden
         ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
@@ -151,7 +166,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
               onClick={closeModal}
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
             >
-              <X className="mb-4" size={20} />
+              <X size={20} />
             </button>
             <h3 className="place-self-start -mt-3 mx-2 heading-md text-dark-font">
               {format(day, "iiii")} {format(day, "d.M.yyyy")}
@@ -170,14 +185,17 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                         <div className="flex flex-row w-full gap-2">
                           <input
                             type="time"
+                            autoFocus
+                            aria-label="Time of the event"
                             defaultValue={format(event.day, "HH:mm")}
                             onChange={(e) => setTime(day, e.target.value)}
-                            className="px-3 body-text-md"
+                            className="py-1.5 px-3 body-text-md"
                           />
                           <input
                             onChange={(e) => setNewEventTitle(e.target.value)}
                             defaultValue={event.eventTitle}
-                            className="flex-1 body-text-md"
+                            aria-label="Event name"
+                            className="flex-1 py-1.5 px-3 body-text-md"
                           />
                           <button
                             onClick={() =>
@@ -231,6 +249,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                       if(e.target.value){
                         setTimeOnCreate(day, e.target.value);
                       }}}
+                    autoFocus
+                    aria-label="Time of the event"
                     className="px-3 body-text-md"
                   />
                   <input
@@ -238,6 +258,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     value={eventTitle}
                     onChange={(e) => setEventTitle(e.target.value)}
                     placeholder={"Add new event"}
+                    aria-label="Event name"
                     className="px-3 body-text-md flex-1"
                   />
                   <button type="submit" className="btn-text-sm">
