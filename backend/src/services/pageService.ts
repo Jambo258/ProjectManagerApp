@@ -9,6 +9,14 @@ const getpageById = async (id: number) => {
       id: true,
       name: true,
       projectid: true,
+    }
+  });
+};
+
+const getPageContent = async (id: number) => {
+  return await prisma.pages.findUnique({
+    where: { id: id },
+    select: {
       content: true,
     }
   });
@@ -91,6 +99,7 @@ const canViewPage = async (userId: number, pageId: number) => {
 
 export {
   getpageById,
+  getPageContent,
   createPage,
   updatePageName,
   updatePageContent,

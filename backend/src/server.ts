@@ -11,7 +11,7 @@ import unknownEndpoint from "./middlewares/unknownEndpoint.js";
 import projectsRouter from "./routes/projectRouter.js";
 import pagesRouter from "./routes/pageRouter.js";
 import usersRouter from "./routes/userRouter.js";
-import { canEditPage, canViewPage, getpageById, updatePageContent } from "./services/pageService.js";
+import { canEditPage, canViewPage, getPageContent, updatePageContent } from "./services/pageService.js";
 
 const sessionSecret = process.env.BACKEND_SESSION_SECRET!;
 const PORT = process.env.BACKEND_PORT!;
@@ -25,7 +25,7 @@ const hocuspocusServer = Server.configure({
     new Logger(),
     new Database({
       fetch: async ({ documentName }) => {
-        const page = await getpageById(Number(documentName));
+        const page = await getPageContent(Number(documentName));
         return page?.content ?? null;
       },
       store: async ({ documentName, state }) => {
