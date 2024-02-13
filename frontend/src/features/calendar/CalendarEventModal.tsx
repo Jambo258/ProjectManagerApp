@@ -75,7 +75,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
         eventTitle,
       },
     ]);
-    const newDate = new Date();
+    const newDate = new Date(day);
     newDate.setHours(0,0,0,0);
     setNewDateOnCreate(newDate);
     setEventTitle("");
