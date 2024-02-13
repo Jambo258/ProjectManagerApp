@@ -270,9 +270,11 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <div className="label-text inline-flex gap-1">
-                        <Clock size={16} />
-                        {dateDifference(task.deadline)} days left
+                      <div className="label-text inline-flex items-center gap-1">
+                        <Clock size={14}/>
+                        {task.deadline > new Date().getTime()
+                          ? dateDifference(task.deadline) + " days left"
+                          : format(new Date(task.deadline), "d.M.yyyy")}
                       </div>
                     </div>
                   )}
