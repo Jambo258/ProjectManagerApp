@@ -363,7 +363,6 @@ export const KanbanTask = ({
           </dialog>
         </div>
       )}
-
       {isDeleteConfirmOpen && (
         <DeleteModal
           setConfirmDeleteEdit={setIsDeleteConfirmOpen}
