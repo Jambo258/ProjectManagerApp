@@ -9,7 +9,7 @@ import {
   isSameMonth,
   isToday,
 } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "react-feather";
 import * as Y from "yjs";
 import { DeleteEventModal } from "./DeleteEventModal";
@@ -31,8 +31,6 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newDate, setNewDate] = useState(day);
   const [newDateOnCreate, setNewDateOnCreate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>("");
-
-  const [isEvents,setIsEvents] = useState<boolean>();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -103,11 +101,6 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
     setNewDateOnCreate(updatedDate);
   };
 
-  useEffect(() => {
-    if(events.find((event) => isEqual(event.day, day))) setIsEvents(true);
-    else setIsEvents(false);
-  },[events, day]);
-
   const screenDimensions = useScreenDimensions();
 
   const sortByDate = (events: Event[]) => {
@@ -171,7 +164,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            {isEvents
+            {events.find((event) => isEqual(event.day, day))
               ? <div>
                 {sortByDate(events).map(
                   (event) =>
