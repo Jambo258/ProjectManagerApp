@@ -154,6 +154,10 @@ export const KanbanTask = ({
           isDragging ? "bg-grayscale-300 opacity-50" : "bg-grayscale-100"
         }`}
         onClick={openModal}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          openModal();
+        }}
       >
         <div className={isDragging ? "invisible" : ""}>
           <div className="mb-6">
