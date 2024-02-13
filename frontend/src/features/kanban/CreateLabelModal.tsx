@@ -76,7 +76,8 @@ export const CreateLabelModal = ({
           <input
             type="text"
             {...register("name")}
-            placeholder="Title for label"
+            autoFocus
+            placeholder="e.g. To Do"
             className="block w-full body-text-sm py-1 px-2 mt-1.5 border-grayscale-300"
           />
           <p className="mt-1 text-center body-text-xs text-caution-200">
@@ -94,8 +95,8 @@ export const CreateLabelModal = ({
         </label>
         <div className="grid grid-cols-3 gap-2 mt-1.5">
           {labelColors.map((label) => (
-            <div key={label.id} 
-              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""} 
+            <div key={label.id}
+              className={label.color === selectedColor ? "outline outline-grayscale-400 rounded" : ""}
               onClick={() => setSelectedColor(label.color)}>
               <ColorModal
                 setValue={setValue}
