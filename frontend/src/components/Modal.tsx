@@ -1,4 +1,4 @@
-import { type ReactElement, useState, createContext } from "react";
+import { type ReactElement, useState, createContext, useEffect } from "react";
 import { X } from "react-feather";
 import useScreenDimensions from "../utils/screenDimensions";
 
@@ -36,6 +36,17 @@ export const Modal = ({
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const closeOnEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscapePressed);
+    return () =>
+      window.removeEventListener("keydown", closeOnEscapePressed);
+  }, []);
+
   return (
     <>
       <button
@@ -54,6 +65,7 @@ export const Modal = ({
         className="fixed flex justify-center inset-0 z-30 items-center transition-colors bg-dark-blue-100/40"
       >
         <dialog
+          aria-modal="true"
           onClick={(e) => e.stopPropagation()}
           // The sizing of the modal (w, min-w and max-w) might need to be modified
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
