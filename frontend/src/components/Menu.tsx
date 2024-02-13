@@ -21,9 +21,19 @@ export const Menu = ({ btnPosition, menuPosition, children }: MenuProps) => {
         setIsMenuOpen(false);
       }
     };
+
+    const closeOnEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside, true);
+    document.addEventListener("keydown", closeOnEscapePressed);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", closeOnEscapePressed);
     };
   }, []);
 
@@ -33,8 +43,14 @@ export const Menu = ({ btnPosition, menuPosition, children }: MenuProps) => {
       className={`${btnPosition} flex flex-col place-items-end`}
     >
 
-      <button className="max-w-fit h-fit p-0 bg-grayscale-0 hover:bg-grayscale-0"
-        onClick={toggleMenu}>
+      <button
+        className="max-w-fit h-fit p-0 bg-grayscale-0 hover:bg-grayscale-0"
+        onClick={toggleMenu}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          setIsMenuOpen(false);
+        }}
+      >
         <MoreVertical size={20} />
       </button>
 
