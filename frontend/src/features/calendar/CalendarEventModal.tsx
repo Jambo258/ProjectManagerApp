@@ -9,7 +9,7 @@ import {
   isSameMonth,
   isToday,
 } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "react-feather";
 import * as Y from "yjs";
 import { DeleteEventModal } from "./DeleteEventModal";
@@ -32,7 +32,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newDateOnCreate, setNewDateOnCreate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>("");
 
-  const [test,setTest] = useState(false);
+  const [test,setTest] = useState<boolean>();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -103,14 +103,10 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
     setNewDateOnCreate(updatedDate);
   };
 
-  const checkEvents = () => {
-    events.map((event) => {
-      if(!isEqual(event.day, day)) {
-        return setTest(false);
-      }
-      else return setTest(true);
-    });
-  };
+  useEffect(() => {
+    if(events.find((event) => isEqual(event.day, day))) setTest(true);
+    else setTest(false);
+  },[events, day]);
 
   const screenDimensions = useScreenDimensions();
 
@@ -121,7 +117,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   return (
     <>
       <section
-        onClick={() => {setIsModalOpen(true); checkEvents();}}
+        onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
         outline outline-1 outline-grayscale-300 hover:bg-primary-200 overflow-hidden
         ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
@@ -175,8 +171,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2">
-            {test ?
-              <div>
+            {test
+              ? <div>
                 {sortByDate(events).map(
                   (event) =>
                     isEqual(getMonth(event.day), getMonth(day)) &&
@@ -234,9 +230,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                       </div>
                     )
                 )}
-
-              </div> :
-              <p className="body-text-lg">No events yet</p>
+              </div>
+              : <p className="body-text-lg">No events yet</p>
             }
             <section className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
