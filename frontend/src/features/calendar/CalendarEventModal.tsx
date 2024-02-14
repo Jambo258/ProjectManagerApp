@@ -183,7 +183,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
               {format(day, "iiii")} {format(day, "d.M.yyyy")}
             </h3>
           </header>
-          <main className="w-full mx-auto px-2">
+          <main className="w-full mx-auto px-2 text-dark-font">
             {events.find((event) => isSameDay(event.day, day))
               ? <div>
                 {sortByDate(events).map((event) => isSameDay(event.day, day) && (
