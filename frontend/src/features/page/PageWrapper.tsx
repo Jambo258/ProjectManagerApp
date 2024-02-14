@@ -113,8 +113,6 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     });
   };
 
-  // yarray.delete(0, yarray.length);
-
   const getComponent = (component: Component) => {
     const yContent = ymap.get(component.uuid);
     if (!yContent) {
