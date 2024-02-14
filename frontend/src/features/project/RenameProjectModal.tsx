@@ -37,7 +37,7 @@ export const RenameProjectModal = ( {projectId, projectName }: RenameProjectProp
   });
 
   const onError = (errors: FieldErrors<RenameProjectFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const onHandleSubmit = async (formData: RenameProjectFormValues) => {

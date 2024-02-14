@@ -18,7 +18,6 @@ export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember }: IPro
 
   const projectId = parseInt(useParams().projectId!);
   const { data: project } = useGetProjectQuery(projectId);
-  console.log(project?.users);
 
   return (
     <div className="mx-2">

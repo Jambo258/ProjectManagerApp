@@ -43,7 +43,7 @@ export const EditLabelModal = ({
   const [selectedColor, setSelectedColor] = useState<string>(label.color);
 
   const onError = (errors: FieldErrors<CreateLabelFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const onHandleSubmit = (formData: CreateLabelFormValues) => {

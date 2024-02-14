@@ -40,7 +40,7 @@ export const CreateLabelModal = ({
   const [selectedColor, setSelectedColor] = useState<string>("");
 
   const onError = (errors: FieldErrors<CreateLabelFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
   const canSubmit = isDirty;
 

@@ -26,7 +26,7 @@ export const ProjectMemberItem = ({ member, projectId, userId, userRole }: Proje
       try {
         await editProjectMember({userId: member.id, projectId: projectId, role: (e.target.value)}).unwrap();
       } catch {
-        console.log("Error!");
+        console.error("Error!");
       }
     }
   };

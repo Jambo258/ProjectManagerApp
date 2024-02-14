@@ -21,7 +21,7 @@ export const UserMenu = ({id, name}: UserMenuProps) => {
       await userLogout();
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

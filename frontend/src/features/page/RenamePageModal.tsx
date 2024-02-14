@@ -38,7 +38,7 @@ export const RenamePageModal = ({ pageId, pageName }: RenamePageProps) => {
   });
 
   const onError = (errors: FieldErrors<RenamePageFormValues>) => {
-    console.log("Form field errors:", errors);
+    console.error("Form field errors:", errors);
   };
 
   const canSave = isDirty && !isLoading;
