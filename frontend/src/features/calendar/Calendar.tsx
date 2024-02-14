@@ -101,7 +101,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                 {format(currentMonth, "MMM yyyy")}
               </div>
               {showMonthSelect && (
-                <div className="absolute z-10 flex flex-col" >
+                <div className="absolute z-10 flex flex-col">
                   <dialog className="h-[200px] relative w-fit mt-8 md:mt-10 lg:mt-11 flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                     <section className="grid grid-cols-1 divide-y divide-grayscale-200 overflow-auto">
                       {monthSelect.map(month => {
