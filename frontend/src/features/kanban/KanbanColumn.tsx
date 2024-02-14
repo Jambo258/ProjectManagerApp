@@ -123,7 +123,7 @@ export const KanbanColumn = (props: Props) => {
       <div
         {...attributes}
         {...listeners}
-        className="min-h-max pl-3 py-3 pr-5 mb-3 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100"
+        className="min-h-max pl-3 py-3 pr-5 mb-3 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100 focus:outline-none focus:ring focus:ring-dark-blue-50"
       >
         {!edit && (
           <div
