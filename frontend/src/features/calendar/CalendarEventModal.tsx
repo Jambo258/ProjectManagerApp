@@ -254,7 +254,6 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                       if(e.target.value){
                         setTimeOnCreate(day, e.target.value);
                       }}}
-                    autoFocus
                     aria-label="Time of the event"
                     className="px-3 py-[5px] body-text-md"
                   />
