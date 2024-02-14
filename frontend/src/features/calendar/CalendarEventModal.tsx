@@ -125,13 +125,14 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   return (
     <>
       <section
+        tabIndex={0}
         onClick={() => setIsModalOpen(true)}
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;
           setIsModalOpen(true);
         }}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        border-b border-r border-grayscale-300 
+        border-b border-r border-grayscale-300 focus:bg-grayscale-300/50 focus:outline-none 
         hover:bg-primary-200 overflow-hidden inline-block w-full h-full
         ${isSameMonth(day, currentMonth) 
       ? (hasEvent() && screenDimensions.width < 768 ? "text-primary-300" : "text-dark-font") 
