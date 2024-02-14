@@ -19,7 +19,9 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: state => { state.user = null; },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       api.endpoints.registerUser.matchFulfilled,
