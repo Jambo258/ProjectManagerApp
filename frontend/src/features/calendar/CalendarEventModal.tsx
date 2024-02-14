@@ -232,7 +232,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
               <div className="flex flex-col sm:flex-row gap-2 w-full">
                 <form
                   onSubmit={(e) => createEvent(e, eventTitle)}
-                  className="flex-1 flex flex-row gap-2"
+                  className="flex flex-col sm:flex-row gap-2 w-full"
                 >
                   <input
                     type="time"
