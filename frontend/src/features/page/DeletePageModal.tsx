@@ -39,7 +39,7 @@ export const DeletePageModal = ({btnText, btnStyling}: IProps) => {
         const page = await deletePage(pageId).unwrap();
         if (page) {
           closeModal();
-          navigate(`projects/${projectId}`);
+          navigate(`/projects/${projectId}`);
         }
       } catch (err) {
         console.error("Failed to delete the page", err);
