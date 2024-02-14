@@ -89,6 +89,7 @@ export const LabelModal = ({
             </div>
           </div>
         ))}
+        {labels.length === 0 && (<p className="text-center body-text-lg">No labels yet</p>)}
       </div>
 
       <section className="mt-4 w-full">
