@@ -103,21 +103,32 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const sortByDate = (events: Event[]) => {
     return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
   };
+  
+  const hasEvent = () => {
+    let hasEvent = false;
+    {events.map((event) =>{ 
+      isSameDay(event.day, day) && (hasEvent = true);});}
+    return hasEvent;
+  };
 
   return (
     <>
       <section
         onClick={() => setIsModalOpen(true)}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        outline outline-1 outline-grayscale-300 hover:bg-primary-200 overflow-hidden
-        ${isSameMonth(day, currentMonth) ? "text-dark-font" : "text-grayscale-400"}
-        ${isToday(day) ? "border-4 border-primary-200" : ""}`}
+        border-b border-r border-grayscale-300 
+        hover:bg-primary-200 overflow-hidden inline-block w-full h-full
+        ${isSameMonth(day, currentMonth) 
+      ? (hasEvent() && screenDimensions.width < 768 ? "text-primary-300" : "text-dark-font") 
+      : "text-grayscale-400"}
+
+        ${isToday(day) 
+      ? "bg-primary-100" 
+      : ""}`}
       >
-        <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap">
+        <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap relative">
           <li
-            className={`my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md p-2 ${
-              isToday(day) ? "pt-1 pl-1" : ""
-            }`}
+            className="my-auto md:my-0 h-fit w-fit md:text-left text btn-text-md p-2"
           >
             {format(day, "d")}
           </li>
@@ -146,7 +157,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             outline-none sm:rounded focus:outline-none shadow transition-all
             ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}
         >
-          <header className="w-full flex flex-col mb-2 place-items-end">
+          <header className="flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
@@ -214,7 +225,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                 )
                 )}
               </div>
-              : <p className="body-text-lg">No events yet</p>
+              : <p className="body-text-lg">No events yet.</p>
             }
             <section className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
