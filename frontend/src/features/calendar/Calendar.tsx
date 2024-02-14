@@ -76,7 +76,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
     <>
       <div className="flex w-full h-fit">
         <div className="w-full h-full">
-          <header className="relative -mx-px flex items-center text-dark-font justify-center rounded-t border-x border-t border-grayscale-300 bg-primary-200">
+          <header className="relative flex items-center text-dark-font justify-center rounded-t border-x border-t border-grayscale-300 bg-primary-200">
             <ChevronLeft
               className="cursor-pointer mr-6"
               size={24}
@@ -113,13 +113,14 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             />
           </header>
 
-          <section className="grid grid-cols-7 py-1 place-items-center text-dark-font -m-px border-t border-x border-grayscale-300 body-text-sm md:body-text-md">
+          <section className="grid grid-cols-7 py-1 place-items-center text-dark-font border-t border-x border-grayscale-300 body-text-sm md:body-text-md">
             {days.map(day => (
               <div key={day}>{day}</div>
             ))}
           </section>
 
-          <section className="grid w-full h-full grid-cols-7">
+          <section className="grid h-full grid-cols-7 [&>*:nth-child(7n+1)]:border-l [&>*:nth-child(7n+1)]:border-grayscale-300 
+        [&>*:nth-child(-n+7)]:border-t [&>*:nth-child(-n+7)]:border-grayscale-300">
             {daysInMonth.map(day => (
               <div
                 key={day.toISOString()}
