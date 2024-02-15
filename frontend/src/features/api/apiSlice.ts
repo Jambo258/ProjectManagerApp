@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { type BaseQueryFn, type FetchArgs, type FetchBaseQueryError, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface User {
   id: number;
@@ -81,12 +81,28 @@ export interface ProjectUser {
   role: string;
 }
 
+const baseQuery = fetchBaseQuery({
+  baseUrl: import.meta.env.VITE_BACKEND_URL as string,
+  credentials: "include",
+});
+
+const baseQueryWithAutoLogout: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const result = await baseQuery(args, api, extraOptions);
+  if (result.error && result.error.status === 401 &&
+    result.error.data && typeof result.error.data === "object" &&
+    "error" in result.error.data && result.error.data.error === "Unauthorized") {
+    api.dispatch({ type: "auth/logout" });
+  }
+  return result;
+};
+
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BACKEND_URL as string,
-    credentials: "include",
-  }),
+  baseQuery: baseQueryWithAutoLogout,
   tagTypes: ["Projects", "Pages",],
   endpoints: builder => ({
     registerUser: builder.mutation<User, RegisterRequest>({

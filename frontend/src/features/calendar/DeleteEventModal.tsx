@@ -46,8 +46,13 @@ export const DeleteEventModal = ({ deleteEvent, eventId }: Props) => {
   return (
     <>
       <Trash2
-        className="grid cursor-pointer text-caution-100"
+        className="grid cursor-pointer text-caution-100 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
         onClick={() => openModal()}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          openModal();
+        }}
       />
 
       {isDeleteModalOpen && (
