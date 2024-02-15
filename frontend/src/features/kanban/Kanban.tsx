@@ -587,7 +587,7 @@ export const Kanban = ({
                 ))}
               </SortableContext>
               <button
-                className="w-fit min-w-fit h-[50px] px-6 py-2 inline-flex items-center gap-2 rounded-sm btn-text-xs"
+                className="w-fit min-w-fit h-[50px] px-6 py-2 mt-0.5 inline-flex items-center gap-2 rounded-sm btn-text-xs"
                 onClick={() => createNewColumn()}
               >
                 <Plus size={18} />
