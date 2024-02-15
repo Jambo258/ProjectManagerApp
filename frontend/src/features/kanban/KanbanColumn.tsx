@@ -118,7 +118,7 @@ export const KanbanColumn = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col bg-grayscale-200 w-[300px] h-full max-h-[700px] rounded-sm overflow-auto text-dark-font"
+      className="flex flex-col bg-grayscale-200 w-[300px] h-[700px] rounded-sm overflow-auto text-dark-font"
     >
       <div
         {...attributes}
