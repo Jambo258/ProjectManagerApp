@@ -21,6 +21,8 @@ import { UserIcon } from "../user/UserIcon";
 import { DeadlineModal } from "./DeadlineModal";
 import useScreenDimensions from "../../utils/screenDimensions";
 import { format } from "date-fns";
+import { useGetProjectQuery } from "../../features/api/apiSlice";
+import { useParams } from "react-router-dom";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -34,6 +36,7 @@ interface Props {
   updateTaskTitle: (id: number | string, title: string) => void;
   addTaskMember: (id: number | string, newMember: Member) => void;
   removeTaskMember: (id: number | string, newMember: Member) => void
+  // removeOldTaskMembers: (id: number | string) => void;
   labels: Labels[];
   labelColors: Labels[];
   setIsModalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,6 +55,7 @@ export const KanbanTask = ({
   updateTaskTitle,
   addTaskMember,
   removeTaskMember,
+  // removeOldTaskMembers,
   labels,
   labelColors,
   setIsModalsOpen,
@@ -89,6 +93,9 @@ export const KanbanTask = ({
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [title, setTitle] = useState(task.title);
 
+  const projectId = parseInt(useParams().projectId!);
+  const { data: project } = useGetProjectQuery(projectId);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -101,7 +108,18 @@ export const KanbanTask = ({
     <Label key={label.id} labelColor={label.color} labelText={label.name} />
   ));
 
-  const displayTaskMembers = task.members.map((member: Member) =>
+  // TO DO:
+  // Check for id that is found in task.members but not in project.users
+  // Return task member if one is found
+  // Remove the returned task member from task.members
+  const latestMembersList = task.members.filter((member: Member) => project?.users.find((user: Member) => member.id === user.id));
+  console.log("Latest members:", latestMembersList);
+
+  // remove members from task members
+  // checkForOldMembers.forEach((member: Member) => removeTaskMember(task.Id, member));
+  // console.log("Task members:", task.members);
+
+  const displayTaskMembers = latestMembersList.map((member: Member) =>
     member ? (
       <UserIcon
         key={member.id}
@@ -133,6 +151,7 @@ export const KanbanTask = ({
   };
 
   useEffect(() => {
+    // removeOldTaskMembers(task.Id);
     const closeOnEscapePressed = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         closeModal();
