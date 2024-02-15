@@ -1,4 +1,4 @@
-import { type ReactElement, useState, useEffect, createContext, useRef } from "react";
+import { type ReactElement, useState, useEffect, useCallback, createContext, useRef } from "react";
 import { ChevronLeft, X } from "react-feather";
 import { type IconType, IconButton } from "./IconButton";
 import useScreenDimensions from "../../utils/screenDimensions";
@@ -44,10 +44,10 @@ export const SubModal = ({
     setIsModalOpen(false);
   };
 
-  const closeAllModals = () => {
+  const closeAllModals = useCallback(() => {
     closeModal();
     setIsModalsOpen(false);
-  };
+  }, [setIsModalsOpen]);
 
   const openAllModals = () => {
     setIsModalsOpen(true);
