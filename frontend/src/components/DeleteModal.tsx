@@ -77,6 +77,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
       >
         <div className="w-full flex flex-col place-items-end">
           <button
+            aria-label="Close modal"
             onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
             className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
           >
