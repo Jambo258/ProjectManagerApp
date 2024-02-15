@@ -110,14 +110,14 @@ export const KanbanTask = ({
 
   // TO DO:
   // Check for id that is found in task.members but not in project.users
-  // Return task member if one is found
+  // Return the task member(s) if found
   // Remove the returned task member from task.members
   const latestMembersList = task.members.filter((member: Member) => project?.users.find((user: Member) => member.id === user.id));
   console.log("Latest members:", latestMembersList);
 
-  // remove members from task members
-  // checkForOldMembers.forEach((member: Member) => removeTaskMember(task.Id, member));
-  // console.log("Task members:", task.members);
+  // const membersWhoLeftProject = task.members.filter((member: Member) => project?.users.find((user: Member) => member.id !== user.id));
+  // console.log("Member(s) who have left the project:", membersWhoLeftProject);
+
 
   const displayTaskMembers = latestMembersList.map((member: Member) =>
     member ? (
