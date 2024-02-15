@@ -29,6 +29,15 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newDateOnCreate, setNewDateOnCreate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>("");
 
+  const handleCreateEventChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value.trim() !== ""){
+      setEventTitle(e.target.value);
+    }
+    else {
+      setEventTitle("");
+    }
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setNewEventTitle("");
@@ -103,10 +112,10 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const sortByDate = (events: Event[]) => {
     return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
   };
-  
+
   const hasEvent = () => {
     let hasEvent = false;
-    {events.map((event) =>{ 
+    {events.map((event) =>{
       isSameDay(event.day, day) && (hasEvent = true);});}
     return hasEvent;
   };
@@ -131,14 +140,14 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           setIsModalOpen(true);
         }}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        border-b border-r border-grayscale-300 
+        border-b border-r border-grayscale-300
         hover:bg-primary-200 overflow-hidden inline-block w-full h-full
-        ${isSameMonth(day, currentMonth) 
-      ? (hasEvent() && screenDimensions.width < 768 ? "text-primary-300" : "text-dark-font") 
+        ${isSameMonth(day, currentMonth)
+      ? (hasEvent() && screenDimensions.width < 768 ? "text-primary-300" : "text-dark-font")
       : "text-grayscale-400"}
 
-        ${isToday(day) 
-      ? "bg-primary-100" 
+        ${isToday(day)
+      ? "bg-primary-100"
       : ""}`}
       >
         <ul className="flex flex-col items-center md:items-start h-full whitespace-nowrap relative">
@@ -208,6 +217,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                             className="py-[5px] px-3 h-fit body-text-md"
                           />
                           <input
+                            maxLength={15}
                             onChange={(e) => setNewEventTitle(e.target.value)}
                             defaultValue={event.eventTitle}
                             aria-label="Event name"
@@ -217,7 +227,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                             onClick={() =>
                               editEvent(
                                 event.id,
-                                newEventTitle !== ""
+                                newEventTitle.trim() !== ""
                                   ? newEventTitle
                                   : event.eventTitle,
                                 newDate
@@ -269,9 +279,10 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     className="px-3 py-[5px] body-text-md"
                   />
                   <input
+                    maxLength={15}
                     required
                     value={eventTitle}
-                    onChange={(e) => setEventTitle(e.target.value)}
+                    onChange={(e) => handleCreateEventChange(e)}
                     placeholder={"Add new event"}
                     aria-label="Event name"
                     className="px-3 py-1.5 body-text-md flex-1"
