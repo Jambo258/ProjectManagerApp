@@ -120,6 +120,7 @@ export const SubModal = ({
             <header className="w-full flex flex-row justify-between items-center mb-4">
               {chevronShown ? <button
                 onClick={closeModal}
+                aria-label="Go back"
                 className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
                 <ChevronLeft size={24} />
@@ -129,6 +130,7 @@ export const SubModal = ({
               </h4>
               <button
                 onClick={closeAllModals}
+                aria-label="Go back to task"
                 className="p-1 h-fit text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
                 <X size={24} />
