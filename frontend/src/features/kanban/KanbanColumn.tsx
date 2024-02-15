@@ -189,7 +189,7 @@ export const KanbanColumn = (props: Props) => {
           </button>
         </Menu>
       </div>
-      <div className="flex flex-grow flex-col gap-3 mb-3 items-center overflow-auto">
+      <div className="flex flex-grow flex-col gap-3 mb-3 py-1 items-center overflow-auto">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
