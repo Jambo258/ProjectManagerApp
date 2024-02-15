@@ -18,6 +18,47 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
   deleteModalText,
 }) => {
   const screenDimensions = useScreenDimensions();
+  const modalRef = React.useRef(null as HTMLDialogElement | null);
+
+  React.useEffect(() => {
+    if (confirmDeleteEdit) {
+      const modalElement = modalRef.current;
+      const focusableElements = modalElement!.querySelectorAll(
+        "button, [tabindex]:not([tabindex=\"-1\"])"
+      );
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      const handleTabKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Tab") {
+          if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            (lastElement as HTMLDialogElement).focus();
+          } else if (
+            !event.shiftKey &&
+            document.activeElement === lastElement
+          ) {
+            event.preventDefault();
+            (firstElement as HTMLDialogElement).focus();
+          }
+        }
+      };
+
+      const closeOnEscapePressed = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setConfirmDeleteEdit(false);
+        }
+      };
+      document.addEventListener("keydown", closeOnEscapePressed);
+      modalElement?.addEventListener("keydown", handleTabKeyPress);
+      return () => {
+
+        document.removeEventListener("keydown", closeOnEscapePressed);
+        modalElement?.removeEventListener("keydown", handleTabKeyPress);
+      };
+    }
+  }, [confirmDeleteEdit, setConfirmDeleteEdit]);
 
   return (
     <div
@@ -25,7 +66,9 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
         confirmDeleteEdit ? "visible bg-dark-blue-100/40" : "invisible"}`}
       onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
     >
-      <div
+      <dialog
+        tabIndex={-1}
+        ref={modalRef}
         onClick={(e) => e.stopPropagation()}
         className={`p-2 pb-4 flex flex-col inset-0 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
           confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"}
@@ -68,7 +111,7 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
           </section>
         </main>
 
-      </div>
+      </dialog>
     </div>
   );
 };
