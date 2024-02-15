@@ -49,7 +49,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     ycomponents.observe(() => {
       const uniqueIds = new Set();
       const componentsArray = ycomponents.toArray();
-      ycomponents.doc?.transact(() => {
+      ydoc.transact(() => {
         for (let i = componentsArray.length - 1; i >= 0; i--) {
           const item = componentsArray[i];
           if (uniqueIds.has(item.uuid)) {
@@ -66,17 +66,23 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   const addComponent = (type: string) => {
     const uuid = nanoid();
     if (type === "editor") {
-      ymap.set(uuid, new Y.XmlFragment());
-      yarray.push([{ type, uuid }]);
+      ydoc.transact(() => {
+        ymap.set(uuid, new Y.XmlFragment());
+        yarray.push([{ type, uuid }]);
+      });
     } else if (type === "kanban") {
-      const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>());
-      kanbanMap.set("tasks", new Y.Array<Task>);
-      kanbanMap.set("columns", new Y.Array<Column>);
-      kanbanMap.set("labels", new Y.Array<Labels>);
-      yarray.push([{ type, uuid }]);
+      ydoc.transact(() => {
+        const kanbanMap = ymap.set(uuid, new Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>());
+        kanbanMap.set("tasks", new Y.Array<Task>);
+        kanbanMap.set("columns", new Y.Array<Column>);
+        kanbanMap.set("labels", new Y.Array<Labels>);
+        yarray.push([{ type, uuid }]);
+      });
     } else if (type === "calendar") {
-      yarray.push([{ type, uuid }]);
-      ymap.set(uuid, new Y.Array<Event>);
+      ydoc.transact(() => {
+        ymap.set(uuid, new Y.Array<Event>);
+        yarray.push([{ type, uuid }]);
+      });
     }
   };
 
@@ -95,8 +101,10 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         return;
       }
       if (component.uuid === uuid) {
-        yarray.delete(i, 1);
-        yarray.insert(i - 1, [component]);
+        ydoc.transact(() => {
+          yarray.delete(i, 1);
+          yarray.insert(i - 1, [component]);
+        });
       }
     });
   };
@@ -107,8 +115,10 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         return;
       }
       if (component.uuid === uuid) {
-        yarray.delete(i, 1);
-        yarray.insert(i + 1, [component]);
+        ydoc.transact(() => {
+          yarray.delete(i, 1);
+          yarray.insert(i + 1, [component]);
+        });
       }
     });
   };

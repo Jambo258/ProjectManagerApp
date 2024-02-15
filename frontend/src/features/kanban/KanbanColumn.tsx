@@ -144,6 +144,7 @@ export const KanbanColumn = (props: Props) => {
           // Input field only shows one line, can this be changed to show multiple lines
           // Trello has h2 with role of textbox
           <input
+            maxLength={15}
             type="text"
             className="w-full -ml-1 mr-6 px-1 py-0 heading-xs bg-primary-100 rounded-sm"
             autoFocus
