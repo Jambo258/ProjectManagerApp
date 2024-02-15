@@ -99,7 +99,7 @@ export const KanbanColumn = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="bg-grayscale-300 opacity-50 w-[300px] h-[500px] max-h-[500px] rounded-sm"
+        className="bg-grayscale-300 opacity-50 w-[300px] h-[700px] rounded-sm"
       ></div>
     );
   }
@@ -118,7 +118,7 @@ export const KanbanColumn = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col bg-grayscale-200 w-[300px] h-fit max-h-[700px] rounded-sm overflow-auto text-dark-font"
+      className="flex flex-col bg-grayscale-200 w-[300px] h-full max-h-[700px] rounded-sm overflow-auto text-dark-font"
     >
       <div
         {...attributes}
