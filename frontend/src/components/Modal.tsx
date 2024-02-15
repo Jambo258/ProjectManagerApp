@@ -65,6 +65,7 @@ export const Modal = ({
         className="fixed flex justify-center inset-0 z-30 items-center transition-colors bg-dark-blue-100/40"
       >
         <dialog
+          tabIndex={-1}
           aria-modal="true"
           onClick={(e) => e.stopPropagation()}
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
@@ -72,6 +73,7 @@ export const Modal = ({
           <header className="w-full flex flex-col mb-2 place-items-end">
             <button
               onClick={closeModal}
+              aria-label="Close modal"
               className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0">
               <X size={20}/>
             </button>
