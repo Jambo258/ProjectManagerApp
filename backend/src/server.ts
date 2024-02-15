@@ -59,11 +59,14 @@ const hocuspocusServer = Server.configure({
     console.log(connection.request.session.userId);
     const sessionUserId = Number(connection.request.session.userId);
     const pageId = Number(documentName);
-    if (!sessionUserId || !await canEditPage(sessionUserId, pageId) ) {
+    if (!sessionUserId || !await canViewPage(sessionUserId, pageId) ) {
       const error: CloseEvent = {
         reason: "Not authorized",
       };
       throw error;
+    }
+    if (!await canEditPage(sessionUserId, pageId)) {
+      connection.readOnly = true;
     }
   },
 });
