@@ -49,7 +49,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     ycomponents.observe(() => {
       const uniqueIds = new Set();
       const componentsArray = ycomponents.toArray();
-      ycomponents.doc?.transact(() => {
+      ydoc.transact(() => {
         for (let i = componentsArray.length - 1; i >= 0; i--) {
           const item = componentsArray[i];
           if (uniqueIds.has(item.uuid)) {
@@ -101,8 +101,10 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         return;
       }
       if (component.uuid === uuid) {
-        yarray.delete(i, 1);
-        yarray.insert(i - 1, [component]);
+        ydoc.transact(() => {
+          yarray.delete(i, 1);
+          yarray.insert(i - 1, [component]);
+        });
       }
     });
   };
@@ -113,8 +115,10 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
         return;
       }
       if (component.uuid === uuid) {
-        yarray.delete(i, 1);
-        yarray.insert(i + 1, [component]);
+        ydoc.transact(() => {
+          yarray.delete(i, 1);
+          yarray.insert(i + 1, [component]);
+        });
       }
     });
   };
