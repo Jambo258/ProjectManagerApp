@@ -233,6 +233,7 @@ export const KanbanTask = ({
               </button>
               {isEditTitleSelected ? (
                 <input
+                  maxLength={15}
                   className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
                   autoFocus
                   onKeyDown={(e) => {
