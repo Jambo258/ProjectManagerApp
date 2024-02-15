@@ -50,7 +50,6 @@ export const LoginForm = () => {
       } catch (err) {
         onError;
         console.error("Failed to save the user", err);
-        // TO DO: Refactor this
         if (
           err &&
           typeof err === "object" &&
