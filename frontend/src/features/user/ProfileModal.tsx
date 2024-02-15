@@ -72,10 +72,11 @@ export const ProfileModal = () => {
           typeof err === "object" &&
           "data" in err &&
           err.data &&
-          typeof err.data === "object"
+          typeof err.data === "object" &&
+          "name" in err.data && 
+          typeof err.data.name === "string"
         ) {
-          const errorMessage = Object.values(err.data);
-          setNameFormError(errorMessage.toString());
+          setNameFormError(err.data.name);
         }
       }
     }
@@ -117,10 +118,11 @@ export const ProfileModal = () => {
           typeof err === "object" &&
           "data" in err &&
           err.data &&
-          typeof err.data === "object"
+          typeof err.data === "object" &&
+          "email" in err.data && 
+          typeof err.data.email === "string"
         ) {
-          const errorMessage = Object.values(err.data);
-          setEmailFormError(errorMessage.toString());
+          setEmailFormError(err.data.email);
         }
       }
     }
@@ -161,10 +163,11 @@ export const ProfileModal = () => {
           typeof err === "object" &&
           "data" in err &&
           err.data &&
-          typeof err.data === "object"
+          typeof err.data === "object" &&
+          "password" in err.data &&
+          typeof err.data.password === "string"
         ) {
-          const errorMessage = Object.values(err.data);
-          setPasswordFormError(errorMessage[1] as React.SetStateAction<string | null>);
+          setPasswordFormError(err.data.password);
         }
       }
     }

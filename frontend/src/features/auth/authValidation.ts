@@ -15,10 +15,10 @@ export const registerUserSchema = yup.object().shape({
     .string()
     .min(6, "Must be at least 6 characters long")
     .required("Password is required")
-    .matches(/^(?=.*[a-z])/,"Password requires atleast 1 regural character")
-    .matches(/^(?=.*[A-Z])/,"Password requires atleast 1 capital character")
-    .matches(/^(?=.*[0-9])/,"Password requires atleast 1 number")
-    .matches(/^(?=.*[!@#$%^&*])/,"PPassword requires atleast 1 special character"),
+    .matches(/^(?=.*[a-z])/, "Password requires atleast 1 regural character")
+    .matches(/^(?=.*[A-Z])/, "Password requires atleast 1 capital character")
+    .matches(/^(?=.*[0-9])/, "Password requires atleast 1 number")
+    .matches(/^(?=.*[!@#$%^&*])/, "PPassword requires atleast 1 special character"),
   passwordConf: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
@@ -56,7 +56,11 @@ export const changePasswordSchema = yup.object().shape({
   password: yup
     .string()
     .min(6, "Must be at least 6 characters long")
-    .required("Password is required"),
+    .required("Password is required")
+    .matches(/^(?=.*[a-z])/, "Password requires atleast 1 regural character")
+    .matches(/^(?=.*[A-Z])/, "Password requires atleast 1 capital character")
+    .matches(/^(?=.*[0-9])/, "Password requires atleast 1 number")
+    .matches(/^(?=.*[!@#$%^&*])/, "PPassword requires atleast 1 special character"),
 });
 
 export const inviteUserSchema = yup.object().shape({
