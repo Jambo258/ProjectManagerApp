@@ -42,7 +42,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
   const createNewPage = async (formData: AddPageFormValues) => {
     if (canSave) {
       try {
-        // if (!pageName) throw "missing page name";
         const page = await addNewPage({
           projectid: projectId,
           pageName: formData.pageName,
@@ -54,7 +53,6 @@ export const AddPageModal = ({ projectId }: { projectId: number; }) => {
       } catch (err) {
         onError;
         console.error("failed to create a new page,", err);
-        // TO DO: Refactor this
         if (
           err &&
           typeof err === "object" &&
