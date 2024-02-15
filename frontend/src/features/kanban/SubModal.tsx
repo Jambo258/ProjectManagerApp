@@ -1,4 +1,4 @@
-import { type ReactElement, useState, createContext } from "react";
+import { type ReactElement, useState, useEffect, createContext, useRef } from "react";
 import { ChevronLeft, X } from "react-feather";
 import { type IconType, IconButton } from "./IconButton";
 import useScreenDimensions from "../../utils/screenDimensions";
@@ -34,6 +34,7 @@ export const SubModal = ({
 }: ModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const screenDimensions = useScreenDimensions();
+  const modalRef = useRef(null as HTMLDialogElement | null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -51,6 +52,46 @@ export const SubModal = ({
   const openAllModals = () => {
     setIsModalsOpen(true);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      const modalElement = modalRef.current;
+      const focusableElements = modalElement!.querySelectorAll(
+        "button, input, select, textarea, [tabindex]:not([tabindex=\"-1\"])"
+      );
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      const handleTabKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Tab") {
+          if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            (lastElement as HTMLDialogElement).focus();
+          } else if (
+            !event.shiftKey &&
+            document.activeElement === lastElement
+          ) {
+            event.preventDefault();
+            (firstElement as HTMLDialogElement).focus();
+          }
+        }
+      };
+
+      const closeOnEscapePressed = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          closeAllModals();
+        }
+      };
+      document.addEventListener("keydown", closeOnEscapePressed);
+      modalElement?.addEventListener("keydown", handleTabKeyPress);
+      return () => {
+
+        document.removeEventListener("keydown", closeOnEscapePressed);
+        modalElement?.removeEventListener("keydown", handleTabKeyPress);
+      };
+    }
+  }, [isModalOpen, closeAllModals]);
 
   return (
     <>
@@ -70,6 +111,8 @@ export const SubModal = ({
           }`}
         >
           <dialog
+            tabIndex={-1}
+            ref={modalRef}
             onClick={(e) => e.stopPropagation()}
             className={`max-h-screen min-w-[400px] fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
             ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-4/12 sm:max-w-prose"}`}
