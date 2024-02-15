@@ -118,7 +118,7 @@ export const KanbanColumn = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col bg-grayscale-200 w-[300px] h-[500px] max-h-[500px] rounded-sm overflow-auto text-dark-font"
+      className="flex flex-col bg-grayscale-200 w-[300px] h-fit max-h-[700px] rounded-sm overflow-auto text-dark-font"
     >
       <div
         {...attributes}
@@ -189,7 +189,7 @@ export const KanbanColumn = (props: Props) => {
           </button>
         </Menu>
       </div>
-      <div className="flex flex-grow flex-col gap-3 mb-3 items-center">
+      <div className="flex flex-grow flex-col gap-3 mb-3 items-center overflow-auto">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
