@@ -123,7 +123,7 @@ export const KanbanColumn = (props: Props) => {
       <div
         {...attributes}
         {...listeners}
-        className="min-h-max pl-3 py-3 pr-5 mb-3 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100 focus:outline-none focus:ring focus:ring-dark-blue-50"
+        className="min-h-max pl-3 py-3 pr-5 mb-1 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100 focus:outline-none focus:ring focus:ring-dark-blue-50"
       >
         {!edit && (
           <div
@@ -190,7 +190,7 @@ export const KanbanColumn = (props: Props) => {
           </button>
         </Menu>
       </div>
-      <div className="flex flex-grow flex-col gap-3 mb-3 py-1 items-center overflow-auto">
+      <div className="flex flex-grow flex-col gap-2 mb-2.5 py-1 items-center overflow-auto">
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
