@@ -164,7 +164,7 @@ export const ProfileModal = () => {
           typeof err.data === "object"
         ) {
           const errorMessage = Object.values(err.data);
-          setPasswordFormError(errorMessage.toString());
+          setPasswordFormError(errorMessage[1] as React.SetStateAction<string | null>);
         }
       }
     }
