@@ -78,7 +78,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
         <div className="w-full h-full">
           <header className="relative flex items-center text-dark-font justify-center rounded-t border-x border-t border-grayscale-300 bg-primary-200">
             <ChevronLeft
-              className="cursor-pointer mr-6"
+              className="cursor-pointer mr-6 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               size={24}
               onClick={getPrevMonth}
               onKeyDown={(e) => {
@@ -89,7 +89,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             />
             <div
               tabIndex={0}
-              className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md"
+              className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               onClick={() => setShowMonthSelect(!showMonthSelect)}                            
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
@@ -126,7 +126,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
               )}
             </div>
             <ChevronRight
-              className="cursor-pointer ml-6"
+              className="cursor-pointer ml-6 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               onClick={getNextMonth}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
