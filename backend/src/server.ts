@@ -54,6 +54,18 @@ const hocuspocusServer = Server.configure({
       data.connection.readOnly = true;
     }
   },
+  async beforeHandleMessage(data) {
+    const { connection, documentName } = data;
+    console.log(connection.request.session.userId);
+    const sessionUserId = Number(connection.request.session.userId);
+    const pageId = Number(documentName);
+    if (!sessionUserId || !await canEditPage(sessionUserId, pageId) ) {
+      const error: CloseEvent = {
+        reason: "Not authorized",
+      };
+      throw error;
+    }
+  },
 });
 
 const { app } = expressWebsockets(express());
