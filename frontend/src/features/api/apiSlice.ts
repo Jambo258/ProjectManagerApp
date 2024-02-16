@@ -127,6 +127,7 @@ export const api = createApi({
         method: "PUT",
         body: user,
       }),
+      invalidatesTags: ["Projects"],
     }),
     logout: builder.mutation<User, void>({
       query: () => ({
