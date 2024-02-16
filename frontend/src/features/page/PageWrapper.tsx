@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import * as Y from "yjs";
 import { HocuspocusProvider, } from "@hocuspocus/provider";
 
@@ -10,6 +11,8 @@ import { Modal } from "../../components/Modal";
 import { Plus, ChevronDown, ChevronUp, Trash2 } from "react-feather";
 import Calendar, { type Event } from "../calendar/Calendar";
 import { DeleteModal } from "../../components/DeleteModal";
+import { useGetProjectQuery } from "../api/apiSlice";
+import { useAppSelector } from "../../app/hooks";
 
 interface Component {
   type: "editor" | "kanban" | "calendar";
@@ -38,6 +41,14 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
       connect: true,
     })
   );
+
+  const projectId = parseInt(useParams().projectId!);
+  const { data: project } = useGetProjectQuery(projectId);
+  const userId = useAppSelector(state => state.auth.user?.id);
+
+  const isUserViewer = useMemo(() =>
+    project?.users.some(user => user.id === userId && user.role === "viewer") ?? true
+  ,[project, userId]);
 
   const yarray = ydoc.getArray<Component>("components");
   const ymap = ydoc.getMap<Y.XmlFragment | Y.Map<Event> | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>>();
@@ -141,11 +152,13 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   return (
     <>
       <section className="flex flex-col gap-6 pb-4 sm:pb-6">
+        {!isUserViewer &&
         <section className="h-fit w-full flex flex-row justify-end">
           <Modal modalTitle="Add component" btnStyling="py-2 btn-text-xs" btnText={"Add component"} btnIcon={<Plus size={18} />}>
             <AddComponentModal createComponent={addComponent} />
           </Modal>
         </section>
+        }
 
         {components.map((component, index) =>
           <article
@@ -153,6 +166,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
             // use this when we find solution for mobile devices
             // className="group"
           >
+            {!isUserViewer &&
             <section
             // invisible group-active:visible <- use this when we find solution for mobile devices
               className="w-full px-1 mb-1 inline-flex justify-between gap-x-2 [&>button]:py-1 [&>button]:bg-grayscale-0 hover:[&>button]:bg-grayscale-300"
@@ -185,6 +199,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
                 <Trash2 size={18} />
               </button>
             </section>
+            }
             {getComponent(component)}
           </article>
         )}
