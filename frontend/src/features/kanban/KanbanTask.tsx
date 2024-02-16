@@ -168,29 +168,27 @@ export const KanbanTask = ({
           }
 
           <section className="w-full flex flex-col gap-2">
-            <div className="w-full">
-              {/* Task Deadline */}
-              {(task.deadline && task.members.length < 4) &&
-              <section className="inline-flex w-full justify-between mb-1.5">
-                {task.deadline && (
-                  <div
-                    className={`rounded w-fit pt-0.5 px-2 text-center ${
-                      dateDifference(task.deadline) > 2
-                        ? "bg-success-100"
-                        : "bg-caution-100"
-                    }`}
-                  >
-                    <div className="label-text inline-flex items-center gap-1">
-                      <Clock size={14}/>
-                      {task.deadline > new Date().getTime()
-                        ? dateDifference(task.deadline) + " days left"
-                        : format(new Date(task.deadline), "d.M.yyyy")}
-                    </div>
+            {/* Task Deadline */}
+            <section className="inline-flex w-full justify-between">
+              {task.deadline && (
+                <div
+                  className={`rounded w-fit pt-0.5 px-2 text-center ${
+                    dateDifference(task.deadline) > 2
+                      ? "bg-success-100"
+                      : "bg-caution-100"
+                  }`}
+                >
+                  <div className="label-text inline-flex items-center gap-1">
+                    <Clock size={14}/>
+                    {task.deadline > new Date().getTime()
+                      ? dateDifference(task.deadline) + " days left"
+                      : format(new Date(task.deadline), "d.M.yyyy")}
                   </div>
-                )}
+                </div>
+              )}
 
-                {/* Task Members when there's less than 4 */}
-                {task.members.length < 4 &&
+              {/* Task Members when there's less than 4 */}
+              {task.members.length < 4 &&
                 <section
                   className={
                     "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
@@ -198,21 +196,19 @@ export const KanbanTask = ({
                 >
                   {displayTaskMembers}
                 </section>
-                }
-              </section>
               }
+            </section>
 
-              {/* Task Labels */}
-              <section className="w-full h-fit flex flex-wrap gap-1.5">
-                {displayTaskLabels}
-              </section>
-            </div>
+            {/* Task Labels */}
+            <section className="w-full h-fit flex flex-wrap gap-1.5">
+              {displayTaskLabels}
+            </section>
 
             {/* Task Members when there is 4 or more */}
             {task.members.length > 3 &&
             <section
               className={
-                "w-full h-full flex flex-row flex-wrap items-end"
+                "w-full h-fit flex flex-row flex-wrap items-end"
               }
             >
               {displayTaskMembers}
