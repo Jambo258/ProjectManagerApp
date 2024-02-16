@@ -13,7 +13,7 @@ import { DeleteModal } from "../../components/DeleteModal";
 
 // Types and Interfaces
 import type { Column, Labels, Task } from "./Kanban";
-import { type Member } from "../api/apiSlice";
+import { Project, type Member } from "../api/apiSlice";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -40,6 +40,7 @@ interface Props {
   deleteLabel: (id: string | number) => void;
   addTaskMember: (id: number | string, newMember: Member) => void;
   removeTaskMember: (id: number | string, newMember: Member) => void;
+  project: Project | undefined;
 }
 
 export const KanbanColumn = (props: Props) => {
@@ -65,6 +66,7 @@ export const KanbanColumn = (props: Props) => {
     deleteLabelStatus,
     setTaskDeadline,
     removeTaskDeadline,
+    project
   } = props;
 
   const [edit, setEdit] = useState(false);
@@ -194,6 +196,7 @@ export const KanbanColumn = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((element) => (
             <KanbanTask
+              project={project}
               removeTaskDeadline={removeTaskDeadline}
               setTaskDeadline={setTaskDeadline}
               deleteLabel={deleteLabel}

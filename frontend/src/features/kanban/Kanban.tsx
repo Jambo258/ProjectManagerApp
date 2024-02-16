@@ -15,8 +15,10 @@ import { createPortal } from "react-dom";
 import { KanbanTask } from "./KanbanTask";
 import * as Y from "yjs";
 import { nanoid } from "@reduxjs/toolkit";
-import { type Member } from "../api/apiSlice";
+import { useGetProjectQuery, type Member } from "../api/apiSlice";
 import { Plus } from "react-feather";
+import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
 
 export interface Column {
   Id: string | number;
@@ -55,6 +57,12 @@ export const Kanban = ({
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [labels, setLabels] = useState<Labels[]>([]);
+
+  const projectId = parseInt(useParams().projectId!);
+  const { data: project, isSuccess, refetch } = useGetProjectQuery(projectId);
+  const user = useAppSelector((state) => state.auth.user);
+
+  console.log(project);
 
   useEffect(() => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
@@ -241,6 +249,55 @@ export const Kanban = ({
       }
     });
   };
+
+  const updateTaskMember = (id: number | undefined , name: string | undefined) => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    console.log(ytasks.toArray());
+    ytasks.forEach((task, i) => {
+      const findIndex = task.members?.findIndex((member) => member.id === id);
+      if (findIndex !== -1) {
+        ytasks.doc?.transact(() => {
+          ytasks.delete(i);
+          ytasks.insert(i, [
+            {
+              ...task,
+              members: task.members?.map((member) =>
+                member.id === id ? { ...member, name: name } : member
+              ),
+            },
+          ]);
+        });
+      }
+    });
+  };
+
+  const taskMemberDeleteFromProject = () => {
+    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
+    ytasks.forEach((task, i) => {
+      const updatedMembers = task.members.filter((member) => project?.users.some(user => user.id === member.id));
+      console.log(updatedMembers);
+      ytasks.doc?.transact(() => {
+        ytasks.delete(i);
+        ytasks.insert(i, [{ ...task, members: updatedMembers}]);
+      });
+    });
+  };
+
+  useEffect(() => {
+    const refetchData = async () => {
+      if(isSuccess){
+        try {
+          await refetch();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    refetchData();
+    updateTaskMember(user?.id, user?.name);
+    taskMemberDeleteFromProject();
+  }, [user, project]);
 
   const deleteLabel = (id: string | number) => {
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
@@ -561,6 +618,7 @@ export const Kanban = ({
               <SortableContext items={columnsIds}>
                 {columns.map((column) => (
                   <KanbanColumn
+                    project={project}
                     removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabel={deleteLabel}
@@ -603,6 +661,7 @@ export const Kanban = ({
                     tasks={tasks.filter(
                       (ele) => ele.columnId === activeColumn.Id
                     )}
+                    project={project}
                     removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
@@ -629,6 +688,7 @@ export const Kanban = ({
               {activeTask && (
                 <div className="opacity-70 rotate-3">
                   <KanbanTask
+                    project={project}
                     removeTaskDeadline={removeTaskDeadline}
                     setTaskDeadline={setTaskDeadline}
                     deleteLabelStatus={deleteLabelStatus}
