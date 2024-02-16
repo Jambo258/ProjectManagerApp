@@ -59,7 +59,7 @@ export const Kanban = ({
   const [labels, setLabels] = useState<Labels[]>([]);
 
   const projectId = parseInt(useParams().projectId!);
-  const { data: project, isSuccess, refetch } = useGetProjectQuery(projectId);
+  const { data: project } = useGetProjectQuery(projectId);
   const user = useAppSelector((state) => state.auth.user);
 
   console.log(project);
@@ -250,7 +250,7 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMember = (id: number | undefined , name: string | undefined) => {
+  const updateTaskMember = (id: number, name: string) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     console.log(ytasks.toArray());
     ytasks.forEach((task, i) => {
@@ -284,18 +284,10 @@ export const Kanban = ({
   };
 
   useEffect(() => {
-    const refetchData = async () => {
-      if(isSuccess){
-        try {
-          await refetch();
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    refetchData();
-    updateTaskMember(user?.id, user?.name);
+    if(!user){
+      return;
+    }
+    updateTaskMember(user.id, user.name);
     taskMemberDeleteFromProject();
   }, [user, project]);
 
