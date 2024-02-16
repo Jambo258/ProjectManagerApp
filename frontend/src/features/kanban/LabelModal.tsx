@@ -42,6 +42,7 @@ export const LabelModal = ({
       setIsModalsOpen(false);
     }
   };
+
   return (
     <>
       <div className="grid grid-flow-row gap-1">
@@ -50,21 +51,19 @@ export const LabelModal = ({
             key={label.id}
             className="inline-flex place-items-center justify-center gap-2 m-auto"
           >
-            <div className="mx-4">
-              {taskLabelIds.includes(label.id) ? (
-                <CheckSquare
-                  onClick={() => {
-                    deleteLabelStatus(task.Id, label.id.toString());
-                  }}
-                />
-              ) : (
-                <Square
-                  onClick={() => {
-                    updateLabelStatus(task.Id, label.id.toString());
-                  }}
-                />
-              )}
-            </div>
+            <button
+              aria-label={taskLabelIds.includes(label.id) ? "Unselect label" : "Select label"}
+              onClick={() => {
+                taskLabelIds.includes(label.id) ? deleteLabelStatus(task.Id, label.id.toString()) : updateLabelStatus(task.Id, label.id.toString());
+              }}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                taskLabelIds.includes(label.id) ? deleteLabelStatus(task.Id, label.id.toString()) : updateLabelStatus(task.Id, label.id.toString());
+              }}
+              className="p-1 bg-grayscale-0 hover:bg-grayscale-0"
+            >
+              {taskLabelIds.includes(label.id) ? <CheckSquare /> : <Square />}
+            </button>
             <div
               className={`py-1.5 text-center label-text rounded w-60 ${label.color}`}
             >
