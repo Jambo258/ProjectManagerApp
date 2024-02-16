@@ -160,18 +160,18 @@ export const KanbanTask = ({
         }}
       >
         <div className={isDragging ? "invisible" : ""}>
-          <div className="mb-6">
-            <h4 className="heading-xs mb-1">{task.title}</h4>
-            <p className="min-h-max line-clamp-3 body-text-xs whitespace-pre-wrap">
+          <h4 className="heading-xs mb-1">{task.title}</h4>
+          {task.content !== "" &&
+            <p className="min-h-max line-clamp-2 body-text-xs whitespace-pre-wrap mb-4">
               {task.content}
             </p>
-          </div>
+          }
 
-          <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
-            <div className="grid col-span-2">
+          <section className="w-full flex flex-col gap-2">
+            <div className="w-full">
               {/* Task Deadline */}
-              <section className="w-full mb-1.5">
-
+              {(task.deadline && task.members.length < 4) &&
+              <section className="inline-flex w-full justify-between mb-1.5">
                 {task.deadline && (
                   <div
                     className={`rounded w-fit pt-0.5 px-2 text-center ${
@@ -188,7 +188,19 @@ export const KanbanTask = ({
                     </div>
                   </div>
                 )}
+
+                {/* Task Members when there's less than 4 */}
+                {task.members.length < 4 &&
+                <section
+                  className={
+                    "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
+                  }
+                >
+                  {displayTaskMembers}
+                </section>
+                }
               </section>
+              }
 
               {/* Task Labels */}
               <section className="w-full h-fit flex flex-wrap gap-1.5">
@@ -196,14 +208,16 @@ export const KanbanTask = ({
               </section>
             </div>
 
-            {/* Task Members */}
+            {/* Task Members when there is 4 or more */}
+            {task.members.length > 3 &&
             <section
               className={
-                "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
+                "w-full h-full flex flex-row flex-wrap items-end"
               }
             >
               {displayTaskMembers}
             </section>
+            }
           </section>
         </div>
       </div>
