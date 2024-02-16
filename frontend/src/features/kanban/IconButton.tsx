@@ -11,7 +11,7 @@ interface IconButtonProps {
     handleOnClick: () => void;
 }
 
-export const IconButton = ({iconName, btnText, btnType = "button", handleOnClick}: IconButtonProps) => {
+export const IconButton = ({iconName, btnText = "", btnType = "button", handleOnClick}: IconButtonProps) => {
   const getIconFromName = (iconName: IconType) => {
     switch (iconName) {
     case "Edit":
@@ -55,17 +55,19 @@ export const IconButton = ({iconName, btnText, btnType = "button", handleOnClick
       type={btnType}
       onClick={handleOnClick}
       aria-label={getAriaLabelText(iconName)}
-      className={`w-full px-4 pt-2 pb-1 btn-text-xs ${
+      className={`btn-text-xs ${
         iconName === "Save" && "bg-success-100 hover:bg-success-200"
       } ${iconName === "Delete" && "bg-caution-100 hover:bg-caution-200"} ${
         iconName === "none" ? "sm:text-center pb-1.5" : "sm:text-left"
-      } ${iconName === "Edit" && "bg-grayscale-0 hover:bg-grayscale-0"}`}
+      } ${iconName === "Edit" && "bg-grayscale-0 hover:bg-grayscale-0"} ${
+        btnText === "" ? "w-fit h-fit p-1 pb-0 place-items-center" : "w-full px-4 pt-2 pb-1"}`}
     >
       <span className="inline-flex">
         {getIconFromName(iconName)}
         <p
-          className={`ms-[6px] ${
-            iconName === "none" ? "visible" : "hidden"
+          className={`${
+            iconName === "none" ? "visible" : "hidden"} ${
+            btnText === "" ? "hidden" : "ms-[6px] visible"
           } sm:inline-block`}
         >
           {btnText}
