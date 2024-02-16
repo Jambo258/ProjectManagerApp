@@ -10,6 +10,7 @@ import {
   startOfWeek,
   addMonths,
   subMonths,
+  isSameDay,
 } from "date-fns";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
@@ -22,7 +23,7 @@ export interface Event {
   eventTitle: string;
 }
 
-const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
+const Calendar = ({ yevents }: { yevents: Y.Map<Event>; }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [currentMonth, setcurrentMonth] = useState(startOfToday());
   const [showMonthSelect, setShowMonthSelect] = useState(false);
@@ -41,11 +42,11 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
   });
 
   useEffect(() => {
-    setEvents(yevents.toArray());
+    setEvents(Array.from(yevents.values()));
     yevents.observe(() => {
-      setEvents(yevents.toArray());
+      setEvents(Array.from(yevents.values()));
     });
-  },[yevents]);
+  }, [yevents]);
 
   const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
@@ -76,17 +77,30 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
     <>
       <div className="flex w-full h-fit">
         <div className="w-full h-full">
-          <header className="relative flex items-center text-dark-font justify-center rounded-t border-x border-t border-grayscale-300 bg-primary-200">
+          <header className="relative flex py-2 items-center text-dark-font justify-center rounded-t border-x border-t border-grayscale-300 bg-primary-200">
             <ChevronLeft
-              className="cursor-pointer mr-6"
+              className="cursor-pointer mr-6 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               size={24}
               onClick={getPrevMonth}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                getPrevMonth();
+              }}
+              tabIndex={0}
             />
             <div
-              className="grid col-span-1 py-2 cursor-pointer heading-xs md:heading-sm lg:heading-md"
+              tabIndex={0}
+              className="grid col-span-1 cursor-pointer heading-xs md:heading-sm lg:heading-md focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               onClick={() => setShowMonthSelect(!showMonthSelect)}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                setShowMonthSelect(!showMonthSelect);
+              }}
             >
-              <div className="min-w-24 text-center">{format(currentMonth, "MMM yyyy")}</div>
+              <div
+                className="min-w-24 text-center">
+                {format(currentMonth, "MMM yyyy")}
+              </div>
               {showMonthSelect && (
                 <div className="absolute z-10 flex flex-col">
                   <dialog className="h-[200px] relative w-fit mt-8 md:mt-10 lg:mt-11 flex flex-col z-30 border-grayscale-200 shadow-md rounded overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
@@ -97,6 +111,11 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                             key={month.toISOString()}
                             className="py-0 ps-1 pe-4 heading-xs text-dark-font bg-grayscale-0 hover:bg-grayscale-300"
                             onClick={() => setcurrentMonth(month)}
+                            onKeyDown={(e) => {
+                              if (e.key !== "Enter") return;
+                              setcurrentMonth(month);
+                            }}
+                            tabIndex={0}
                           >
                             {format(month, "MMM yyyy")}
                           </section>
@@ -108,8 +127,13 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
               )}
             </div>
             <ChevronRight
-              className="cursor-pointer ml-6"
+              className="cursor-pointer ml-6 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
               onClick={getNextMonth}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                getNextMonth();
+              }}
+              tabIndex={0}
             />
           </header>
 
@@ -119,7 +143,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             ))}
           </section>
 
-          <section className="grid h-full grid-cols-7 [&>*:nth-child(7n+1)]:border-l [&>*:nth-child(7n+1)]:border-grayscale-300 
+          <section className="grid h-full grid-cols-7 [&>*:nth-child(7n+1)]:border-l [&>*:nth-child(7n+1)]:border-grayscale-300
         [&>*:nth-child(-n+7)]:border-t [&>*:nth-child(-n+7)]:border-grayscale-300">
             {daysInMonth.map(day => (
               <div
@@ -127,7 +151,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                 className={colStartClasses[getDay(day)]}
               >
                 <CalendarEventModal
-                  events={events}
+                  events={events.filter(event => isSameDay(day, event.day)).sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime())}
                   currentMonth={currentMonth}
                   day={day}
                   yevents={yevents}

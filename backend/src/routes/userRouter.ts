@@ -22,10 +22,10 @@ const registerUserSchema = yup.object({
     .string()
     .required("Password is required")
     .min(6, "Must be at least 6 characters long")
-    .matches(/^(?=.*[a-z])/,"Password requires atleast 1 regural character")
-    .matches(/^(?=.*[A-Z])/,"Password requires atleast 1 capital character")
-    .matches(/^(?=.*[0-9])/,"Password requires atleast 1 number")
-    .matches(/^(?=.*[!@#$%^&*])/,"Password requires atleast 1 special character"),
+    .matches(/^(?=.*[a-z])/, "Password requires atleast 1 regural character")
+    .matches(/^(?=.*[A-Z])/, "Password requires atleast 1 capital character")
+    .matches(/^(?=.*[0-9])/, "Password requires atleast 1 number")
+    .matches(/^(?=.*[!@#$%^&*])/, "Password requires atleast 1 special character"),
 });
 type RegisterUserSchemaType = yup.InferType<typeof registerUserSchema>;
 
@@ -130,7 +130,13 @@ usersRouter.post(
 const updateUserSchema = yup.object({
   email: yup.string().trim().optional().email("Must be a valid email"),
   name: yup.string().trim().optional().min(2, "Must be at least 2 characters long").max(50, "Must be shorter than 50 characters"),
-  password: yup.string().optional().min(6, "Must be at least 6 characters long"),
+  password: yup.string()
+    .optional()
+    .min(6, "Must be at least 6 characters long")
+    .matches(/^(?=.*[a-z])/, "Password requires atleast 1 regural character")
+    .matches(/^(?=.*[A-Z])/, "Password requires atleast 1 capital character")
+    .matches(/^(?=.*[0-9])/, "Password requires atleast 1 number")
+    .matches(/^(?=.*[!@#$%^&*])/, "Password requires atleast 1 special character"),
 });
 type UpdateUserSchemaType = yup.InferType<typeof updateUserSchema>;
 
