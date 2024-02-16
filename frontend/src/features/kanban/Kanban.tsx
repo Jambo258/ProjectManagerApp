@@ -646,6 +646,7 @@ export const Kanban = ({
                     isModalsOpen={isModalsOpen}
                     addTaskMember={addTaskMember}
                     removeTaskMember={removeTaskMember}
+                    isUserViewer={true}
                   />
                 </div>
               )}
