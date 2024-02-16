@@ -188,7 +188,7 @@ export const KanbanTask = ({
               )}
 
               {/* Task Members when there's less than 4 */}
-              {task.members.length < 4 &&
+              {task.members.length < 6 &&
                 <section
                   className={
                     "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
@@ -205,7 +205,7 @@ export const KanbanTask = ({
             </section>
 
             {/* Task Members when there is 4 or more */}
-            {task.members.length > 3 &&
+            {task.members.length > 5 &&
             <section
               className={
                 "w-full h-fit flex flex-row flex-wrap items-end"
