@@ -105,7 +105,7 @@ export const SubModal = ({
       />
       {isModalOpen && isModalsOpen && (
         <div
-          onClick={closeModal}
+          onMouseDown={closeModal}
           className={`fixed flex justify-center inset-0 z-30 items-center transition-colors ${
             isModalOpen ? "visible bg-dark-blue-100/40" : "invisible"
           }`}
@@ -113,7 +113,7 @@ export const SubModal = ({
           <dialog
             tabIndex={-1}
             ref={modalRef}
-            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
             className={`max-h-screen min-w-[400px] fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
             ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-4/12 sm:max-w-prose"}`}
           >
