@@ -289,6 +289,7 @@ export const Kanban = ({
     }
     updateTaskMember(user.id, user.name);
     taskMemberDeleteFromProject();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, project]);
 
   const deleteLabel = (id: string | number) => {
