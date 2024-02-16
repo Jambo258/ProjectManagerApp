@@ -22,7 +22,7 @@ export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember }: IPro
   return (
     <div className="mx-2">
       <h5 className="heading-xs mb-2">Project members</h5>
-      <section>
+      <section className="sm:max-h-80 overflow-auto">
         {project!.users.map((member: Member) => {
           return (
             <TaskMember
