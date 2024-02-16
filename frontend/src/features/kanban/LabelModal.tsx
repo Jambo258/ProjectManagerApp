@@ -49,7 +49,7 @@ export const LabelModal = ({
 
   return (
     <>
-      <div className="grid grid-flow-row gap-1">
+      <div className="grid grid-flow-row gap-1 sm:max-h-80 overflow-auto">
         {labels.map((label) => (
           <div
             key={label.id}
