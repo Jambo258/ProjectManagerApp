@@ -64,12 +64,12 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
     <div
       className={`fixed z-50 flex inset-0 justify-center items-center transition-colors rounded ${
         confirmDeleteEdit ? "visible bg-dark-blue-100/40" : "invisible"}`}
-      onClick={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
+      onMouseDown={() => setConfirmDeleteEdit(!confirmDeleteEdit)}
     >
       <dialog
         tabIndex={-1}
         ref={modalRef}
-        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
         className={`p-2 pb-4 flex flex-col inset-0 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none rounded focus:outline-none shadow transition-all bg-grayscale-100 ${
           confirmDeleteEdit ? "scale-100 opacity-100" : "scale-110 opacity-0"}
           ${screenDimensions.height < 400 ? "min-h-screen max-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}

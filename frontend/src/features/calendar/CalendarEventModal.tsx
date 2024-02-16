@@ -173,10 +173,10 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
       </section>
       {isModalOpen &&
       <div
-        onClick={closeModal}
+        onMouseDown={closeModal}
         className="fixed flex justify-center inset-0 z-30 items-center transition-colors bg-dark-blue-100/40">
         <dialog
-          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           className={`fixed p-2 pb-4 flex flex-col inset-0 z-30 max-h-screen sm:justify-start items-left overflow-x-hidden overflow-y-auto
             outline-none sm:rounded focus:outline-none shadow transition-all
             ${screenDimensions.height < 500 ? "min-h-screen w-full" : "w-full h-full sm:h-fit sm:w-fit sm:max-w-2xl"}`}>
