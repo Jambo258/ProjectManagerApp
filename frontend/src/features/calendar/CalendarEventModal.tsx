@@ -222,7 +222,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                             onChange={(e) => setTime(day, e.target.value)}
                             className="py-[5px] px-3 h-fit body-text-md" />
                           <input
-                            maxLength={15}
+                            maxLength={32}
                             onChange={(e) => setNewEventTitle(e.target.value)}
                             defaultValue={event.eventTitle}
                             aria-label="Event name"
@@ -284,7 +284,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     aria-label="Time of the event"
                     className="px-3 py-[5px] body-text-md" />
                   <input
-                    maxLength={15}
+                    maxLength={32}
                     required
                     value={eventTitle}
                     onChange={(e) => handleCreateEventChange(e)}
