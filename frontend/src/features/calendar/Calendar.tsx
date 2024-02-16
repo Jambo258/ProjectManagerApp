@@ -23,7 +23,7 @@ export interface Event {
   eventTitle: string;
 }
 
-const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
+const Calendar = ({ yevents }: { yevents: Y.Map<Event>; }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [currentMonth, setcurrentMonth] = useState(startOfToday());
   const [showMonthSelect, setShowMonthSelect] = useState(false);
@@ -42,11 +42,11 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
   });
 
   useEffect(() => {
-    setEvents(yevents.toArray());
+    setEvents(Array.from(yevents.values()));
     yevents.observe(() => {
-      setEvents(yevents.toArray());
+      setEvents(Array.from(yevents.values()));
     });
-  },[yevents]);
+  }, [yevents]);
 
   const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
   const colStartClasses = [
@@ -151,7 +151,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                 className={colStartClasses[getDay(day)]}
               >
                 <CalendarEventModal
-                  events={events.filter(event => isSameDay(day, event.day)).sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime())}
+                  events={events.filter(event => isSameDay(day, event.day)).sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime())}
                   currentMonth={currentMonth}
                   day={day}
                   yevents={yevents}

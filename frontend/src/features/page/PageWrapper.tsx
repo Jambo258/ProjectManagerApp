@@ -40,7 +40,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   );
 
   const yarray = ydoc.getArray<Component>("components");
-  const ymap = ydoc.getMap<Y.XmlFragment | Y.Array<Event> | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>>();
+  const ymap = ydoc.getMap<Y.XmlFragment | Y.Map<Event> | Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>>();
 
   useEffect(() => {
     const ycomponents = ydoc.getArray<Component>("components");
@@ -80,7 +80,7 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
       });
     } else if (type === "calendar") {
       ydoc.transact(() => {
-        ymap.set(uuid, new Y.Array<Event>);
+        ymap.set(uuid, new Y.Map<Event>);
         yarray.push([{ type, uuid }]);
       });
     }
@@ -130,9 +130,9 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
     } else if (component.type === "editor" && yContent instanceof Y.XmlFragment) {
       return <Editor key={component.uuid} pageId={pageId} provider={provider} yxmlfragment={yContent} isAuthenticated={isAuthenticated} />;
     } else if (component.type === "kanban" && yContent instanceof Y.Map) {
-      return <Kanban ykanban={yContent} />;
-    } else if (component.type === "calendar" && yContent instanceof Y.Array) {
-      return <Calendar yevents={yContent} />;
+      return <Kanban ykanban={yContent as Y.Map<Y.Array<Task> | Y.Array<Column> | Y.Array<Labels>>} />;
+    } else if (component.type === "calendar" && yContent instanceof Y.Map) {
+      return <Calendar yevents={yContent as Y.Map<Event>} />;
     } else {
       return <p>Unknown component type = {component.type}</p>;
     }

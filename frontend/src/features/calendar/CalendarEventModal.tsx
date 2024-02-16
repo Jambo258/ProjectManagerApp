@@ -16,7 +16,7 @@ interface Props {
   events: Event[];
   currentMonth: Date;
   day: Date;
-  yevents: Y.Array<Event>;
+  yevents: Y.Map<Event>;
 }
 
 const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
@@ -45,28 +45,16 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   };
 
   const deleteEvent = (eventId: string) => {
-    const currEvents = yevents.toArray();
-    const index = currEvents.findIndex((event) => event.id === eventId);
-    if (index !== -1) {
-      yevents.delete(index);
-    }
+    yevents.delete(eventId);
   };
 
   const editEvent = (eventId: string, newTitle: string, newDay: Date) => {
-    const currEvents = yevents.toArray();
-    const index = currEvents.findIndex((event) => event.id === eventId);
-    if (index !== -1) {
-      yevents.doc?.transact(() => {
-        yevents.delete(index);
-        yevents.insert(index, [
-          {
-            ...currEvents[index],
-            eventTitle: newTitle,
-            day: newDay.toISOString(),
-          },
-        ]);
-      });
-    }
+    const editedEvent = {
+      id: eventId,
+      eventTitle: newTitle,
+      day: newDay.toISOString(),
+    };
+    yevents.set(eventId, editedEvent);
 
     setNewEventTitle("");
     setActiveEdit("");
@@ -74,13 +62,14 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
 
   const createEvent = (e: React.FormEvent, eventTitle: string) => {
     e.preventDefault();
-    yevents.push([
-      {
-        id: nanoid(),
-        day: newDateOnCreate.toISOString(),
-        eventTitle,
-      },
-    ]);
+    const uuid = nanoid();
+    const newEvent = {
+      id: uuid,
+      day: newDateOnCreate.toISOString(),
+      eventTitle,
+    };
+    yevents.set(uuid, newEvent);
+
     const newDate = new Date(day);
     newDate.setHours(0,0,0,0);
     setNewDateOnCreate(newDate);
