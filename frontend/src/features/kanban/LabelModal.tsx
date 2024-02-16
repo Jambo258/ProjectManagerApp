@@ -43,29 +43,34 @@ export const LabelModal = ({
     }
   };
 
+  const handleCheckboxToggle = (labelId: string | number, taskId: string) => {
+    taskLabelIds.includes(labelId) ? deleteLabelStatus(taskId, labelId.toString()) : updateLabelStatus(taskId, labelId.toString());
+  };
+
   return (
     <>
       <div className="grid grid-flow-row gap-1">
         {labels.map((label) => (
           <div
             key={label.id}
-            className="inline-flex place-items-center justify-center gap-2 m-auto"
+            className="w-full inline-flex place-items-center justify-center gap-2 m-auto"
           >
-            <button
+            <div
+              role="button"
+              tabIndex={0}
               aria-label={taskLabelIds.includes(label.id) ? "Unselect label" : "Select label"}
-              onClick={() => {
-                taskLabelIds.includes(label.id) ? deleteLabelStatus(task.Id, label.id.toString()) : updateLabelStatus(task.Id, label.id.toString());
-              }}
+              onClick={() => handleCheckboxToggle(label.id, task.Id)}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
                 taskLabelIds.includes(label.id) ? deleteLabelStatus(task.Id, label.id.toString()) : updateLabelStatus(task.Id, label.id.toString());
               }}
-              className="p-1 bg-grayscale-0 hover:bg-grayscale-0"
+              className="p-1 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
             >
               {taskLabelIds.includes(label.id) ? <CheckSquare /> : <Square />}
-            </button>
+            </div>
             <div
-              className={`py-1.5 text-center label-text rounded w-60 ${label.color}`}
+              onClick={() => handleCheckboxToggle(label.id, task.Id)}
+              className={`py-1.5 text-center label-text rounded w-full justify-self-stretch ${label.color} `}
             >
               {label.name}
             </div>
