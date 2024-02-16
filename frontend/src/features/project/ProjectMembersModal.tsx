@@ -141,9 +141,11 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
 
       <h4 className="heading-xs mt-4">Current project members</h4>
-      { project?.users.map((member: Member) => (
-        <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
-      ))}
+      <div className="sm:max-h-80 overflow-auto">
+        { project?.users.map((member: Member) => (
+          <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
+        ))}
+      </div>
 
       <section className="flex flex-row gap-4 items-center pt-4">
         <div className="flex-1 items-center">
