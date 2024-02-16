@@ -10,6 +10,7 @@ import {
   startOfWeek,
   addMonths,
   subMonths,
+  isSameDay,
 } from "date-fns";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
@@ -90,13 +91,13 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             <div
               tabIndex={0}
               className="grid col-span-1 cursor-pointer heading-xs md:heading-sm lg:heading-md focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
-              onClick={() => setShowMonthSelect(!showMonthSelect)}                            
+              onClick={() => setShowMonthSelect(!showMonthSelect)}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
                 setShowMonthSelect(!showMonthSelect);
               }}
             >
-              <div 
+              <div
                 className="min-w-24 text-center">
                 {format(currentMonth, "MMM yyyy")}
               </div>
@@ -142,7 +143,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
             ))}
           </section>
 
-          <section className="grid h-full grid-cols-7 [&>*:nth-child(7n+1)]:border-l [&>*:nth-child(7n+1)]:border-grayscale-300 
+          <section className="grid h-full grid-cols-7 [&>*:nth-child(7n+1)]:border-l [&>*:nth-child(7n+1)]:border-grayscale-300
         [&>*:nth-child(-n+7)]:border-t [&>*:nth-child(-n+7)]:border-grayscale-300">
             {daysInMonth.map(day => (
               <div
@@ -150,7 +151,7 @@ const Calendar = ({yevents}: {yevents: Y.Array<Event> }) => {
                 className={colStartClasses[getDay(day)]}
               >
                 <CalendarEventModal
-                  events={events}
+                  events={events.filter(event => isSameDay(day, event.day)).sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime())}
                   currentMonth={currentMonth}
                   day={day}
                   yevents={yevents}

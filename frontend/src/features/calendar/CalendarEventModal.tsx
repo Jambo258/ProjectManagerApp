@@ -3,7 +3,6 @@ import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
   format,
-  isSameDay,
   isSameMonth,
   isToday,
 } from "date-fns";
@@ -110,15 +109,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
 
   const screenDimensions = useScreenDimensions();
 
-  const sortByDate = (events: Event[]) => {
-    return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
-  };
-
   const hasEvent = () => {
-    let hasEvent = false;
-    {events.map((event) =>{
-      isSameDay(event.day, day) && (hasEvent = true);});}
-    return hasEvent;
+    return events.length > 0;
   };
 
   useEffect(() => {
@@ -187,7 +179,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           >
             {format(day, "d")}
           </li>
-          {sortByDate(events).map((event) => isSameDay(event.day, day) && (
+          {events.map((event) =>
             <li
               key={event.id}
               className="ml-1 hidden md:block body-text-sm"
@@ -197,7 +189,6 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                 ? event.eventTitle.slice(0, 7) + "..."
                 : event.eventTitle}
             </li>
-          )
           )}
         </ul>
       </section>
@@ -224,9 +215,9 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2 text-dark-font">
-            {events.find((event) => isSameDay(event.day, day))
+            {hasEvent()
               ? <div>
-                {sortByDate(events).map((event) => isSameDay(event.day, day) && (
+                {events.map((event) => (
                   <div
                     className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
                     key={event.id}
