@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Redux
 import { type Member } from "../api/apiSlice";
@@ -88,6 +88,7 @@ export const KanbanTask = ({
   const [isEditTitleSelected, setIsEditTitleSelected] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [title, setTitle] = useState(task.title);
+  const taskModalRef = useRef(null as HTMLDialogElement | null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -133,15 +134,44 @@ export const KanbanTask = ({
   };
 
   useEffect(() => {
-    const closeOnEscapePressed = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        closeModal();
-      }
-    };
-    document.addEventListener("keydown", closeOnEscapePressed);
-    return () =>
-      document.removeEventListener("keydown", closeOnEscapePressed);
-  }, []);
+    if (isModalOpen) {
+      const taskModalElement = taskModalRef.current;
+      const focusableElements = taskModalElement!.querySelectorAll(
+        "button, input, select, textarea, [tabindex]:not([tabindex=\"-1\"])"
+      );
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      const handleTabKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Tab") {
+          if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            (lastElement as HTMLDialogElement).focus();
+          } else if (
+            !event.shiftKey &&
+            document.activeElement === lastElement
+          ) {
+            event.preventDefault();
+            (firstElement as HTMLDialogElement).focus();
+          }
+        }
+      };
+
+      const closeOnEscapePressed = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      };
+      document.addEventListener("keydown", closeOnEscapePressed);
+      taskModalElement?.addEventListener("keydown", handleTabKeyPress);
+      return () => {
+
+        document.removeEventListener("keydown", closeOnEscapePressed);
+        taskModalElement?.removeEventListener("keydown", handleTabKeyPress);
+      };
+    }
+  }, [isModalOpen]);
 
   return (
     <>
@@ -216,6 +246,8 @@ export const KanbanTask = ({
           }`}
         >
           <dialog
+            tabIndex={-1}
+            ref={taskModalRef}
             onClick={(e) => e.stopPropagation()}
             className={`max-h-screen fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
           ${
@@ -227,6 +259,7 @@ export const KanbanTask = ({
             <header className="w-full flex flex-col mb-2 place-items-end">
               <button
                 onClick={closeModal}
+                aria-label="Close task"
                 className="p-1 text-dark-font bg-grayscale-0 hover:bg-grayscale-0"
               >
                 <X size={20} />
@@ -307,7 +340,6 @@ export const KanbanTask = ({
                         value={task.content}
                         onChange={(e) => updateTask(task.Id, e.target.value)}
                         rows={4}
-                        // autoFocus
                         placeholder="Short item description goes here..."
                         className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                       />
