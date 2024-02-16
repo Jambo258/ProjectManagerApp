@@ -3,7 +3,6 @@ import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
   format,
-  isSameDay,
   isSameMonth,
   isToday,
 } from "date-fns";
@@ -17,7 +16,7 @@ interface Props {
   events: Event[];
   currentMonth: Date;
   day: Date;
-  yevents: Y.Array<Event>;
+  yevents: Y.Map<Event>;
 }
 
 const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
@@ -45,28 +44,16 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   };
 
   const deleteEvent = (eventId: string) => {
-    const currEvents = yevents.toArray();
-    const index = currEvents.findIndex((event) => event.id === eventId);
-    if (index !== -1) {
-      yevents.delete(index);
-    }
+    yevents.delete(eventId);
   };
 
   const editEvent = (eventId: string, newTitle: string, newDay: Date) => {
-    const currEvents = yevents.toArray();
-    const index = currEvents.findIndex((event) => event.id === eventId);
-    if (index !== -1) {
-      yevents.doc?.transact(() => {
-        yevents.delete(index);
-        yevents.insert(index, [
-          {
-            ...currEvents[index],
-            eventTitle: newTitle,
-            day: newDay.toISOString(),
-          },
-        ]);
-      });
-    }
+    const editedEvent = {
+      id: eventId,
+      eventTitle: newTitle,
+      day: newDay.toISOString(),
+    };
+    yevents.set(eventId, editedEvent);
 
     setNewEventTitle("");
     setActiveEdit("");
@@ -74,13 +61,14 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
 
   const createEvent = (e: React.FormEvent, eventTitle: string) => {
     e.preventDefault();
-    yevents.push([
-      {
-        id: nanoid(),
-        day: newDateOnCreate.toISOString(),
-        eventTitle,
-      },
-    ]);
+    const uuid = nanoid();
+    const newEvent = {
+      id: uuid,
+      day: newDateOnCreate.toISOString(),
+      eventTitle,
+    };
+    yevents.set(uuid, newEvent);
+
     const newDate = new Date(day);
     newDate.setHours(0,0,0,0);
     setNewDateOnCreate(newDate);
@@ -109,15 +97,8 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
 
   const screenDimensions = useScreenDimensions();
 
-  const sortByDate = (events: Event[]) => {
-    return events.slice().sort((a,b)=> new Date(a.day).getTime() - new Date(b.day).getTime());
-  };
-
   const hasEvent = () => {
-    let hasEvent = false;
-    {events.map((event) =>{
-      isSameDay(event.day, day) && (hasEvent = true);});}
-    return hasEvent;
+    return events.length > 0;
   };
 
   useEffect(() => {
@@ -141,7 +122,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           setIsModalOpen(true);
         }}
         className={`aspect-square cursor-pointer rounded-none bg-grayscale-200 justify-start
-        border-b border-r border-grayscale-300 focus:bg-grayscale-300/50 focus:outline-none 
+        border-b border-r border-grayscale-300 focus:bg-grayscale-300/50 focus:outline-none
         hover:bg-primary-200 overflow-hidden inline-block w-full h-full
         ${isSameMonth(day, currentMonth)
       ? (hasEvent() && screenDimensions.width < 768 ? "text-primary-300" : "text-dark-font")
@@ -157,7 +138,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
           >
             {format(day, "d")}
           </li>
-          {sortByDate(events).map((event) => isSameDay(event.day, day) && (
+          {events.map((event) =>
             <li
               key={event.id}
               className="ml-1 hidden md:block body-text-sm"
@@ -167,7 +148,6 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                 ? event.eventTitle.slice(0, 7) + "..."
                 : event.eventTitle}
             </li>
-          )
           )}
         </ul>
       </section>
@@ -191,16 +171,16 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
             </h3>
           </header>
           <main className="w-full mx-auto px-2 text-dark-font">
-            {events.find((event) => isSameDay(event.day, day))
+            {hasEvent()
               ? <div>
-                {sortByDate(events).map((event) => isSameDay(event.day, day) && (
+                {events.map((event) => (
                   <div
                     className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
                     key={event.id}
                   >
                     {event.id === activeEdit ? (
                       <section className="flex flex-col sm:flex-row w-full my-2">
-                        <div className="inline-flex items-center gap-2"> 
+                        <div className="inline-flex items-center gap-2">
                           <input
                             type="time"
                             autoFocus
@@ -209,7 +189,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                             onChange={(e) => setTime(day, e.target.value)}
                             className="py-[5px] px-3 h-fit body-text-md" />
                           <input
-                            maxLength={15}
+                            maxLength={32}
                             onChange={(e) => setNewEventTitle(e.target.value)}
                             defaultValue={event.eventTitle}
                             aria-label="Event name"
@@ -232,7 +212,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     ) : (
                       <section
                         onClick={() => setActiveEdit(event.id)}
-                        className="w-full body-text-md my-2 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded" 
+                        className="w-full body-text-md my-2 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
                         tabIndex={0}
                         onKeyDown={(e) => {
                           if (e.key !== "Enter") return;
@@ -271,7 +251,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     aria-label="Time of the event"
                     className="px-3 py-[5px] body-text-md" />
                   <input
-                    maxLength={15}
+                    maxLength={32}
                     required
                     value={eventTitle}
                     onChange={(e) => handleCreateEventChange(e)}
