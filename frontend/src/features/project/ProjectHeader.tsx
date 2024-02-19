@@ -1,15 +1,16 @@
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-// Components
 import { Plus } from "react-feather";
+
+import { useGetProjectQuery } from "../../features/api/apiSlice";
+import { useAppSelector } from "../../app/hooks";
+// Components
 import { Menu } from "../../components/Menu";
 import { Modal } from "../../components/Modal";
 import { RenameProjectModal } from "./RenameProjectModal";
 import { DeleteProjectModal } from "./DeleteProjectModal";
 import { AddPageModal } from "../page/AddPageModal";
-import { useGetProjectQuery } from "../../features/api/apiSlice";
 import { ProjectMembersModal } from "./ProjectMembersModal";
-import { useState } from "react";
 import { RenamePageModal } from "../page/RenamePageModal";
 import { DeletePageModal } from "../page/DeletePageModal";
 
@@ -19,6 +20,12 @@ export const ProjectHeader = () => {
   const projectId = parseInt(useParams().projectId!);
   const pageId = parseInt(useParams().pageId!);
   const { data: project } = useGetProjectQuery(projectId);
+
+  const userId = useAppSelector(state => state.auth.user?.id);
+
+  const userRole = useMemo(() =>
+    project?.users.find(user => user.id === userId)?.role ?? "viewer"
+  ,[project, userId]);
 
   if (!project) {
     return null;
@@ -33,7 +40,9 @@ export const ProjectHeader = () => {
     <header className={`flex-shrink-0 p-6 border-b border-solid border-grayscale-300 bg-grayscale-100 overflow-x-hidden ${showHeader ? "h-fit" : "h-16"}`}>
       <section className="flex flex-auto justify-between">
         {showHeader &&
-        <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") && "break-all"}`}>{project.name}</h2>
+        <h2 className={`heading-md sm:heading-xl mb-2 pr-8 ${!project.name.includes(" ") ? "break-all" : ""}`}>
+          {project.name}
+        </h2>
         }
         <Menu
           btnPosition="absolute right-6"
@@ -44,18 +53,21 @@ export const ProjectHeader = () => {
             {showHeader ? "Hide header" : "Show header" }
           </button>
 
-          <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
+          {userRole !== "viewer" &&
+          <>
+            <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
+            <Modal
+              btnText={"Add new page"}
+              btnStyling={
+                "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
+              }
+              modalTitle={"Add new page"}>
+              <AddPageModal projectId={projectId} />
+            </Modal>
+          </>
+          }
 
-          <Modal
-            btnText={"Add new page"}
-            btnStyling={
-              "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
-            }
-            modalTitle={"Add new page"}>
-            <AddPageModal projectId={projectId} />
-          </Modal>
-
-          {activePage() ?
+          {activePage() && userRole !== "viewer" ?
             <Modal
               btnText={"Rename page"}
               btnStyling={
@@ -70,7 +82,7 @@ export const ProjectHeader = () => {
             : null
           }
 
-          {activePage() ?
+          {activePage() && userRole === "manager" ?
             <DeletePageModal
               btnText={"Delete page"}
               btnStyling={
@@ -81,7 +93,7 @@ export const ProjectHeader = () => {
           }
 
           <hr className="min-w-full p-0 m-0 border-1 border-grayscale-300" />
-
+          {userRole === "manager" &&
           <Modal
             btnText={"Rename project"}
             btnStyling={
@@ -94,6 +106,7 @@ export const ProjectHeader = () => {
               projectName={project.name}
             />
           </Modal>
+          }
           <Modal
             btnText={"Project members"}
             btnStyling={
@@ -103,12 +116,14 @@ export const ProjectHeader = () => {
           >
             <ProjectMembersModal projectId={projectId} />
           </Modal>
+          {userRole === "manager" &&
           <DeleteProjectModal
             btnText={"Delete project"}
             btnStyling={
               "min-w-max w-full px-2 py-1.5 text-left heading-xs bg-grayscale-0 hover:bg-grayscale-0 focus:ring-0 focus:text-caution-100 hover:text-dark-font/60"
             }
           />
+          }
         </Menu>
       </section>
 
@@ -126,13 +141,14 @@ export const ProjectHeader = () => {
               }
             </Link>
           ))}
-
+        {userRole !== "viewer" &&
         <Modal
           btnText={<Plus size={16} />}
           btnStyling={"p-1.5 rounded-full heading-md"}
           modalTitle={"Add new page"}>
           <AddPageModal projectId={projectId}/>
         </Modal>
+        }
       </nav>
       }
     </header>
