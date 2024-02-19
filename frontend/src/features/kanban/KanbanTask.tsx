@@ -143,6 +143,10 @@ export const KanbanTask = ({
       document.removeEventListener("keydown", closeOnEscapePressed);
   }, []);
 
+  if (!task.labels) {
+    return null;
+  }
+
   return (
     <>
       <div
@@ -276,7 +280,7 @@ export const KanbanTask = ({
 
             <main className="w-full sm:max-w-prose grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6">
               <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
-                <div className="h-fit flex flex-row justify-between gap-x-2">
+                <div className="h-fit flex flex-row justify-between items-start gap-x-2">
                   {/* Task Members */}
                   <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
                     {displayTaskMembers}
@@ -290,7 +294,7 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <div className="label-text inline-flex items-center gap-1">
+                      <div className="label-text inline-flex items-start gap-1 ">
                         <Clock size={14}/>
                         {task.deadline > new Date().getTime()
                           ? dateDifference(task.deadline) + " days left"
@@ -307,7 +311,6 @@ export const KanbanTask = ({
                         value={task.content}
                         onChange={(e) => updateTask(task.Id, e.target.value)}
                         rows={4}
-                        // autoFocus
                         placeholder="Short item description goes here..."
                         className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
                       />
@@ -316,7 +319,7 @@ export const KanbanTask = ({
                 </section>
 
                 {/* Task Labels */}
-                <section className="w-full h-fit flex flex-wrap gap-1.5">
+                <section className={task.labels?.length < 1 ? "hidden": "w-full h-fit flex flex-wrap gap-1.5"}>
                   {displayTaskLabels}
                 </section>
               </section>
