@@ -284,11 +284,12 @@ export const Kanban = ({
   };
 
   useEffect(() => {
-    if(!user){
-      return;
+    if(user){
+    // return;
+
+      updateTaskMember(user.id, user.name);
+      taskMemberDeleteFromProject();
     }
-    updateTaskMember(user.id, user.name);
-    taskMemberDeleteFromProject();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, project]);
 
