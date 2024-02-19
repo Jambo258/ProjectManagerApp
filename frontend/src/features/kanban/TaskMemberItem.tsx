@@ -48,13 +48,13 @@ export const TaskMember = ({
   return (
     <div
       role="button"
-      onClick={handleOnClick} 
+      onClick={handleOnClick}
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key !== "Enter") return;
         handleOnClick();
       }}
-      className="flex flex-row justify-between items-center mb-2 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
+      className="flex flex-row justify-between items-center m-1 p-1 mb-2 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
     >
       <section className="inline-flex items-center gap-2.5">
         <UserIcon id={member.id} name={member.name} />
