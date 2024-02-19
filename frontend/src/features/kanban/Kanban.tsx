@@ -252,48 +252,6 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMemberName = (id: number, name: string) => {
-    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    ytasks.forEach((task, i) => {
-      const findIndex = task.members?.findIndex((member) => member.id === id);
-      if (findIndex !== -1) {
-        ytasks.doc?.transact(() => {
-          ytasks.delete(i);
-          ytasks.insert(i, [
-            {
-              ...task,
-              members: task.members?.map((member) =>
-                member.id === id ? { ...member, name: name } : member
-              ),
-            },
-          ]);
-        });
-      }
-    });
-  };
-
-  const deleteOutsidersFromTasks = () => {
-    const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    ytasks.forEach((task, i) => {
-      const updatedMembers = task.members.filter((member) => project?.users.some(user => user.id === member.id));
-      ytasks.doc?.transact(() => {
-        ytasks.delete(i);
-        ytasks.insert(i, [{ ...task, members: updatedMembers}]);
-      });
-    });
-  };
-
-  useEffect(() => {
-    if(user){
-      updateTaskMemberName(user.id, user.name);
-    }
-    if(project){
-      deleteOutsidersFromTasks();
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, project]);
-
   const deleteLabel = (id: string | number) => {
     const ylabels = ykanban.get("labels") as Y.Array<Labels>;
     ylabels.forEach((label, i) => {
