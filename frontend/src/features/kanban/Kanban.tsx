@@ -250,7 +250,7 @@ export const Kanban = ({
     });
   };
 
-  const updateTaskMember = (id: number, name: string) => {
+  const updateTaskMember = (id: number | undefined, name: string | undefined) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     console.log(ytasks.toArray());
     ytasks.forEach((task, i) => {
@@ -284,12 +284,12 @@ export const Kanban = ({
   };
 
   useEffect(() => {
-    if(user){
+    // if(user){
     // return;
 
-      updateTaskMember(user.id, user.name);
-      taskMemberDeleteFromProject();
-    }
+    updateTaskMember(user?.id, user?.name);
+    taskMemberDeleteFromProject();
+    // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, project]);
 
