@@ -1,5 +1,5 @@
 // Redux
-import { type Member, Project } from "../api/apiSlice";
+import { type Member, type Project } from "../api/apiSlice";
 
 // React Router
 
