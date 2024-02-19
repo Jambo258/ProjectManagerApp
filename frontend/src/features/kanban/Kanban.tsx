@@ -133,7 +133,7 @@ export const Kanban = ({
       Id: nanoid(),
       title: `Task ${tasks.length + 1}`,
       columnId,
-      content: "Short task description goes here...",
+      content: "",
       labels: [],
       members: [],
     };
