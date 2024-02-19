@@ -107,31 +107,25 @@ export const PageWrapper = ({ pageId }: { pageId: string; }) => {
   };
 
   const moveComponentUp = (uuid: string) => {
-    yarray.forEach((component, i) => {
-      if (i === 0) {
-        return;
-      }
-      if (component.uuid === uuid) {
-        ydoc.transact(() => {
-          yarray.delete(i, 1);
-          yarray.insert(i - 1, [component]);
-        });
-      }
-    });
+    const componentsArray = yarray.toArray();
+    const index = componentsArray.findIndex((component) => component.uuid === uuid);
+    if( index !== -1 && index !== 0) {
+      ydoc.transact(() => {
+        yarray.delete(index);
+        yarray.insert(index-1, [componentsArray[index]]);
+      });
+    }
   };
 
   const moveComponentDown = (uuid: string) => {
-    yarray.forEach((component, i) => {
-      if (i === yarray.length - 1) {
-        return;
-      }
-      if (component.uuid === uuid) {
-        ydoc.transact(() => {
-          yarray.delete(i, 1);
-          yarray.insert(i + 1, [component]);
-        });
-      }
-    });
+    const componentsArray = yarray.toArray();
+    const index = componentsArray.slice(0,-1).findIndex((component) => component.uuid === uuid);
+    if( index !== -1) {
+      ydoc.transact(() => {
+        yarray.delete(index);
+        yarray.insert(index+1, [componentsArray[index]]);
+      });
+    }
   };
 
   const getComponent = (component: Component) => {
