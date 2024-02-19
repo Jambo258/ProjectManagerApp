@@ -3,6 +3,7 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 import { useAddNewProjectUserMutation, useDeleteProjectUserMutation, useGetProjectQuery } from "../api/apiSlice";
 import { inviteUserSchema } from "../auth/authValidation";
@@ -24,6 +25,7 @@ interface InviteProjectMemberValues {
 
 export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => {
   const navigate = useNavigate();
+  const screenDimensions = useScreenDimensions();
 
   const [selectValue, setSelectValue] = useState<string>("viewer");
   const [userRole, setUserRole] = useState<string>("viewer");
@@ -141,7 +143,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
 
       <h4 className="heading-xs mt-4">Current project members</h4>
-      <div className="sm:max-h-80 overflow-auto">
+      <div className={screenDimensions.height < 500 ? "overflow-visible" : "max-h-80 overflow-y-auto"}>
         { project?.users.map((member: Member) => (
           <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
         ))}
