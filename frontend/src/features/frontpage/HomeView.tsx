@@ -1,7 +1,10 @@
+import ProjectManagerApp from "../../assets/screenshots/ProjectManagerApp.png";
 export const HomeView = () => {
   return (
     <main className="grid grid-flow-col max-w-7xl m-auto mt-12">
-      <div className="w-96 h-96 bg-grayscale-300 hidden mx-6 lg:flex" />
+      <div className="w-96 h-96 bg-grayscale-300 hidden mx-6 lg:flex">
+        <img src={ProjectManagerApp} width="600px" alt="ProjectManagementApp" />
+      </div>
       <div className="body-text-lg mx-8">
         <p className="heading-xl mb-8">
           Lorem ipsum, dolor sit amet consectetur!

@@ -23,3 +23,9 @@ npm run dev
 Project Manager Application is deployed to Microsoft Azure: Cloud Computing Services.
 
 Link to project: https://projektimanageri.azurewebsites.net/
+
+# Screenshots
+
+<div align="center">
+    <img src="/frontend/src/assets/screenshots/ProjectManagerApp.png" width="600px"</img>
+</div>
