@@ -318,7 +318,7 @@ export const KanbanTask = ({
                 <section>
                   <form>
                     <label role="h4" className="heading-xs mb-1">
-                      Description
+                      {(!isUserViewer || task.content.trim() !== "") && "Description" }
                       {isUserViewer
                         ?
                         <p className="body-text-sm break-words">{task.content}</p>
