@@ -21,9 +21,6 @@ export const HomeView = () => {
       <div className="h-auto max-w-[1000px] w-full px-6">
         <img src={ProjectManagerApp} alt="Project Management App" />
       </div>
-
-      
-      
     </main>
   );
 };
