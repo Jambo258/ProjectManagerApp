@@ -4,6 +4,7 @@ import { CreateLabelModal } from "./CreateLabelModal";
 import { Square, CheckSquare } from "react-feather";
 import { EditLabelModal } from "./EditLabelModal";
 import { SubModal, SubModalContext } from "./SubModal";
+import useScreenDimensions from "../../utils/screenDimensions";
 
 interface Props {
   task: Task;
@@ -31,6 +32,7 @@ export const LabelModal = ({
   deleteLabelStatus,
 }: Props) => {
   const taskLabelIds = task.labels?.map((label) => label.id) ?? [];
+  const screenDimensions = useScreenDimensions();
 
   const { closeAllModals } = useContext(SubModalContext);
 
@@ -49,7 +51,7 @@ export const LabelModal = ({
 
   return (
     <>
-      <div className="grid grid-flow-row gap-1 p-1 sm:max-h-80 overflow-auto">
+      <div className={`grid grid-flow-row gap-1 p-1 ${screenDimensions.height < 500 ? "overflow-visible" : "max-h-96 sm:max-h-80 overflow-auto"}`}>
         {labels.map((label) => (
           <div
             key={label.id}
