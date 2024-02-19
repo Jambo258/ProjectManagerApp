@@ -62,8 +62,6 @@ export const Kanban = ({
   const { data: project } = useGetProjectQuery(projectId);
   const user = useAppSelector((state) => state.auth.user);
 
-  console.log(project);
-
   useEffect(() => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
@@ -252,7 +250,6 @@ export const Kanban = ({
 
   const updateTaskMember = (id: number | undefined, name: string | undefined) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
-    console.log(ytasks.toArray());
     ytasks.forEach((task, i) => {
       const findIndex = task.members?.findIndex((member) => member.id === id);
       if (findIndex !== -1) {
@@ -275,7 +272,6 @@ export const Kanban = ({
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     ytasks.forEach((task, i) => {
       const updatedMembers = task.members.filter((member) => project?.users.some(user => user.id === member.id));
-      console.log(updatedMembers);
       ytasks.doc?.transact(() => {
         ytasks.delete(i);
         ytasks.insert(i, [{ ...task, members: updatedMembers}]);
