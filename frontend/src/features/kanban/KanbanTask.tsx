@@ -233,7 +233,7 @@ export const KanbanTask = ({
         >
           <dialog
             onClick={(e) => e.stopPropagation()}
-            className={`max-h-screen fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
+            className={`max-h-screen min-w-[400px] fixed p-2 pb-4 flex flex-col inset-0 z-30 sm:justify-start items-left overflow-x-hidden overflow-y-auto outline-none sm:rounded focus:outline-none shadow transition-all
           ${
         screenDimensions.height < 500
           ? "min-h-screen w-full"
@@ -291,7 +291,7 @@ export const KanbanTask = ({
             </header>
 
             <main className={`${screenDimensions.height < 500 ? "" : "sm:max-w-prose"} w-full grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6`}>
-              <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
+              <section className={`${isUserViewer ? "col-span-12 sm:col-span-7" : "col-span-9 sm:col-span-5"} flex flex-col gap-y-3`}>
                 <div className="h-fit flex flex-row justify-between items-start gap-x-2">
                   {/* Task Members */}
                   <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
