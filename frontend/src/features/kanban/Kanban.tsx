@@ -62,6 +62,10 @@ export const Kanban = ({
   const { data: project } = useGetProjectQuery(projectId);
   const user = useAppSelector((state) => state.auth.user);
 
+  const isUserViewer = useMemo(() =>
+    project?.users.some(projectUser => projectUser.id === user?.id && projectUser.role === "viewer") ?? true
+  ,[project, user]);
+
   useEffect(() => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     const ycolumns = ykanban.get("columns") as Y.Array<Column>;
@@ -632,6 +636,7 @@ export const Kanban = ({
                     isModalsOpen={isModalsOpen}
                     addTaskMember={addTaskMember}
                     removeTaskMember={removeTaskMember}
+                    isUserViewer={isUserViewer}
                   />
                 ))}
               </SortableContext>
@@ -673,6 +678,7 @@ export const Kanban = ({
                     isModalsOpen={isModalsOpen}
                     addTaskMember={addTaskMember}
                     removeTaskMember={removeTaskMember}
+                    isUserViewer={isUserViewer}
                   />
                 </div>
               )}
