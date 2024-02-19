@@ -13,7 +13,8 @@ import { DeleteModal } from "../../components/DeleteModal";
 
 // Types and Interfaces
 import type { Column, Labels, Task } from "./Kanban";
-import { Project, type Member } from "../api/apiSlice";
+import { type Project, type Member } from "../api/apiSlice";
+import { useAppSelector } from "../../app/hooks";
 
 interface Props {
   removeTaskDeadline: (id: string | number) => void;
@@ -76,6 +77,11 @@ export const KanbanColumn = (props: Props) => {
     return tasks.map((element) => element.Id);
   }, [tasks]);
 
+  const userId = useAppSelector(state => state.auth.user?.id);
+  const isUserViewer = useMemo(() =>
+    project?.users.some(user => user.id === userId && user.role === "viewer") ?? true
+  ,[project, userId]);
+
   const {
     attributes,
     listeners,
@@ -85,6 +91,7 @@ export const KanbanColumn = (props: Props) => {
     isDragging,
   } = useSortable({
     id: column.Id,
+    disabled: isUserViewer,
     data: {
       type: "Column",
       column,
@@ -127,7 +134,7 @@ export const KanbanColumn = (props: Props) => {
         {...listeners}
         className="min-h-max pl-3 py-3 pr-5 mb-1 m-[3px] relative inline-flex justify-between items-center rounded-sm bg-primary-100 focus:outline-none focus:ring focus:ring-dark-blue-50"
       >
-        {!edit && (
+        {isUserViewer || !edit ? (
           <div
             aria-label="Column title"
             onClick={() => setEdit(true)}
@@ -140,8 +147,7 @@ export const KanbanColumn = (props: Props) => {
           >
             {column.title}
           </div>
-        )}
-        {edit && (
+        ) : (
           // TO DO:
           // Input field only shows one line, can this be changed to show multiple lines
           // Trello has h2 with role of textbox
@@ -174,6 +180,7 @@ export const KanbanColumn = (props: Props) => {
             onChange={(e) => handleChange(e)}
           />
         )}
+        {!isUserViewer &&
         <Menu
           btnPosition="absolute right-2.5 top-3.5"
           menuPosition="relative mt-1"
@@ -191,9 +198,10 @@ export const KanbanColumn = (props: Props) => {
             Delete column
           </button>
         </Menu>
+        }
       </div>
       <div className="flex flex-grow flex-col gap-2 mb-2.5 py-1 items-center overflow-auto">
-        <SortableContext items={taskIds}>
+        <SortableContext items={taskIds} disabled={isUserViewer}>
           {tasks.map((element) => (
             <KanbanTask
               project={project}
@@ -215,11 +223,12 @@ export const KanbanColumn = (props: Props) => {
               isModalsOpen={isModalsOpen}
               addTaskMember={addTaskMember}
               removeTaskMember={removeTaskMember}
+              isUserViewer={isUserViewer}
             />
           ))}
         </SortableContext>
       </div>
-
+      {!isUserViewer &&
       <button
         type="button"
         className="m-[3px] -mt-[3px] py-2 inline-flex gap-1 items-center justify-center btn-text-xs rounded-sm"
@@ -228,7 +237,7 @@ export const KanbanColumn = (props: Props) => {
         <Plus size={18} className="-ms-2.5" />
         <p>Add task</p>
       </button>
-
+      }
       {isDeleteConfirmOpen && (
         <DeleteModal
           setConfirmDeleteEdit={setIsDeleteConfirmOpen}

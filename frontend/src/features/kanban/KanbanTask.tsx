@@ -44,6 +44,7 @@ interface Props {
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
   project: Project | undefined;
+  isUserViewer: boolean;
 }
 
 export const KanbanTask = ({
@@ -64,7 +65,8 @@ export const KanbanTask = ({
   deleteLabelStatus,
   setTaskDeadline,
   removeTaskDeadline,
-  project
+  project,
+  isUserViewer,
 }: Props) => {
   const {
     attributes,
@@ -145,6 +147,10 @@ export const KanbanTask = ({
       document.removeEventListener("keydown", closeOnEscapePressed);
   }, []);
 
+  if (!task.labels) {
+    return null;
+  }
+
   return (
     <>
       <div
@@ -162,50 +168,60 @@ export const KanbanTask = ({
         }}
       >
         <div className={isDragging ? "invisible" : ""}>
-          <div className="mb-6">
-            <h4 className="heading-xs mb-1">{task.title}</h4>
-            <p className="min-h-max line-clamp-3 body-text-xs whitespace-pre-wrap">
+          <h4 className="heading-xs mb-1">{task.title}</h4>
+          {task.content !== "" &&
+            <p className="min-h-max line-clamp-2 body-text-xs whitespace-pre-wrap mb-4">
               {task.content}
             </p>
-          </div>
+          }
 
-          <section className="w-full grid grid-flow-col grid-cols-2 gap-2">
-            <div className="grid col-span-2">
-              {/* Task Deadline */}
-              <section className="w-full mb-1.5">
-
-                {task.deadline && (
-                  <div
-                    className={`rounded w-fit pt-0.5 px-2 text-center ${
-                      dateDifference(task.deadline) > 2
-                        ? "bg-success-100"
-                        : "bg-caution-100"
-                    }`}
-                  >
-                    <div className="label-text inline-flex items-center gap-1">
-                      <Clock size={14}/>
-                      {task.deadline > new Date().getTime()
-                        ? dateDifference(task.deadline) + " days left"
-                        : format(new Date(task.deadline), "d.M.yyyy")}
-                    </div>
+          <section className="w-full flex flex-col gap-2">
+            {/* Task Deadline */}
+            <section className="inline-flex w-full justify-between">
+              {task.deadline && (
+                <div
+                  className={`rounded w-fit pt-0.5 px-2 text-center ${
+                    dateDifference(task.deadline) > 2
+                      ? "bg-success-100"
+                      : "bg-caution-100"
+                  }`}
+                >
+                  <div className="label-text inline-flex items-center gap-1">
+                    <Clock size={14}/>
+                    {task.deadline > new Date().getTime()
+                      ? dateDifference(task.deadline) + " days left"
+                      : format(new Date(task.deadline), "d.M.yyyy")}
                   </div>
-                )}
-              </section>
+                </div>
+              )}
 
-              {/* Task Labels */}
-              <section className="w-full h-fit flex flex-wrap gap-1.5">
-                {displayTaskLabels}
-              </section>
-            </div>
+              {/* Task Members when there's less than 4 */}
+              {task.members.length < 6 &&
+                <section
+                  className={
+                    "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
+                  }
+                >
+                  {displayTaskMembers}
+                </section>
+              }
+            </section>
 
-            {/* Task Members */}
+            {/* Task Labels */}
+            <section className="w-full h-fit flex flex-wrap gap-1.5">
+              {displayTaskLabels}
+            </section>
+
+            {/* Task Members when there is 4 or more */}
+            {task.members.length > 5 &&
             <section
               className={
-                "min-w-max w-fit h-full flex flex-row flex-wrap items-end"
+                "w-full h-fit flex flex-row flex-wrap items-end"
               }
             >
               {displayTaskMembers}
             </section>
+            }
           </section>
         </div>
       </div>
@@ -233,7 +249,7 @@ export const KanbanTask = ({
               >
                 <X size={20} />
               </button>
-              {isEditTitleSelected ? (
+              {isEditTitleSelected && !isUserViewer ? (
                 <input
                   maxLength={15}
                   className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
@@ -276,9 +292,9 @@ export const KanbanTask = ({
               )}
             </header>
 
-            <main className="w-full sm:max-w-prose grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6">
+            <main className={`${screenDimensions.height < 500 ? "" : "sm:max-w-prose"} w-full grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6`}>
               <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
-                <div className="h-fit flex flex-row justify-between gap-x-2">
+                <div className="h-fit flex flex-row justify-between items-start gap-x-2">
                   {/* Task Members */}
                   <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
                     {displayTaskMembers}
@@ -292,7 +308,7 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <div className="label-text inline-flex items-center gap-1">
+                      <div className="label-text inline-flex items-start gap-1 ">
                         <Clock size={14}/>
                         {task.deadline > new Date().getTime()
                           ? dateDifference(task.deadline) + " days left"
@@ -304,25 +320,29 @@ export const KanbanTask = ({
                 <section>
                   <form>
                     <label role="h4" className="heading-xs mb-1">
-                      Description
-                      <textarea
-                        value={task.content}
-                        onChange={(e) => updateTask(task.Id, e.target.value)}
-                        rows={4}
-                        // autoFocus
-                        placeholder="Short item description goes here..."
-                        className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
-                      />
+                      {(!isUserViewer || task.content.trim() !== "") && "Description" }
+                      {isUserViewer
+                        ?
+                        <p className="body-text-sm break-words">{task.content}</p>
+                        :
+                        <textarea
+                          value={task.content}
+                          onChange={(e) => updateTask(task.Id, e.target.value)}
+                          rows={4}
+                          placeholder="Short item description goes here..."
+                          className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
+                        />
+                      }
                     </label>
                   </form>
                 </section>
 
                 {/* Task Labels */}
-                <section className="w-full h-fit flex flex-wrap gap-1.5">
+                <section className={task.labels?.length < 1 ? "hidden": "w-full h-fit flex flex-wrap gap-1.5"}>
                   {displayTaskLabels}
                 </section>
               </section>
-
+              {!isUserViewer &&
               <aside className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
                 <section>
                   <h5 className="heading-xxs mb-2">Add to task</h5>
@@ -385,6 +405,7 @@ export const KanbanTask = ({
                   </div>
                 </section>
               </aside>
+              }
             </main>
           </dialog>
         </div>

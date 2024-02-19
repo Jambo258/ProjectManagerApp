@@ -5,7 +5,7 @@ interface LabelProps {
 
 export const Label = ({labelColor, labelText}: LabelProps) => {
   return (
-    <p className={`w-max py-1 px-2 rounded label-text text-center ${labelColor}`}>
+    <p className={`w-max py-0.5 px-1 rounded label-text text-center ${labelColor}`}>
       {labelText}
     </p>
   );

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import {
   add,
@@ -11,6 +12,8 @@ import * as Y from "yjs";
 import { DeleteEventModal } from "./DeleteEventModal";
 import useScreenDimensions from "../../utils/screenDimensions";
 import type { Event } from "./Calendar";
+import { useGetProjectQuery } from "../api/apiSlice";
+import { useAppSelector } from "../../app/hooks";
 
 interface Props {
   events: Event[];
@@ -27,6 +30,15 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
   const [newDate, setNewDate] = useState(day);
   const [newDateOnCreate, setNewDateOnCreate] = useState(day);
   const [activeEdit, setActiveEdit] = useState<string>("");
+
+  const projectId = parseInt(useParams().projectId!);
+  const { data: project } = useGetProjectQuery(projectId);
+  const userId = useAppSelector(state => state.auth.user?.id);
+
+  const isUserViewer = useMemo(() =>
+    project?.users.some(user => user.id === userId && user.role === "viewer") ?? true
+  ,[project, userId]);
+
 
   const handleCreateEventChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.value.trim() !== ""){
@@ -178,7 +190,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                     className="flex flex-row items-center justify-between cursor-pointer border-b-2 border-grayscale-200 focus:outline-none focus:ring focus:ring-dark-blue-50 rounded"
                     key={event.id}
                   >
-                    {event.id === activeEdit ? (
+                    {event.id === activeEdit && !isUserViewer ? (
                       <section className="flex flex-col sm:flex-row w-full my-2">
                         <div className="inline-flex items-center gap-2">
                           <input
@@ -222,7 +234,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                         <p className="body-text-lg">{event.eventTitle}</p>
                       </section>
                     )}
-                    {event.id !== activeEdit && (
+                    {!isUserViewer && event.id !== activeEdit && (
                       <DeleteEventModal
                         deleteEvent={deleteEvent}
                         eventId={event.id}
@@ -234,6 +246,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
               </div>
               : <p className="body-text-lg">No events yet.</p>
             }
+            {!isUserViewer &&
             <section className="justify-center">
               <h4 className="heading-sm mt-5 mb-2">Add new event</h4>
               <div className="flex flex-col sm:flex-row gap-2 w-full">
@@ -264,6 +277,7 @@ const CalendarEventModal = ({ events, currentMonth, day, yevents }: Props) => {
                 </form>
               </div>
             </section>
+            }
           </main>
         </dialog>
       </div>
