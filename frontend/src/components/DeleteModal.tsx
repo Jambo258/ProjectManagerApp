@@ -85,13 +85,13 @@ export const DeleteModal: React.FunctionComponent<propTypes> = ({
           </button>
         </div>
 
-        <main className="w-min mx-auto px-2">
+        <main className="w-full sm:w-min mx-auto px-2">
           {deleteModalTitle &&
-          <p className="w-max px-2 mx-auto mb-2 heading-sm text-center">
+          <p className="w-full sm:w-max px-2 mx-auto mb-2 heading-sm text-center">
             {deleteModalTitle}
           </p>
           }
-          <p className="w-11/12 mx-auto mb-6 body-text-md text-center">{deleteModalText}</p>
+          <p className="sm:w-11/12 mx-auto mb-6 body-text-md text-center">{deleteModalText}</p>
 
           <section className="w-full min-w-max mx-auto grid grid-cols-2 gap-6">
             <button
