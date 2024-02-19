@@ -288,7 +288,7 @@ export const KanbanTask = ({
               )}
             </header>
 
-            <main className="w-full sm:max-w-prose grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6">
+            <main className={`${screenDimensions.height >= 500 && "sm:max-w-prose"} w-full grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6`}>
               <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
                 <div className="h-fit flex flex-row justify-between items-start gap-x-2">
                   {/* Task Members */}
