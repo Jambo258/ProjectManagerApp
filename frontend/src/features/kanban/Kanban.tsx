@@ -343,7 +343,6 @@ export const Kanban = ({
   const addTaskMember = (id: number | string, newMember: Member) => {
     const ytasks = ykanban.get("tasks") as Y.Array<Task>;
     let changed = false;
-    console.log(ytasks.toArray());
     ytasks.forEach((task, i) => {
       if (task.Id === id && changed === false) {
         changed = true;
