@@ -51,7 +51,7 @@ export const LabelModal = ({
 
   return (
     <>
-      <div className={`grid grid-flow-row gap-1 p-1 ${screenDimensions.height < 500 ? "overflow-visible" : "max-h-96 sm:max-h-80 overflow-auto"}`}>
+      <div className={`grid grid-flow-row gap-1 p-1 ${screenDimensions.height < 500 ? "overflow-visible" : "max-h-80 overflow-auto"}`}>
         {labels.map((label) => (
           <div
             key={label.id}
