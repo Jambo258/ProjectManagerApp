@@ -143,7 +143,7 @@ export const ProjectMembersModal = ({ projectId }: ProjectMembersModalProps) => 
       }
 
       <h4 className="heading-xs mt-4">Current project members</h4>
-      <div className={screenDimensions.height < 500 ? "overflow-visible" : "max-h-80 overflow-y-auto"}>
+      <div className={screenDimensions.height < 500 ? "overflow-visible" : "max-h-[310px] overflow-y-auto"}>
         { project?.users.map((member: Member) => (
           <ProjectMemberItem key={member.id} member={member} projectId={projectId} userId={user.id} userRole={userRole} />
         ))}
