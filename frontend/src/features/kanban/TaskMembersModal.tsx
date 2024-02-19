@@ -1,8 +1,8 @@
 // Redux
-import { type Member, useGetProjectQuery } from "../api/apiSlice";
+import { type Member, type Project } from "../api/apiSlice";
 
 // React Router
-import { useParams } from "react-router-dom";
+
 
 // Components
 import { TaskMember } from "./TaskMemberItem";
@@ -13,13 +13,11 @@ interface IProps {
   task: Task;
   addTaskMember: (id: number | string, newMember: Member) => void;
   removeTaskMember: (id: number | string, newMember: Member) => void;
+  project: Project | undefined;
 }
 
-export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember }: IProps ) => {
-
+export const TaskMembersModal = ({ task, addTaskMember, removeTaskMember, project }: IProps ) => {
   const screenDimensions = useScreenDimensions();
-  const projectId = parseInt(useParams().projectId!);
-  const { data: project } = useGetProjectQuery(projectId);
 
   return (
     <div className="mx-2">

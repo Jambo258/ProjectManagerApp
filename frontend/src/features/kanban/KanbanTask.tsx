@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // Redux
-import { type Member } from "../api/apiSlice";
+import { type Member, Project } from "../api/apiSlice";
 
 // DND Kit
 import { useSortable } from "@dnd-kit/sortable";
@@ -43,6 +43,8 @@ interface Props {
   deleteLabelStatus: (taskId: string, id: string) => void;
   editLabel: (id: string | number, name: string, color: string) => void;
   deleteLabel: (id: string | number) => void;
+  project: Project | undefined;
+  isUserViewer: boolean;
 }
 
 export const KanbanTask = ({
@@ -63,6 +65,8 @@ export const KanbanTask = ({
   deleteLabelStatus,
   setTaskDeadline,
   removeTaskDeadline,
+  project,
+  isUserViewer,
 }: Props) => {
   const {
     attributes,
@@ -177,6 +181,10 @@ export const KanbanTask = ({
     return null;
   }
 
+  if (!task.labels) {
+    return null;
+  }
+
   return (
     <>
       <div
@@ -278,7 +286,7 @@ export const KanbanTask = ({
               >
                 <X size={20} />
               </button>
-              {isEditTitleSelected ? (
+              {isEditTitleSelected && !isUserViewer ? (
                 <input
                   maxLength={15}
                   className="place-self-start -mt-3 mx-1 ps-1 p-0 heading-md text-dark-font"
@@ -321,8 +329,8 @@ export const KanbanTask = ({
               )}
             </header>
 
-            <main className="w-full sm:max-w-prose grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6">
-              <section className="col-span-9 sm:col-span-5 flex flex-col gap-y-3">
+            <main className={`${screenDimensions.height < 500 ? "" : "sm:max-w-prose"} w-full grid grid-cols-12 sm:grid-cols-7 mx-auto px-2 gap-x-6`}>
+              <section className={`${isUserViewer ? "col-span-12 sm:col-span-7" : "col-span-9 sm:col-span-5"} flex flex-col gap-y-3`}>
                 <div className="h-fit flex flex-row justify-between items-start gap-x-2">
                   {/* Task Members */}
                   <section className="inline-flex flex-wrap gap-x-1 sm:max-w-[40ch]">
@@ -337,7 +345,7 @@ export const KanbanTask = ({
                           : "bg-caution-100"
                       }`}
                     >
-                      <div className="label-text inline-flex items-center gap-1 ">
+                      <div className="label-text inline-flex items-start gap-1">
                         <Clock size={14}/>
                         {task.deadline > new Date().getTime()
                           ? dateDifference(task.deadline) + " days left"
@@ -350,13 +358,19 @@ export const KanbanTask = ({
                   <form>
                     <label role="h4" className="heading-xs mb-1">
                       Description
-                      <textarea
-                        value={task.content}
-                        onChange={(e) => updateTask(task.Id, e.target.value)}
-                        rows={4}
-                        placeholder="Short item description goes here..."
-                        className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
-                      />
+                      {(!isUserViewer || task.content.trim() !== "") && "Description" }
+                      {isUserViewer
+                        ?
+                        <p className="body-text-sm break-words">{task.content}</p>
+                        :
+                        <textarea
+                          value={task.content}
+                          onChange={(e) => updateTask(task.Id, e.target.value)}
+                          rows={4}
+                          placeholder="Short item description goes here..."
+                          className="w-full block border px-1 py-0.5 body-text-sm border-grayscale-300 rounded"
+                        />
+                      }
                     </label>
                   </form>
                 </section>
@@ -366,7 +380,7 @@ export const KanbanTask = ({
                   {displayTaskLabels}
                 </section>
               </section>
-
+              {!isUserViewer &&
               <aside className="grid col-span-3 sm:col-span-2 min-w-max gap-4">
                 <section>
                   <h5 className="heading-xxs mb-2">Add to task</h5>
@@ -380,6 +394,7 @@ export const KanbanTask = ({
                       isModalsOpen={isModalsOpen}
                     >
                       <TaskMembersModal
+                        project={project}
                         addTaskMember={addTaskMember}
                         removeTaskMember={removeTaskMember}
                         task={task}
@@ -428,6 +443,7 @@ export const KanbanTask = ({
                   </div>
                 </section>
               </aside>
+              }
             </main>
           </dialog>
         </div>

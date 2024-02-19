@@ -48,7 +48,7 @@ export const TaskMember = ({
   return (
     <div
       role="button"
-      onClick={handleOnClick}
+      onClick={handleOnClick} 
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key !== "Enter") return;

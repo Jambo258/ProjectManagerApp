@@ -17,3 +17,9 @@ and start backend on ./backend by following command:
 npm install
 npm run dev
 ````
+
+# Deployment
+
+Project Manager Application is deployed to Microsoft Azure: Cloud Computing Services.
+
+Link to project: https://projektimanageri.azurewebsites.net/
