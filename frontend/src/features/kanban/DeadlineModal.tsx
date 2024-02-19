@@ -76,10 +76,10 @@ export const DeadlineModal = ({
           return "!btn-text-sm";
         }}
         onClickDay={(day) => setDeadline(day)}
-        prevLabel={<ChevronLeft className="relative top-1" />}
-        nextLabel={<ChevronRight className="relative top-1" />}
-        prev2Label={<ChevronsLeft className="relative top-1" />}
-        next2Label={<ChevronsRight className="relative top-1" />}
+        prevLabel={<ChevronLeft size={18} />}
+        nextLabel={<ChevronRight size={18} />}
+        prev2Label={<ChevronsLeft size={18} />}
+        next2Label={<ChevronsRight size={18} />}
       />
 
       <div className="grid grid-cols-2 gap-4">
