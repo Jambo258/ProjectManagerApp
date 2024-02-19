@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, useRef, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Redux
 import { type Member } from "../api/apiSlice";
@@ -331,13 +331,13 @@ export const KanbanTask = ({
                   {/* Task Deadline */}
                   {task.deadline && (
                     <div
-                      className={`rounded w-fit pt-0.5 px-2 text-center ${
+                      className={`rounded min-w-max w-fit pt-0.5 px-2 text-center ${
                         dateDifference(task.deadline) > 2
                           ? "bg-success-100"
                           : "bg-caution-100"
                       }`}
                     >
-                      <div className="label-text inline-flex items-start gap-1 ">
+                      <div className="label-text inline-flex items-center gap-1 ">
                         <Clock size={14}/>
                         {task.deadline > new Date().getTime()
                           ? dateDifference(task.deadline) + " days left"
